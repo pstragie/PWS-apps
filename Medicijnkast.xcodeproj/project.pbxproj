@@ -13,17 +13,27 @@
 		B66B413D1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B66B413B1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld */; };
 		B66B413F1E4B4B9400DA2793 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B66B413E1E4B4B9400DA2793 /* Assets.xcassets */; };
 		B66B41421E4B4B9400DA2793 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66B41401E4B4B9400DA2793 /* LaunchScreen.storyboard */; };
+		B66B414F1E4B63AE00DA2793 /* AddMedicijnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B414D1E4B63AE00DA2793 /* AddMedicijnViewController.swift */; };
+		B66B41501E4B63AF00DA2793 /* MedicijnTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B414E1E4B63AE00DA2793 /* MedicijnTableViewCell.swift */; };
+		B66B41521E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41511E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift */; };
+		B66B41561E4C194000DA2793 /* MPP_short.csv in Resources */ = {isa = PBXBuildFile; fileRef = B66B41551E4C194000DA2793 /* MPP_short.csv */; };
+		B66B41581E4D1F0100DA2793 /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41571E4D1F0100DA2793 /* ShoppingListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B66B41311E4B4B9300DA2793 /* Medicijnkast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Medicijnkast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66B41341E4B4B9300DA2793 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B66B41361E4B4B9300DA2793 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B66B41361E4B4B9300DA2793 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; usesTabs = 1; };
 		B66B41391E4B4B9400DA2793 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B66B413C1E4B4B9400DA2793 /* Medicijnkast.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Medicijnkast.xcdatamodel; sourceTree = "<group>"; };
 		B66B413E1E4B4B9400DA2793 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B66B41411E4B4B9400DA2793 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B66B41431E4B4B9400DA2793 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B66B414D1E4B63AE00DA2793 /* AddMedicijnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMedicijnViewController.swift; sourceTree = "<group>"; };
+		B66B414E1E4B63AE00DA2793 /* MedicijnTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicijnTableViewCell.swift; sourceTree = "<group>"; };
+		B66B41511E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMedicijnTableViewCell.swift; sourceTree = "<group>"; };
+		B66B41551E4C194000DA2793 /* MPP_short.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MPP_short.csv; sourceTree = "<group>"; };
+		B66B41571E4D1F0100DA2793 /* ShoppingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,8 +68,13 @@
 			children = (
 				B66B41341E4B4B9300DA2793 /* AppDelegate.swift */,
 				B66B41361E4B4B9300DA2793 /* ViewController.swift */,
+				B66B414D1E4B63AE00DA2793 /* AddMedicijnViewController.swift */,
+				B66B41571E4D1F0100DA2793 /* ShoppingListViewController.swift */,
+				B66B414E1E4B63AE00DA2793 /* MedicijnTableViewCell.swift */,
+				B66B41511E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift */,
 				B66B41381E4B4B9400DA2793 /* Main.storyboard */,
 				B66B413E1E4B4B9400DA2793 /* Assets.xcassets */,
+				B66B41551E4C194000DA2793 /* MPP_short.csv */,
 				B66B41401E4B4B9400DA2793 /* LaunchScreen.storyboard */,
 				B66B41431E4B4B9400DA2793 /* Info.plist */,
 				B66B413B1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld */,
@@ -130,6 +145,7 @@
 				B66B41421E4B4B9400DA2793 /* LaunchScreen.storyboard in Resources */,
 				B66B413F1E4B4B9400DA2793 /* Assets.xcassets in Resources */,
 				B66B413A1E4B4B9400DA2793 /* Main.storyboard in Resources */,
+				B66B41561E4C194000DA2793 /* MPP_short.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +156,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B66B41521E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift in Sources */,
 				B66B41371E4B4B9300DA2793 /* ViewController.swift in Sources */,
+				B66B41501E4B63AF00DA2793 /* MedicijnTableViewCell.swift in Sources */,
+				B66B41581E4D1F0100DA2793 /* ShoppingListViewController.swift in Sources */,
+				B66B414F1E4B63AE00DA2793 /* AddMedicijnViewController.swift in Sources */,
 				B66B413D1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld in Sources */,
 				B66B41351E4B4B9300DA2793 /* AppDelegate.swift in Sources */,
 			);
@@ -265,6 +285,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				DEVELOPMENT_TEAM = QUXKFNLMD9;
 				INFOPLIST_FILE = Medicijnkast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -278,6 +299,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				DEVELOPMENT_TEAM = QUXKFNLMD9;
 				INFOPLIST_FILE = Medicijnkast/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -306,6 +328,7 @@
 				B66B41481E4B4B9400DA2793 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
