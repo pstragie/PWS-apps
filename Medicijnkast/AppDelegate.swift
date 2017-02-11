@@ -88,6 +88,125 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    
+    // MARK: - CSV Parsing
+    func parseCSV (contentsOf: NSURL, encoding: String.Encoding, error: NSErrorPointer) -> [(merknaam:String, stofnaam:String, boximage:NSData, kast:Bool)]? {
+        // Load the CSV file and parse it
+        print("Loading CSV file...")
+        let delimiter = ";"
+        var items:[(merknaam:String, stofnaam:String, boximage:NSData, kast:Bool)]?
+        //let content = "(contentsOf: contentsOf, encoding: encoding, error: error)"
+        var lines:[String] = []
+        items = []
+        do {
+            lines = try String(contentsOf: contentsOf as URL, encoding: encoding).components(separatedBy: NSCharacterSet.newlines)
+        } catch {
+            print("Error reading line.")
+        }
+        for line in lines {
+            //print("line: \(line)")
+            var values:[String] = []
+            if line != "" {
+                // For a line with double quotes
+                // we use NSScanner to perform the parsing
+                if line.range(of: "\"") != nil {
+                    var textToScan:String = line
+                    var value:NSString?
+                    var textScanner:Scanner = Scanner(string: textToScan)
+                    while textScanner.string != "" {
+                        
+                        if (textScanner.string as NSString).substring(to: 1) == "\"" {
+                            textScanner.scanLocation += 1
+                            textScanner.scanUpTo("\"", into: &value)
+                            textScanner.scanLocation += 1
+                        } else {
+                            textScanner.scanUpTo(delimiter, into: &value)
+                        }
+                        
+                        // Store the value into the values array
+                        values.append(value as! String)
+                        // Retrieve the unscanned remainder of the string
+                        if textScanner.scanLocation < textScanner.string.characters.count {
+                            textToScan = (textScanner.string as NSString).substring(from: textScanner.scanLocation + 1)
+                        } else {
+                            textToScan = ""
+                        }
+                        textScanner = Scanner(string: textToScan)
+                    }
+                    
+                    // For a line without double quotes, we can simply separate the string
+                    // by using the delimiter (e.g. comma)
+                } else  {
+                    values = line.components(separatedBy: delimiter)
+                }
+                // Put the values into the tuple and add it to the items array
+                
+                guard let imageData = UIImageJPEGRepresentation(#imageLiteral(resourceName: "Pill-box-sample"), 0.5) as NSData? else {
+                    print("failed to convert JPEG to data")
+                    break
+                }
+                let item = (merknaam: values[6], stofnaam: values[32], boximage: imageData, kast: false)
+                items?.append(item)
+            }
+            
+        }
+        return items
+    }
+    
+    // MARK: Preload all data from csv file
+    func preloadData () {
+        print("Preloading data...")
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "Medicijn", in: context)
+        
+        // Retrieve data from the source file
+        if let path =  Bundle.main.path(forResource: "MPP_short", ofType: "csv") {
+            print("path")
+            let contentsOfURL = NSURL(fileURLWithPath: path)
+            //let data = NSData(contentsOf: path)
+            print("url found!: \(contentsOfURL)")
+            // Remove all the menu items before preloading
+            cleanCoreData()
+            
+            var error:NSError?
+            if let items = parseCSV(contentsOf: contentsOfURL, encoding: String.Encoding.utf8, error: &error) {
+                print("parsing successful.")
+                for item in items {
+                    let medItem = NSManagedObject(entity: entity!, insertInto: context)
+                        medItem.setValue(item.merknaam, forKey: "merknaam")
+                        medItem.setValue(item.stofnaam, forKey: "stofnaam")
+                        medItem.setValue(false, forKey: "kast")
+                    //print("medItem: \(medItem)")
+                    do {
+                        try context.save()
+                        print("saved!")
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        } else {
+            print("path not found")
+        }
+    }
+    
+    // MARK: Remove all Data from DB before adding the parsed data.
+    func cleanCoreData () {
+        print("Cleaning core data...")
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+        //var predicate = NSPredicate(format: "merknaam contains[c] %@", "")
+        
+        //fetchRequest.predicate = predicate
+        
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
+        
+        do {
+            print("deleting all contents...")
+            try context.execute(deleteRequest)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 }
 
