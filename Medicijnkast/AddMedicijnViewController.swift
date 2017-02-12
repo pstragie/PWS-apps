@@ -33,9 +33,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Create Fetch Request
         let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        let predicate = NSPredicate(format: "merknaam contains[c] %@ OR stofnaam contains[c] %@", self.searchBar.text!, self.searchBar.text!)
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "merknaam", ascending: true)]        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "merknaam", ascending: true)]
+        
         // Create Fetched Results Controller
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -80,19 +79,20 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     fileprivate func setUpSearchBar() {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         
-        searchBar.showsScopeBar = false
-        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "all"]
+        searchBar.showsScopeBar = true
+        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "firmanaam", "alles"]
         searchBar.selectedScopeButtonIndex = -1
         print("Scope: \(searchBar.selectedScopeButtonIndex)")
         searchBar.delegate = self
         
         self.tableView.tableHeaderView = searchBar
     }
+    
+    // MARK: Set Scope
     var filterKeyword = "merknaam"
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        print("Scope changed")
+        print("Scope changed: \(selectedScopeIndex)")
         /* FILTER SCOPE */
-        
         
         switch selectedScope {
         case 0:
@@ -102,6 +102,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             print("scope: stofnaam")
             filterKeyword = "stofnaam"
         case 2:
+            print("scope: firmanaam")
+            filterKeyword = "firmanaam"
+        case 3:
             print("scope: alles")
             filterKeyword = "alles"
         default:
@@ -110,13 +113,21 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
-        if searchBar.text!.characters.count > 0 {
-            let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
-            print("predicate: \(predicate)")
-            self.fetchedResultsController.fetchRequest.predicate = predicate
+        if searchBar.text!.isEmpty == false {
+            if filterKeyword == "alles" {
+                let subpredicate1 = NSPredicate(format: "merknaam contains[c] %@", searchBar.text!)
+                let subpredicate2 = NSPredicate(format: "stofnaam contains[c] %@", searchBar.text!)
+                let subpredicate3 = NSPredicate(format: "firmanaam contains[c] %@", searchBar.text!)
+                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
+                self.fetchedResultsController.fetchRequest.predicate = predicate
+                
+            } else {
+                let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
+                print("predicate: \(predicate)")
+                self.fetchedResultsController.fetchRequest.predicate = predicate
+            }
         } else {
             print("no text in searchBar")
-            //let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
             self.fetchedResultsController.fetchRequest.predicate = nil
         }
         do {
@@ -141,10 +152,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print("text did change")
+        /*
         guard !searchText.isEmpty else {
             tableView.reloadData()
             return
         }
+        */
         searchActive = true
         // Configure Fetch Request
         /* SORT */
@@ -157,22 +170,36 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         default:
             sortKeyword = "merknaam"
         }
-        if self.searchBar.selectedScopeButtonIndex == 2 || searchBar.selectedScopeButtonIndex == -1 {
+        if self.searchBar.selectedScopeButtonIndex == 3 || searchBar.selectedScopeButtonIndex == -1 {
             if searchBar.text!.isEmpty == true {
                 print("no text in searchBar")
-                
-                //let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
                 self.fetchedResultsController.fetchRequest.predicate = nil
             } else {
-                let predicate = NSCompoundPredicate(format: "merknaam contains[c] ‰@ || stofnaam contains[c] %@", searchText, searchText)
+                let subpredicate1 = NSPredicate(format: "merknaam contains[c] %@", searchText)
+                let subpredicate2 = NSPredicate(format: "stofnaam contains[c] %@", searchText)
+                let subpredicate3 = NSPredicate(format: "firmanaam contains[c] %@", searchText)
+                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
-            }
+                }
+            
         } else {
-            let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
-            print("predicate: \(predicate)")
-            self.fetchedResultsController.fetchRequest.predicate = predicate
+            if searchBar.text!.isEmpty == true {
+                print("no text in searchBar")
+                self.fetchedResultsController.fetchRequest.predicate = nil
+            } else {
+                if filterKeyword == "alles" {
+                let subpredicate1 = NSPredicate(format: "merknaam contains[c] %@", searchText)
+                let subpredicate2 = NSPredicate(format: "stofnaam contains[c] %@", searchText)
+                let subpredicate3 = NSPredicate(format: "firmanaam contains[c] %@", searchText)
+                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
+                self.fetchedResultsController.fetchRequest.predicate = predicate
+                } else {
+                    let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
+                    print("predicate: \(predicate)")
+                    self.fetchedResultsController.fetchRequest.predicate = predicate
+                }
+            }
         }
-        
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
         
