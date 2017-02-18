@@ -26,15 +26,18 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     private let persistentContainer = NSPersistentContainer(name: "Medicijnkast")
     var sortDescriptorIndex: Int?=nil
-    var selectedScopeIndex: Int?=nil
+    //var selectedScopeIndex: Int?=nil
     var searchActive: Bool = false
+    
+    
     // MARK: -
     
     fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Medicijn> = {
         
         // Create Fetch Request
         let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "merknaam", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
+        
         // Create Fetched Results Controller
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -43,8 +46,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         return fetchedResultsController
     }()
+
     
     // MARK: - View Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.title = "Medicijnkast"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,53 +81,83 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
     
-    // MARK: - search bar related
+    func viewWillAppear() {
+        print("View will appear")
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
+        }
+        
+        self.updateView()
+    }
+    
     // MARK: - search bar related
     fileprivate func setUpSearchBar() {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         
         searchBar.showsScopeBar = false
-        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "firmanaam", "expdate"]
+        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "expdate", "alles"]
         searchBar.selectedScopeButtonIndex = -1
         print("Scope: \(searchBar.selectedScopeButtonIndex)")
         searchBar.delegate = self
         
         self.tableView.tableHeaderView = searchBar
     }
-    var filterKeyword = "merknaam"
+    
+    // MARK: Set Scope
+    var filterKeyword = "mppnm"
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        print("Scope changed")
+        print("Scope changed: \(selectedScope)")
         /* FILTER SCOPE */
-        
         
         switch selectedScope {
         case 0:
             print("scope: merknaam")
-            filterKeyword = "merknaam"
+            filterKeyword = "mppnm"
         case 1:
             print("scope: stofnaam")
-            filterKeyword = "stofnaam"
+            filterKeyword = "vosnm"
         case 2:
-            print("scope: firmanaam")
-            filterKeyword = "firmanaam"
-        case 3:
             print("scope: expdate")
             filterKeyword = "expdate"
+        case 3:
+            print("scope: alles")
+            filterKeyword = "alles"
         default:
-            filterKeyword = "merknaam"
+            filterKeyword = "mppnm"
         }
-        
+        var sortKeyword = "mppnm"
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
-        if searchBar.text!.characters.count > 0 {
-            let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
-            print("predicate: \(predicate)")
-            self.fetchedResultsController.fetchRequest.predicate = predicate
+        if searchBar.text!.isEmpty == false {
+            if filterKeyword == "alles" {
+                let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchBar.text!)
+                let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
+                let subpredicate4 = NSPredicate(format: "expdate contains[c] %@", searchBar.text!)
+                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
+                self.fetchedResultsController.fetchRequest.predicate = predicate
+                sortKeyword = "mppnm"
+            } else {
+                let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
+                print("predicate: \(predicate)")
+                self.fetchedResultsController.fetchRequest.predicate = predicate
+                sortKeyword = "\(filterKeyword)"
+            }
         } else {
             print("no text in searchBar")
-            //let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
             self.fetchedResultsController.fetchRequest.predicate = nil
+            if filterKeyword == "alles" {
+                sortKeyword = "mppnm"
+            } else {
+                sortKeyword = filterKeyword
+            }
         }
+        
+        let sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
+        self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
         do {
             try self.fetchedResultsController.performFetch()
             print("fetching...")
@@ -143,35 +180,55 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print("text did change")
+        
         guard !searchText.isEmpty else {
             tableView.reloadData()
             return
         }
+        
         searchActive = true
         // Configure Fetch Request
         /* SORT */
-        var sortKeyword = "merknaam"
-        switch sortDescriptorIndex {
-        case 0?:
-            sortKeyword = "firmanaam"
-        case 1?:
-            sortKeyword = "stofnaam"
-        default:
-            sortKeyword = "merknaam"
-        }
+        var sortKeyword = ""
         
-        if searchBar.text!.isEmpty == false {
-            let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
-            print("predicate: \(predicate)")
-            self.fetchedResultsController.fetchRequest.predicate = predicate
-        } else {
-            print("no text in searchBar")
+        if self.searchBar.selectedScopeButtonIndex == 3 || searchBar.selectedScopeButtonIndex == -1 {
+            if searchBar.text!.isEmpty == true {
+                print("scope -1 or 4 and no text in searchBar")
+                sortKeyword = "mppnm"
+            } else {
+                let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchText)
+                let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
+                let subpredicate4 = NSPredicate(format: "expdate contains[c] %@", searchText)
+                
+                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
+                self.fetchedResultsController.fetchRequest.predicate = predicate
+                sortKeyword = filterKeyword
+            }
             
-            //let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
-            self.fetchedResultsController.fetchRequest.predicate = nil
+        } else {
+            if searchBar.text!.isEmpty == true {
+                print("scope = 0, 1 or 2 and no text in searchBar")
+                
+            } else {
+                if filterKeyword == "alles" {
+                    let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchText)
+                    let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
+                    let subpredicate4 = NSPredicate(format: "expdate contains[c] %@", searchText)
+                    
+                    let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
+                    self.fetchedResultsController.fetchRequest.predicate = predicate
+                    sortKeyword = "mppnm"
+                } else {
+                    let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
+                    print("predicate: \(predicate)")
+                    self.fetchedResultsController.fetchRequest.predicate = predicate
+                    sortKeyword = filterKeyword
+                }
+            }
         }
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
+        
         
         let sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
         self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
@@ -200,16 +257,14 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        print("no text in searchBar")
+        print("should end editing")
         
         if searchBar.text!.isEmpty == false {
             let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
-            print("predicate: \(predicate)")
+            print("predicate in should end: \(predicate)")
             self.fetchedResultsController.fetchRequest.predicate = predicate
         } else {
-            print("no text in searchBar")
-            
-            //let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
+            print("should end and no text in searchBar")
             self.fetchedResultsController.fetchRequest.predicate = nil
         }
         do {
@@ -219,7 +274,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             let fetchError = error as NSError
             print("\(fetchError), \(fetchError.userInfo)")
         }
-        print("Should end editing")
         self.tableView.reloadData()
         return true
     }
@@ -340,27 +394,61 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         
         // Fetch Medicijn
         let medicijn = fetchedResultsController.object(at: indexPath)
-        
         // Configure Cell
-        cell.Merknaam.text = medicijn.merknaam
-        cell.Stofnaam.text = medicijn.stofnaam
-        cell.Firmanaam.text = medicijn.firmanaam
-        // TODO: Not working code!
-        //let image = UIImage(data: medicijn.boximage as! Data)
-        //cell.BoxImage.image = image
-        cell.BoxImage.image = UIImage(named: "Pill-box-sample")
+        cell.Merknaam.text = medicijn.mppnm
+        cell.Stofnaam.text = medicijn.vosnm
+        cell.Prijs.text = medicijn.rema
+        cell.Aankoop.text = String(describing: medicijn.userdata?.aankoop)
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let deleteFromAankoopLijst = UITableViewRowAction(style: .normal, title: "Naar medicijnkast") { (action, indexPath) in
+            print("naar medicijnkast")
             // Fetch Medicijn
-            let medicijn = fetchedResultsController.object(at: indexPath)
+            let medicijn = self.fetchedResultsController.object(at: indexPath)
+            medicijn.userdata?.setValue(false, forKey: "aankoop")
+            medicijn.userdata?.setValue(true, forKey: "aankooparchief")
+            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
             
-            // Delete Medicijn
-            medicijn.managedObjectContext?.delete(medicijn)
+            do {
+                try context.save()
+                print("medicijn verwijderd uit de lijst!")
+            } catch {
+                print(error.localizedDescription)
+            }
+            self.tableView.reloadData()
+            self.updateView()
         }
+        deleteFromAankoopLijst.backgroundColor = UIColor.red
+        
+        let addToAankoopLijst = UITableViewRowAction(style: .normal, title: "Verwijder uit lijst") { (action, indexPath) in
+            print("Uit lijst verwijderd")
+            // Fetch Medicijn
+            let medicijn = self.fetchedResultsController.object(at: indexPath)
+            medicijn.userdata?.setValue(true, forKey: "aankoop")
+            
+            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            do {
+                try context.save()
+                print("med saved in medicijnkast")
+            } catch {
+                print(error.localizedDescription)
+            }
+            self.tableView.reloadData()
+        }
+        addToAankoopLijst.backgroundColor = UIColor.yellow
+        self.tableView.setEditing(false, animated: true)
+        return [deleteFromAankoopLijst, addToAankoopLijst]
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
     }
 
 }

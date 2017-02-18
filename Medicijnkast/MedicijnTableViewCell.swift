@@ -18,9 +18,10 @@ class MedicijnTableViewCell: UITableViewCell {
 
     @IBOutlet var Merknaam: UILabel!
     @IBOutlet var Stofnaam: UILabel!
-    @IBOutlet var Firmanaam: UILabel!
+    @IBOutlet var Prijs: UILabel!
     @IBOutlet var BoxImage: UIImageView!
     
+    @IBOutlet weak var Aankoop: UILabel!
     // MARK: - Initialization
 
     override func awakeFromNib() {

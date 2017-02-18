@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B61319B71E57C62F004AD4D7 /* combinednoempties.csv in Resources */ = {isa = PBXBuildFile; fileRef = B61319B61E57C62F004AD4D7 /* combinednoempties.csv */; };
 		B66B41351E4B4B9300DA2793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41341E4B4B9300DA2793 /* AppDelegate.swift */; };
 		B66B41371E4B4B9300DA2793 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41361E4B4B9300DA2793 /* ViewController.swift */; };
 		B66B413A1E4B4B9400DA2793 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66B41381E4B4B9400DA2793 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B61319B61E57C62F004AD4D7 /* combinednoempties.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = combinednoempties.csv; sourceTree = "<group>"; };
 		B66B41311E4B4B9300DA2793 /* Medicijnkast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Medicijnkast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66B41341E4B4B9300DA2793 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B66B41361E4B4B9300DA2793 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -68,6 +70,7 @@
 			children = (
 				B66B41341E4B4B9300DA2793 /* AppDelegate.swift */,
 				B66B41361E4B4B9300DA2793 /* ViewController.swift */,
+				B61319B61E57C62F004AD4D7 /* combinednoempties.csv */,
 				B66B414D1E4B63AE00DA2793 /* AddMedicijnViewController.swift */,
 				B66B41571E4D1F0100DA2793 /* ShoppingListViewController.swift */,
 				B66B414E1E4B63AE00DA2793 /* MedicijnTableViewCell.swift */,
@@ -145,6 +148,7 @@
 				B66B41421E4B4B9400DA2793 /* LaunchScreen.storyboard in Resources */,
 				B66B413F1E4B4B9400DA2793 /* Assets.xcassets in Resources */,
 				B66B413A1E4B4B9400DA2793 /* Main.storyboard in Resources */,
+				B61319B71E57C62F004AD4D7 /* combinednoempties.csv in Resources */,
 				B66B41561E4C194000DA2793 /* MPP_short.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
