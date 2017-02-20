@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
@@ -45,38 +44,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Core Data stack
-
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-        */
-        let container = NSPersistentContainer(name: "Medicijnkast")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
+    
+    /* See CoreDataStack.swift */
 
     // MARK: - Core Data Saving support
 
     func saveContext () {
-        let context = persistentContainer.viewContext
+        let context = CoreDataStack.shared.persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -90,35 +64,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func getContext() -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
+        let coreData = UIApplication.shared.delegate as! CoreDataStack
+        return coreData.persistentContainer.viewContext
     }
     
-    func saveAttributes(entitynaam: String, dict: [String:String]) {
+    
+    func saveAttributes(dict: [String:String]) {
         print("Saving attributes...")
-        let context = persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: entitynaam, in: context)
-        //let entity = NSEntityDescription.insertNewObject(forEntityName: entitynaam, into: context)
-        let object = NSManagedObject(entity: entity!, insertInto: context)
-
+        let context = CoreDataStack.shared.persistentContainer.viewContext
+        let entityMedicijn = NSEntityDescription.entity(forEntityName: "Medicijn", in: context)
+        let newMedicijn = NSManagedObject(entity: entityMedicijn!, insertInto: context)
+        
         for (key, value) in dict {
             //print("key: \(key) and value: \(value)")
             //print("\(type(of:value))")
             if value == "true" {
                 //print("value is true")
-                object.setValue(1, forKey: key)
+                newMedicijn.setValue(1, forKey: key)
             } else if value == "false" {
                 //print("value is false")
-                object.setValue(0, forKey: key)
+                newMedicijn.setValue(0, forKey: key)
             } else if value == "" {
                 //print("value is empty")
-                object.setValue("", forKey: key)
+                newMedicijn.setValue("", forKey: key)
             } else {
                 //print("value is not boolean")
-            object.setValue(value, forKey: key)
+            newMedicijn.setValue(value, forKey: key)
             }
-            
         }
+        
         do {
             try context.save()
             //print("context saved")
@@ -220,34 +194,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //let entity = NSEntityDescription.entity(forEntityName: entitynaam, in: context)
         
         // Retrieve data from the source file
-        let path = Bundle.main.path(forResource: "combinednoempties", ofType: "csv")
+        if let path = Bundle.main.path(forResource: "MPP_short", ofType: "csv") {
         //let path =  "/users/pstragier/Documents/PWS/Medicijnkast/Medicijnkast/combinednoempties.csv"
-        print("\(path)")
-        let contentsOfURL = NSURL(fileURLWithPath: path)
-        
-        //let data = NSData(contentsOf: path)
-        print("url found!: \(contentsOfURL)")
-        // Remove all the menu items before preloading
-        //TODO: Update protocol needed without deleting all data first!!!
-        cleanCoreDataMedicijn()
-        cleanCoreDataUserData()
-        var error:NSError?
-        //parseCSV -> [Dictionary<String,String>]
-        if let values = parseCSV(contentsOf: contentsOfURL, encoding: String.Encoding.utf8, error: &error) {
-            print("parsing data successful...")
-            //item -> Dictionary<String,String>
-            let keys = values[0].0
-            let val = values[0].1
-            let items = parseCSV2Dict(keys: keys, values: val) /* items = list of dictionaries */
-            for item in items { /* item is one dictionary */
-                //print("item: \(item)")
-                //saveAttributes will save all objects to context (no updating?)
-                //TODO: Updating is needed! Otherwise link with Userdata is lost!!!
-                self.saveAttributes(entitynaam: entitynaam, dict: item)
-            }
+            print("\(path)")
+            let contentsOfURL = NSURL(fileURLWithPath: path)
             
+            //let data = NSData(contentsOf: path)
+            print("url found!: \(contentsOfURL)")
+            //TODO: Update protocol needed without deleting all data first!!!
+            cleanCoreDataMedicijn()
+            var error:NSError?
+            //parseCSV -> [Dictionary<String,String>]
+            if let values = parseCSV(contentsOf: contentsOfURL, encoding: String.Encoding.utf8, error: &error) {
+                print("parsing data successful...")
+                //item -> Dictionary<String,String>
+                let keys = values[0].0
+                let val = values[0].1
+                let items = parseCSV2Dict(keys: keys, values: val) /* items = list of dictionaries */
+                for item in items { /* item is one dictionary */
+                    //print("item: \(item)")
+                    //saveAttributes will save all objects to context (no updating?)
+                    //TODO: Updating is needed! Otherwise user data (kast, aankoop, kastarchief, aankooparchief, boximage, expdate) will be lost!!!
+                    self.saveAttributes(dict: item)
+                }
+                
+            } else {
+                print("Parsing of data failed")
+            }
         } else {
-            print("Parsing of data failed")
+            print("File not found!")
         }
     }
     
@@ -255,7 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Remove all Data from DB before adding the parsed data.
     func cleanCoreDataMedicijn() {
         print("Cleaning core data...")
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let context = CoreDataStack.shared.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
         //var predicate = NSPredicate(format: "merknaam contains[c] %@", "")
         
@@ -270,23 +245,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(error.localizedDescription)
         }
     }
-    func cleanCoreDataUserData() {
-        print("Cleaning core data...")
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Userdata> = Userdata.fetchRequest()
-        //var predicate = NSPredicate(format: "merknaam contains[c] %@", "")
-        
-        //fetchRequest.predicate = predicate
-        
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
-        
-        do {
-            print("deleting all contents...")
-            try context.execute(deleteRequest)
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
+    
 }
 
 extension String {

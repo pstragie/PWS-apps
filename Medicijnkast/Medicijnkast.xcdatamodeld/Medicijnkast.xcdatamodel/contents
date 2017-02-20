@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G1217" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G1217" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1.0">
     <entity name="Medicijn" representedClassName="Medicijn" syncable="YES" codeGenerationType="class">
-        <attribute name="aankoop" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="boximage" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="aankoop" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="aankooparchief" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="boximage" optional="YES" attributeType="Binary" storedInTruthFile="YES" syncable="YES"/>
+        <attribute name="bt" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="cheapest" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="expdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="firmanaam" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="kast" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="merknaam" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="patient" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="stofnaam" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="galcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="galnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gdkp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hyrcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inncnk" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="intro" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ircv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="kast" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="kastarchief" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="law" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="link2mpg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="link2pvt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mpcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mpnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mppcv" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="mppnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="narcotic" optional="YES" attributeType="Boolean" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="nirnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nlnnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ogc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orphan" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="pip" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="pos" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ppgal" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pupr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rema" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remw" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="specrules" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="spef" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ssecr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stofcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stofnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ti" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="use" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="volgnr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="vosnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wadan" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Medicijn" positionX="-36" positionY="9" width="128" height="165"/>
+        <element name="Medicijn" positionX="-36" positionY="162" width="128" height="748"/>
     </elements>
 </model>

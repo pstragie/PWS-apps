@@ -13,8 +13,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - Properties
     
-    private let segueAddMedicijnViewController = "SegueAddMedicijnViewController"
+    let segueShowDetailViewController = "SegueShowDetailViewController"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let coreData = CoreDataStack()
+
     // MARK: -
     
     @IBOutlet var messageLabel: UILabel!
@@ -24,7 +26,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var searchBar: UISearchBar!
     // MARK: -
     
-    private let persistentContainer = NSPersistentContainer(name: "Medicijnkast")
+    //private let persistentContainer = NSPersistentContainer(name: "Medicijnkast")
     var sortDescriptorIndex: Int?=nil
     //var selectedScopeIndex: Int?=nil
     var searchActive: Bool = false
@@ -36,10 +38,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         // Create Fetch Request
         let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mpnm", ascending: true)]
         
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -57,30 +59,20 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         super.viewDidLoad()
         print("View did load!")
         setUpSearchBar()
-        //monthly update of data!
-        //appDelegate.preloadData()
         
-        persistentContainer.loadPersistentStores { (persistentStoreDescription, error) in
-            if let error = error {
-                print("Unable to Load Persistent Store")
-                print("\(error), \(error.localizedDescription)")
-            } else {
-                self.setupView()
-                do {
-                    try self.fetchedResultsController.performFetch()
-                } catch {
-                    let fetchError = error as NSError
-                    print("Unable to Perform Fetch Request")
-                    print("\(fetchError), \(fetchError.localizedDescription)")
-                }
-                
-                self.updateView()
-            }
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
         }
+        
+        self.updateView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
-    
+ 
     func viewWillAppear() {
         print("View will appear")
         do {
@@ -99,7 +91,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         
         searchBar.showsScopeBar = false
-        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "expdate", "alles"]
+        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "firmanaam", "alles"]
         searchBar.selectedScopeButtonIndex = -1
         print("Scope: \(searchBar.selectedScopeButtonIndex)")
         searchBar.delegate = self
@@ -108,7 +100,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     // MARK: Set Scope
-    var filterKeyword = "mppnm"
+    var filterKeyword = "mpnm"
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         print("Scope changed: \(selectedScope)")
         /* FILTER SCOPE */
@@ -116,30 +108,30 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         switch selectedScope {
         case 0:
             print("scope: merknaam")
-            filterKeyword = "mppnm"
+            filterKeyword = "mpnm"
         case 1:
             print("scope: stofnaam")
             filterKeyword = "vosnm"
         case 2:
-            print("scope: expdate")
-            filterKeyword = "expdate"
+            print("scope: firmanaam")
+            filterKeyword = "nirnm"
         case 3:
             print("scope: alles")
             filterKeyword = "alles"
         default:
-            filterKeyword = "mppnm"
+            filterKeyword = "mpnm"
         }
-        var sortKeyword = "mppnm"
+        var sortKeyword = "mpnm"
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
         if searchBar.text!.isEmpty == false {
             if filterKeyword == "alles" {
-                let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchBar.text!)
+                let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
-                let subpredicate4 = NSPredicate(format: "expdate contains[c] %@", searchBar.text!)
+                let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
                 let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
-                sortKeyword = "mppnm"
+                sortKeyword = "mpnm"
             } else {
                 let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
                 print("predicate: \(predicate)")
@@ -150,7 +142,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             print("no text in searchBar")
             self.fetchedResultsController.fetchRequest.predicate = nil
             if filterKeyword == "alles" {
-                sortKeyword = "mppnm"
+                sortKeyword = "mpnm"
             } else {
                 sortKeyword = filterKeyword
             }
@@ -194,11 +186,11 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         if self.searchBar.selectedScopeButtonIndex == 3 || searchBar.selectedScopeButtonIndex == -1 {
             if searchBar.text!.isEmpty == true {
                 print("scope -1 or 4 and no text in searchBar")
-                sortKeyword = "mppnm"
+                sortKeyword = "mpnm"
             } else {
-                let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchText)
+                let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-                let subpredicate4 = NSPredicate(format: "expdate contains[c] %@", searchText)
+                let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchText)
                 
                 let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
@@ -211,13 +203,13 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
                 
             } else {
                 if filterKeyword == "alles" {
-                    let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchText)
+                    let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
                     let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-                    let subpredicate4 = NSPredicate(format: "expdate contains[c] %@", searchText)
+                    let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchText)
                     
                     let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
                     self.fetchedResultsController.fetchRequest.predicate = predicate
-                    sortKeyword = "mppnm"
+                    sortKeyword = "mpnm"
                 } else {
                     let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
                     print("predicate: \(predicate)")
@@ -279,14 +271,21 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     // MARK: - Navigation
-    func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == segueAddMedicijnViewController {
-            let vc = segue.destination as UIViewController
-            vc.navigationItem.title = "Medicijnen opzoeken"
+    let CellDetailIdentifier = "SegueFromShopToDetail"
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier! {
+        case CellDetailIdentifier:
+            let destination = segue.destination as! MedicijnDetailViewController
+            let indexPath = tableView.indexPathForSelectedRow!
+            let selectedObject = fetchedResultsController.object(at: indexPath)
+            destination.medicijn = selectedObject
             
+            navigationController?.pushViewController(destination, animated: true)
+        default:
+            print("Unknown segue: \(segue.identifier)")
         }
+        
     }
-    
     
     // MARK: - View Methods
     
@@ -327,14 +326,14 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     // MARK: -
     
     private func setupMessageLabel() {
-        messageLabel.text = "You don't have any medicines yet."
+        messageLabel.text = "Je aankooplijst is leeg."
     }
     
     // MARK: - Notification Handling
     
     func applicationDidEnterBackground(_ notification: Notification) {
         do {
-            try persistentContainer.viewContext.save()
+            try CoreDataStack.shared.persistentContainer.viewContext.save()
         } catch {
             print("Unable to Save Changes")
             print("\(error), \(error.localizedDescription)")
@@ -380,6 +379,9 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
         print("aantal rijen: \(medicijnen.count)")
+        tableView.layer.cornerRadius = 3
+        tableView.layer.masksToBounds = true
+        tableView.layer.borderWidth = 1
         return medicijnen.count
     }
     
@@ -395,10 +397,14 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         // Fetch Medicijn
         let medicijn = fetchedResultsController.object(at: indexPath)
         // Configure Cell
-        cell.Merknaam.text = medicijn.mppnm
+        cell.layer.cornerRadius = 3
+        cell.layer.masksToBounds = true
+        cell.layer.borderWidth = 1
+
+        cell.Merknaam.text = medicijn.mpnm
         cell.Stofnaam.text = medicijn.vosnm
         cell.Prijs.text = medicijn.rema
-        cell.Aankoop.text = String(describing: medicijn.userdata?.aankoop)
+        cell.Aankoop.text = medicijn.aankoop.description
         
         return cell
     }
@@ -409,13 +415,13 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteFromAankoopLijst = UITableViewRowAction(style: .normal, title: "Naar medicijnkast") { (action, indexPath) in
+        let deleteFromAankoopLijst = UITableViewRowAction(style: .normal, title: "Verwijderen uit Aankooplijst") { (action, indexPath) in
             print("naar medicijnkast")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.userdata?.setValue(false, forKey: "aankoop")
-            medicijn.userdata?.setValue(true, forKey: "aankooparchief")
-            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            medicijn.setValue(false, forKey: "aankoop")
+            medicijn.setValue(true, forKey: "aankooparchief")
+            let context = self.coreData.persistentContainer.viewContext
             
             do {
                 try context.save()
@@ -428,13 +434,13 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         }
         deleteFromAankoopLijst.backgroundColor = UIColor.red
         
-        let addToAankoopLijst = UITableViewRowAction(style: .normal, title: "Verwijder uit lijst") { (action, indexPath) in
+        let addToMedicijnkast = UITableViewRowAction(style: .normal, title: "Naar medicijnkast") { (action, indexPath) in
             print("Uit lijst verwijderd")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.userdata?.setValue(true, forKey: "aankoop")
+            medicijn.setValue(true, forKey: "kast")
             
-            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            let context = self.coreData.persistentContainer.viewContext
             do {
                 try context.save()
                 print("med saved in medicijnkast")
@@ -443,9 +449,9 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             }
             self.tableView.reloadData()
         }
-        addToAankoopLijst.backgroundColor = UIColor.yellow
+        addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:0.5)
         self.tableView.setEditing(false, animated: true)
-        return [deleteFromAankoopLijst, addToAankoopLijst]
+        return [deleteFromAankoopLijst, addToMedicijnkast]
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

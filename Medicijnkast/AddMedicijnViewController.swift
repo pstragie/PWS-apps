@@ -9,22 +9,25 @@
 import UIKit
 import CoreData
 
+
 class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     
     // MARK: - Properties
-        
+    
+    let segueShowDetail = "SegueFromAddToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let coreData = CoreDataStack()
+
     // MARK: -
     
     @IBOutlet weak var gevondenItemsLabel: UILabel!
-    @IBOutlet var messageLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     
     @IBOutlet weak var searchBar: UISearchBar!
     // MARK: -
     
-    private let persistentContainer = NSPersistentContainer(name: "Medicijnkast")
+    //private var persistentContainer = NSPersistentContainer(name: "Medicijnkast")
     var sortDescriptorIndex: Int?=nil
     var selectedScopeIndex: Int?=nil
     var searchActive: Bool = false
@@ -34,11 +37,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Create Fetch Request
         let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
-        let predicate = NSPredicate(format: "mppnm contains[c] %@", "AlotofMumboJumboblablabla")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mpnm", ascending: true)]
+        let predicate = NSPredicate(format: "mpnm contains[c] %@", "AlotofMumboJumboblablabla")
         fetchRequest.predicate = predicate
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -47,35 +50,32 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }()
     
     // MARK: - View Life Cycle
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        print("View did disappear!")
+        self.appDelegate.saveContext()
+
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Addmedicijn View did load!")
         setUpSearchBar()
-        //monthly update of data!
-        //appDelegate.preloadData()
         
-        persistentContainer.loadPersistentStores { (persistentStoreDescription, error) in
-            if let error = error {
-                print("Unable to Load Persistent Store")
-                print("\(error), \(error.localizedDescription)")
-            } else {
-                self.setupView()
-                do {
-                    try self.fetchedResultsController.performFetch()
-                } catch {
-                    let fetchError = error as NSError
-                    print("Unable to Perform Fetch Request")
-                    print("\(fetchError), \(fetchError.localizedDescription)")
-                }
-                
-                self.updateView()
-            }
+        
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
         }
+        
+        self.updateView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
-    
+ 
     // MARK: - search bar related
     // MARK: - search bar related
     fileprivate func setUpSearchBar() {
@@ -91,7 +91,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: Set Scope
-    var filterKeyword = "mppnm"
+    var filterKeyword = "mpnm"
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         print("Scope changed: \(selectedScopeIndex)")
         /* FILTER SCOPE */
@@ -99,7 +99,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         switch selectedScope {
         case 0:
             print("scope: merknaam")
-            filterKeyword = "mppnm"
+            filterKeyword = "mpnm"
         case 1:
             print("scope: stofnaam")
             filterKeyword = "vosnm"
@@ -107,18 +107,18 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             print("scope: alles")
             filterKeyword = "alles"
         default:
-            filterKeyword = "mppnm"
+            filterKeyword = "mpnm"
         }
-        var sortKeyword = "mppnm"
+        var sortKeyword = "mpnm"
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
         if searchBar.text!.isEmpty == false {
             if filterKeyword == "alles" {
-                let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchBar.text!)
+                let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
                 let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
-                sortKeyword = "mppnm"
+                sortKeyword = "mpnm"
             } else {
                 let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
                 print("predicate: \(predicate)")
@@ -131,7 +131,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             self.fetchedResultsController.fetchRequest.predicate = predicate
             
             if filterKeyword == "alles" {
-                sortKeyword = "mppnm"
+                sortKeyword = "mpnm"
             } else {
                 sortKeyword = filterKeyword
             }        }
@@ -169,34 +169,34 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         searchActive = true
         // Configure Fetch Request
         /* SORT */
-        var sortKeyword = "mppnm"
+        var sortKeyword = "mpnm"
         
         if self.searchBar.selectedScopeButtonIndex == 2 || searchBar.selectedScopeButtonIndex == -1 {
             if searchBar.text!.isEmpty == true {
                 print("scope -1 or 3 and no text in searchBar")
-                let predicate = NSPredicate(format: "mppnm contains[c] %@", "AlotofMumboJumboblablabla")
+                let predicate = NSPredicate(format: "mpnm contains[c] %@", "AlotofMumboJumboblablabla")
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 
             } else {
-                let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchText)
+                let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
                 let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
-                sortKeyword = "mppnm"
+                sortKeyword = "mpnm"
                 }
             
         } else {
             if searchBar.text!.isEmpty == true {
                 print("scope = 0, 1 or 2 and no text in searchBar")
-                let predicate = NSPredicate(format: "mppnm contains[c] %@", "AlotofMumboJumboblablabla")
+                let predicate = NSPredicate(format: "mpnm contains[c] %@", "AlotofMumboJumboblablabla")
                 self.fetchedResultsController.fetchRequest.predicate = predicate
             } else {
                 if filterKeyword == "alles" {
-                let subpredicate1 = NSPredicate(format: "mppnm contains[c] %@", searchText)
+                let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
                 let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
-                sortKeyword = "mppnm"
+                sortKeyword = "mpnm"
                 } else {
                     let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
                     print("predicate: \(predicate)")
@@ -245,7 +245,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             print("should end and no text in searchBar")
             
-            let predicate = NSPredicate(format: "mppnm contains[c] %@", "Alotofmumbojumboblablabla")
+            let predicate = NSPredicate(format: "mpnm contains[c] %@", "Alotofmumbojumboblablabla")
             self.fetchedResultsController.fetchRequest.predicate = predicate
         }
         do {
@@ -260,8 +260,21 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     // MARK: - Navigation
-
-
+    let CellDetailIdentifier = "SegueFromAddToDetail"
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier! {
+        case CellDetailIdentifier:
+            let destination = segue.destination as! MedicijnDetailViewController
+            let indexPath = tableView.indexPathForSelectedRow!
+            let selectedObject = fetchedResultsController.object(at: indexPath)
+            destination.medicijn = selectedObject
+            
+            navigationController?.pushViewController(destination, animated: true)
+        default:
+            print("Unknown segue: \(segue.identifier)")
+        }
+        
+    }
 
     // MARK: - View Methods
     private func setupView() {
@@ -279,17 +292,17 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             x = 0
         }
-        gevondenItemsLabel.text = "Gevonden medicijnen: \(x)"
         self.tableView.reloadData()
+        gevondenItemsLabel.text = "Gevonden medicijnen: \(x)"
+
         activityIndicatorView.isHidden = true
-        tableView.reloadData()
     }
     
     // MARK: - Notification Handling
     
     func applicationDidEnterBackground(_ notification: Notification) {
         do {
-            try persistentContainer.viewContext.save()
+            try CoreDataStack.shared.persistentContainer.viewContext.save()
         } catch {
             print("Unable to Save Changes")
             print("\(error), \(error.localizedDescription)")
@@ -335,6 +348,9 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
         print("aantal rijen: \(medicijnen.count)")
+        tableView.layer.cornerRadius = 3
+        tableView.layer.masksToBounds = true
+        tableView.layer.borderWidth = 1
         return medicijnen.count
     }
     
@@ -351,31 +367,36 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             print("naar medicijnkast")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.userdata?.setValue(true, forKey: "kast")
-            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-            do {
-                try context.save()
-                print("saved!")
-            } catch {
-                print(error.localizedDescription)
-            }        }
-        addToMedicijnkast.backgroundColor = UIColor.lightGray
+            medicijn.setValue(true, forKey: "kast")
+            let context = self.coreData.persistentContainer.viewContext
+            context.perform {
+                do {
+                    try context.save()
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
+                    print("saved!")
+                } catch {
+                    print(error.localizedDescription)
+                }
+                self.appDelegate.saveContext()
+            }
+        }
+        addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         let addToShoppingList = UITableViewRowAction(style: .normal, title: "Naar Aankooplijst") { (action, indexPath) in
             print("naar aankooplijst")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.userdata?.setValue(true, forKey: "aankoop")
-            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            medicijn.setValue(true, forKey: "aankoop")
+            let context = self.coreData.persistentContainer.viewContext
             do {
                 try context.save()
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedAankoop"), object: nil)
                 print("med saved in aankooplijst")
             } catch {
                 print("med not saved in aankooplijst!")
             }
             
         }
-        addToShoppingList.backgroundColor = UIColor.yellow
+        addToShoppingList.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:1)
         self.tableView.setEditing(false, animated: true)
         return [addToMedicijnkast, addToShoppingList]
     }
@@ -394,9 +415,14 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         let medicijn = fetchedResultsController.object(at: indexPath)
         
         // Configure Cell
-        cell.Merknaam.text = medicijn.mppnm
+        cell.layer.cornerRadius = 3
+        cell.layer.masksToBounds = true
+        cell.layer.borderWidth = 1
+
+        cell.Merknaam.text = medicijn.mpnm
         cell.Stofnaam.text = medicijn.vosnm
         cell.Prijs.text = medicijn.rema
+        //cell.Aankoop.text = medicijn.aankoop.description
         // TODO: Not working code!
         //let image = UIImage(data: medicijn.boximage as! Data)
         //cell.BoxImage.image = image

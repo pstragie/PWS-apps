@@ -21,7 +21,10 @@ class MedicijnTableViewCell: UITableViewCell {
     @IBOutlet var Prijs: UILabel!
     @IBOutlet var BoxImage: UIImageView!
     
+    @IBOutlet weak var Kast: UILabel!
     @IBOutlet weak var Aankoop: UILabel!
+    @IBOutlet weak var Cheapest: UILabel!
+    
     // MARK: - Initialization
 
     override func awakeFromNib() {
