@@ -23,6 +23,11 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet var tableView: UITableView!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     
+    @IBAction func geavanceerdZoeken(_ sender: UIButton) {
+    }
+    @IBOutlet weak var aantalMedicijnen: UILabel!
+    @IBAction func bestellingPlaatsen(_ sender: UIButton) {
+    }
     @IBOutlet weak var searchBar: UISearchBar!
     // MARK: -
     
@@ -53,13 +58,25 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
-        navigationItem.title = "Medicijnkast"
+        super.viewWillAppear(true)
+        print("View will appear")
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
+        }
+        
+        self.updateView()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("View did load!")
         setUpSearchBar()
+        navigationItem.title = "Aankooplijst"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         setupView()
         do {
             try self.fetchedResultsController.performFetch()
@@ -73,19 +90,14 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
- 
-    func viewWillAppear() {
-        print("View will appear")
-        do {
-            try self.fetchedResultsController.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        self.updateView()
+    
+    // MARK: - share button
+    func shareTapped() {
+        let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated: true)
     }
+
     
     // MARK: - search bar related
     fileprivate func setUpSearchBar() {
@@ -242,6 +254,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("Cancel clicked")
         searchBar.showsScopeBar = false
+        searchActive = false
         searchBar.sizeToFit()
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.resignFirstResponder()
@@ -299,9 +312,20 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         print("Updating view...")
         var hasMedicijnen = false
         
+        var x:Int
+        
         if let medicijnen = fetchedResultsController.fetchedObjects {
             hasMedicijnen = medicijnen.count > 0
             print("medicijnen aantal: \(medicijnen.count)")
+            
+            x = medicijnen.count
+            
+            let totaalAankoop = countAankoop(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
+            if x != 0 && searchActive {
+                aantalMedicijnen.text = "\(x)/\(totaalAankoop)"
+            } else {
+                aantalMedicijnen.text = "\(totaalAankoop)"
+            }
             
         }
         if searchActive {
@@ -323,6 +347,21 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         }
 
     }
+    
+    private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {
+        let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+        let pred = NSPredicate(format: "aankoop == true")
+        fetchReq.predicate = pred
+        
+        do {
+            let aantal = try managedObjectContext.fetch(fetchReq).count
+            print("\(type(of: aantal))")
+            return aantal
+        } catch {
+            return 0
+        }
+    }
+    
     
     // MARK: -
     

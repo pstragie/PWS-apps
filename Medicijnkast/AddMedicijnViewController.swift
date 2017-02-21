@@ -24,6 +24,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet var tableView: UITableView!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     
+    @IBOutlet weak var geavanceerdZoeken: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     // MARK: -
     
@@ -61,7 +62,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
         print("Addmedicijn View did load!")
         setUpSearchBar()
-        
+        navigationItem.title = "Zoeken"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
         do {
             try self.fetchedResultsController.performFetch()
@@ -76,7 +78,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
  
-    // MARK: - search bar related
+    // MARK: - share button
+    func shareTapped() {
+        let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated: true)
+    }
+
     // MARK: - search bar related
     fileprivate func setUpSearchBar() {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))

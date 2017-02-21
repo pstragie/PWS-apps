@@ -21,7 +21,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet var tableView: UITableView!
 	
-    @IBOutlet weak var shareButton: UIButton!
+    @IBAction func geavanceerdZoeken(_ sender: UIButton) {
+    }
+    
+    @IBOutlet weak var totaalAantal: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
     // MARK: -
 	
@@ -98,7 +101,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		print("View did load!")
 		setUpSearchBar()
 		setupView()
-		
+		navigationItem.title = "Medicijnkast"
 		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
 		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
 		// monthly update of data!
@@ -300,6 +303,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		print("Cancel clicked")
 		searchBar.showsScopeBar = false
 		searchBar.sizeToFit()
+		searchActive = false
 		searchBar.setShowsCancelButton(false, animated: true)
 		searchBar.resignFirstResponder()
 		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
@@ -358,9 +362,20 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		print("Updating view...")
 		var hasMedicijnen = false
 		
+		var x:Int
+
 		if let medicijnen = fetchedResultsController.fetchedObjects {
 			hasMedicijnen = medicijnen.count > 0
 			print("medicijnen aantal: \(medicijnen.count)")
+			
+			x = medicijnen.count
+			
+			let totaalKast = countKast(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
+			if x != 0 && searchActive {
+				totaalAantal.text = "\(x)/\(totaalKast)"
+			} else {
+				totaalAantal.text = "\(totaalKast)"
+			}
 			
 		}
 		if searchActive {
@@ -375,6 +390,20 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 		}
 		print("_____________________")
+	}
+	
+	private func countKast(managedObjectContext: NSManagedObjectContext) -> Int {
+		let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+		let pred = NSPredicate(format: "kast == true")
+		fetchReq.predicate = pred
+		
+		do {
+			let aantal = try managedObjectContext.fetch(fetchReq).count
+			print("\(type(of: aantal))")
+			return aantal
+		} catch {
+			return 0
+		}
 	}
 	
     // MARK: -

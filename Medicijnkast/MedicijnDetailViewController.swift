@@ -14,12 +14,29 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     // Fetch Medicijn
     weak var medicijn: Medicijn?
     
+    
+    @IBAction func moreButton(_ sender: UIButton) {
+    }
     @IBAction func BackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
     //@IBOutlet weak var mpnm: UILabel!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("View did load!")
+        navigationItem.title = "Info: \(medicijn?.mpnm)"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
+    }
+
+    // MARK: - share button
+    func shareTapped() {
+        let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated: true)
+    }
+
     // This variable will hold the data being passed from the Source View Controller
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,12 +76,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     @IBOutlet var tableView: UITableView!
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print("View did load!")
-    }
     
-    // MARK: - Navigation
     // MARK: - Navigation
     let CellDetailIdentifier = "SegueFromDetailToWebView"
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

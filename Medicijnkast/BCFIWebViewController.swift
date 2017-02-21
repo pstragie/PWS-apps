@@ -12,7 +12,6 @@ import WebKit
 class BCFIWebViewController: UIViewController, WKUIDelegate {
     weak var medicijn: Medicijn?
     
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var webView: WKWebView!
     
     /*
@@ -25,7 +24,8 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
     */
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = medicijn?.mpnm
+        navigationItem.title = "BCFI: \(medicijn?.mpnm)"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         let webstring = medicijn?.link2mpg
         //let webstring = "https://www.apple.com"
         let myURL = URL(string: webstring!)      // ! because medicijn?
@@ -33,6 +33,14 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         
         webView.load(myRequest)
     }
+    
+    // MARK: - share button
+    func shareTapped() {
+        let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated: true)
+    }
+
     
     @IBAction func BackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
