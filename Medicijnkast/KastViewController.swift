@@ -99,15 +99,15 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		setUpSearchBar()
 		setupView()
 		
-		
+		navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
 		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
-		//monthly update of data!
+		// monthly update of data!
 		
 		//appDelegate.cleanCoreDataMedicijn()
 		// Execute next line on every new install!
 		//appDelegate.preloadData("Medicijn")
 		
-		//Check for first launch and preload data if true
+		// Check for first launch and preload data if true
 		//coreData.seedCoreDataContainerIfFirstLaunch()
 		
 		do {
@@ -125,7 +125,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	// MARK: - share button
 	func shareTapped() {
-		let vc = UIActivityViewController(activityItems: [navigationItem.rightBarButtonItem?.action as Any], applicationActivities: [])
+		let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
 		vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
 		present(vc, animated: true)
 	}

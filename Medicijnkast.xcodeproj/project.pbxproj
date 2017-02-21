@@ -12,7 +12,6 @@
 		B61319BD1E57E5D5004AD4D7 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61319BC1E57E5D5004AD4D7 /* CoreDataStack.swift */; };
 		B63D17151E58F0F3008289BB /* BCFIWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63D17141E58F0F3008289BB /* BCFIWebViewController.swift */; };
 		B63D17171E5A2693008289BB /* combinednoempties.csv in Resources */ = {isa = PBXBuildFile; fileRef = B63D17161E5A2693008289BB /* combinednoempties.csv */; };
-		B63D17221E5AF9DF008289BB /* Updates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63D17211E5AF9DF008289BB /* Updates.swift */; };
 		B64B6D531E5B8068001E0F04 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64B6D521E5B8068001E0F04 /* CustomCell.swift */; };
 		B64B6D551E5BB6A9001E0F04 /* combinednoemptieswithHyr_short.csv in Resources */ = {isa = PBXBuildFile; fileRef = B64B6D541E5BB6A9001E0F04 /* combinednoemptieswithHyr_short.csv */; };
 		B66B41351E4B4B9300DA2793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41341E4B4B9300DA2793 /* AppDelegate.swift */; };
@@ -34,7 +33,6 @@
 		B61319BC1E57E5D5004AD4D7 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		B63D17141E58F0F3008289BB /* BCFIWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BCFIWebViewController.swift; sourceTree = "<group>"; };
 		B63D17161E5A2693008289BB /* combinednoempties.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = combinednoempties.csv; path = Medicijnkast/combinednoempties.csv; sourceTree = "<group>"; };
-		B63D17211E5AF9DF008289BB /* Updates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Updates.swift; sourceTree = "<group>"; };
 		B64B6D521E5B8068001E0F04 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomCell.swift; path = Medicijnkast/CustomCell.swift; sourceTree = "<group>"; };
 		B64B6D541E5BB6A9001E0F04 /* combinednoemptieswithHyr_short.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = combinednoemptieswithHyr_short.csv; path = Medicijnkast/combinednoemptieswithHyr_short.csv; sourceTree = "<group>"; };
 		B66B41311E4B4B9300DA2793 /* Medicijnkast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Medicijnkast.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,7 +95,6 @@
 			children = (
 				B66B41341E4B4B9300DA2793 /* AppDelegate.swift */,
 				B66B41361E4B4B9300DA2793 /* KastViewController.swift */,
-				B63D17211E5AF9DF008289BB /* Updates.swift */,
 				B66B414D1E4B63AE00DA2793 /* AddMedicijnViewController.swift */,
 				B66B41571E4D1F0100DA2793 /* ShoppingListViewController.swift */,
 				B61319BA1E57CF06004AD4D7 /* MedicijnDetailViewController.swift */,
@@ -193,7 +190,6 @@
 				B63D17151E58F0F3008289BB /* BCFIWebViewController.swift in Sources */,
 				B64B6D531E5B8068001E0F04 /* CustomCell.swift in Sources */,
 				B61319B91E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift in Sources */,
-				B63D17221E5AF9DF008289BB /* Updates.swift in Sources */,
 				B66B41521E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift in Sources */,
 				B66B41371E4B4B9300DA2793 /* KastViewController.swift in Sources */,
 				B66B41501E4B63AF00DA2793 /* MedicijnTableViewCell.swift in Sources */,
