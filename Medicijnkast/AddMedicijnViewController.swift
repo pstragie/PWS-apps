@@ -82,7 +82,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         
         searchBar.showsScopeBar = true
-        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "alles"]
+        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "firmanaam", "alles"]
         searchBar.selectedScopeButtonIndex = -1
         print("Scope: \(searchBar.selectedScopeButtonIndex)")
         searchBar.delegate = self
@@ -92,6 +92,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: Set Scope
     var filterKeyword = "mpnm"
+    var sortKeyword = "mpnm"
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         print("Scope changed: \(selectedScopeIndex)")
         /* FILTER SCOPE */
@@ -104,6 +105,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             print("scope: stofnaam")
             filterKeyword = "vosnm"
         case 2:
+            print("scope: firmanaam")
+            filterKeyword = "nirnm"
+        case 3:
             print("scope: alles")
             filterKeyword = "alles"
         default:
@@ -116,7 +120,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             if filterKeyword == "alles" {
                 let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
-                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2])
+                let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
+                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 sortKeyword = "mpnm"
             } else {
@@ -134,7 +139,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 sortKeyword = "mpnm"
             } else {
                 sortKeyword = filterKeyword
-            }        }
+            }
+        }
         
         let sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
         self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
@@ -171,7 +177,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         /* SORT */
         var sortKeyword = "mpnm"
         
-        if self.searchBar.selectedScopeButtonIndex == 2 || searchBar.selectedScopeButtonIndex == -1 {
+        if self.searchBar.selectedScopeButtonIndex == 3 || searchBar.selectedScopeButtonIndex == -1 {
             if searchBar.text!.isEmpty == true {
                 print("scope -1 or 3 and no text in searchBar")
                 let predicate = NSPredicate(format: "mpnm contains[c] %@", "AlotofMumboJumboblablabla")
@@ -180,7 +186,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             } else {
                 let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2])
+                let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchText)
+                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 sortKeyword = "mpnm"
                 }
@@ -194,7 +201,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 if filterKeyword == "alles" {
                 let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2])
+                let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchText)
+                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 sortKeyword = "mpnm"
                 } else {
@@ -226,8 +234,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        filterKeyword = "mpnm"
+        sortKeyword = "mpnm"
         print("Cancel clicked")
-        searchBar.showsScopeBar = true
+        searchBar.showsScopeBar = false
         searchBar.sizeToFit()
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.resignFirstResponder()
@@ -289,11 +299,17 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         var x:Int
         if let medicijnen = fetchedResultsController.fetchedObjects {
             x = medicijnen.count
+            if x == 0 {
+                gevondenItemsLabel.isHidden = true
+            } else {
+            gevondenItemsLabel.isHidden = false
+            }
         } else {
             x = 0
+            gevondenItemsLabel.isHidden = true
         }
         self.tableView.reloadData()
-        gevondenItemsLabel.text = "Gevonden medicijnen: \(x)"
+        gevondenItemsLabel.text = "\(x)"
 
         activityIndicatorView.isHidden = true
     }

@@ -12,6 +12,7 @@ import WebKit
 class BCFIWebViewController: UIViewController, WKUIDelegate {
     weak var medicijn: Medicijn?
     
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var webView: WKWebView!
     
     /*
@@ -24,6 +25,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
     */
     override func viewDidLoad() {
         super.viewDidLoad()
+        titleLabel.text = medicijn?.mpnm
         let webstring = medicijn?.link2mpg
         //let webstring = "https://www.apple.com"
         let myURL = URL(string: webstring!)      // ! because medicijn?

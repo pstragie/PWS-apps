@@ -194,7 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //let entity = NSEntityDescription.entity(forEntityName: entitynaam, in: context)
         
         // Retrieve data from the source file
-        if let path = Bundle.main.path(forResource: "MPP_short", ofType: "csv") {
+        if let path = Bundle.main.path(forResource: "combinednoempties", ofType: "csv") {
         //let path =  "/users/pstragier/Documents/PWS/Medicijnkast/Medicijnkast/combinednoempties.csv"
             print("\(path)")
             let contentsOfURL = NSURL(fileURLWithPath: path)

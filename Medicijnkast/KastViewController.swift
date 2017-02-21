@@ -21,6 +21,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet var tableView: UITableView!
 	
+    @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     // MARK: -
 	
@@ -59,7 +60,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		self.appDelegate.saveContext()
 
 		print("View will appear.")
-		tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
+		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
 		
 		do {
 			print("fetching...")
@@ -96,7 +97,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
 		print("View did load!")
 		setUpSearchBar()
-		tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
+		setupView()
+		
+		
+		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
 		//monthly update of data!
 		
 		//appDelegate.cleanCoreDataMedicijn()
@@ -104,9 +108,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		//appDelegate.preloadData("Medicijn")
 		
 		//Check for first launch and preload data if true
-		//let coreDataStack = UIApplication.shared.delegate as! CoreDataStack
-		//coreDataStack.seedCoreDataContainerIfFirstLaunch()
-		
+		//coreData.seedCoreDataContainerIfFirstLaunch()
 		
 		do {
 			try self.fetchedResultsController.performFetch()
@@ -121,6 +123,12 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
 	
+	// MARK: - share button
+	func shareTapped() {
+		let vc = UIActivityViewController(activityItems: [navigationItem.rightBarButtonItem?.action as Any], applicationActivities: [])
+		vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+		present(vc, animated: true)
+	}
 	
 	// MARK: - search bar related
     fileprivate func setUpSearchBar() {
@@ -294,7 +302,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		searchBar.sizeToFit()
 		searchBar.setShowsCancelButton(false, animated: true)
 		searchBar.resignFirstResponder()
-		tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
+		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
 		self.tableView.reloadData()
 		updateView()
 	}
@@ -344,8 +352,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
     private func setupView() {
         setupMessageLabel()
-		
-        updateView()
     }
 	
 	fileprivate func updateView() {

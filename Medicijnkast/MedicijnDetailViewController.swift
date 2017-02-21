@@ -41,6 +41,8 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.aankoop.text = "In aankooplijst"
         cell.aankoopswitch.setOn((medicijn?.aankoop)!, animated: true)
         
+        cell.moreButton()
+        
         return cell
     }
     func numberOfSections(in tableView: UITableView) -> Int {

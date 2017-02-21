@@ -14,6 +14,7 @@
 		B63D17171E5A2693008289BB /* combinednoempties.csv in Resources */ = {isa = PBXBuildFile; fileRef = B63D17161E5A2693008289BB /* combinednoempties.csv */; };
 		B63D17221E5AF9DF008289BB /* Updates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63D17211E5AF9DF008289BB /* Updates.swift */; };
 		B64B6D531E5B8068001E0F04 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64B6D521E5B8068001E0F04 /* CustomCell.swift */; };
+		B64B6D551E5BB6A9001E0F04 /* combinednoemptieswithHyr_short.csv in Resources */ = {isa = PBXBuildFile; fileRef = B64B6D541E5BB6A9001E0F04 /* combinednoemptieswithHyr_short.csv */; };
 		B66B41351E4B4B9300DA2793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41341E4B4B9300DA2793 /* AppDelegate.swift */; };
 		B66B41371E4B4B9300DA2793 /* KastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41361E4B4B9300DA2793 /* KastViewController.swift */; };
 		B66B413A1E4B4B9400DA2793 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B66B41381E4B4B9400DA2793 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 		B63D17161E5A2693008289BB /* combinednoempties.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = combinednoempties.csv; path = Medicijnkast/combinednoempties.csv; sourceTree = "<group>"; };
 		B63D17211E5AF9DF008289BB /* Updates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Updates.swift; sourceTree = "<group>"; };
 		B64B6D521E5B8068001E0F04 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomCell.swift; path = Medicijnkast/CustomCell.swift; sourceTree = "<group>"; };
+		B64B6D541E5BB6A9001E0F04 /* combinednoemptieswithHyr_short.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = combinednoemptieswithHyr_short.csv; path = Medicijnkast/combinednoemptieswithHyr_short.csv; sourceTree = "<group>"; };
 		B66B41311E4B4B9300DA2793 /* Medicijnkast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Medicijnkast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66B41341E4B4B9300DA2793 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B66B41361E4B4B9300DA2793 /* KastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KastViewController.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -66,6 +68,7 @@
 			children = (
 				B63D17161E5A2693008289BB /* combinednoempties.csv */,
 				B66B41551E4C194000DA2793 /* MPP_short.csv */,
+				B64B6D541E5BB6A9001E0F04 /* combinednoemptieswithHyr_short.csv */,
 				B66B413B1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld */,
 			);
 			name = "Core Data";
@@ -172,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B66B41421E4B4B9400DA2793 /* LaunchScreen.storyboard in Resources */,
+				B64B6D551E5BB6A9001E0F04 /* combinednoemptieswithHyr_short.csv in Resources */,
 				B66B413F1E4B4B9400DA2793 /* Assets.xcassets in Resources */,
 				B66B413A1E4B4B9400DA2793 /* Main.storyboard in Resources */,
 				B63D17171E5A2693008289BB /* combinednoempties.csv in Resources */,

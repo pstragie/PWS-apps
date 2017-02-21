@@ -39,7 +39,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         // Create Fetch Request
         let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mpnm", ascending: true)]
-        
+        let predicate = NSPredicate(format: "aankoop == true")
+        fetchRequest.predicate = predicate
         // Create Fetched Results Controller
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
@@ -59,7 +60,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         super.viewDidLoad()
         print("View did load!")
         setUpSearchBar()
-        
+        setupView()
         do {
             try self.fetchedResultsController.performFetch()
         } catch {
