@@ -176,17 +176,16 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 				let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
 				let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
 				let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
-				let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate])
+				let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
 				let predicate2 = NSPredicate(format: "kast == true")
 				let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 				self.fetchedResultsController.fetchRequest.predicate = predicate
-				sortKeyword = "mpnm"
+
 			} else {
 				let subpredicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
 				let subpredicate2 = NSPredicate(format: "kast == true")
 				let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate1, subpredicate2])
 				self.fetchedResultsController.fetchRequest.predicate = predicate
-				sortKeyword = "\(filterKeyword)"
 			}
 		} else {
 			print("no text in searchBar")
@@ -244,7 +243,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 				let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
 				let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
 				let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
-				let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate])
+				let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
 				let predicate2 = NSPredicate(format: "kast == true")
 				let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 				self.fetchedResultsController.fetchRequest.predicate = predicate
@@ -262,17 +261,20 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 					let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
 					let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
 					let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
-					let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate])
+					let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
 					let predicate2 = NSPredicate(format: "kast == true")
 					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+					self.fetchedResultsController.fetchRequest.predicate = predicate
+
 				} else {
 					sortKeyword = filterKeyword
 					let predicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
 					let predicate2 = NSPredicate(format: "kast == true")
 					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+					self.fetchedResultsController.fetchRequest.predicate = predicate
+
 				}
 				
-				self.fetchedResultsController.fetchRequest.predicate = predicate
 			}
 		}
 		print("filterKeyword: \(filterKeyword)")
@@ -484,10 +486,16 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 		cell.layer.cornerRadius = 3
 		cell.layer.masksToBounds = true
 		cell.layer.borderWidth = 1
-		cell.Merknaam.text = medicijn.mpnm
-		cell.Stofnaam.text = medicijn.vosnm
-		cell.Prijs.text = medicijn.rema
-		cell.Kast.text = medicijn.kast.description
+		
+		cell.mpnm.text = medicijn.mpnm
+		cell.mppnm.text = medicijn.mppnm
+		cell.vosnm.text = medicijn.vosnm
+		cell.nirnm.text = medicijn.nirnm
+		
+		cell.pupr.text = "Prijs: \(medicijn.pupr)!"
+		cell.rema.text = "remA: \(medicijn.rema)!"
+		cell.remw.text = "remW: \(medicijn.remw)!"
+		cell.cheapest.text = "gdkp: \(medicijn.cheapest.description)!"
 		return cell
 	}
 	

@@ -446,13 +446,15 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         cell.layer.masksToBounds = true
         cell.layer.borderWidth = 1
 
-        cell.Merknaam.text = medicijn.mpnm
-        cell.Stofnaam.text = medicijn.vosnm
-        cell.Prijs.text = medicijn.rema
-        //cell.Aankoop.text = medicijn.aankoop.description
-        // TODO: Not working code!
-        //let image = UIImage(data: medicijn.boximage as! Data)
-        //cell.BoxImage.image = image
+        cell.mpnm.text = medicijn.mpnm
+        cell.mppnm.text = medicijn.mppnm
+        cell.vosnm.text = medicijn.vosnm
+        cell.nirnm.text = medicijn.nirnm
+        
+        cell.pupr.text = "Prijs: \(medicijn.pupr)!"
+        cell.rema.text = "remA: \(medicijn.rema)!"
+        cell.remw.text = "remW: \(medicijn.remw)!"
+        cell.cheapest.text = "gdkp: \(medicijn.cheapest.description)!"
         
         return cell
     }

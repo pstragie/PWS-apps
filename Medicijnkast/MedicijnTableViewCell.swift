@@ -16,14 +16,16 @@ class MedicijnTableViewCell: UITableViewCell {
 
     // MARK: -
 
-    @IBOutlet var Merknaam: UILabel!
-    @IBOutlet var Stofnaam: UILabel!
-    @IBOutlet var Prijs: UILabel!
-    @IBOutlet var BoxImage: UIImageView!
-    
-    @IBOutlet weak var Kast: UILabel!
-    @IBOutlet weak var Aankoop: UILabel!
-    @IBOutlet weak var Cheapest: UILabel!
+    @IBOutlet weak var boxImage: UIImage?
+    @IBOutlet weak var mpnm: UILabel!
+    @IBOutlet weak var mppnm: UILabel!
+    @IBOutlet weak var vosnm: UILabel!
+    @IBOutlet weak var nirnm: UILabel!
+
+    @IBOutlet weak var pupr: UILabel!
+    @IBOutlet weak var rema: UILabel!
+    @IBOutlet weak var remw: UILabel!
+    @IBOutlet weak var cheapest: UILabel!
     
     // MARK: - Initialization
 
