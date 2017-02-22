@@ -89,6 +89,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     fileprivate func setUpSearchBar() {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         
+        searchBar.isHidden = false
         searchBar.showsScopeBar = true
         searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "firmanaam", "alles"]
         searchBar.selectedScopeButtonIndex = -1

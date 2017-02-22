@@ -35,7 +35,7 @@
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="100" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qih-bJ-IpS">
                                 <rect key="frame" x="10" y="104" width="748" height="871"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="vtg-ey-pb2">
+                                <searchBar key="tableHeaderView" contentMode="redraw" text="Zoek in je medicijnkast" id="vtg-ey-pb2">
                                     <rect key="frame" x="0.0" y="0.0" width="748" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -48,7 +48,7 @@
                                     </connections>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" showsReorderControl="YES" indentationWidth="10" reuseIdentifier="MedicijnCell" rowHeight="110" id="H4u-Eh-ZLx" customClass="MedicijnTableViewCell" customModule="Medicijnkast" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="H4u-Eh-ZLx" customClass="MedicijnTableViewCell" customModule="Medicijnkast" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="748" height="110"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H4u-Eh-ZLx" id="L22-oZ-BJw">
@@ -168,7 +168,6 @@
                         <outlet property="searchDisplayController" destination="sZn-uF-7Tt" id="9ZI-3E-Kk3"/>
                         <outlet property="tableView" destination="Qih-bJ-IpS" id="GHc-TV-Wlp"/>
                         <outlet property="totaalAantal" destination="D4S-KS-SwM" id="WyF-M7-udB"/>
-                        <segue destination="2Xw-gv-yY8" kind="show" identifier="SegueFromKastViewToDetail" id="vP6-fL-e2l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -199,8 +198,7 @@
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="100" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pZC-tX-BQm">
                                 <rect key="frame" x="10" y="104" width="748" height="871"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="prominent" text="Tik een letter in" placeholder="Zoeken op merknaam, stofnaam en firmanaam" id="TBf-Wb-Biv">
+                                <searchBar key="tableHeaderView" contentMode="redraw" text="Zoek in de lijst van alle medicijnen" id="TBf-Wb-Biv">
                                     <rect key="frame" x="0.0" y="0.0" width="748" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
@@ -213,7 +211,7 @@
                                     </connections>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" showsReorderControl="YES" indentationWidth="10" reuseIdentifier="MedicijnCell" editingAccessoryType="disclosureIndicator" rowHeight="110" id="flA-um-wGG" customClass="MedicijnTableViewCell" customModule="Medicijnkast" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="flA-um-wGG" customClass="MedicijnTableViewCell" customModule="Medicijnkast" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="748" height="110"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="flA-um-wGG" id="5wx-Xl-3Xd">
@@ -267,7 +265,7 @@
                                             <outlet property="Merknaam" destination="RYL-eR-yHC" id="ecM-ZS-va0"/>
                                             <outlet property="Prijs" destination="HE7-Vb-cWG" id="Qzr-LA-xU7"/>
                                             <outlet property="Stofnaam" destination="eNT-fm-eE5" id="Zky-DA-tZx"/>
-                                            <segue destination="wA8-4L-7lI" kind="showDetail" identifier="SegueFromAddToDetail" id="ojn-k5-ud8"/>
+                                            <segue destination="wA8-4L-7lI" kind="show" identifier="SegueFromAddToDetail" id="ojn-k5-ud8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -323,7 +321,6 @@
                         <outlet property="searchBar" destination="TBf-Wb-Biv" id="pnN-Hc-4tn"/>
                         <outlet property="searchDisplayController" destination="sZn-uF-7Tt" id="tSG-lD-Ipl"/>
                         <outlet property="tableView" destination="pZC-tX-BQm" id="bST-gv-rdu"/>
-                        <segue destination="2Xw-gv-yY8" kind="show" identifier="SegueFromAddViewToDetail" id="IFi-il-Cyl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AyP-G1-4jJ" sceneMemberID="firstResponder"/>
@@ -438,7 +435,7 @@
                                                         <color key="titleShadowColor" red="0.47518028846153848" green="0.47518028846153848" blue="0.47518028846153848" alpha="0.60730064655172411" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="jwo-fu-SSS" kind="presentation" identifier="SegueFromDetailToWebView" modalTransitionStyle="coverVertical" id="WA5-Qm-spE"/>
+                                                        <segue destination="C4i-9K-tWg" kind="show" id="vd6-70-5Ny"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -588,7 +585,7 @@
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="100" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PwR-EG-kcb">
                                 <rect key="frame" x="10" y="104" width="748" height="871"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="hWu-Nh-HvA">
+                                <searchBar key="tableHeaderView" contentMode="redraw" text="Zoek in je aankooplijst" id="hWu-Nh-HvA">
                                     <rect key="frame" x="0.0" y="0.0" width="748" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -597,7 +594,7 @@
                                     </connections>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" showsReorderControl="YES" indentationWidth="10" reuseIdentifier="MedicijnCell" rowHeight="110" id="EYP-9E-KFb" customClass="MedicijnTableViewCell" customModule="Medicijnkast" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="EYP-9E-KFb" customClass="MedicijnTableViewCell" customModule="Medicijnkast" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="748" height="110"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EYP-9E-KFb" id="Xmg-sw-CO0">
@@ -663,7 +660,7 @@
                                             <outlet property="Merknaam" destination="Gvl-HE-ynG" id="htF-Y0-Owx"/>
                                             <outlet property="Prijs" destination="VBA-IA-BW1" id="D5O-Pa-9Ij"/>
                                             <outlet property="Stofnaam" destination="RWv-ZQ-LPq" id="Yku-Ho-hx5"/>
-                                            <segue destination="wA8-4L-7lI" kind="showDetail" identifier="SegueFromShopToDetail" id="VgK-PK-mVj"/>
+                                            <segue destination="wA8-4L-7lI" kind="show" identifier="SegueFromShopToDetail" action="showDetailViewController:sender:" id="VgK-PK-mVj"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -684,6 +681,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Bestelling plaatsen"/>
+                                <connections>
+                                    <action selector="bestellingPlaatsen:" destination="DcK-cA-pBQ" eventType="touchUpInside" id="fgC-el-94o"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aantal medicijnen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zkD-RJ-UQz" userLabel="Aantal medicijnen">
                                 <rect key="frame" x="259" y="65" width="250" height="40"/>
@@ -703,6 +703,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Geavanceerd zoeken"/>
+                                <connections>
+                                    <action selector="geavanceerdZoeken:" destination="DcK-cA-pBQ" eventType="touchUpInside" id="873-eQ-eKG"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -726,12 +729,12 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="JND-kw-r5Y"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="aantalMedicijnen" destination="zkD-RJ-UQz" id="nHz-Vr-l6u"/>
                         <outlet property="activityIndicatorView" destination="HKw-F0-zGR" id="OIm-o9-hsn"/>
                         <outlet property="messageLabel" destination="dnW-Ox-cZT" id="VuI-5e-MIL"/>
                         <outlet property="searchBar" destination="hWu-Nh-HvA" id="zxg-yU-Iek"/>
                         <outlet property="searchDisplayController" destination="sZn-uF-7Tt" id="CPu-UR-vQA"/>
                         <outlet property="tableView" destination="PwR-EG-kcb" id="FfV-1X-UFF"/>
-                        <segue destination="2Xw-gv-yY8" kind="show" identifier="SegueFromShopViewToDetail" id="HDO-8a-d7f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgc-aO-Dzp" sceneMemberID="firstResponder"/>
@@ -825,48 +828,11 @@
             </objects>
             <point key="canvasLocation" x="284.375" y="784.5703125"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="4Pb-nn-ZQM">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2Xw-gv-yY8" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fu4-89-PhY">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="wA8-4L-7lI" kind="relationship" relationship="rootViewController" id="k3s-ai-mVR"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="I9e-eq-3t2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2616.40625" y="774.609375"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="t2f-nf-iTU">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jwo-fu-SSS" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vv2-wb-hOC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="C4i-9K-tWg" kind="relationship" relationship="rootViewController" id="LzE-DS-YjH"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ebO-xR-gyM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4319.53125" y="774.609375"/>
-        </scene>
     </scenes>
     <resources>
         <image name="Pill-box-sample" width="650" height="455"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="VgK-PK-mVj"/>
-        <segue reference="IFi-il-Cyl"/>
     </inferredMetricsTieBreakers>
 </document>

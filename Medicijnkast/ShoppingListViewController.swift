@@ -13,7 +13,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - Properties
     
-    let segueShowDetailViewController = "SegueShowDetailViewController"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let coreData = CoreDataStack()
 
@@ -425,6 +424,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             fatalError("Unexpected Index Path")
         }
         
+        cell.selectionStyle = .none
         // Fetch Medicijn
         let medicijn = fetchedResultsController.object(at: indexPath)
         // Configure Cell
