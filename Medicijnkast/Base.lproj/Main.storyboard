@@ -110,7 +110,7 @@
                                             <outlet property="Merknaam" destination="iPD-GC-cR4" id="qPR-xC-xzA"/>
                                             <outlet property="Prijs" destination="BDo-Nz-Ufv" id="Paj-js-ugK"/>
                                             <outlet property="Stofnaam" destination="Hbm-F5-Azc" id="ShA-pg-GAP"/>
-                                            <segue destination="2Xw-gv-yY8" kind="presentation" identifier="SegueFromKastToDetail" modalTransitionStyle="flipHorizontal" id="b7V-x0-Wbi"/>
+                                            <segue destination="wA8-4L-7lI" kind="show" identifier="SegueFromKastToDetail" id="Rdq-mC-hCz"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -168,6 +168,7 @@
                         <outlet property="searchDisplayController" destination="sZn-uF-7Tt" id="9ZI-3E-Kk3"/>
                         <outlet property="tableView" destination="Qih-bJ-IpS" id="GHc-TV-Wlp"/>
                         <outlet property="totaalAantal" destination="D4S-KS-SwM" id="WyF-M7-udB"/>
+                        <segue destination="2Xw-gv-yY8" kind="show" identifier="SegueFromKastViewToDetail" id="vP6-fL-e2l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -266,7 +267,7 @@
                                             <outlet property="Merknaam" destination="RYL-eR-yHC" id="ecM-ZS-va0"/>
                                             <outlet property="Prijs" destination="HE7-Vb-cWG" id="Qzr-LA-xU7"/>
                                             <outlet property="Stofnaam" destination="eNT-fm-eE5" id="Zky-DA-tZx"/>
-                                            <segue destination="2Xw-gv-yY8" kind="presentation" identifier="SegueFromAddToDetail" modalTransitionStyle="flipHorizontal" id="Egl-pl-gXy"/>
+                                            <segue destination="wA8-4L-7lI" kind="showDetail" identifier="SegueFromAddToDetail" id="ojn-k5-ud8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -322,6 +323,7 @@
                         <outlet property="searchBar" destination="TBf-Wb-Biv" id="pnN-Hc-4tn"/>
                         <outlet property="searchDisplayController" destination="sZn-uF-7Tt" id="tSG-lD-Ipl"/>
                         <outlet property="tableView" destination="pZC-tX-BQm" id="bST-gv-rdu"/>
+                        <segue destination="2Xw-gv-yY8" kind="show" identifier="SegueFromAddViewToDetail" id="IFi-il-Cyl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AyP-G1-4jJ" sceneMemberID="firstResponder"/>
@@ -661,7 +663,7 @@
                                             <outlet property="Merknaam" destination="Gvl-HE-ynG" id="htF-Y0-Owx"/>
                                             <outlet property="Prijs" destination="VBA-IA-BW1" id="D5O-Pa-9Ij"/>
                                             <outlet property="Stofnaam" destination="RWv-ZQ-LPq" id="Yku-Ho-hx5"/>
-                                            <segue destination="2Xw-gv-yY8" kind="presentation" identifier="SegueFromShopToDetail" modalTransitionStyle="flipHorizontal" id="5rg-HL-L3q"/>
+                                            <segue destination="wA8-4L-7lI" kind="showDetail" identifier="SegueFromShopToDetail" id="VgK-PK-mVj"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -729,6 +731,7 @@
                         <outlet property="searchBar" destination="hWu-Nh-HvA" id="zxg-yU-Iek"/>
                         <outlet property="searchDisplayController" destination="sZn-uF-7Tt" id="CPu-UR-vQA"/>
                         <outlet property="tableView" destination="PwR-EG-kcb" id="FfV-1X-UFF"/>
+                        <segue destination="2Xw-gv-yY8" kind="show" identifier="SegueFromShopViewToDetail" id="HDO-8a-d7f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgc-aO-Dzp" sceneMemberID="firstResponder"/>
@@ -843,7 +846,6 @@
         <!--Navigation Controller-->
         <scene sceneID="t2f-nf-iTU">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ebO-xR-gyM" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jwo-fu-SSS" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vv2-wb-hOC">
@@ -855,6 +857,7 @@
                         <segue destination="C4i-9K-tWg" kind="relationship" relationship="rootViewController" id="LzE-DS-YjH"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ebO-xR-gyM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4319.53125" y="774.609375"/>
         </scene>
@@ -863,6 +866,7 @@
         <image name="Pill-box-sample" width="650" height="455"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Egl-pl-gXy"/>
+        <segue reference="VgK-PK-mVj"/>
+        <segue reference="IFi-il-Cyl"/>
     </inferredMetricsTieBreakers>
 </document>

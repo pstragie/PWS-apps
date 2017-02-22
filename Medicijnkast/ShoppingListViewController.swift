@@ -117,7 +117,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         print("Scope changed: \(selectedScope)")
         /* FILTER SCOPE */
-        
+        searchActive = true
         switch selectedScope {
         case 0:
             print("scope: merknaam")
@@ -294,7 +294,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             let selectedObject = fetchedResultsController.object(at: indexPath)
             destination.medicijn = selectedObject
             
-            navigationController?.pushViewController(destination, animated: true)
+            //navigationController?.pushViewController(destination, animated: true)
         default:
             print("Unknown segue: \(segue.identifier)")
         }
@@ -312,20 +312,11 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         print("Updating view...")
         var hasMedicijnen = false
         
-        var x:Int
         
         if let medicijnen = fetchedResultsController.fetchedObjects {
             hasMedicijnen = medicijnen.count > 0
             print("medicijnen aantal: \(medicijnen.count)")
             
-            x = medicijnen.count
-            
-            let totaalAankoop = countAankoop(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
-            if x != 0 && searchActive {
-                aantalMedicijnen.text = "\(x)/\(totaalAankoop)"
-            } else {
-                aantalMedicijnen.text = "\(totaalAankoop)"
-            }
             
         }
         if searchActive {

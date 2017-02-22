@@ -345,7 +345,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			let selectedObject = fetchedResultsController.object(at: indexPath) 
 			destination.medicijn = selectedObject
 			
-			navigationController?.pushViewController(destination, animated: true)
+			//navigationController?.pushViewController(destination, animated: true)
 		default:
 			print("Unknown segue: \(segue.identifier)")
 		}

@@ -26,7 +26,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         print("View did load!")
-        navigationItem.title = "Info: \(medicijn?.mpnm)"
+        navigationItem.title = "Info: \((medicijn?.mpnm)!)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
     }
 
