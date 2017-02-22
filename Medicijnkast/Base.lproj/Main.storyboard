@@ -195,6 +195,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0Do-ef-P1o">
+                                <rect key="frame" x="266" y="595" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="100" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pZC-tX-BQm">
                                 <rect key="frame" x="10" y="104" width="748" height="871"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -274,10 +278,6 @@
                                     <outlet property="delegate" destination="ruK-Vs-qsG" id="6zG-jI-nM6"/>
                                 </connections>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0Do-ef-P1o">
-                                <rect key="frame" x="266" y="595" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DeK-kj-0bp" userLabel="Geavanceerd zoeken">
                                 <rect key="frame" x="593" y="64" width="160" height="40"/>
                                 <constraints>
@@ -364,7 +364,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="901" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eOG-Z6-y9V">
-                                <rect key="frame" x="30" y="104" width="708" height="910"/>
+                                <rect key="frame" x="30" y="104" width="708" height="861"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MedicijnDetailViewCell" rowHeight="901" id="GYX-Gy-9qN" customClass="MedicijnDetailViewCell" customModule="Medicijnkast" customModuleProvider="target">
@@ -534,7 +534,7 @@
                                 </connections>
                             </button>
                             <webView contentMode="scaleToFill" allowsInlineMediaPlayback="NO" mediaPlaybackAllowsAirPlay="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d0g-Ll-0LU">
-                                <rect key="frame" x="22" y="124" width="724" height="898"/>
+                                <rect key="frame" x="22" y="124" width="724" height="849"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
                             </webView>
@@ -833,6 +833,6 @@
         <image name="Pill-box-sample" width="650" height="455"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="VgK-PK-mVj"/>
+        <segue reference="ojn-k5-ud8"/>
     </inferredMetricsTieBreakers>
 </document>
