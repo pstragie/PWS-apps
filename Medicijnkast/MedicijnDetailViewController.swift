@@ -64,9 +64,9 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.leeg3.text = " "
         
         // Stack Bottom left
-        cell.pupr.text = medicijn?.pupr
-        cell.rema.text = medicijn?.rema
-        cell.remw.text = medicijn?.remw
+        cell.pupr.text = "\((medicijn?.pupr)!) €"
+        cell.rema.text = "\((medicijn?.rema)!) €"
+        cell.remw.text = "\((medicijn?.remw)!) €"
         cell.index.text = medicijn?.index
         cell.ogc.text = medicijn?.ogc
         cell.law.text = medicijn?.law
@@ -74,6 +74,46 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.wadan.text = medicijn?.wadan
         
         // Stack Bottom right
+        if (medicijn?.cheapest)! {
+            cell.cheapest.text = "Ja"
+        } else {
+            cell.cheapest.text = "Nee"
+        }
+        if (medicijn?.bt)! {
+            cell.bt.text = "Ja"
+        } else {
+            cell.bt.text = "Nee"
+        }
+        if (medicijn?.pip)! {
+            cell.pip.text = "Ja"
+        } else {
+            cell.pip.text = "Nee"
+        }
+        if (medicijn?.orphan)! {
+            cell.orphan.text = "Ja"
+        } else {
+            cell.orphan.text = "Nee"
+        }
+        if (medicijn?.narcotic)! {
+            cell.narcotic.text = "Ja"
+        } else {
+            cell.narcotic.text = "Nee"
+        }
+        if (medicijn?.amb)! {
+            cell.amb.text = "Ja"
+        } else {
+            cell.amb.text = "Nee"
+        }
+        if (medicijn?.hosp)! {
+            cell.hosp.text = "Ja"
+        } else {
+            cell.hosp.text = "Nee"
+        }
+        if (medicijn?.specrules)! {
+            cell.specrules.text = "Ja"
+        } else {
+            cell.specrules.text = "Nee"
+        }
         
         // Stack End Left
         cell.kast.text = "In medicijnkast"
@@ -89,6 +129,17 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             cell.aankoopimage.image = #imageLiteral(resourceName: "vinkje")
         }
         
+        cell.noteButton.layer.cornerRadius = 3
+        cell.noteButton.layer.masksToBounds = true
+        cell.noteButton.layer.borderWidth = 1
+        if medicijn?.note != "no data" {
+            cell.noteButton.layer.borderColor = UIColor.black.cgColor
+            cell.noteButton.layer.backgroundColor = UIColor.green.cgColor
+
+        } else {
+            cell.noteButton.layer.borderColor = UIColor.gray.cgColor
+            cell.noteButton.layer.backgroundColor = UIColor.gray.cgColor
+        }
         
         return cell
     }

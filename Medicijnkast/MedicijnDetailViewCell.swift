@@ -59,16 +59,12 @@ class MedicijnDetailViewCell: UITableViewCell {
     @IBOutlet weak var aankoopimage: UIImageView!
     
     @IBAction func morePVT(_ sender: UIButton) {
-        moreButton.layer.cornerRadius = 3
-        moreButton.layer.borderWidth = 2
-        moreButton.layer.borderColor = UIColor.black.cgColor
+        
     }
     
     @IBOutlet weak var moreButton: UIButton!
     @IBAction func moreMPG(_ sender: UIButton) {
-        moreButton.layer.cornerRadius = 3
-        moreButton.layer.borderWidth = 2
-        moreButton.layer.borderColor = UIColor.black.cgColor
+        
     }
 
     @IBOutlet weak var noteButton: UIButton!

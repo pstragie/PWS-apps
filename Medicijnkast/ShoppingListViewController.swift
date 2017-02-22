@@ -453,11 +453,15 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         cell.vosnm.text = medicijn.vosnm
         cell.nirnm.text = medicijn.nirnm
         
-        cell.pupr.text = "Prijs: \(medicijn.pupr)"
-        cell.rema.text = "remA: \(medicijn.rema)"
-        cell.remw.text = "remW: \(medicijn.remw)"
+        cell.pupr.text = "Prijs: \((medicijn.pupr)!) €"
+        cell.rema.text = "remA: \((medicijn.rema)!) €"
+        cell.remw.text = "remW: \((medicijn.remw)!) €"
         cell.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
         return cell
+    }
+    
+    func totalePrijs() -> Double {
+        pupr
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
