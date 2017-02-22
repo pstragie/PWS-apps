@@ -24,7 +24,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBAction func geavanceerdZoeken(_ sender: UIButton) {
     }
-    @IBOutlet weak var aantalMedicijnen: UILabel!
+    @IBOutlet weak var totaalAantal: UILabel!
     @IBAction func bestellingPlaatsen(_ sender: UIButton) {
     }
     @IBOutlet weak var searchBar: UISearchBar!
@@ -140,19 +140,22 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             if filterKeyword == "alles" {
                 let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
-                let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
-                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
+                let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
+                let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
+                let predicate2 = NSPredicate(format: "aankoop == true")
+                let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 sortKeyword = "mpnm"
             } else {
-                let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
-                print("predicate: \(predicate)")
+                let predicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
+                let predicate2 = NSPredicate(format: "aankoop == true")
+                let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 sortKeyword = "\(filterKeyword)"
             }
         } else {
             print("no text in searchBar")
-            self.fetchedResultsController.fetchRequest.predicate = nil
+            self.fetchedResultsController.fetchRequest.predicate = NSPredicate(format: "aankoop == true")
             if filterKeyword == "alles" {
                 sortKeyword = "mpnm"
             } else {
@@ -202,9 +205,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             } else {
                 let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
                 let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-                let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchText)
-                
-                let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
+                let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchText)
+                let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
+                let predicate2 = NSPredicate(format: "aankoop == true")
+                let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 sortKeyword = filterKeyword
             }
@@ -212,18 +216,21 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         } else {
             if searchBar.text!.isEmpty == true {
                 print("scope = 0, 1 or 2 and no text in searchBar")
-                
+                self.fetchedResultsController.fetchRequest.predicate = NSPredicate(format: "aankoop == true")
             } else {
                 if filterKeyword == "alles" {
                     let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
                     let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-                    let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchText)
-                    
-                    let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
+                    let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchText)
+                    let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
+                    let predicate2 = NSPredicate(format: "aankoop == true")
+                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                     self.fetchedResultsController.fetchRequest.predicate = predicate
                     sortKeyword = "mpnm"
                 } else {
-                    let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
+                    let predicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
+                    let predicate2 = NSPredicate(format: "aankoop == true")
+                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                     print("predicate: \(predicate)")
                     self.fetchedResultsController.fetchRequest.predicate = predicate
                     sortKeyword = filterKeyword
@@ -265,7 +272,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         print("should end editing")
         
         if searchBar.text!.isEmpty == false {
-            let predicate = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
+            let predicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
+            let predicate2 = NSPredicate(format: "aankoop == true")
+            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
             print("predicate in should end: \(predicate)")
             self.fetchedResultsController.fetchRequest.predicate = predicate
         } else {
@@ -311,11 +320,18 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         print("Updating view...")
         var hasMedicijnen = false
         
-        
+        var x:Int
         if let medicijnen = fetchedResultsController.fetchedObjects {
             hasMedicijnen = medicijnen.count > 0
             print("medicijnen aantal: \(medicijnen.count)")
+            x = medicijnen.count
             
+            let totaalAankoop = countAankoop(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
+            if x != 0 && searchActive {
+                totaalAantal.text = "\(x)/\(totaalAankoop)"
+            } else {
+                totaalAantal.text = "\(totaalAankoop)"
+            }
             
         }
         if searchActive {

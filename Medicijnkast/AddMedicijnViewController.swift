@@ -24,7 +24,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet var tableView: UITableView!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     
-    @IBOutlet weak var geavanceerdZoeken: UIButton!
+    
+    @IBAction func geavanceerdZoeken(_ sender: UIButton) {
+    }
     @IBOutlet weak var searchBar: UISearchBar!
     // MARK: -
     

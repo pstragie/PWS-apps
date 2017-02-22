@@ -175,10 +175,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			if filterKeyword == "alles" {
 				let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
 				let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
-				let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
-				let subpredicate5 = NSPredicate(format: "kast == true")
-				let predicateOne = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
-				let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne, subpredicate5])
+				let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
+				let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate])
+				let predicate2 = NSPredicate(format: "kast == true")
+				let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 				self.fetchedResultsController.fetchRequest.predicate = predicate
 				sortKeyword = "mpnm"
 			} else {
@@ -241,13 +241,12 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 				sortKeyword = "mpnm"
 				self.fetchedResultsController.fetchRequest.predicate = NSPredicate(format: "kast == true")
 			} else {
-				let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
-				let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-				let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchText)
-				let subpredicate5 = NSPredicate(format: "kast == true")
-				
-				let predicateOne = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
-				let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne, subpredicate5])
+				let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
+				let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
+				let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
+				let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate])
+				let predicate2 = NSPredicate(format: "kast == true")
+				let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 				self.fetchedResultsController.fetchRequest.predicate = predicate
 				sortKeyword = filterKeyword
 			}
@@ -259,24 +258,21 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 			} else {
 				if filterKeyword == "alles" {
-					let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
-					let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-					let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchText)
-					let subpredicate5 = NSPredicate(format: "kast == true")
-					let predicateOne = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
-					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne, subpredicate5])
-					self.fetchedResultsController.fetchRequest.predicate = predicate
-					
+					sortKeyword = "mpnm"
+					let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
+					let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
+					let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
+					let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate])
+					let predicate2 = NSPredicate(format: "kast == true")
+					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 				} else {
-					let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
-					let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-					let subpredicate4 = NSPredicate(format: "nirnm contains[c] %@", searchText)
-					let subpredicate5 = NSPredicate(format: "kast == true")
-					let predicateOne = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate4])
-					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateOne, subpredicate5])
-					self.fetchedResultsController.fetchRequest.predicate = predicate
 					sortKeyword = filterKeyword
+					let predicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
+					let predicate2 = NSPredicate(format: "kast == true")
+					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 				}
+				
+				self.fetchedResultsController.fetchRequest.predicate = predicate
 			}
 		}
 		print("filterKeyword: \(filterKeyword)")

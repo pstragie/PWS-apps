@@ -286,6 +286,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Geavanceerd zoeken"/>
+                                <connections>
+                                    <action selector="geavanceerdZoeken:" destination="ruK-Vs-qsG" eventType="touchUpInside" id="hjN-UY-tXq"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aantal medicijnen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKU-5D-8sb" userLabel="Aantal medicijnen">
                                 <rect key="frame" x="329" y="65" width="110" height="40"/>
@@ -316,7 +319,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicatorView" destination="0Do-ef-P1o" id="UA0-Bj-KZz"/>
-                        <outlet property="geavanceerdZoeken" destination="DeK-kj-0bp" id="IjD-lo-Rw0"/>
                         <outlet property="gevondenItemsLabel" destination="pKU-5D-8sb" id="Mxt-wf-1aK"/>
                         <outlet property="searchBar" destination="TBf-Wb-Biv" id="pnN-Hc-4tn"/>
                         <outlet property="searchDisplayController" destination="sZn-uF-7Tt" id="tSG-lD-Ipl"/>
@@ -729,12 +731,12 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="JND-kw-r5Y"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="aantalMedicijnen" destination="zkD-RJ-UQz" id="nHz-Vr-l6u"/>
                         <outlet property="activityIndicatorView" destination="HKw-F0-zGR" id="OIm-o9-hsn"/>
                         <outlet property="messageLabel" destination="dnW-Ox-cZT" id="VuI-5e-MIL"/>
                         <outlet property="searchBar" destination="hWu-Nh-HvA" id="zxg-yU-Iek"/>
                         <outlet property="searchDisplayController" destination="sZn-uF-7Tt" id="CPu-UR-vQA"/>
                         <outlet property="tableView" destination="PwR-EG-kcb" id="FfV-1X-UFF"/>
+                        <outlet property="totaalAantal" destination="zkD-RJ-UQz" id="kV4-YF-IWN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgc-aO-Dzp" sceneMemberID="firstResponder"/>
