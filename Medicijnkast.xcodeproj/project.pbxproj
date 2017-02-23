@@ -25,6 +25,8 @@
 		B66B41521E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41511E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift */; };
 		B66B41561E4C194000DA2793 /* MPP_short.csv in Resources */ = {isa = PBXBuildFile; fileRef = B66B41551E4C194000DA2793 /* MPP_short.csv */; };
 		B66B41581E4D1F0100DA2793 /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66B41571E4D1F0100DA2793 /* ShoppingListViewController.swift */; };
+		B69D8A881E5E887000693F12 /* Rekenen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D8A871E5E887000693F12 /* Rekenen.swift */; };
+		B69D8A8A1E5F354700693F12 /* CompareAankoopLijstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +50,8 @@
 		B66B41511E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMedicijnTableViewCell.swift; sourceTree = "<group>"; };
 		B66B41551E4C194000DA2793 /* MPP_short.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MPP_short.csv; path = Medicijnkast/MPP_short.csv; sourceTree = "<group>"; };
 		B66B41571E4D1F0100DA2793 /* ShoppingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
+		B69D8A871E5E887000693F12 /* Rekenen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rekenen.swift; sourceTree = "<group>"; };
+		B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareAankoopLijstViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,8 @@
 				B61319B81E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift */,
 				B66B41511E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift */,
 				B66B41381E4B4B9400DA2793 /* Main.storyboard */,
+				B69D8A871E5E887000693F12 /* Rekenen.swift */,
+				B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */,
 				B66B413E1E4B4B9400DA2793 /* Assets.xcassets */,
 				B66B41401E4B4B9400DA2793 /* LaunchScreen.storyboard */,
 				B66B41431E4B4B9400DA2793 /* Info.plist */,
@@ -192,6 +198,8 @@
 				B61319B91E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift in Sources */,
 				B66B41521E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift in Sources */,
 				B66B41371E4B4B9300DA2793 /* KastViewController.swift in Sources */,
+				B69D8A8A1E5F354700693F12 /* CompareAankoopLijstViewController.swift in Sources */,
+				B69D8A881E5E887000693F12 /* Rekenen.swift in Sources */,
 				B66B41501E4B63AF00DA2793 /* MedicijnTableViewCell.swift in Sources */,
 				B61319BB1E57CF06004AD4D7 /* MedicijnDetailViewController.swift in Sources */,
 				B61319BD1E57E5D5004AD4D7 /* CoreDataStack.swift in Sources */,

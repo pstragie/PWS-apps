@@ -15,12 +15,75 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let coreData = CoreDataStack()
+    var totalePrijs:Dictionary<String,Double> = [:]
+    var gdkp:Dictionary<String,Dictionary<String,Double>> = [:]
+    var gdkpprijs:Double = 0.0
+    var gdkpnaam:Dictionary<String,Array<String>> = [:]
+    var verschil:Double = 0.0
 
     // MARK: -
+    @IBOutlet weak var showGraphButton: UIButton!
+    
+    @IBOutlet var popButton: UIButton!
+    @IBAction func popButton(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+            self.graphView.center.x += 1000
+        }, completion: nil
+        )
+        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        
+        popButton.isHidden = true
+        popButton.isEnabled = false
+    }
+    @IBOutlet weak var totalePupr: UILabel!
+    @IBOutlet weak var totaalRemA: UILabel!
+    @IBOutlet weak var totaalRemW: UILabel!
+    
+    @IBOutlet weak var altPupr: UILabel!
+    @IBOutlet weak var altRema: UILabel!
+    @IBOutlet weak var altRemw: UILabel!
+    
+    @IBOutlet weak var verschilPupr: UILabel!
+    @IBOutlet weak var verschilRema: UILabel!
+    @IBOutlet weak var verschilRemw: UILabel!
     
     @IBOutlet var messageLabel: UILabel!
+    @IBOutlet weak var showAlternativeButton: UIButton!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
+    
+    @IBAction func showAlternativeButton(_ sender: UIButton) {
+    }
+    @IBAction func closeGraphView(_ sender: UIButton) {
+        //view.willRemoveSubview(blurEffectView)
+        UIView.animate(withDuration: 0.0, delay: 0.0, options: [], animations: {
+            self.graphView.center.x += self.view.bounds.width
+        }, completion: nil
+        )
+        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        
+        popButton.isHidden = true
+        popButton.isEnabled = false
+    }
+    @IBOutlet var graphView: UIView!
+    
+    @IBAction func showGraphView(_ sender: UIButton) {
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+            if self.graphView.center.x >= self.view.bounds.width {
+                self.graphView.center.x -= self.view.bounds.width
+            } else {
+                self.graphView.center.x += self.view.bounds.width
+            }
+        }, completion: nil
+        )
+        
+        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        graphView.tintColor = UIColor.white
+        popButton.isHidden = false
+        popButton.isEnabled = true
+        
+    }
     
     @IBAction func geavanceerdZoeken(_ sender: UIButton) {
     }
@@ -30,12 +93,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var searchBar: UISearchBar!
     // MARK: -
     
-    //private let persistentContainer = NSPersistentContainer(name: "Medicijnkast")
     var sortDescriptorIndex: Int?=nil
-    //var selectedScopeIndex: Int?=nil
     var searchActive: Bool = false
     
-    
+
     // MARK: -
     
     fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Medicijn> = {
@@ -58,7 +119,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        print("View will appear")
+        setupGraphView()
+        print("Aankooplijst view will appear")
         do {
             try self.fetchedResultsController.performFetch()
         } catch {
@@ -66,13 +128,19 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             print("Unable to Perform Fetch Request")
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
-        
+        print("bounds width : \(self.view.bounds.width)")
+        rekenen()
+        print("berekenen...")
         self.updateView()
     }
-    
+    override func viewDidLayoutSubviews() {
+        setupGraphView()
+        print("view Did Layout subviews")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("View did load!")
+        print("Aankooplijst view did load!")
+        showGraphButton.layer.cornerRadius = 8
         setUpSearchBar()
         navigationItem.title = "Aankooplijst"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
@@ -86,7 +154,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         }
         
         self.updateView()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
     
@@ -97,6 +164,15 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         present(vc, animated: true)
     }
 
+    func setupGraphView() {
+        print("bounds width : \(self.view.bounds.width)")
+        print("current x: \(self.graphView.center.x)")
+        self.graphView.center.x -= view.bounds.width
+        print("new x: \(graphView.center.x)")
+        graphView.layer.cornerRadius = 8
+        graphView.layer.borderWidth = 1
+        graphView.layer.borderColor = UIColor.black.cgColor
+    }
     
     // MARK: - search bar related
     fileprivate func setUpSearchBar() {
@@ -302,7 +378,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             let selectedObject = fetchedResultsController.object(at: indexPath)
             destination.medicijn = selectedObject
             
-            //navigationController?.pushViewController(destination, animated: true)
+        case "SegueFromShopToCompare":
+            let destination = segue.destination as! CompareAankoopLijstViewController
+            let selectedObject = fetchedResultsController.fetchedObjects
+            destination.aankooplijst = selectedObject
         default:
             print("Unknown segue: \(segue.identifier)")
         }
@@ -310,15 +389,74 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     // MARK: - View Methods
+    private func TotalePrijs(managedObjectContext: NSManagedObjectContext) -> Dictionary<String,Double> {
+        let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+        let pred = NSPredicate(format: "aankoop == true")
+        fetchReq.predicate = pred
+        
+        var totaleprijs:Dictionary<String,Double> = [:]
+        
+        // fetch alle medicijnen in aankooplijst (aankoop == true)
+        var totpupr: Double = 0.0
+        var totrema: Double = 0.0
+        var totremw: Double = 0.0
+        do {
+            let medicijnen = try managedObjectContext.fetch(fetchReq)
+            for med in medicijnen {
+                totpupr += (med.pupr?.doubleValue)!
+                totrema += (med.rema?.doubleValue)!
+                totremw += (med.remw?.doubleValue)!
+            }
+            totaleprijs["pupr"] = totpupr
+            totaleprijs["rema"] = totrema
+            totaleprijs["remw"] = totremw
+            
+
+        } catch {
+            return ["pupr":1.0, "rema":1.0, "remw":1.0]
+        }
+        return totaleprijs
+    }
+
+    private func rekenen() {
+        // Rekenen
+        
+        totalePrijs = TotalePrijs(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
+        totalePupr.text = "\((totalePrijs["pupr"])!) €"
+        totaalRemA.text = "\((totalePrijs["rema"])!) €"
+        totaalRemW.text = "\((totalePrijs["remw"])!) €"
+        /*
+        print("totale prijs: \(totalePrijs)")
+        for c in ["pupr", "rema", "remw"] {
+            gdkp = fetchCheapest(categorie: c)
+            gdkpprijs = berekenGoedkoopsteAlternatief(vosdict: gdkp, categorie: c)
+            gdkpnaam = alternatieven(vosdict: gdkp, categorie: c)
+            verschil = berekenVerschil(categorie: c, huidig: totalePrijs, altern: gdkpprijs)
+            print("totale prijs: \(totalePrijs)")
+            print("categorie: \(c)")
+            print("gdkp: \(gdkp)")
+            print("gdkp prijs: \(gdkpprijs)")
+            print("gdkp naam: \(gdkpnaam)")
+            print("verschil: \(verschil)")
+        }
+        */
+        
+        altPupr.text = "\(berekenGoedkoopsteAlternatief(vosdict: fetchCheapest(categorie: "pupr"), categorie: "pupr")) €"
+        altRema.text = "\(berekenGoedkoopsteAlternatief(vosdict: fetchCheapest(categorie: "rema"), categorie: "rema")) €"
+        altRemw.text = "\(berekenGoedkoopsteAlternatief(vosdict: fetchCheapest(categorie: "remw"), categorie: "remw")) €"
+        
+        verschilPupr.text = "\(berekenVerschil(categorie: "pupr", huidig: totalePrijs, altern: berekenGoedkoopsteAlternatief(vosdict: fetchCheapest(categorie: "pupr"), categorie: "pupr"))) €"
+        verschilRema.text = "\(berekenVerschil(categorie: "rema", huidig: totalePrijs, altern: berekenGoedkoopsteAlternatief(vosdict: fetchCheapest(categorie: "rema"), categorie: "rema"))) €"
+        verschilRemw.text = "\(berekenVerschil(categorie: "remw", huidig: totalePrijs, altern: berekenGoedkoopsteAlternatief(vosdict: fetchCheapest(categorie: "remw"), categorie: "remw"))) € "
+    }
     
     private func setupView() {
         setupMessageLabel()
-        
-        updateView()
     }
     fileprivate func updateView() {
         print("Updating view...")
         var hasMedicijnen = false
+        
         
         var x:Int
         if let medicijnen = fetchedResultsController.fetchedObjects {
@@ -368,8 +506,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    
-    // MARK: -
+        // MARK: -
     
     private func setupMessageLabel() {
         messageLabel.text = "Je aankooplijst is leeg."
@@ -424,7 +561,6 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     // MARK: table data
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
-        print("aantal rijen: \(medicijnen.count)")
         tableView.layer.cornerRadius = 3
         tableView.layer.masksToBounds = true
         tableView.layer.borderWidth = 1
@@ -460,9 +596,6 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         return cell
     }
     
-    func totalePrijs() -> Double {
-        pupr
-    }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -511,5 +644,81 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
     }
-
+    
+    // Rekenen
+    
+    func fetchCheapest(categorie: String) -> Dictionary<String, Dictionary<String,Double>> {
+        
+        // fetch alle medicijnen in aankooplijst (aankoop == true)
+        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return ["vosnaam":["mpnm":0.0]] as Dictionary<String, Dictionary<String,Double>> }
+        var vosarray:Array<String> = []
+        for med in medicijnen {
+            // vosnaam opvragen
+            vosarray.append(med.vosnm!)
+        }
+        
+        // alle medicijnen opvragen
+        // voor elke stofnaam het goedkoopste alternatief zoeken (cheapest true of zelf berekenen?)
+        var resultaat:Array<Medicijn> = []
+        var vosdict: Dictionary<String,Dictionary<String,Double>> = [:]
+        
+        for vos in vosarray {
+            let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+            let predicate = NSPredicate(format: "vosnm == %@", vos)
+            fetchReq.predicate = predicate
+            do {
+                resultaat = try CoreDataStack.shared.persistentContainer.viewContext.fetch(fetchReq)
+            } catch {
+                print("fetching error in calculateCheapestPrice")
+            }
+            
+            // Steek merknaam en prijscategorie (pupr, rema of remw) in dictionary
+            var prijsdict:Dictionary<Double, String> = [:]
+            for med in resultaat {
+                if categorie == "pupr" {
+                    prijsdict[med.pupr!.doubleValue!] = med.mpnm!
+                }
+                if categorie == "rema" {
+                    prijsdict[med.rema!.doubleValue!] = med.mpnm!
+                }
+                if categorie == "remw" {
+                    prijsdict[med.remw!.doubleValue!] = med.mpnm!
+                }
+            }
+            
+            // Pik er het medicijn met de laagste prijs uit
+            let minprijs = prijsdict.keys.min()
+            let minprijsMerknaam = prijsdict[minprijs!]
+            
+            vosdict[vos] = [minprijsMerknaam!:minprijs!]
+        }
+        return vosdict
+    }
+    
+    func berekenGoedkoopsteAlternatief(vosdict: Dictionary<String, Dictionary<String,Double>>, categorie: String) -> Double {
+        // Bereken totaal
+        var totaalprijs:Double = 0.0
+        for (_, value) in vosdict {  /* key = vosnm, value = dict(merknaam, prijs) */
+            for (_, v) in value {
+                totaalprijs += v
+            }
+        }
+        return totaalprijs
+    }
+    
+    func alternatieven(vosdict: Dictionary<String, Dictionary<String,Double>>, categorie: String) -> Dictionary<String,Array<String>> {
+        // Bereken totaal
+        var lijstalternatieven:Dictionary<String,Array<String>> = [:]
+        
+        for (key, value) in vosdict {  /* key = vosnm, value = dict(merknaam, prijs) */
+            lijstalternatieven[key] = Array(value.keys)
+        }
+        return lijstalternatieven
+    }
+    func berekenVerschil(categorie: String, huidig:Dictionary<String,Double>, altern: Double) -> Double {
+        let prijsverschil = huidig[categorie]! - altern
+        
+        return prijsverschil
+    }
 }
+
