@@ -380,7 +380,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		tableView.isHidden = false
 		messageLabel.isHidden = true
 		self.tableView.reloadData()
-		tableView.reloadData()
 		} else {
 			tableView.isHidden = !hasMedicijnen
 			messageLabel.isHidden = hasMedicijnen
