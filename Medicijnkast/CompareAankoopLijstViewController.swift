@@ -51,16 +51,20 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count:Int?
         
-        tableView.layer.cornerRadius = 3
-        tableView.layer.masksToBounds = true
-        tableView.layer.borderWidth = 1
+        
         
         if tableView == self.tableViewLeft {
+            tableViewLeft.layer.cornerRadius = 3
+            tableViewLeft.layer.masksToBounds = true
+            tableViewLeft.layer.borderWidth = 1
             guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
             count = medicijnen.count
         }
         
         if tableView == self.tableViewRight {
+            tableViewRight.layer.cornerRadius = 3
+            tableViewRight.layer.masksToBounds = true
+            tableViewRight.layer.borderWidth = 1
             count = receivedData?.count
         }
         return count!
@@ -104,6 +108,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             // Configure Cell
             cell?.layer.cornerRadius = 3
             cell?.layer.masksToBounds = true
+            cell?.layer.borderWidth = 1
             
             cell?.mpnm.text = medicijn.mpnm
             cell?.mppnm.text = medicijn.mppnm
@@ -140,6 +145,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             // Configure Cell
             cell?.layer.cornerRadius = 3
             cell?.layer.masksToBounds = true
+            cell?.layer.borderWidth = 1
             
             cell?.mpnm.text = medicijn.mpnm
             cell?.mppnm.text = medicijn.mppnm
