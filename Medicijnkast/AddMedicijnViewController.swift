@@ -451,9 +451,9 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         cell.vosnm.text = medicijn.vosnm
         cell.nirnm.text = medicijn.nirnm
         
-        cell.pupr.text = "Prijs: \((medicijn.pupr)!) €"
-        cell.rema.text = "remA: \((medicijn.rema)!) €"
-        cell.remw.text = "remW: \((medicijn.remw)!) €"
+        cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
+        cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
+        cell.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
         cell.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
         
         return cell

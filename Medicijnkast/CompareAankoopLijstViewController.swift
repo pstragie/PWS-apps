@@ -22,9 +22,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         // Do any additional setup after loading the view.
         navigationItem.title = "Vergelijk"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
-        
-        
-        print("compare list (mppcv): \(receivedData!)")
+
         do {
             try self.fetchedResultsController.performFetch()
         } catch {
@@ -35,6 +33,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         
         self.tableViewLeft.reloadData()
         self.tableViewRight.reloadData()
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
@@ -57,14 +56,15 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             tableViewLeft.layer.cornerRadius = 3
             tableViewLeft.layer.masksToBounds = true
             tableViewLeft.layer.borderWidth = 1
-            guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
-            count = medicijnen.count
+    
+            count = receivedData?.count
         }
         
         if tableView == self.tableViewRight {
             tableViewRight.layer.cornerRadius = 3
             tableViewRight.layer.masksToBounds = true
             tableViewRight.layer.borderWidth = 1
+            
             count = receivedData?.count
         }
         return count!
@@ -72,7 +72,6 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var height:Float = 110.0
-        
         if tableView == self.tableViewLeft {
             height = 110.0
         }
@@ -83,17 +82,24 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         return CGFloat(height)
     }
     
+    var prijsremaRight:Float? = 0.00
+    var prijsremaLeft:Float? = 0.00
+    var prijzenRight:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
+    var prijzenLeft:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:MedicijnTableViewCell?
         
+        
         if tableView == self.tableViewLeft {
+            tableViewRight.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
             
             // Filter medicijnen
             let predicate = NSPredicate(format: "aankoop == true")
             self.fetchedResultsController.fetchRequest.predicate = predicate
             
-            //following lines might throw fatalerror when selecting a row in section (9 in 0).
             do {
                 try self.fetchedResultsController.performFetch()
             } catch {
@@ -102,10 +108,23 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 print("\(fetchError), \(fetchError.localizedDescription)")
             }
 
+      
             cell?.selectionStyle = .none
             // Fetch Medicijn
             let medicijn = fetchedResultsController.object(at: indexPath)
-            // Configure Cell
+            
+            // Color cells!!!
+            prijsremaLeft = medicijn.rema?.floatValue
+            for (ip, dict) in prijzenRight {
+                if ip == indexPath {
+                    for (_, r) in dict {
+                        if prijsremaLeft! > r {
+                            tableViewRight.cellForRow(at: indexPath)?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.2).cgColor
+                        }
+                    }
+                }
+            }
+            // Layout cell
             cell?.layer.cornerRadius = 3
             cell?.layer.masksToBounds = true
             cell?.layer.borderWidth = 1
@@ -115,18 +134,18 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.vosnm.text = medicijn.vosnm
             cell?.nirnm.text = medicijn.nirnm
             
-            cell?.pupr.text = "Prijs: \((medicijn.pupr)!) €"
-            cell?.rema.text = "remA: \((medicijn.rema)!) €"
-            cell?.remw.text = "remW: \((medicijn.remw)!) €"
+            cell?.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
+            cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
+            cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
             cell?.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
         }
         
         if tableView == self.tableViewRight {
+            tableViewLeft.scrollToRow(at: indexPath, at: .top, animated: true)
+            
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
 
             // Filter medicijnen
-            //Test
-            //let predicate = NSPredicate(format: "aankoop == true")
             let predicate = NSPredicate(format: "mppcv IN %@", receivedData!)
             self.fetchedResultsController.fetchRequest.predicate = predicate
 
@@ -138,11 +157,18 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 print("\(fetchError), \(fetchError.localizedDescription)")
             }
 
+            
+            
             cell?.selectionStyle = .none
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            print("medicijn: \(medicijn)")
-            // Configure Cell
+            
+            var prijzendict:Dictionary<String,Float> = [:]
+            prijsremaRight = medicijn.rema?.floatValue
+            prijzendict[medicijn.mppcv!] = prijsremaRight
+            prijzenRight[indexPath] = prijzendict
+
+            // Layout cell
             cell?.layer.cornerRadius = 3
             cell?.layer.masksToBounds = true
             cell?.layer.borderWidth = 1
@@ -152,12 +178,12 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.vosnm.text = medicijn.vosnm
             cell?.nirnm.text = medicijn.nirnm
             
-            cell?.pupr.text = "Prijs: \((medicijn.pupr)!) €"
-            cell?.rema.text = "remA: \((medicijn.rema)!) €"
-            cell?.remw.text = "remW: \((medicijn.remw)!) €"
+            cell?.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
+            cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
+            cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
             cell?.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
         }
-        
+    
         return cell!
         
     }

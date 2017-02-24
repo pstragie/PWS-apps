@@ -15,11 +15,11 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let coreData = CoreDataStack()
-    var totalePrijs:Dictionary<String,Double> = [:]
-    var gdkp:Dictionary<String,Dictionary<String,Double>> = [:] /* [vosnm: [mpnm, 8.70] */
-    var gdkpprijs:Double = 0.0
+    var totalePrijs:Dictionary<String,Float> = [:]
+    var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mpnm, 8.70] */
+    var gdkpprijs:Float = 0.0
     var gdkpnaam:Dictionary<String,String> = [:] /* [vosnm: mpnm */
-    var verschil:Double = 0.0
+    var verschil:Float = 0.0
 
     // MARK: -
     @IBOutlet weak var showGraphButton: UIButton!
@@ -108,7 +108,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             print("Unable to Perform Fetch Request")
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
-        print("bounds width : \(self.view.bounds.width)")
         rekenen()
         print("berekenen...")
         self.updateView()
@@ -164,10 +163,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func setupGraphView() {
-        print("bounds width : \(self.view.bounds.width)")
-        print("current x: \(self.graphView.center.x)")
         self.graphView.center.x -= view.bounds.width
-        print("new x: \(graphView.center.x)")
         graphView.layer.cornerRadius = 8
         graphView.layer.borderWidth = 1
         graphView.layer.borderColor = UIColor.black.cgColor
@@ -394,23 +390,23 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     // MARK: - View Methods
-    private func TotalePrijs(managedObjectContext: NSManagedObjectContext) -> Dictionary<String,Double> {
+    private func TotalePrijs(managedObjectContext: NSManagedObjectContext) -> Dictionary<String,Float> {
         let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
         let pred = NSPredicate(format: "aankoop == true")
         fetchReq.predicate = pred
         
-        var totaleprijs:Dictionary<String,Double> = [:]
+        var totaleprijs:Dictionary<String,Float> = [:]
         
         // fetch alle medicijnen in aankooplijst (aankoop == true)
-        var totpupr: Double = 0.0
-        var totrema: Double = 0.0
-        var totremw: Double = 0.0
+        var totpupr: Float = 0.0
+        var totrema: Float = 0.0
+        var totremw: Float = 0.0
         do {
             let medicijnen = try managedObjectContext.fetch(fetchReq)
             for med in medicijnen {
-                totpupr += (med.pupr?.doubleValue)!
-                totrema += (med.rema?.doubleValue)!
-                totremw += (med.remw?.doubleValue)!
+                totpupr += (med.pupr?.floatValue)!
+                totrema += (med.rema?.floatValue)!
+                totremw += (med.remw?.floatValue)!
             }
             totaleprijs["pupr"] = totpupr
             totaleprijs["rema"] = totrema
@@ -473,7 +469,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             hasMedicijnen = medicijnen.count > 0
             print("medicijnen aantal: \(medicijnen.count)")
             x = medicijnen.count
-            
+            showGraphButton.isHidden = false
             let totaalAankoop = countAankoop(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
             if x != 0 && searchActive {
                 totaalAantal.text = "\(x)/\(totaalAankoop)"
@@ -481,6 +477,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
                 totaalAantal.text = "\(totaalAankoop)"
             }
             
+        } else {
+            showGraphButton.isHidden = true
+            totaalAantal.text = ""
         }
         if searchActive {
             tableView.isHidden = false
@@ -508,7 +507,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         do {
             let aantal = try managedObjectContext.fetch(fetchReq).count
-            print("\(type(of: aantal))")
             return aantal
         } catch {
             return 0
@@ -598,9 +596,9 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         cell.vosnm.text = medicijn.vosnm
         cell.nirnm.text = medicijn.nirnm
         
-        cell.pupr.text = "Prijs: \((medicijn.pupr)!) €"
-        cell.rema.text = "remA: \((medicijn.rema)!) €"
-        cell.remw.text = "remW: \((medicijn.remw)!) €"
+        cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
+        cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
+        cell.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
         cell.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
         return cell
     }
@@ -656,10 +654,10 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     
     // Rekenen
     
-    func fetchCheapest(categorie: String) -> Dictionary<String, Dictionary<String,Double>> {
+    func fetchCheapest(categorie: String) -> Dictionary<String, Dictionary<String,Float>> {
         
         // fetch alle medicijnen in aankooplijst (aankoop == true)
-        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return ["vosnaam":["mpnm":0.0]] as Dictionary<String, Dictionary<String,Double>> }
+        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return ["vosnaam":["mpnm":0.0]] as Dictionary<String, Dictionary<String,Float>> }
         var vosarray:Array<String> = []
         for med in medicijnen {
             // vosnaam opvragen
@@ -669,7 +667,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         // alle medicijnen opvragen
         // voor elke stofnaam het goedkoopste alternatief zoeken (cheapest true of zelf berekenen?)
         var resultaat:Array<Medicijn> = []
-        var vosdict: Dictionary<String,Dictionary<String,Double>> = [:]
+        var vosdict: Dictionary<String,Dictionary<String,Float>> = [:]
         
         for vos in vosarray {
             let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
@@ -682,33 +680,30 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             }
             
             // Steek merknaam en prijscategorie (pupr, rema of remw) in dictionary
-            var prijsdict:Dictionary<Double, String> = [:]
+            var prijsdict:Dictionary<Float, String> = [:]
             for med in resultaat {
                 if categorie == "pupr" {
-                    prijsdict[med.pupr!.doubleValue!] = med.mppcv!
+                    prijsdict[med.pupr!.floatValue!] = med.mppcv!
                 }
                 if categorie == "rema" {
-                    prijsdict[med.rema!.doubleValue!] = med.mppcv!
+                    prijsdict[med.rema!.floatValue!] = med.mppcv!
                 }
                 if categorie == "remw" {
-                    prijsdict[med.remw!.doubleValue!] = med.mppcv!
+                    prijsdict[med.remw!.floatValue!] = med.mppcv!
                 }
             }
-            print("prijsdict: \(prijsdict)")
             // Pik er het medicijn met de laagste prijs uit
             let minprijs = prijsdict.keys.min()
             let minprijsMppcv = prijsdict[minprijs!]
-            print("minprijs: \(minprijs!)")
-            print("minprijsMppcv: \(minprijsMppcv!)")
             
             vosdict[vos] = [minprijsMppcv!:minprijs!]
         }
         return vosdict
     }
     
-    func berekenGoedkoopsteAlternatief(vosdict: Dictionary<String, Dictionary<String,Double>>, categorie: String) -> Double {
+    func berekenGoedkoopsteAlternatief(vosdict: Dictionary<String, Dictionary<String,Float>>, categorie: String) -> Float {
         // Bereken totaal
-        var totaalprijs:Double = 0.0
+        var totaalprijs:Float = 0.0
         for (_, value) in vosdict {  /* key = vosnm, value = dict(merknaam, prijs) */
             for (_, v) in value {
                 totaalprijs += v
@@ -717,7 +712,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         return totaalprijs
     }
     
-    func alternatieven(vosdict: Dictionary<String, Dictionary<String,Double>>, categorie: String) -> Dictionary<String,String> {
+    func alternatieven(vosdict: Dictionary<String, Dictionary<String,Float>>, categorie: String) -> Dictionary<String,String> {
         // Bereken totaal
         var lijstalternatieven:Dictionary<String,String> = [:]
         
@@ -730,7 +725,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         }
         return lijstalternatieven
     }
-    func berekenVerschil(categorie: String, huidig:Dictionary<String,Double>, altern: Double) -> Double {
+    func berekenVerschil(categorie: String, huidig:Dictionary<String,Float>, altern: Float) -> Float {
         let prijsverschil = huidig[categorie]! - altern
         
         return prijsverschil
