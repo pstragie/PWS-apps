@@ -61,14 +61,12 @@ class MedicijnDetailViewCell: UITableViewCell {
     @IBOutlet weak var kastimage: UIImageView!
     @IBOutlet var aankoop: UILabel!
     @IBOutlet weak var aankoopimage: UIImageView!
-    
+    @IBOutlet weak var updatedAt: UILabel!
     @IBAction func morePVT(_ sender: UIButton) {
-        
     }
     
     @IBOutlet weak var moreButton: UIButton!
     @IBAction func moreMPG(_ sender: UIButton) {
-        
     }
 
     @IBOutlet weak var noteButton: UIButton!

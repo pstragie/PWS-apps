@@ -142,6 +142,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             cell.noteButton.layer.backgroundColor = UIColor.gray.cgColor
         }
         
+        // Footer
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .medium
+        let timeString = dateFormatter.string(from: medicijn?.updatedAt as! Date)
+        cell.updatedAt.text = timeString
+        
         return cell
     }
     func numberOfSections(in tableView: UITableView) -> Int {

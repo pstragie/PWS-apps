@@ -7,6 +7,7 @@
         <attribute name="boximage" optional="YES" attributeType="Binary" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="bt" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="cheapest" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="expdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="galcv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="galnm" optional="YES" attributeType="String" syncable="YES"/>
@@ -27,8 +28,8 @@
         <attribute name="mppcv" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="mppnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="narcotic" optional="YES" attributeType="Boolean" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="ninnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nirnm" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="nlnnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ogc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="orphan" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -44,12 +45,14 @@
         <attribute name="stofcv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stofnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ti" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="update" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="use" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="volgnr" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="vosnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wadan" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Medicijn" positionX="-36" positionY="162" width="128" height="748"/>
+        <element name="Medicijn" positionX="-36" positionY="162" width="128" height="795"/>
     </elements>
 </model>

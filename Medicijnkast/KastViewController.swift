@@ -41,6 +41,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	@IBOutlet weak var searchBar: UISearchBar!
 	@IBOutlet weak var menuView: UIView!
 	@IBOutlet weak var btnCloseMenuView: UIButton!
+	@IBOutlet weak var loadProgress: UILabel!
 	
 	// MARK: - Referencing Actions
 	@IBAction func geavanceerdZoeken(_ sender: UIButton) {
@@ -192,12 +193,13 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		super.viewDidAppear(true)
 		print("View did appear")
 		if coreData.seedCoreDataContainerIfFirstLaunch() {
+			appDelegate.cleanCoreDataMedicijn()
 			progressView.isHidden = false
 			progressBar.setProgress(0, animated: true)
 			DispatchQueue.global().async {
 				self.loadAllAttributes()
 				print("did load progressie: \(self.progressie)")
-				if self.progressie == 1 {
+				if self.progressie >= 0.95 {
 					self.progressView.isHidden = true
 				}
 			}
@@ -214,7 +216,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		for item in items {
 			self.readLines += 1
 			self.progressie = self.readLines/self.totalLines
-			print("progressie in did appear: \(self.progressie)")
+			//print("progressie in did appear: \(self.progressie)")
 			self.saveAttributes(dict: item)
 			DispatchQueue.main.sync() {
 				self.updateProgressBar()
@@ -225,42 +227,49 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	func updateProgressBar() {
 		// To set a label with digital follow-up
 		self.progressBar.progress = self.progressie
-		print("progressBar: \(self.progressBar.progress)")
+		let procentGeladen = Int(self.progressie*100)
+		loadProgress.text = "\(procentGeladen) %"
+		//print("progressBar: \(self.progressBar.progress)")
 		// To set progressBar
 		self.progressBar.setProgress(self.progressie, animated: true)
 	}
 	
 	// MARK: - Save attributes
 	func saveAttributes(dict: [String:String]) {
-		print("Saving attributes...")
+		//print("Saving attributes...")
 		
 		let context = CoreDataStack.shared.persistentContainer.viewContext
 		let entityMedicijn = NSEntityDescription.entity(forEntityName: "Medicijn", in: context)
-		let newMedicijn = NSManagedObject(entity: entityMedicijn!, insertInto: context)
+		let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+		privateMOC.parent = context
 		
-		for (key, value) in dict {
-			//print("key: \(key) and value: \(value)")
-			//print("\(type(of:value))")
-			if value == "true" {
-				//print("value is true")
-				newMedicijn.setValue(1, forKey: key)
-			} else if value == "false" {
-				//print("value is false")
-				newMedicijn.setValue(0, forKey: key)
-			} else if value == "" {
-				//print("value is empty")
-				newMedicijn.setValue("", forKey: key)
-			} else {
-				//print("value is not boolean")
-				newMedicijn.setValue(value, forKey: key)
+		privateMOC.perform {
+			let newMedicijn = NSManagedObject(entity: entityMedicijn!, insertInto: privateMOC)
+			
+			for (key, value) in dict {
+				//print("key: \(key) and value: \(value)")
+				//print("\(type(of:value))")
+				if value == "true" {
+					//print("value is true")
+					newMedicijn.setValue(1, forKey: key)
+				} else if value == "false" {
+					//print("value is false")
+					newMedicijn.setValue(0, forKey: key)
+				} else if value == "" {
+					//print("value is empty")
+					newMedicijn.setValue("empty", forKey: key)
+				} else {
+					//print("value is not boolean")
+					newMedicijn.setValue(value, forKey: key)
+				}
 			}
-		}
-		
-		do {
-			try context.save()
-			//print("context saved")
-		} catch let error as NSError {
-			print("Could not save \(error), \(error.userInfo)")
+			newMedicijn.setValue(Date(), forKey: "createdAt")
+			do {
+				try privateMOC.save()
+				//print("context saved")
+			} catch let error as NSError {
+				print("Could not save \(error), \(error.userInfo)")
+			}
 		}
 	}
 
