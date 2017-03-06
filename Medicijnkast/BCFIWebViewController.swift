@@ -29,7 +29,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
         webstring = link
-        navigationItem.title = "BCFI: \(medicijn?.mpnm)"
+        navigationItem.title = "BCFI: \((medicijn?.mpnm)!)"
         
         //let webstring = "https://www.apple.com"
         let myURL = URL(string: webstring!)      // ! because medicijn?

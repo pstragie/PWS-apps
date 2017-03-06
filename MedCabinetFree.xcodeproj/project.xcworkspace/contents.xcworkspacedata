@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Medicijnkast.xcodeproj">
+      location = "self:/Users/pstragier/Documents/PWS/MedCabinetFree/MedCabinetFree.xcodeproj">
    </FileRef>
 </Workspace>

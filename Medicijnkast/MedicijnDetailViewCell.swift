@@ -20,12 +20,16 @@ class MedicijnDetailViewCell: UITableViewCell {
     @IBOutlet var mppnm: UILabel!
     
     
-    @IBOutlet var stofnm: UILabel!
-    @IBOutlet var vosnm: UILabel!
-    @IBOutlet var irnm: UILabel!
-    @IBOutlet weak var galnm: UILabel!
-    @IBOutlet weak var ppgal: UILabel!
-    @IBOutlet weak var ti: UILabel!
+    @IBOutlet weak var stofnm: UIButton!
+    @IBOutlet weak var vosnm: UIButton!
+    @IBOutlet weak var irnm: UIButton!
+    @IBOutlet weak var galnm: UIButton!
+    @IBOutlet weak var ti: UIButton!
+    //@IBOutlet var stofnm: UILabel!
+    //@IBOutlet var vosnm: UILabel!
+    //@IBOutlet var irnm: UILabel!
+    //@IBOutlet weak var galnm: UILabel!
+    //@IBOutlet weak var ti: UILabel!
     
     @IBOutlet weak var stofcv: UILabel!
     @IBOutlet weak var leeg1: UILabel!

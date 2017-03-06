@@ -11,30 +11,32 @@ import CoreData
 
 class ShoppingListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     
-    // MARK: - Properties
-    
+    // MARK: - Properties Constants
+    let segueShowDetail = "SegueFromShopToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let coreData = CoreDataStack()
+    
+    // MARK: - Properties Variables
     var totalePrijs:Dictionary<String,Float> = [:]
     var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mpnm, 8.70] */
     var gdkpprijs:Float = 0.0
     var gdkpnaam:Dictionary<String,String> = [:] /* [vosnm: mpnm */
     var verschil:Float = 0.0
 
-    // MARK: -
-    @IBOutlet weak var showGraphButton: UIButton!
+    var sortDescriptorIndex: Int?=nil
+    var selectedScope: Int = -1
+    var selectedSegmentIndex: Int = 0
+    var searchActive: Bool = false
     
-    @IBOutlet var popButton: UIButton!
-    @IBAction func popButton(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.graphView.center.x += 1000
-        }, completion: nil
-        )
-        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        
-        popButton.isHidden = true
-        popButton.isEnabled = false
-    }
+    var zoekwoord:String = ""
+    var filterKeyword:String = "mpnm"
+    var zoekoperator:String = "BEGINSWITH"
+    var format:String = "mpnm BEGINSWITH[c] %@"
+    var sortKeyword:String = "mpnm"
+    
+    // MARK: - Referencing Outlets
+    @IBOutlet weak var showGraphButton: UIButton!
+    @IBOutlet weak var popButton: UIButton!
     @IBOutlet weak var totalePupr: UILabel!
     @IBOutlet weak var totaalRemA: UILabel!
     @IBOutlet weak var totaalRemW: UILabel!
@@ -47,33 +49,116 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var verschilRema: UILabel!
     @IBOutlet weak var verschilRemw: UILabel!
     
+    @IBOutlet weak var totaalAantal: UILabel!
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet weak var showAlternativeButton: UIButton!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var segmentedButton: UISegmentedControl!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
+    @IBOutlet var graphView: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var bestellen: UIBarButtonItem!
+    
+    @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var btnCloseMenuView: UIButton!
+    // MARK: - Referencing Actions
+    @IBAction func popButton(_ sender: UIButton) {
+        print("popButton pressed!")
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+            self.graphView.center.x -= self.view.bounds.width
+        }, completion: nil
+        )
+        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        popButton.isHidden = true
+        popButton.isEnabled = false
+    }
+    
+    @IBAction func btnCloseMenuView(_ sender: UIButton) {
+        print("btnCloseMenuView pressed!")
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+            self.menuView.center.x -= self.view.bounds.width
+        }, completion: nil
+        )
+        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        btnCloseMenuView.isHidden = true
+        btnCloseMenuView.isEnabled = false
+    }
+    
+    @IBAction func showMenuView(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+            print("menuView center x: \(self.menuView.center.x)")
+            print("bounds: \(self.view.bounds.width)")
+            if self.menuView.center.x >= 0 {
+                self.menuView.center.x -= self.view.bounds.width
+                self.btnCloseMenuView.isHidden = true
+                self.btnCloseMenuView.isEnabled = false
+            } else {
+                self.menuView.center.x += self.view.bounds.width
+                if self.graphView.center.x >= 0 {
+                    self.graphView.center.x -= self.view.bounds.width
+                }
+            }
+        }, completion: nil
+        )
+        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        menuView.tintColor = UIColor.white
+        btnCloseMenuView.isHidden = false
+        btnCloseMenuView.isEnabled = true
+        popButton.isEnabled = false
+        popButton.isHidden = true
+        
+    }
+
+    @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
+        print("swipe action")
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+            self.menuView.center.x -= self.view.bounds.width
+        }, completion: nil
+        )
+        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        btnCloseMenuView.isHidden = true
+        btnCloseMenuView.isEnabled = false
+        self.popButton.isEnabled = false
+        self.menuView.center.x -= self.view.bounds.width
+        
+    }
+    
+    @IBAction func swipeToCloseGraphView(recognizer: UISwipeGestureRecognizer) {
+        print("swipe action")
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+            self.menuView.center.x -= self.view.bounds.width
+        }, completion: nil
+        )
+        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        popButton.isHidden = true
+        popButton.isEnabled = false
+    }
     
     @IBAction func showAlternativeButton(_ sender: UIButton) {
     }
     @IBAction func closeGraphView(_ sender: UIButton) {
         //view.willRemoveSubview(blurEffectView)
-        UIView.animate(withDuration: 0.0, delay: 0.0, options: [], animations: {
-            self.graphView.center.x += self.view.bounds.width
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+            self.graphView.center.x -= self.view.bounds.width
+            self.popButton.isEnabled = false
         }, completion: nil
         )
-        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        
+        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         popButton.isHidden = true
-        popButton.isEnabled = false
     }
-    @IBOutlet var graphView: UIView!
     
     @IBAction func showGraphView(_ sender: UIButton) {
-        
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            if self.graphView.center.x >= self.view.bounds.width {
+            print("graphView center x: \(self.graphView.center.x)")
+            print("bounds: \(self.view.bounds.width)")
+            if self.graphView.center.x >= 0 {
+                print(">0: \(self.graphView.center.x)")
                 self.graphView.center.x -= self.view.bounds.width
+                self.popButton.isEnabled = false
             } else {
+                print("<0: \(self.graphView.center.x)")
                 self.graphView.center.x += self.view.bounds.width
+                self.popButton.isEnabled = true
             }
         }, completion: nil
         )
@@ -81,64 +166,35 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         graphView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         graphView.tintColor = UIColor.white
         popButton.isHidden = false
-        popButton.isEnabled = true
         
+        
+    }
+    
+    func setupMenuView() {
+        self.menuView.center.x -= view.bounds.width
+        menuView.layer.cornerRadius = 8
+        menuView.layer.borderWidth = 1
+        menuView.layer.borderColor = UIColor.black.cgColor
+        self.btnCloseMenuView.isHidden = true
+        self.btnCloseMenuView.isEnabled = false
+    }
+    
+    func setupGraphView() {
+        print("original x: \(self.graphView.center.x)")
+        self.graphView.center.x -= view.bounds.width
+        print("new x: \(self.graphView.center.x)")
+        graphView.layer.cornerRadius = 8
+        graphView.layer.borderWidth = 1
+        graphView.layer.borderColor = UIColor.black.cgColor
+        showGraphButton.layer.cornerRadius = 8
+        self.popButton.isEnabled = false
+        self.popButton.isHidden = true
     }
     
     @IBAction func geavanceerdZoeken(_ sender: UIButton) {
     }
-    @IBOutlet weak var totaalAantal: UILabel!
-    @IBAction func bestellingPlaatsen(_ sender: UIButton) {
-    }
-    @IBOutlet weak var searchBar: UISearchBar!
-    // MARK: -
     
-    var sortDescriptorIndex: Int?=nil
-    var searchActive: Bool = false
-    
-    // MARK: - View Life Cycle
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        setupGraphView()
-        print("Aankooplijst view will appear")
-        do {
-            try self.fetchedResultsController.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        rekenen()
-        print("berekenen...")
-        self.updateView()
-    }
-    override func viewDidLayoutSubviews() {
-        setupGraphView()
-        print("view Did Layout subviews")
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print("Aankooplijst view did load!")
-        showGraphButton.layer.cornerRadius = 8
-        setUpSearchBar()
-        navigationItem.title = "Aankooplijst"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
-        setupView()
-        do {
-            try self.fetchedResultsController.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        self.updateView()
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
-    }
-
-    
-    // MARK: -
-    
+    // MARK: - fetchedResultsController
     fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Medicijn> = {
         
         // Create Fetch Request
@@ -154,6 +210,56 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         return fetchedResultsController
     }()
+    
+    // MARK: - View Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.appDelegate.saveContext()
+        print("Aankooplijst view will appear, fetching...")
+        
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
+        }
+        rekenen()
+        print("berekenen...")
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        
+        tableView.reloadData()
+        self.updateView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        setupGraphView()
+        setupMenuView()
+        print("view Did Layout subviews")
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("Aankooplijst view did load!")
+        setupLayout()
+        setUpSearchBar()
+        setupView()
+        
+        navigationItem.title = "Aankooplijst"
+        
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bestellen, target: self, action: #selector(bestellingDoorsturen))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
+
+        do {
+            try self.fetchedResultsController.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
+        }
+        
+        self.updateView()
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+    }
 
     // MARK: - share button
     func shareTapped() {
@@ -161,12 +267,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: true)
     }
-
-    func setupGraphView() {
-        self.graphView.center.x -= view.bounds.width
-        graphView.layer.cornerRadius = 8
-        graphView.layer.borderWidth = 1
-        graphView.layer.borderColor = UIColor.black.cgColor
+    
+    // MARK: - Bestelling doorsturen
+    func bestellingDoorsturen() {
     }
     
     // MARK: - search bar related
@@ -182,60 +285,161 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.tableHeaderView = searchBar
     }
     
+    // MARK: Layout
+    func setupLayout() {
+        segmentedButton.setTitle("B....", forSegmentAt: 0)
+        segmentedButton.setTitle("..c..", forSegmentAt: 1)
+        segmentedButton.setTitle("....e", forSegmentAt: 2)
+    }
+    
     // MARK: Set Scope
-    var filterKeyword = "mpnm"
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        print("Scope changed: \(selectedScope)")
         /* FILTER SCOPE */
         searchActive = true
         switch selectedScope {
         case 0:
             print("scope: merknaam")
             filterKeyword = "mpnm"
+            sortKeyword = "mpnm"
         case 1:
             print("scope: stofnaam")
             filterKeyword = "vosnm"
+            sortKeyword = "vosnm"
         case 2:
             print("scope: firmanaam")
             filterKeyword = "nirnm"
+            sortKeyword = "nirnm"
         case 3:
             print("scope: alles")
             filterKeyword = "alles"
+            sortKeyword = "mpnm"
         default:
             filterKeyword = "mpnm"
+            sortKeyword = "mpnm"
         }
-        var sortKeyword = "mpnm"
+        
+        print("scope changed: \(selectedScope)")
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
-        if searchBar.text!.isEmpty == false {
-            if filterKeyword == "alles" {
-                let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchBar.text!)
-                let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchBar.text!)
-                let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchBar.text!)
-                let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
-                let predicate2 = NSPredicate(format: "aankoop == true")
-                let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+        zoekwoord = searchBar.text!
+        self.filterContentForSearchText(searchText: searchBar.text!, scopeIndex: selectedScope)
+    }
+    
+    // MARK: Set search operator
+    @IBAction func indexChanged(_ sender: UISegmentedControl) {
+        switch segmentedButton.selectedSegmentIndex {
+        case 0:
+            zoekoperator = "BEGINSWITH"
+        case 1:
+            zoekoperator = "CONTAINS"
+        case 2:
+            zoekoperator = "ENDSWITH"
+        default:
+            zoekoperator = "BEGINSWITH"
+            break
+        }
+        
+        print("Segment changed: \(segmentedButton.selectedSegmentIndex)")
+        // Focus searchBar (om onmiddellijk typen mogelijk te maken)
+        searchBar.updateFocusIfNeeded()
+        searchBar.becomeFirstResponder()
+        searchActive = true
+        self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
+        // Tell the searchBar that the searchBarSearchButton was clicked
+        self.tableView.reloadData()
+        updateView()
+    }
+
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        print("Search should begin editing")
+        searchBar.showsScopeBar = true
+        searchBar.sizeToFit()
+        searchBar.setShowsCancelButton(true, animated: true)
+        searchActive = true
+        zoekwoord = ""
+        return true
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("text did change")
+        zoekwoord = searchText
+        searchActive = true
+        print("Zoekterm: \(searchBar.text)")
+        
+        self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
+    }
+    
+    func searchBarSearchButtonClicked(_: UISearchBar) {
+        searchActive = true
+        self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
+        searchBar.becomeFirstResponder()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        filterKeyword = "mpnm"
+        sortKeyword = "mpnm"
+        print("Cancel clicked")
+        searchBar.showsScopeBar = false
+        searchBar.sizeToFit()
+        searchActive = false
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+        zoekwoord = searchBar.text!
+        self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: -1)
+        //tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
+        self.tableView.reloadData()
+        updateView()
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        print("should end editing")
+        self.tableView.reloadData()
+        return true
+    }
+    
+    // MARK: Zoekfilter
+    func filterContentForSearchText(searchText: String, scopeIndex: Int) {
+        
+        if scopeIndex == 3 || scopeIndex == -1 {
+            if searchText.isEmpty == true {
+                print("scope -1 or 3 and no text in searchBar")
+                let predicate = NSPredicate(format: "aankoop == true")
                 self.fetchedResultsController.fetchRequest.predicate = predicate
-                sortKeyword = "mpnm"
+                
             } else {
-                let predicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
+                format = ("mpnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@ || nirnm \(zoekoperator)[c] %@")
+                let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
                 let predicate2 = NSPredicate(format: "aankoop == true")
                 let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
-                sortKeyword = "\(filterKeyword)"
             }
+            
         } else {
-            print("no text in searchBar")
-            self.fetchedResultsController.fetchRequest.predicate = NSPredicate(format: "aankoop == true")
-            if filterKeyword == "alles" {
-                sortKeyword = "mpnm"
+            if searchText.isEmpty == true {
+                print("scope = 0, 1 or 2 and no text in searchBar")
+                let predicate = NSPredicate(format: "aankoop == true")
+                self.fetchedResultsController.fetchRequest.predicate = predicate
             } else {
-                sortKeyword = filterKeyword
+                if filterKeyword == "alles" {
+                    format = ("mpnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@")
+                    let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
+                    let predicate2 = NSPredicate(format: "aankoop == true")
+                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+                    self.fetchedResultsController.fetchRequest.predicate = predicate
+                } else {
+                    let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
+                    let predicate2 = NSPredicate(format: "aankoop == true")
+                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+                    print("predicate: \(predicate)")
+                    self.fetchedResultsController.fetchRequest.predicate = predicate
+                }
             }
         }
         
         let sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
         self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
+        
         do {
             try self.fetchedResultsController.performFetch()
             print("fetching...")
@@ -244,125 +448,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             print("\(fetchError), \(fetchError.userInfo)")
         }
         self.tableView.reloadData()
-        updateView()
-    }
-    
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        print("Search should begin editing")
-        searchBar.showsScopeBar = true
-        searchBar.sizeToFit()
-        searchBar.setShowsCancelButton(true, animated: true)
-        return true
-    }
-    
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("text did change")
-        
-        guard !searchText.isEmpty else {
-            tableView.reloadData()
-            return
-        }
-        
-        searchActive = true
-        // Configure Fetch Request
-        /* SORT */
-        var sortKeyword = ""
-        
-        if self.searchBar.selectedScopeButtonIndex == 3 || searchBar.selectedScopeButtonIndex == -1 {
-            if searchBar.text!.isEmpty == true {
-                print("scope -1 or 4 and no text in searchBar")
-                sortKeyword = "mpnm"
-            } else {
-                let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
-                let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-                let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchText)
-                let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
-                let predicate2 = NSPredicate(format: "aankoop == true")
-                let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-                self.fetchedResultsController.fetchRequest.predicate = predicate
-                sortKeyword = filterKeyword
-            }
-            
-        } else {
-            if searchBar.text!.isEmpty == true {
-                print("scope = 0, 1 or 2 and no text in searchBar")
-                self.fetchedResultsController.fetchRequest.predicate = NSPredicate(format: "aankoop == true")
-            } else {
-                if filterKeyword == "alles" {
-                    let subpredicate1 = NSPredicate(format: "mpnm contains[c] %@", searchText)
-                    let subpredicate2 = NSPredicate(format: "vosnm contains[c] %@", searchText)
-                    let subpredicate3 = NSPredicate(format: "nirnm contains[c] %@", searchText)
-                    let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [subpredicate1, subpredicate2, subpredicate3])
-                    let predicate2 = NSPredicate(format: "aankoop == true")
-                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-                    self.fetchedResultsController.fetchRequest.predicate = predicate
-                    sortKeyword = "mpnm"
-                } else {
-                    let predicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchText)
-                    let predicate2 = NSPredicate(format: "aankoop == true")
-                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-                    print("predicate: \(predicate)")
-                    self.fetchedResultsController.fetchRequest.predicate = predicate
-                    sortKeyword = filterKeyword
-                }
-            }
-        }
         print("filterKeyword: \(filterKeyword)")
-        print("searchbar text: \(searchBar.text!)")
-        
-        
-        let sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
-        self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
-        print("\(sortKeyword)")
-        
-        
-        do {
-            try self.fetchedResultsController.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("\(fetchError), \(fetchError.userInfo)")
-        }
-        self.tableView.reloadData()
-        updateView()
-        print(searchText)
+        print("sortkeyword \(sortKeyword)")
+        print("searchText: \(searchText)")
+        self.updateView()
     }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("Cancel clicked")
-        searchBar.showsScopeBar = false
-        searchActive = false
-        searchBar.sizeToFit()
-        searchBar.setShowsCancelButton(false, animated: true)
-        searchBar.resignFirstResponder()
-        self.tableView.reloadData()
-        updateView()
-    }
-    
-    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        print("should end editing")
-        
-        if searchBar.text!.isEmpty == false {
-            let predicate1 = NSPredicate(format: "\(filterKeyword) contains[c] %@", searchBar.text!)
-            let predicate2 = NSPredicate(format: "aankoop == true")
-            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-            print("predicate in should end: \(predicate)")
-            self.fetchedResultsController.fetchRequest.predicate = predicate
-        } else {
-            print("should end and no text in searchBar")
-            self.fetchedResultsController.fetchRequest.predicate = nil
-        }
-        do {
-            try self.fetchedResultsController.performFetch()
-            print("fetching after should end editing...")
-        } catch {
-            let fetchError = error as NSError
-            print("\(fetchError), \(fetchError.userInfo)")
-        }
-        self.tableView.reloadData()
-        return true
-    }
-    
+
     // MARK: - Navigation
     let CellDetailIdentifier = "SegueFromShopToDetail"
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -386,7 +477,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         default:
             print("Unknown segue: \(segue.identifier)")
         }
-        
     }
     
     // MARK: - View Methods
@@ -426,21 +516,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         totalePupr.text = "\((totalePrijs["pupr"])!) €"
         totaalRemA.text = "\((totalePrijs["rema"])!) €"
         totaalRemW.text = "\((totalePrijs["remw"])!) €"
-        /*
-        print("totale prijs: \(totalePrijs)")
-        for c in ["pupr", "rema", "remw"] {
-            gdkp = fetchCheapest(categorie: c)
-            gdkpprijs = berekenGoedkoopsteAlternatief(vosdict: gdkp, categorie: c)
-            gdkpnaam = alternatieven(vosdict: gdkp, categorie: c)
-            verschil = berekenVerschil(categorie: c, huidig: totalePrijs, altern: gdkpprijs)
-            print("totale prijs: \(totalePrijs)")
-            print("categorie: \(c)")
-            print("gdkp: \(gdkp)")
-            print("gdkp prijs: \(gdkpprijs)")
-            print("gdkp naam: \(gdkpnaam)")
-            print("verschil: \(verschil)")
-        }
-        */
+        
         let cheappupr = fetchCheapest(categorie: "pupr")
         let cheaprema = fetchCheapest(categorie: "rema")
         let cheapremw = fetchCheapest(categorie: "remw")
@@ -459,45 +535,34 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     private func setupView() {
         setupMessageLabel()
     }
+    
     fileprivate func updateView() {
         print("Updating view...")
         var hasMedicijnen = false
         
-        
         var x:Int
+        
         if let medicijnen = fetchedResultsController.fetchedObjects {
             hasMedicijnen = medicijnen.count > 0
             print("medicijnen aantal: \(medicijnen.count)")
+            
             x = medicijnen.count
-            showGraphButton.isHidden = false
+            
             let totaalAankoop = countAankoop(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
-            if x != 0 && searchActive {
+            if searchActive || hasMedicijnen {
                 totaalAantal.text = "\(x)/\(totaalAankoop)"
+                tableView.isHidden = false
+                messageLabel.isHidden = true
+                self.tableView.reloadData()
             } else {
                 totaalAantal.text = "\(totaalAankoop)"
             }
             
         } else {
-            showGraphButton.isHidden = true
-            totaalAantal.text = ""
-        }
-        if searchActive {
-            tableView.isHidden = false
-            messageLabel.isHidden = true
-            
-            activityIndicatorView.stopAnimating()
-            self.tableView.reloadData()
-            activityIndicatorView.isHidden = true
-        } else {
             tableView.isHidden = !hasMedicijnen
             messageLabel.isHidden = hasMedicijnen
-            activityIndicatorView.stopAnimating()
-            self.tableView.reloadData()
-            activityIndicatorView.isHidden = hasMedicijnen
             tableView.reloadData()
-            
         }
-
     }
     
     private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {
@@ -513,14 +578,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-        // MARK: -
-    
+    // MARK: -
     private func setupMessageLabel() {
         messageLabel.text = "Je aankooplijst is leeg."
     }
     
     // MARK: - Notification Handling
-    
     func applicationDidEnterBackground(_ notification: Notification) {
         do {
             try CoreDataStack.shared.persistentContainer.viewContext.save()

@@ -15,7 +15,7 @@ class CoreDataStack {
     static let shared = CoreDataStack()
     var errorHandler: (Error) -> Void = {_ in }
 
-    //let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     lazy var persistentContainer: NSPersistentContainer = {
         /*
@@ -64,18 +64,18 @@ class CoreDataStack {
         self.persistentContainer.performBackgroundTask(block)
     }
     
-    /*
-    func seedCoreDataContainerIfFirstLaunch() {
+    
+    func seedCoreDataContainerIfFirstLaunch() -> Bool {
         //1
         let previouslyLaunched = UserDefaults.standard.bool(forKey: "previouslyLaunched")
         if !previouslyLaunched {
             UserDefaults.standard.set(true, forKey: "previouslyLaunched")
+            return true
             
-            
-
-            // Execute next line on every new install!
-            appDelegate.preloadData("Medicijn")
+        } else {
+            return false
         }
     }
-    */
+    
+    
 }

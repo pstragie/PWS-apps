@@ -13,15 +13,17 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     
     // Fetch Medicijn
     weak var medicijn: Medicijn?
-    
+    var dataPassed: Medicijn?
     
     //@IBOutlet weak var mpnm: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("View did load!")
         navigationItem.title = "Info: \((medicijn?.mpnm)!)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
+        dataPassed = medicijn
     }
 
     // MARK: - share button
@@ -48,20 +50,19 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.mppnm.text = medicijn?.mppnm
         
         // Stack middle Center
-        cell.vosnm.text = medicijn?.vosnm
-        cell.irnm.text = medicijn?.nirnm
-        cell.stofnm.text = medicijn?.stofnm
-        cell.galnm.text = medicijn?.galnm
-        cell.ppgal.text = medicijn?.ppgal
-        cell.ti.text = medicijn?.ti
+        cell.vosnm.setTitle(medicijn?.vosnm, for: .normal)
+        cell.irnm.setTitle(medicijn?.nirnm, for: .normal)
+        cell.stofnm.setTitle(medicijn?.stofnm, for: .normal)
+        cell.galnm.setTitle(medicijn?.galnm, for: .normal)
+        cell.ti.setTitle(medicijn?.ti, for: .normal)
         
+
         // Stack middle left
         cell.stofcv.text = medicijn?.stofcv
         cell.leeg1.text = " "
         cell.ircv.text = medicijn?.galcv
         cell.galcv.text = medicijn?.galcv
         cell.leeg2.text = " "
-        cell.leeg3.text = " "
         
         // Stack Bottom left
         cell.pupr.text = "\((medicijn?.pupr)!) €"
@@ -177,7 +178,6 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             
             let selectedLink = medicijn?.link2mpg
             destination.link = selectedLink
-            
         default:
             print("Unknown segue: \(segue.identifier)")
         }

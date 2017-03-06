@@ -31,6 +31,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarAppearance.tintColor = UIColor.black.withAlphaComponent(1.0)
         tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.0)
         
+        let managedObjectContext = CoreDataStack.shared.persistentContainer.viewContext
+        
+        // Helpers
+        var list: NSManagedObject? = nil
+        
+        // Fetch List Records
+        let lists = fetchRecordsForEntity("Medicijn", inManagedObjectContext: managedObjectContext)
+        
+        if let listRecord = lists.first {
+            list = listRecord
+        } else if let listRecord = createRecordForEntity("Medicijn", inManagedObjectContext: managedObjectContext) {
+            list = listRecord
+        }
+        
+        print("number of lists: \(lists.count)")
+        print("--")
+        
+        if let list = list {
+            print(list)
+        } else {
+            print("unable to fetch or create list")
+        }
+        
+        do {
+            // Save Managed Object Context
+            try managedObjectContext.save()
+        } catch {
+            print("Unable to save managed object context")
+        }
+        
         return true
     }
 
@@ -63,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /* See CoreDataStack.swift */
 
     // MARK: - Core Data Saving support
-
+    
     func saveContext () {
         let context = CoreDataStack.shared.persistentContainer.viewContext
         if context.hasChanges {
@@ -83,9 +113,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return coreData.persistentContainer.viewContext
     }
     
-    
+    // Obsolete - moved to KastViewController (progress bar)
     func saveAttributes(dict: [String:String]) {
         print("Saving attributes...")
+        
         let context = CoreDataStack.shared.persistentContainer.viewContext
         let entityMedicijn = NSEntityDescription.entity(forEntityName: "Medicijn", in: context)
         let newMedicijn = NSManagedObject(entity: entityMedicijn!, insertInto: context)
@@ -104,7 +135,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 newMedicijn.setValue("", forKey: key)
             } else {
                 //print("value is not boolean")
-            newMedicijn.setValue(value, forKey: key)
+                newMedicijn.setValue(value, forKey: key)
             }
         }
         
@@ -115,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Could not save \(error), \(error.userInfo)")
         }
     }
-    
+
     
     // MARK: - CSV Parsing
     func parseCSV2Dict (keys: [String], values: [[String]]) -> [Dictionary<String,String>] {
@@ -201,9 +232,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return [(keys, items)]
     }
-    
+
     // MARK: Preload all data from csv file
-    func preloadData (_ entitynaam: String) {
+    func preloadData (_ entitynaam: String) -> [Dictionary<String,String>] {
+        var items:[Dictionary<String,String>] = [[:]]
         print("Preloading data...")
         //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         //let entity = NSEntityDescription.entity(forEntityName: entitynaam, in: context)
@@ -225,22 +257,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 //item -> Dictionary<String,String>
                 let keys = values[0].0
                 let val = values[0].1
-                let items = parseCSV2Dict(keys: keys, values: val) /* items = list of dictionaries */
-                for item in items { /* item is one dictionary */
-                    //print("item: \(item)")
-                    //saveAttributes will save all objects to context (no updating?)
-                    //TODO: Updating is needed! Otherwise user data (kast, aankoop, kastarchief, aankooparchief, boximage, expdate) will be lost!!!
-                    self.saveAttributes(dict: item)
-                }
-                
+                items = parseCSV2Dict(keys: keys, values: val) /* items = list of dictionaries */
+                                
             } else {
                 print("Parsing of data failed")
             }
         } else {
             print("File not found!")
         }
+        return items
     }
-    
     
     // MARK: Remove all Data from DB before adding the parsed data.
     func cleanCoreDataMedicijn() {
@@ -261,6 +287,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    // Existing installation with existing data - check for updates
+    private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
+        // Helpers
+        var result: NSManagedObject?
+        
+        // Create Entity Description
+        let entityDescription = NSEntityDescription.entity(forEntityName: entity, in: managedObjectContext)
+        if let entityDescription = entityDescription {
+            // Create Managed Object
+            result = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
+        }
+        return result
+    }
+    
+    private func fetchRecordsForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
+        // Create Fetch Request
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        
+        // Helpers
+        var result = [NSManagedObject]()
+        
+        do {
+            // Execute Fetch Request
+            let records = try managedObjectContext.fetch(fetchRequest)
+            if let records = records as? [NSManagedObject] {
+                result = records
+            }
+        } catch {
+            print("Unable to fetch managed objects for entity \(entity).")
+        }
+        
+        return result
+    }
 }
 
 extension String {
