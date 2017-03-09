@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G1217" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1.0">
+    <entity name="Gal" representedClassName="Gal" syncable="YES" codeGenerationType="class">
+        <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="fgalnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="galcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="ngalnm" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mpp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MPP" inverseName="gal" inverseEntity="MPP" syncable="YES"/>
+    </entity>
+    <entity name="Ggr_Link" representedClassName="Ggr_Link" syncable="YES" codeGenerationType="class">
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="link2mpg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="link2pvt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mppcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mppnm_" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mpp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MPP" inverseName="ggr_link" inverseEntity="MPP" syncable="YES"/>
+    </entity>
+    <entity name="Hyr" representedClassName="Hyr" syncable="YES" codeGenerationType="class">
+        <attribute name="hyr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hyrcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="intro" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="mpgrp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="pos" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ti" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MP" inverseName="hyr" inverseEntity="MP" syncable="YES"/>
+        <relationship name="sam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sam" inverseName="hyr" inverseEntity="Sam" syncable="YES"/>
+    </entity>
+    <entity name="Ir" representedClassName="Ir" syncable="YES" codeGenerationType="class">
+        <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="firnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="ircv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nirnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pip" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="mp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MP" inverseName="ir" inverseEntity="MP" syncable="YES"/>
+    </entity>
     <entity name="Medicijn" representedClassName="Medicijn" syncable="YES" codeGenerationType="class">
         <attribute name="aankoop" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="aankooparchief" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -52,7 +90,161 @@
         <attribute name="vosnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wadan" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="MP" representedClassName="MP" syncable="YES" codeGenerationType="class">
+        <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="bt" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hyr_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hyrcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ircv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="mpcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mpnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="narcotic" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="nmcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orphan" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="pos" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rank" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="specrules" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wadaf" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wadan" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="hyr" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hyr" inverseName="mp" inverseEntity="Hyr" syncable="YES"/>
+        <relationship name="ir" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ir" inverseName="mp" inverseEntity="Ir" syncable="YES"/>
+        <relationship name="mpp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MPP" inverseName="mp" inverseEntity="MPP" syncable="YES"/>
+        <relationship name="sam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sam" inverseName="mp" inverseEntity="Sam" syncable="YES"/>
+        <relationship name="wadacodes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WadaCodes" inverseName="mp" inverseEntity="WadaCodes" syncable="YES"/>
+    </entity>
+    <entity name="MPP" representedClassName="MPP" syncable="YES" codeGenerationType="class">
+        <attribute name="afq" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="afu" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="aq" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="atype" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="au" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bt" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="cfq" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cfu" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cheapest" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="cmucomb" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="content_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cq" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cu" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="excip" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="galcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="galnm_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gdkp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hyr_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hyrcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inncnk" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="law" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mpcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mppcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mppnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="narcotic" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ogc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ouc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pos" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pupr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rema" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remw" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="specrules" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="spef" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ssecr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="use" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="volgnr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="vosnm_" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="gal" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Gal" inverseName="mpp" inverseEntity="Gal" syncable="YES"/>
+        <relationship name="ggr_link" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ggr_Link" inverseName="mpp" inverseEntity="Ggr_Link" syncable="YES"/>
+        <relationship name="mp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MP" inverseName="mpp" inverseEntity="MP" syncable="YES"/>
+        <relationship name="ogccodes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OGCCodes" inverseName="mpp" inverseEntity="OGCCodes" syncable="YES"/>
+        <relationship name="sam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sam" inverseName="mpp" inverseEntity="Sam" syncable="YES"/>
+    </entity>
+    <entity name="OGCCodes" representedClassName="OGCCodes" syncable="YES" codeGenerationType="class">
+        <attribute name="b" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="g" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="r" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mpp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MPP" inverseName="ogccodes" inverseEntity="MPP" syncable="YES"/>
+    </entity>
+    <entity name="Sam" representedClassName="Sam" syncable="YES" codeGenerationType="class">
+        <attribute name="add" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="dim" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hyr_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hyrcv_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inbasq" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inbasu" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inq" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inq2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inrank" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inu" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inu2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inx" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="mpcv_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mppcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mppnm_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ppgal" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ppid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ppq" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stofcv" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stofnm_" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="hyr" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hyr" inverseName="sam" inverseEntity="Hyr" syncable="YES"/>
+        <relationship name="mp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MP" inverseName="sam" inverseEntity="MP" syncable="YES"/>
+        <relationship name="mpp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MPP" inverseName="sam" inverseEntity="MPP" syncable="YES"/>
+        <relationship name="stof" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stof" inverseName="sam" inverseEntity="Stof" syncable="YES"/>
+    </entity>
+    <entity name="Stof" representedClassName="Stof" syncable="YES" codeGenerationType="class">
+        <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="fbase" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="finnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="finnmx" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fsaltestr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nbase" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ninnm" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ninnmx" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nsaltestr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stofcv" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sam" inverseName="stof" inverseEntity="Sam" syncable="YES"/>
+    </entity>
+    <entity name="WadaCodes" representedClassName="WadaCodes" syncable="YES" codeGenerationType="class">
+        <attribute name="aA" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="aAO" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bB" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bB2" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cC" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dd" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dD" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dDB" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hH" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hHman" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mM" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nN" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="oO" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pP" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ss" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sS" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MP" inverseName="wadacodes" inverseEntity="MP" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Medicijn" positionX="-36" positionY="162" width="128" height="795"/>
+        <element name="Medicijn" positionX="340" positionY="168" width="128" height="795"/>
+        <element name="Sam" positionX="-405" positionY="162" width="128" height="448"/>
+        <element name="MP" positionX="-252" positionY="162" width="128" height="388"/>
+        <element name="MPP" positionX="169" positionY="162" width="128" height="748"/>
+        <element name="Hyr" positionX="-200" positionY="546" width="128" height="178"/>
+        <element name="Ir" positionX="-101" positionY="162" width="128" height="163"/>
+        <element name="Ggr_Link" positionX="187" positionY="798" width="128" height="133"/>
+        <element name="Gal" positionX="25" positionY="540" width="128" height="148"/>
+        <element name="Stof" positionX="-387" positionY="606" width="128" height="238"/>
+        <element name="WadaCodes" positionX="34" positionY="162" width="128" height="315"/>
+        <element name="OGCCodes" positionX="-0" positionY="804" width="128" height="105"/>
     </elements>
 </model>

@@ -31,6 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarAppearance.tintColor = UIColor.black.withAlphaComponent(1.0)
         tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.0)
         
+        //if coreDataStack.seedCoreDataContainerIfFirstLaunch() {
+            //let Entities = ["MP", "MPP", "Sam", "Gal", "Stof", "Hyr", "Ggr_Link", "Ir"]
+            //for entitynaam in Entities {
+                //preloadData(entitynaam: entitynaam)
+            //}
+        //}
+        
         return true
     }
 
@@ -44,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         //print(UserDefaults.standard.value(forKey: "last_update")!)
         // Get file last save date of creation date
-        checkForUpdates()
+        //checkForUpdates()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -132,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             var subd = [String:String]()
             for val in 0..<v.endIndex {
                 //print("\(keys[val]) : \(v[val])")
-                subd[keys[val]] = v[val]
+                subd[keys[val].lowercased()] = v[val]
             }
             items.append(subd)
         }
@@ -141,7 +148,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func parseCSV (contentsOf: NSURL, encoding: String.Encoding, error: NSErrorPointer) -> [(Array<String>,Array<Array<String>>)]? {
-        // Output example:
         // Load the CSV file and parse it
         
         print("Loading CSV file...")
@@ -150,12 +156,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var keys = [String]()
         var lines = [String]()
         var items = [[String]]()
+        
+        
         do {
             lines = try String(contentsOf: contentsOf as URL, encoding: encoding).components(separatedBy: NSCharacterSet.newlines)
         } catch {
             print("Error reading line.")
         }
-
+        
         for line in lines[0...0] {
             keys = line.components(separatedBy: ";")
         }
@@ -167,6 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // For a line with double quotes
                 // we use NSScanner to perform the parsing
                 if line.range(of: "\"") != nil {
+                    print(line)	
                     var textToScan:String = line
                     var value:NSString?
                     var textScanner:Scanner = Scanner(string: textToScan)
@@ -184,6 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         values.append(value as! String)
                         
+                        
                         // Retrieve the unscanned remainder of the string
                         if textScanner.scanLocation < textScanner.string.characters.count {
                             textToScan = (textScanner.string as NSString).substring(from: textScanner.scanLocation + 1)
@@ -200,32 +210,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     
                 }
                 // Put the values into a dictionary and add it to the items dictionary
-                
+                //print(values)
                 items.append(values)
-                            
+                
             }
         }
+        //print("parsing: \([(keys, items)])")
         return [(keys, items)]
     }
 
+
     // MARK: Preload all data from csv file
-    func preloadData (_ entitynaam: String) -> [Dictionary<String,String>] {
+    func preloadData (entitynaam: String) -> [Dictionary<String,String>] {
+        
         // Store date to track updates
         UserDefaults.standard.setValue(Date(), forKey: "last_update")
-
+        let filename = entitynaam + "_swift"
         var items:[Dictionary<String,String>] = [[:]]
         print("Preloading data...")
-        // Retrieve data from the source file
-        if let path = Bundle.main.path(forResource: "combinednoempties-2", ofType: "csv") {
+        // Retrieve data from the source file 
+        //let d = ["MP":"MP.csv", "MPP":"MPP.csv", "Sam":"Sam.csv", "Stof":"Stof.csv", "Gal":"Gal.csv", "Ggr_Link":"Ggr_Link.csv", "Hyr":"Hyr.csv", "Ir":"Ir.csv"
+        //if let remoteURL = NSURL(string: "https://medcabinet.byethost7.com/csv/nl/\(entitynaam).csv") {
+        if let path = Bundle.main.path(forResource: filename, ofType: "csv") {
             let contentsOfURL = NSURL(fileURLWithPath: path)
+            //print(remoteURL)
+            // Remove all entity items before preloading
+            
             
             var error:NSError?
             //parseCSV -> [Dictionary<String,String>]
+            //if let values = parseCSV(contentsOf: remoteURL, encoding: String.Encoding.utf8, error: &error) {
             if let values = parseCSV(contentsOf: contentsOfURL, encoding: String.Encoding.utf8, error: &error) {
                 print("parsing data successful...")
                 //item -> Dictionary<String,String>
                 let keys = values[0].0
+                //print("keys: \(keys)")
                 let val = values[0].1
+                //print("val: \(val)")
                 items = parseCSV2Dict(keys: keys, values: val) /* items = list of dictionaries */
                                 
             } else {
@@ -237,11 +258,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return items
     }
     
-    // MARK: Remove all Data from DB before adding the parsed data.
+    func cleanCoreData(entitynaam: String) {
+        // Remove the existing items
+        print("Cleaning core data... \(entitynaam)")
+        let context = CoreDataStack.shared.persistentContainer.viewContext
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: entitynaam)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetch)
+        do {
+            print("deleting all contents...")
+            try context.execute(deleteRequest)
+        } catch {
+            print(error.localizedDescription)
+        }
+        /*
+        if let result = try? context.fetch(fetch) {
+            for object in result {
+                context.delete(object as! NSManagedObject)
+            }
+        }
+        */
+        
+    }
+    
+    // MARK: Remove all Data from Medicijn before adding the parsed data.
     func cleanCoreDataMedicijn() {
         print("Cleaning core data...")
         let context = CoreDataStack.shared.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+        let fetchRequest: NSFetchRequest<Sam> = Sam.fetchRequest()
         
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
         
@@ -288,7 +331,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Get csv data
         print("Fetching csv data...")
         // Get csv data and store in list of dictionaries
-        let medicijnen = preloadData("Medicijn") // [Dictionary<String,String>]
+        let medicijnen = preloadData(entitynaam: "MP") // [Dictionary<String,String>]
         // Read every dictionary
         for medicijn in medicijnen {
             for (key, value) in medicijn {

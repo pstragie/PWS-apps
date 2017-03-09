@@ -183,7 +183,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	override func viewDidLayoutSubviews() {
 		setupMenuView()
-		progressView.isHidden = true
+		progressView.isHidden = false
 		btnCloseMenuView.isHidden = true
 		btnCloseMenuView.isEnabled = false
 		print("view Did Layout subviews")
@@ -193,31 +193,56 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		super.viewDidAppear(true)
 		print("View did appear")
 		if coreData.seedCoreDataContainerIfFirstLaunch() {
-			appDelegate.cleanCoreDataMedicijn()
 			progressView.isHidden = false
 			progressBar.setProgress(0, animated: true)
-			DispatchQueue.global().async {
-				self.loadAllAttributes()
-				print("did load progressie: \(self.progressie)")
-				if self.progressie >= 0.95 {
-					self.progressView.isHidden = true
+			print("first installation!")
+			//appDelegate.cleanCoreDataMedicijn()
+			// Prepped with python to remove empty fields (replaced by "_")
+			let Entities = ["MP", "MPP", "Sam", "Gal", "Hyr", "Stof", "Ggr_Link", "Ir"]
+			// MP = OK
+			// MPP = OK (prepped with python to remove end of lines in the middle, and some manual fixing!
+			// Sam = OK
+			// Gal = OK
+			// Hyr = OK (prepped with python to remove end of lines in the middle, and some manual fixing!		
+			// Stof = OK
+			// Ggr_Link = OK
+			// Ir = OK
+			
+			//let Entities = ["Hyr"]
+			for entitynaam in Entities {
+				progressBar.setProgress(0, animated: true)
+
+				appDelegate.cleanCoreData(entitynaam: entitynaam)
+				print(entitynaam)
+				loadProgress.text = entitynaam
+				progressView.isHidden = false
+				progressBar.setProgress(0, animated: true)
+				DispatchQueue.global().async {
+					self.loadAllAttributes(entitynaam: entitynaam)
+					print("did load progressie: \(self.progressie)")
+					if self.progressie >= 0.95 {
+						
+					}
 				}
 			}
+			self.progressView.isHidden = true
 		} else {
 			// Check for data updates
-			
+			print("Not the first installation!")
 		}
 		
 	}
 	
-	func loadAllAttributes() {
-		let items = self.appDelegate.preloadData("Medicijn")
+	func loadAllAttributes(entitynaam: String) {
+		print("loading attributes...")
+		let items = self.appDelegate.preloadData(entitynaam: entitynaam)
 		self.totalLines = Float(items.count)
 		for item in items {
 			self.readLines += 1
 			self.progressie = self.readLines/self.totalLines
-			//print("progressie in did appear: \(self.progressie)")
-			self.saveAttributes(dict: item)
+			print("progressie in did appear: \(self.progressie)")
+			//print("saveAttributes: \(entitynaam), /(dict)")
+			self.saveAttributes(entitynaam: entitynaam, dict: item)
 			DispatchQueue.main.sync() {
 				self.updateProgressBar()
 			}
@@ -235,11 +260,11 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	// MARK: - Save attributes
-	func saveAttributes(dict: [String:String]) {
+	func saveAttributes(entitynaam: String, dict: [String:String]) {
 		//print("Saving attributes...")
-		
+		print("saving attributes...")
 		let context = CoreDataStack.shared.persistentContainer.viewContext
-		let entityMedicijn = NSEntityDescription.entity(forEntityName: "Medicijn", in: context)
+		let entityMedicijn = NSEntityDescription.entity(forEntityName: entitynaam, in: context)
 		let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
 		privateMOC.parent = context
 		
@@ -247,8 +272,8 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			let newMedicijn = NSManagedObject(entity: entityMedicijn!, insertInto: privateMOC)
 			
 			for (key, value) in dict {
+				let key = key.replacingOccurrences(of: "\"", with: "")
 				//print("key: \(key) and value: \(value)")
-				//print("\(type(of:value))")
 				if value == "true" {
 					//print("value is true")
 					newMedicijn.setValue(1, forKey: key)
@@ -258,12 +283,14 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 				} else if value == "" {
 					//print("value is empty")
 					newMedicijn.setValue("empty", forKey: key)
-				} else {
+				}else {
 					//print("value is not boolean")
+					
 					newMedicijn.setValue(value, forKey: key)
 				}
 			}
-			newMedicijn.setValue(Date(), forKey: "createdAt")
+			
+			newMedicijn.setValue(Date(), forKey: "lastupdate")
 			do {
 				try privateMOC.save()
 				//print("context saved")

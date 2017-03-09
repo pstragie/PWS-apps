@@ -143,11 +143,17 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         }
         
         // Footer
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .medium
-        let timeString = dateFormatter.string(from: medicijn?.updatedAt as! Date)
-        cell.updatedAt.text = timeString
-        
+        if medicijn?.updatedAt != nil {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            let timeString = dateFormatter.string(from: medicijn?.updatedAt as! Date)
+            cell.updatedAt.text = timeString
+        } else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            let timeString = dateFormatter.string(from: medicijn?.createdAt as! Date)
+            cell.updatedAt.text = timeString
+        }
         return cell
     }
     func numberOfSections(in tableView: UITableView) -> Int {
