@@ -2,7 +2,6 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G1217" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1.0">
     <entity name="Gal" representedClassName="Gal" syncable="YES" codeGenerationType="class">
         <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="fgalnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="galcv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -11,7 +10,6 @@
         <relationship name="mpp" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="MPP" inverseName="gal" inverseEntity="MPP" syncable="YES"/>
     </entity>
     <entity name="Ggr_Link" representedClassName="Ggr_Link" syncable="YES" codeGenerationType="class">
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="link2mpg" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="link2pvt" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,7 +18,6 @@
         <relationship name="mpp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MPP" inverseName="ggr_link" inverseEntity="MPP" syncable="YES"/>
     </entity>
     <entity name="Hyr" representedClassName="Hyr" syncable="YES" codeGenerationType="class">
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="hyr" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hyrcv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="intro" optional="YES" attributeType="String" syncable="YES"/>
@@ -33,7 +30,6 @@
     </entity>
     <entity name="Ir" representedClassName="Ir" syncable="YES" codeGenerationType="class">
         <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="firnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="ircv" optional="YES" attributeType="String" syncable="YES"/>
@@ -97,7 +93,6 @@
     <entity name="MP" representedClassName="MP" syncable="YES" codeGenerationType="class">
         <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="bt" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="hyr_" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hyrcv" optional="YES" attributeType="String" syncable="YES"/>
@@ -177,7 +172,6 @@
     <entity name="Sam" representedClassName="Sam" syncable="YES" codeGenerationType="class">
         <attribute name="add" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dim" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="hyr_" optional="YES" attributeType="String" syncable="YES"/>
@@ -206,7 +200,6 @@
     </entity>
     <entity name="Stof" representedClassName="Stof" syncable="YES" codeGenerationType="class">
         <attribute name="amb" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="fbase" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="finnm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="finnmx" optional="YES" attributeType="String" syncable="YES"/>
@@ -252,16 +245,16 @@
         <attribute name="sS" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Gal" positionX="27" positionY="585" width="128" height="165"/>
-        <element name="Ggr_Link" positionX="117" positionY="954" width="128" height="150"/>
-        <element name="Hyr" positionX="-200" positionY="569" width="128" height="195"/>
-        <element name="Ir" positionX="-101" positionY="162" width="128" height="180"/>
+        <element name="Gal" positionX="27" positionY="585" width="128" height="150"/>
+        <element name="Ggr_Link" positionX="117" positionY="954" width="128" height="135"/>
+        <element name="Hyr" positionX="-200" positionY="569" width="128" height="180"/>
+        <element name="Ir" positionX="-101" positionY="162" width="128" height="165"/>
         <element name="Medicijn" positionX="340" positionY="168" width="128" height="795"/>
-        <element name="MP" positionX="-252" positionY="162" width="128" height="390"/>
+        <element name="MP" positionX="-252" positionY="162" width="128" height="375"/>
         <element name="MPP" positionX="169" positionY="162" width="128" height="765"/>
         <element name="OGCCodes" positionX="-110" positionY="342" width="128" height="90"/>
-        <element name="Sam" positionX="-405" positionY="162" width="128" height="465"/>
-        <element name="Stof" positionX="-407" positionY="644" width="128" height="255"/>
+        <element name="Sam" positionX="-405" positionY="162" width="128" height="450"/>
+        <element name="Stof" positionX="-407" positionY="644" width="128" height="240"/>
         <element name="Userdata" positionX="-234" positionY="812" width="128" height="195"/>
         <element name="WadaCodes" positionX="34" positionY="162" width="128" height="298"/>
     </elements>

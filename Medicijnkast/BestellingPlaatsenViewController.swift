@@ -55,15 +55,15 @@ class BestellingPlaatsenViewController: UIViewController, MFMailComposeViewContr
     }
     
     // MARK: - fetchedResultsController
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Medicijn> = {
+    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
         
         // Create Fetch Request
-        let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mpnm", ascending: true)]
+        let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
         let predicate = NSPredicate(format: "aankoop == true")
         fetchRequest.predicate = predicate
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -85,12 +85,12 @@ class BestellingPlaatsenViewController: UIViewController, MFMailComposeViewContr
         
         // Pull core data in
         var aankoopResultsList = [NSManagedObject]()
-        let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+        let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
         let pred = NSPredicate(format: "aankoop == true")
         fetchReq.predicate = pred
         
         do {
-            aankoopResultsList = try CoreDataStack.shared.persistentContainer.viewContext.fetch(fetchReq)
+            aankoopResultsList = try self.appDelegate.viewContext.fetch(fetchReq)
         } catch {
             print("Error in fetching objects.")
         }
@@ -107,11 +107,11 @@ class BestellingPlaatsenViewController: UIViewController, MFMailComposeViewContr
         guard objects.count > 0 else { return "" }
         let mailString = NSMutableString()
         
-        mailString.append("mpnm, mppcv, mppnm, stofnm")
+        mailString.append("mppnm, mppcv, mppnm, stofnm")
         
         for object in objects {
             // Put "\n" at the beginning so you don't have an extra row at the end
-            mailString.append("\n\(object.value(forKey: "mppcv")!),\(object.value(forKey: "mpnm")!), \(object.value(forKey: "stofnm")!)")
+            mailString.append("\n\(object.value(forKey: "mppcv")!),\(object.value(forKey: "mppnm")!), \(object.value(forKey: "stofnm")!)")
         }
         return mailString
     }

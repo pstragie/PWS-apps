@@ -13,9 +13,29 @@ import Foundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
+    var errorHandler: (Error) -> Void = {_ in }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        print(coreDataManager.managedObjectContext)
+        let managedObjectContext = coreDataManager.managedObjectContext
+        let fm = FileManager.default
+        let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        print(appdir)
+        
+        seedPersistentStoreWithManagedObjectContext(managedObjectContext)
+        
+                
+        do {
+            // Save Managed Object Context
+            try managedObjectContext.save()
+        } catch {
+            // Error Handling
+            print("Unable to save managed object context.")
+        }
+        
+        
         let navigationBarAppearance = UINavigationBar.appearance()
         
         // Change tint and and bar tint
@@ -31,12 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarAppearance.tintColor = UIColor.black.withAlphaComponent(1.0)
         tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.0)
         
-        //if coreDataStack.seedCoreDataContainerIfFirstLaunch() {
-            //let Entities = ["MP", "MPP", "Sam", "Gal", "Stof", "Hyr", "Ggr_Link", "Ir"]
-            //for entitynaam in Entities {
-                //preloadData(entitynaam: entitynaam)
-            //}
-        //}
+        
+        
         
         return true
     }
@@ -68,14 +84,107 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
 
+    func seedPersistentStoreWithManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) {
+        if seedCoreDataContainerIfFirstLaunch() {
+            //destroyPersistentStore()
+
+            //let Entities = ["MP", "MPP", "Sam", "Gal", "Stof", "Hyr", "Ggr_Link", "Ir"]
+            let Entities = ["MPP", "Gal", "Ggr_Link", "MP", "Sam", "Stof", "Hyr", "Ir"]
+            for entitynaam in Entities {
+                //cleanCoreData(entitynaam: entitynaam)
+                print(entitynaam)
+                loadAllAttributes(entitynaam: entitynaam)
+            }
+        } else {
+            // Check for updates
+            /* let Entities = ["MPP"]
+             for entitynaam in Entities {
+             updateAllAttributes(entitynaam: entitynaam)
+             } */
+        }
+
+    }
+    
     // MARK: - Core Data stack
     
-    /* See CoreDataStack.swift */
+    lazy var persistentContainer: NSPersistentContainer = {
+        /*
+         The persistent container for the application. This implementation
+         creates and returns a container, having loaded the store for the
+         application to it. This property is optional since there are legitimate
+         error conditions that could cause the creation of the store to fail.
+         */
+        let container = NSPersistentContainer(name: "Medicijnkast")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                NSLog("CoreData error \(error), \(error._userInfo)")
+                self.errorHandler(error)
+                /*
+                 Typical reasons for an error here include:
+                 * The parent directory does not exist, cannot be created, or disallows writing.
+                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+                 * The device is out of space.
+                 * The store could not be migrated to the current model version.
+                 Check the error message to determine what the actual problem was.
+                 */
+                fatalError("Unresolved CoreData error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+    
+    lazy var managedObjectModel: NSManagedObjectModel = {
+        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
+        //let modelURL = Bundle.main.url(forResource: "Medicijnkast", withExtension: "momd")!
+        //return NSManagedObjectModel(contentsOf: modelURL)!
+        return self.persistentContainer.managedObjectModel
+    }()
+    
+    lazy var applicationDocumentsDirectory: URL = {
+        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.appcoda.Medicijnkast" in the application's documents Application Support directory.
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return urls[urls.count-1]
+    }()
+    
+    lazy var viewContext: NSManagedObjectContext = {
+        return self.persistentContainer.viewContext
+    }()
+    
+    // Optional
+    lazy var backgroundContext: NSManagedObjectContext = {
+        return self.persistentContainer.newBackgroundContext()
+    }()
+    
+    func performForegroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+        self.viewContext.perform {
+            block(self.viewContext)
+        }
+    }
+    
+    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+        self.persistentContainer.performBackgroundTask(block)
+    }
+    
+    
+    func seedCoreDataContainerIfFirstLaunch() -> Bool {
+        //1
+        let previouslyLaunched = UserDefaults.standard.bool(forKey: "previouslyLaunched")
+        if !previouslyLaunched {
+            UserDefaults.standard.set(true, forKey: "previouslyLaunched")
+            return true
+            
+        } else {
+            return false
+        }
+    }
+
 
     // MARK: - Core Data Saving support
     
     func saveContext () {
-        let context = CoreDataStack.shared.persistentContainer.viewContext
+        let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -89,44 +198,268 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func getContext() -> NSManagedObjectContext {
-        let coreData = UIApplication.shared.delegate as! CoreDataStack
+        let coreData = UIApplication.shared.delegate as! AppDelegate
         return coreData.persistentContainer.viewContext
     }
     
-    // Obsolete - moved to KastViewController (progress bar)
-    func saveAttributes(dict: [String:String]) {
-        print("Saving attributes...")
+    func loadAllAttributes(entitynaam: String) {
+        print("loading attributes...")
+        let items = preloadData(entitynaam: entitynaam)
+        var readLines: Float = 0.0
+        var progressie: Float = 0.0
+        let totalLines = Float(items.count)
+        for item in items {
+            readLines += 1
+            progressie = readLines/totalLines
+            print("progressie: \(progressie)")
+            //print("saveAttributes: \(entitynaam), /(dict)")
+            var newdict: Dictionary<String,Any> = [:]
+            for (key, value) in item {
+                var val: Any?
+                let key = key.replacingOccurrences(of: "\"", with: "")
+                if value == "true" {
+                    val = 1
+                } else if value == "false" {
+                    val = 0
+                } else if value == "" {
+                    val = "empty"
+                }else {
+                    val = value
+                }
+                newdict[key] = val
+            }
+
+            self.saveAttributes(entitynaam: entitynaam, dict: newdict)
+        }
+    }
+    /*
+    func updateAllAttributes(entitynaam: String) {
+        print("loading attributes...")
+        let items = preloadData(entitynaam: entitynaam)
+        var readLines: Float = 0.0
+        var progressie: Float = 0.0
+        let totalLines = Float(items.count)
+        for item in items {
+            readLines += 1
+            progressie = readLines/totalLines
+            print("progressie: \(progressie)")
+            //print("saveAttributes: \(entitynaam), /(dict)")
+            self.updateAttributes(entitynaam: entitynaam, dict: item)
+        }
+    }
+    */
+    private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
+        // Helpers
+        var result: NSManagedObject?
+        // Create Entity Description
+        let entityDescription = NSEntityDescription.entity(forEntityName: entity, in: managedObjectContext)
+        if let entityDescription = entityDescription {
+            // Create Managed Object
+            result = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
+        }
+        return result
+    }
+    
+    private func fetchRecordsForEntity(_ entity: String, key: String, arg: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
+        // Create Fetch Request
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let predicate = NSPredicate(format: "%K == %@", key, arg)
+        fetchRequest.predicate = predicate
+        // Helpers
+        var result = [NSManagedObject]()
         
-        let context = CoreDataStack.shared.persistentContainer.viewContext
-        let entityMedicijn = NSEntityDescription.entity(forEntityName: "Medicijn", in: context)
-        let newMedicijn = NSManagedObject(entity: entityMedicijn!, insertInto: context)
+        do {
+            // Execute Fetch Request
+            let records = try managedObjectContext.fetch(fetchRequest)
+            if let records = records as? [NSManagedObject] {
+                result = records
+            }
+        } catch {
+            print("Unable to fetch managed objects for entity \(entity).")
+        }
+        return result
+    }
+    
+    func saveAttributes(entitynaam: String, dict: [String:Any]) {
+        let managedObjectContext = coreDataManager.managedObjectContext
+        print("saving attributes...")
         
-        for (key, value) in dict {
-            //print("key: \(key) and value: \(value)")
-            //print("\(type(of:value))")
-            if value == "true" {
-                //print("value is true")
-                newMedicijn.setValue(1, forKey: key)
-            } else if value == "false" {
-                //print("value is false")
-                newMedicijn.setValue(0, forKey: key)
-            } else if value == "" {
-                //print("value is empty")
-                newMedicijn.setValue("", forKey: key)
-            } else {
-                //print("value is not boolean")
-                newMedicijn.setValue(value, forKey: key)
+        //let newSam = NSManagedObject(entity: entitySam!, insertInto: managedObjectContext)
+        //let newRel = NSManagedObject(entity: entityRel!, insertInto: managedObjectContext)
+        
+        if entitynaam == "MPP" {
+            if let newMPP = createRecordForEntity("MPP", inManagedObjectContext: managedObjectContext) {
+                for (key, value) in dict {
+                    newMPP.setValue(value, forKey: key)
+                }
+                newMPP.setValue(Date(), forKey: "createdAt")
             }
         }
         
-        do {
-            try context.save()
-            //print("context saved")
-        } catch let error as NSError {
-            print("Could not save... \(error), \(error.userInfo)")
+        if entitynaam == "Sam" {
+            if let newSam = createRecordForEntity("Sam", inManagedObjectContext: managedObjectContext) {
+                var recordKey: String = ""
+                for (key, value) in dict {
+                    if key == "mppcv" {
+                        recordKey = (value as? String)!
+                    }
+                    newSam.setValue(value, forKey: key)
+                }
+                
+                let mpps = fetchRecordsForEntity("MPP", key: "mppcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
+                
+                
+                //let newMPP = mpp?.mutableSetValue(forKey: "sam")
+                
+                
+                newSam.setValue(Date(), forKey: "createdAt")
+                // Set Relationship
+                for mpp in mpps {
+                    newSam.setValue(mpp, forKey: "mpp")
+                }
+                // Add item to items
+                //newMPP?.add(newSam)
+            }
         }
-    }
+        
+        if entitynaam == "MP" {
+            if let newMP = createRecordForEntity("MP", inManagedObjectContext: managedObjectContext) {
+                var recordKey: String = ""
+                for (key, value) in dict {
+                    if key == "mpcv" {
+                        recordKey = (value as? String)!
+                    }
+                    newMP.setValue(value, forKey: key)
+                }
+                
+                let mpps = fetchRecordsForEntity("MPP", key: "mpcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
+                
+                newMP.setValue(Date(), forKey: "createdAt")
+                // Set Relationship
+                //newMP.setValue(NSSet(object: mpp!), forKey: "mpp")
+                // Add item to items
+                for mpp in mpps {
+                    mpp.setValue(newMP, forKeyPath: "mp")
+                }
+            }
+        }
+        
+        if entitynaam == "Gal" {
+            //cleanCoreData(entitynaam: "Gal")
+            if let newGal = createRecordForEntity("Gal", inManagedObjectContext: managedObjectContext) {
+                var recordKey: String = ""
+                for (key, value) in dict {
+                    if key == "galcv" {
+                        recordKey = (value as? String)!
+                        print(value)
+                    }
+                    newGal.setValue(value, forKey: key)
+                }
+                
+                let mpps = fetchRecordsForEntity("MPP", key: "galcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
+                
+                newGal.setValue(Date(), forKey: "createdAt")
+                // Set Relationship
+                for mpp in mpps {
+                    mpp.setValue(newGal, forKeyPath: "gal")
+                }
+            }
+        }
 
+        if entitynaam == "Hyr" {
+            if let newHyr = createRecordForEntity("Hyr", inManagedObjectContext: managedObjectContext) {
+                var recordKey: String = ""
+                for (key, value) in dict {
+                    if key == "hyrcv" {
+                        recordKey = (value as? String)!
+                    }
+                    newHyr.setValue(value, forKey: key)
+                }
+                
+                let mps = fetchRecordsForEntity("MP", key: "hyrcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
+                
+                newHyr.setValue(Date(), forKey: "createdAt")
+                // Set Relationship
+                //newHyr.setValue(NSSet(object: mpp!), forKey: "mp")
+                // Add item to items
+                for mp in mps {
+                    mp.setValue(newHyr, forKeyPath: "hyr")
+                }
+            }
+        }
+        if entitynaam == "Ir" {
+            if let newIr = createRecordForEntity("Ir", inManagedObjectContext: managedObjectContext) {
+                var recordKey: String = ""
+                for (key, value) in dict {
+                    if key == "ircv" {
+                        recordKey = (value as? String)!
+                    }
+                    newIr.setValue(value, forKey: key)
+                }
+                
+                let mps = fetchRecordsForEntity("MP", key: "ircv", arg: recordKey, inManagedObjectContext: managedObjectContext)
+                
+                newIr.setValue(Date(), forKey: "createdAt")
+                // Set Relationship
+                //newIr.setValue(NSSet(object: mpp!), forKey: "mp")
+                // Add item to items
+                for mp in mps {
+                    mp.setValue(newIr, forKeyPath: "ir")
+                }
+            }
+        }
+        if entitynaam == "Stof" {
+            if let newStof = createRecordForEntity("Stof", inManagedObjectContext: managedObjectContext) {
+                var recordKey: String = ""
+                for (key, value) in dict {
+                    if key == "stofcv" {
+                        recordKey = (value as? String)!
+                    }
+                    newStof.setValue(value, forKey: key)
+                }
+                
+                let sams = fetchRecordsForEntity("Sam", key: "stofcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
+                
+                newStof.setValue(Date(), forKey: "createdAt")
+                // Set Relationship
+                //newStof.setValue(NSSet(object: mpp!), forKey: "sam")
+                // Add item to items
+                for sam in sams {
+                    sam.setValue(newStof, forKeyPath: "stof")
+                }
+            }
+        }
+        if entitynaam == "Ggr_Link" {
+            // one-to-one relationship
+            if let newGgr = createRecordForEntity("Ggr_Link", inManagedObjectContext: managedObjectContext) {
+                var recordKey: String = ""
+                for (key, value) in dict {
+                    if key == "mppcv" {
+                        recordKey = (value as? String)!
+                    }
+                    newGgr.setValue(value, forKey: key)
+                }
+                
+                let mpps = fetchRecordsForEntity("MPP", key: "mppcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
+                
+                newGgr.setValue(Date(), forKey: "createdAt")
+                // Set Relationship
+                //newGgr.setValue(mpp!, forKey: "mpp")
+                // Add item to items
+                for mpp in mpps {
+                    mpp.setValue(newGgr, forKeyPath: "ggr_link")
+                }
+            }
+        }
+
+        do {
+            try managedObjectContext.save()
+            print("context saved")
+        } catch let error as NSError {
+            print("Could not save \(error), \(error.userInfo)")
+        }
+        
+    }
     
     // MARK: - CSV Parsing
     func parseCSV2Dict (keys: [String], values: [[String]]) -> [Dictionary<String,String>] {
@@ -175,7 +508,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // For a line with double quotes
                 // we use NSScanner to perform the parsing
                 if line.range(of: "\"") != nil {
-                    print(line)	
+                    //print(line)
                     var textToScan:String = line
                     var value:NSString?
                     var textScanner:Scanner = Scanner(string: textToScan)
@@ -258,18 +591,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return items
     }
     
+    /*
+    func destroyPersistentStore() {
+        let fileManager = FileManager.default
+        let storeName = "Medicijnkast.sqlite"
+        print("Destroying persistent store!")
+        let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let persistentStoreURL = documentsDirectoryURL.appendingPathComponent(storeName)
+        do {
+            try coreDataManager.persistentStoreCoordinator.destroyPersistentStore(at: persistentStoreURL, ofType: NSSQLiteStoreType, options: nil)
+        
+        } catch {
+            let updateError = error as NSError
+            print("\(updateError), \(updateError.userInfo)")
+        }
+    }
+    */
     func cleanCoreData(entitynaam: String) {
         // Remove the existing items
         print("Cleaning core data... \(entitynaam)")
-        let context = CoreDataStack.shared.persistentContainer.viewContext
+        let context = viewContext
+        /*
+        var list: NSManagedObject? = nil
+        let lists = fetchRecordsForEntity(entitynaam, inManagedObjectContext: context)
+        if let listRecord = lists.first {
+            list = listRecord
+        }
+        
+        let items = list?.mutableSetValue(forKey: "sam")
+        if let anyItem = items?.anyObject() as? NSManagedObject {
+            context.delete(anyItem)
+            print("AnyItem deleted")
+        } else {
+            context.delete(list!)
+            print("List deleted")
+        }
+        saveContext()
+        */
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: entitynaam)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetch)
         do {
             print("deleting all contents...")
             try context.execute(deleteRequest)
+            //try persistentContainer.persistentStoreCoordinator.execute(deleteRequest, with: context)
         } catch {
             print(error.localizedDescription)
+            print("Deleting Core Data failed!")
+            fatalError("Failed to execute request: \(error)")
         }
+        
         /*
         if let result = try? context.fetch(fetch) {
             for object in result {
@@ -284,7 +654,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func cleanCoreDataMedicijn() {
         print("Cleaning core data...")
         let context = CoreDataStack.shared.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Sam> = Sam.fetchRequest()
+        let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
         
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
         
@@ -295,7 +665,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(error.localizedDescription)
         }
     }
-    
+    /*
     // Check for updates
     private func checkForUpdates() {
         var fileModificationDate:Date?
@@ -320,6 +690,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     // Update core data
+    
     private func updateCoreData() {
         let managedObjectContext = CoreDataStack.shared.persistentContainer.viewContext
         
@@ -456,7 +827,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
     }
-    
+ 
     // Existing installation with existing data - check for updates
     private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
         // Helpers
@@ -490,6 +861,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return result
     }
+     */
 }
 
 extension String {

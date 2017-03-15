@@ -11,23 +11,24 @@ import CoreData
 
 class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     
+    var context: NSManagedObjectContext?
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromAddToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    let coreData = CoreDataStack()
-
+    let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
+    
     // MARK: - Properties Variables
     var sortDescriptorIndex: Int?=nil
     var selectedScope: Int = -1
     var selectedSegmentIndex: Int = 0
     var searchActive: Bool = false
-    weak var receivedData: Medicijn?
+    weak var receivedData: MPP?
     
     var zoekwoord:String = ""
-    var filterKeyword:String = "mpnm"
+    var filterKeyword:String = "mppnm"
     var zoekoperator:String = "BEGINSWITH"
-    var format:String = "mpnm BEGINSWITH[c] %@"
-    var sortKeyword:String = "mpnm"
+    var format:String = "mppnm BEGINSWITH[c] %@"
+    var sortKeyword:String = "mppnm"
     @IBOutlet weak var menuView: UIView!
     
     // MARK: - Referencing Outlets
@@ -93,33 +94,38 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         var zoekwoord: String = ""
         switch segue.identifier {
         case "vosnmToSearch"?:
-            filterKeyword = "vosnm"
+            filterKeyword = "vosnm_"
             selectedScope = 1
-            zoekwoord = (receivedData?.vosnm)!
-            print("vosnm")
+            zoekwoord = (receivedData?.vosnm_)!
+            print("vosnm_")
         case "stofnmToSearch"?:
-            filterKeyword = "stofnm"
+            filterKeyword = "stofnm" /* temp change stofnm */
             selectedScope = -1
-            zoekwoord = (receivedData?.stofnm)!
+            let set = receivedData?.sam
+            let set2 = receivedData?.mutableSetValue(forKey: "sam")
+            print("set: \(set!)")
+            print("set2: \(set2!)")
+            //receivedData?.sam?.anyObject()
+            //zoekwoord = (receivedData?.sam?.stof?.ninnm)!
             print("stofnm")
         case "irnmToSearch"?:
-            filterKeyword = "nirnm"
+            filterKeyword = "mp?.ir?.nirnm"
             selectedScope = 2
-            zoekwoord = (receivedData?.nirnm)!
+            zoekwoord = (receivedData?.mp?.ir?.nirnm)!
             print("irnm")
         case "galnmToSearch"?:
-            filterKeyword = "galnm"
+            filterKeyword = "gal?.galnm"
             selectedScope = -1
-            zoekwoord = (receivedData?.galnm)!
+            zoekwoord = (receivedData?.gal?.ngalnm)!
             print("galnm")
         case "tiToSearch"?:
-            filterKeyword = "ti"
+            filterKeyword = "mp?.hyr?.ti"
             selectedScope = -1
-            zoekwoord = (receivedData?.ti)!
+            zoekwoord = (receivedData?.mp?.hyr?.ti)!
             print("ti")
             
         default:
-            filterKeyword = "mpnm"
+            filterKeyword = "mppnm"
         }
 
         
@@ -128,22 +134,27 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: - fetchedResultsController
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Medicijn> = {
+    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
         
         // Create Fetch Request
-        let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mpnm", ascending: true)]
-        var format:String = "mpnm BEGINSWITH[c] %@"
-        let predicate = NSPredicate(format: format, "Alotofmumbojumboblablabla")
-        
-        //let predicate = NSPredicate(format: "%K", Array: ["AlotofMumboJumboblablabla", zoekterm])
+        let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
+        var format: String = "mppnm BEGINSWITH[c] %@"
+        let predicate = NSPredicate(format: format, "A")
         fetchRequest.predicate = predicate
+        print("Predicate = \(predicate)")
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let moc1 = self.appDelegate.viewContext
+        let moc2 = self.coreDataManager.managedObjectContext
+        let moc3 = self.context
+        print(moc1)
+        print(moc2)
+        print(moc3)
         
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.coreDataManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        print(fetchedResultsController)
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
-        
         return fetchedResultsController
     }()
     
@@ -167,6 +178,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
+        if #available(iOS 10.0, *) {
+            context = self.appDelegate.viewContext
+        } else {
+            context = self.coreDataManager.managedObjectContext
+        }
 
         do {
             try self.fetchedResultsController.performFetch()
@@ -175,7 +191,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             print("Unable to Perform Fetch Request")
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
-        
         self.updateView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -224,23 +239,23 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         switch selectedScope {
         case 0:
             print("scope: merknaam")
-            filterKeyword = "mpnm"
-            sortKeyword = "mpnm"
+            filterKeyword = "mppnm"
+            sortKeyword = "mppnm"
         case 1:
             print("scope: vosnaam")
-            filterKeyword = "vosnm"
-            sortKeyword = "vosnm"
+            filterKeyword = "vosnm_"
+            sortKeyword = "vosnm_"
         case 2:
             print("scope: firmanaam")
-            filterKeyword = "nirnm"
-            sortKeyword = "nirnm"
+            filterKeyword = "mppnm"
+            sortKeyword = "mppnm"
         case 3:
             print("scope: alles")
             filterKeyword = "mppnm"
-            sortKeyword = "mpnm"
+            sortKeyword = "mppnm"
         default:
-            filterKeyword = "mpnm"
-            sortKeyword = "mpnm"
+            filterKeyword = "mppnm"
+            sortKeyword = "mppnm"
         }
         
         print("scope changed: \(selectedScope)")
@@ -302,8 +317,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        filterKeyword = "mpnm"
-        sortKeyword = "mpnm"
+        filterKeyword = "mppnm"
+        sortKeyword = "mppnm"
         print("Cancel clicked")
         searchBar.showsScopeBar = false
         searchBar.sizeToFit()
@@ -329,25 +344,25 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         if scopeIndex == 3 || scopeIndex == -1 {
             if searchText.isEmpty == true {
                 print("scope -1 or 3 and no text in searchBar")
-                let predicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
-                self.fetchedResultsController.fetchRequest.predicate = predicate
+                //let predicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
+                //self.fetchedResultsController.fetchRequest.predicate = predicate
                 
             } else {
-                format = ("mpnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@ || nirnm \(zoekoperator)[c] %@ || galnm \(zoekoperator)[c] %@ || stofnm \(zoekoperator)[c] %@")
-                let predicate = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText, searchText, searchText])
+                format = "mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@"
+                let predicate = NSPredicate(format: format, argumentArray: [searchText, searchText])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
             }
             
         } else {
             if searchText.isEmpty == true {
                 print("scope = 0, 1 or 2 and no text in searchBar")
-                let predicate = NSPredicate(format: "mpnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
-                self.fetchedResultsController.fetchRequest.predicate = predicate
+                //let predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
+                //self.fetchedResultsController.fetchRequest.predicate = predicate
             } else {
                 if filterKeyword == "alles" {
                     print("strange?")
-                    format = ("mpnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@")
-                    let predicate = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
+                    format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
+                    let predicate = NSPredicate(format: format, argumentArray: [searchText, searchText])
                     self.fetchedResultsController.fetchRequest.predicate = predicate
                 } else {
                     let predicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
@@ -404,13 +419,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         if let medicijnen = fetchedResultsController.fetchedObjects {
             x = medicijnen.count
             if x == 0 {
-                gevondenItemsLabel.isHidden = true
+                gevondenItemsLabel.isHidden = false
             } else {
             gevondenItemsLabel.isHidden = false
             }
         } else {
             x = 0
-            gevondenItemsLabel.isHidden = true
+            gevondenItemsLabel.isHidden = false
         }
         self.tableView.reloadData()
         gevondenItemsLabel.text = "\(x)"
@@ -421,12 +436,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - Notification Handling
     
     func applicationDidEnterBackground(_ notification: Notification) {
-        do {
-            try CoreDataStack.shared.persistentContainer.viewContext.save()
-        } catch {
-            print("Unable to Save Changes")
-            print("\(error), \(error.localizedDescription)")
-        }
+        self.appDelegate.saveContext()
     }
     
 }
@@ -486,10 +496,10 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
             medicijn.setValue(true, forKey: "kast")
-            let context = self.coreData.persistentContainer.viewContext
-            context.perform {
+            //let context = self.appDelegate.viewContext
+            self.context?.perform {
                 do {
-                    try context.save()
+                    try self.context?.save()
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
                     print("saved!")
                 } catch {
@@ -504,9 +514,9 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
             medicijn.setValue(true, forKey: "aankoop")
-            let context = self.coreData.persistentContainer.viewContext
+            //let context = self.appDelegate.viewContext
             do {
-                try context.save()
+                try self.context?.save()
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedAankoop"), object: nil)
                 print("med saved in aankooplijst")
             } catch {
@@ -537,10 +547,10 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         cell.layer.masksToBounds = true
         cell.layer.borderWidth = 1
 
-        cell.mpnm.text = medicijn.mpnm
+        cell.mpnm.text = medicijn.mp?.mpnm
         cell.mppnm.text = medicijn.mppnm
-        cell.vosnm.text = medicijn.vosnm
-        cell.nirnm.text = medicijn.nirnm
+        cell.vosnm.text = medicijn.vosnm_
+        cell.nirnm.text = medicijn.mp?.ir?.nirnm
         
         cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
         cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"

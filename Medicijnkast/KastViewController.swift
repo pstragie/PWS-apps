@@ -14,7 +14,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromKastToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-	let coreData = CoreDataStack()
+
 	// MARK: - Properties Variables
 	var sortDescriptorIndex:Int?=nil
 	var selectedScope:Int = -1
@@ -26,10 +26,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	var readLines:Float = 0.0
 	// MARK: - filter and sort
 	var zoekwoord:String = ""
-	var filterKeyword:String = "mpnm"
+	var filterKeyword:String = "mppnm"
 	var zoekoperator:String = "BEGINSWITH"
-	var format:String = "mpnm BEGINSWITH[c] %@"
-	var sortKeyword:String = "mpnm"
+	var format:String = "mppnm BEGINSWITH[c] %@"
+	var sortKeyword:String = "mppnm"
 	var myPeopleList = [Person]()
 	// MARK: - Referencing Outlets
     @IBOutlet var messageLabel: UILabel!
@@ -117,18 +117,18 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
     // MARK: - fetchedResultsController
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Medicijn> = {
+    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
 
 		// Create Fetch Request
-		let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+		let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
 		
-		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mpnm", ascending: true)]
+		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
 		//let predicate = NSPredicate(format: "cheapest contains %@", NSNumber(booleanLiteral: true))
-		let predicate = NSPredicate(format: "kast == true")
+		let predicate = NSPredicate(format: "userdata.medicijnkast == false")
 		fetchRequest.predicate = predicate
 		print("Predicate = \(predicate)")
 		// Create Fetched Results Controller
-		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 		
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -183,7 +183,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	override func viewDidLayoutSubviews() {
 		setupMenuView()
-		progressView.isHidden = false
+		progressView.isHidden = true
 		btnCloseMenuView.isHidden = true
 		btnCloseMenuView.isEnabled = false
 		print("view Did Layout subviews")
@@ -192,113 +192,13 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(true)
 		print("View did appear")
-		if coreData.seedCoreDataContainerIfFirstLaunch() {
-			progressView.isHidden = false
-			progressBar.setProgress(0, animated: true)
-			print("first installation!")
-			//appDelegate.cleanCoreDataMedicijn()
-			// Prepped with python to remove empty fields (replaced by "_")
-			let Entities = ["MP", "MPP", "Sam", "Gal", "Hyr", "Stof", "Ggr_Link", "Ir"]
-			// MP = OK
-			// MPP = OK (prepped with python to remove end of lines in the middle, and some manual fixing!
-			// Sam = OK
-			// Gal = OK
-			// Hyr = OK (prepped with python to remove end of lines in the middle, and some manual fixing!		
-			// Stof = OK
-			// Ggr_Link = OK
-			// Ir = OK
-			
-			//let Entities = ["Hyr"]
-			for entitynaam in Entities {
-				progressBar.setProgress(0, animated: true)
-
-				appDelegate.cleanCoreData(entitynaam: entitynaam)
-				print(entitynaam)
-				loadProgress.text = entitynaam
-				progressView.isHidden = false
-				progressBar.setProgress(0, animated: true)
-				DispatchQueue.global().async {
-					self.loadAllAttributes(entitynaam: entitynaam)
-					print("did load progressie: \(self.progressie)")
-					if self.progressie >= 0.95 {
-						
-					}
-				}
-			}
-			self.progressView.isHidden = true
-		} else {
-			// Check for data updates
-			print("Not the first installation!")
-		}
 		
+		/* update if new bcfi files */
 	}
 	
-	func loadAllAttributes(entitynaam: String) {
-		print("loading attributes...")
-		let items = self.appDelegate.preloadData(entitynaam: entitynaam)
-		self.totalLines = Float(items.count)
-		for item in items {
-			self.readLines += 1
-			self.progressie = self.readLines/self.totalLines
-			print("progressie in did appear: \(self.progressie)")
-			//print("saveAttributes: \(entitynaam), /(dict)")
-			self.saveAttributes(entitynaam: entitynaam, dict: item)
-			DispatchQueue.main.sync() {
-				self.updateProgressBar()
-			}
-		}
-	}
-	
-	func updateProgressBar() {
-		// To set a label with digital follow-up
-		self.progressBar.progress = self.progressie
-		let procentGeladen = Int(self.progressie*100)
-		loadProgress.text = "\(procentGeladen) %"
-		//print("progressBar: \(self.progressBar.progress)")
-		// To set progressBar
-		self.progressBar.setProgress(self.progressie, animated: true)
-	}
-	
+		
 	// MARK: - Save attributes
-	func saveAttributes(entitynaam: String, dict: [String:String]) {
-		//print("Saving attributes...")
-		print("saving attributes...")
-		let context = CoreDataStack.shared.persistentContainer.viewContext
-		let entityMedicijn = NSEntityDescription.entity(forEntityName: entitynaam, in: context)
-		let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-		privateMOC.parent = context
-		
-		privateMOC.perform {
-			let newMedicijn = NSManagedObject(entity: entityMedicijn!, insertInto: privateMOC)
-			
-			for (key, value) in dict {
-				let key = key.replacingOccurrences(of: "\"", with: "")
-				//print("key: \(key) and value: \(value)")
-				if value == "true" {
-					//print("value is true")
-					newMedicijn.setValue(1, forKey: key)
-				} else if value == "false" {
-					//print("value is false")
-					newMedicijn.setValue(0, forKey: key)
-				} else if value == "" {
-					//print("value is empty")
-					newMedicijn.setValue("empty", forKey: key)
-				}else {
-					//print("value is not boolean")
-					
-					newMedicijn.setValue(value, forKey: key)
-				}
-			}
-			
-			newMedicijn.setValue(Date(), forKey: "lastupdate")
-			do {
-				try privateMOC.save()
-				//print("context saved")
-			} catch let error as NSError {
-				print("Could not save \(error), \(error.userInfo)")
-			}
-		}
-	}
+	/* saveAttributes in AppDelegate */
 
 	// MARK: - share button
 	func shareTapped() {
@@ -342,23 +242,23 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		switch selectedScope {
 		case 0:
 			print("scope: merknaam")
-			filterKeyword = "mpnm"
-			sortKeyword = "mpnm"
+			filterKeyword = "mppnm"
+			sortKeyword = "mppnm"
 		case 1:
 			print("scope: stofnaam")
-			filterKeyword = "vosnm"
-			sortKeyword = "vosnm"
+			filterKeyword = "vosnm_"
+			sortKeyword = "vosnm_"
 		case 2:
 			print("scope: firmanaam")
-			filterKeyword = "nirnm"
-			sortKeyword = "nirnm"
+			filterKeyword = "mppnm"
+			sortKeyword = "mppnm"
 		case 3:
 			print("scope: alles")
 			filterKeyword = "alles"
-			sortKeyword = "mpnm"
+			sortKeyword = "mppnm"
 		default:
-			filterKeyword = "mpnm"
-			sortKeyword = "mpnm"
+			filterKeyword = "mppnm"
+			sortKeyword = "mppnm"
 		}
 
 		print("scope changed: \(selectedScope)")
@@ -446,13 +346,13 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		if scopeIndex == 3 || scopeIndex == -1 {
 			if searchText.isEmpty == true {
 				print("scope -1 or 3 and no text in searchBar")
-				let predicate = NSPredicate(format: "kast == true")
+				let predicate = NSPredicate(format: "userdata.medicijnkast == true")
 				self.fetchedResultsController.fetchRequest.predicate = predicate
 				
 			} else {
-				format = ("mpnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@ || nirnm \(zoekoperator)[c] %@")
+				format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@ || mppnm \(zoekoperator)[c] %@")
 				let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
-				let predicate2 = NSPredicate(format: "kast == true")
+				let predicate2 = NSPredicate(format: "userdata.medicijnkast == true")
 				let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 				self.fetchedResultsController.fetchRequest.predicate = predicate
 			}
@@ -460,18 +360,18 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		} else {
 			if searchText.isEmpty == true {
 				print("scope = 0, 1 or 2 and no text in searchBar")
-				let predicate = NSPredicate(format: "kast == true")
+				let predicate = NSPredicate(format: "userdata.medicijnkast == true")
 				self.fetchedResultsController.fetchRequest.predicate = predicate
 			} else {
 				if filterKeyword == "alles" {
-					format = ("mpnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@")
+					format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
 					let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
-					let predicate2 = NSPredicate(format: "kast == true")
+					let predicate2 = NSPredicate(format: "userdata.medicijnkast == true")
 					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 					self.fetchedResultsController.fetchRequest.predicate = predicate
 				} else {
 					let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
-					let predicate2 = NSPredicate(format: "kast == true")
+					let predicate2 = NSPredicate(format: "userdata.medicijnkast == true")
 					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
 					print("predicate: \(predicate)")
 					self.fetchedResultsController.fetchRequest.predicate = predicate
@@ -530,7 +430,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			
 			x = medicijnen.count
 			
-			let totaalKast = countKast(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
+			let totaalKast = countKast(managedObjectContext: appDelegate.viewContext)
 			if searchActive || hasMedicijnen {
 				totaalAantal.text = "\(x)/\(totaalKast)"
 				tableView.isHidden = false
@@ -548,8 +448,8 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	private func countKast(managedObjectContext: NSManagedObjectContext) -> Int {
-		let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-		let pred = NSPredicate(format: "kast == true")
+		let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
+		let pred = NSPredicate(format: "userdata.medicijnkast == true")
 		fetchReq.predicate = pred
 		
 		do {
@@ -567,13 +467,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     // MARK: - Notification Handling
     func applicationDidEnterBackground(_ notification: Notification) {
-        do {
-            try coreData.persistentContainer.viewContext.save()
-			self.tableView.reloadData()
-        } catch {
-            print("Unable to Save Changes")
-            print("\(error), \(error.localizedDescription)")
-        }
+        self.appDelegate.saveContext()
     }
 	
 	
@@ -645,16 +539,17 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 		cell.layer.masksToBounds = true
 		cell.layer.borderWidth = 1
 		
-		cell.mpnm.text = medicijn.mpnm
-		cell.mppnm.text = medicijn.mppnm
-		cell.vosnm.text = medicijn.vosnm
-		cell.nirnm.text = medicijn.nirnm
+		cell.mppnm.text = medicijn.mp?.mpnm
+		
+		
+		cell.mppnm.text = medicijn.mppcv
+		cell.vosnm.text = medicijn.vosnm_
+		cell.nirnm.text = medicijn.mp?.ir?.nirnm
 		
 		cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
 		cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
 		cell.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
 		cell.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
-			
 		return cell
 	}
 	
@@ -670,7 +565,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			let medicijn = self.fetchedResultsController.object(at: indexPath)
 			medicijn.setValue(false, forKey: "kast")
 			medicijn.setValue(true, forKey: "kastarchief")
-			let context = self.coreData.persistentContainer.viewContext
+			let context = self.appDelegate.viewContext
 			
 			do {
 				try context.save()
@@ -687,7 +582,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			// Fetch Medicijn
 			let medicijn = self.fetchedResultsController.object(at: indexPath)
 			medicijn.setValue(true, forKey: "aankoop")
-			let context = self.coreData.persistentContainer.viewContext
+			let context = self.appDelegate.viewContext
 			do {
 				try context.save()
 				print("med saved in aankooplijst")

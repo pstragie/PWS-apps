@@ -11,6 +11,7 @@ import CoreData
 
 class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var receivedData:Array<String>? = []
     
     @IBOutlet weak var tableViewLeft: UITableView!
@@ -97,7 +98,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
             
             // Filter medicijnen
-            let predicate = NSPredicate(format: "aankoop == true")
+            let predicate = NSPredicate(format: "userdata.aankoop == true")
             self.fetchedResultsController.fetchRequest.predicate = predicate
             
             do {
@@ -129,15 +130,17 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.layer.masksToBounds = true
             cell?.layer.borderWidth = 1
             
-            cell?.mpnm.text = medicijn.mpnm
+            cell?.mpnm.text = medicijn.mp?.mpnm
+            
             cell?.mppnm.text = medicijn.mppnm
-            cell?.vosnm.text = medicijn.vosnm
-            cell?.nirnm.text = medicijn.nirnm
+            cell?.vosnm.text = medicijn.vosnm_
+            cell?.nirnm.text = medicijn.mp?.ir?.nirnm
             
             cell?.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
             cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
             cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
             cell?.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
+            
         }
         
         if tableView == self.tableViewRight {
@@ -146,7 +149,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
 
             // Filter medicijnen
-            let predicate = NSPredicate(format: "mppcv IN %@", receivedData!)
+            let predicate = NSPredicate(format: "mpp?.mppcv IN %@", receivedData!)
             self.fetchedResultsController.fetchRequest.predicate = predicate
 
             do {
@@ -173,15 +176,17 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.layer.masksToBounds = true
             cell?.layer.borderWidth = 1
             
-            cell?.mpnm.text = medicijn.mpnm
+            cell?.mpnm.text = medicijn.mp?.mpnm
+            
             cell?.mppnm.text = medicijn.mppnm
-            cell?.vosnm.text = medicijn.vosnm
-            cell?.nirnm.text = medicijn.nirnm
+            cell?.vosnm.text = medicijn.vosnm_
+            cell?.nirnm.text = medicijn.mp?.ir?.nirnm
             
             cell?.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
             cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
             cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
             cell?.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
+            
         }
     
         return cell!
@@ -219,14 +224,14 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     
     // MARK: -
     
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Medicijn> = {
+    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
         
         // Create Fetch Request
-        let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "vosnm", ascending: true)]
+        let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "vosnm_", ascending: true)]
         
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -235,12 +240,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     }()
     
     func applicationDidEnterBackground(_ notification: Notification) {
-        do {
-            try CoreDataStack.shared.persistentContainer.viewContext.save()
-        } catch {
-            print("Unable to Save Changes")
-            print("\(error), \(error.localizedDescription)")
-        }
+        self.appDelegate.saveContext()
     }
 }
 

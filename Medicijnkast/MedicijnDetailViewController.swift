@@ -12,8 +12,9 @@ import os.log
 class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     // Fetch Medicijn
-    weak var medicijn: Medicijn?
-    var dataPassed: Medicijn?
+    weak var medicijn: MPP?
+    weak var dataPassed: MPP?
+    weak var stofdb: Stof?
     
     //@IBOutlet weak var mpnm: UILabel!
     
@@ -21,7 +22,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         print("View did load!")
-        navigationItem.title = "Info: \((medicijn?.mpnm)!)"
+        navigationItem.title = "Info: \((medicijn?.mp?.mpnm)!)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         dataPassed = medicijn
     }
@@ -46,22 +47,40 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.layer.borderWidth = 1
         
         // Stack top
-        cell.mpnm.text = medicijn?.mpnm
+        cell.mpnm.text = medicijn?.mp?.mpnm
         cell.mppnm.text = medicijn?.mppnm
         
         // Stack middle Center
-        cell.vosnm.setTitle(medicijn?.vosnm, for: .normal)
-        cell.irnm.setTitle(medicijn?.nirnm, for: .normal)
-        cell.stofnm.setTitle(medicijn?.stofnm, for: .normal)
-        cell.galnm.setTitle(medicijn?.galnm, for: .normal)
-        cell.ti.setTitle(medicijn?.ti, for: .normal)
+        cell.vosnm.setTitle(medicijn?.vosnm_, for: .normal)
+        cell.irnm.setTitle(medicijn?.mp?.ir?.nirnm, for: .normal)
+        
+        let stofcv = medicijn?.sam?.value(forKey: "stofcv") as! NSSet /* (AnyObject) __NSSetI */
+        let stofcvArr = Array(stofcv)
+        
+        
+        var stofcvString: String = ""
+        for stof in stofcvArr {
+            stofcvString += stof as! String+" "
+        }
+        let samsam = medicijn?.sam?.value(forKey: "stof")
+        let stofnaam = (samsam! as AnyObject).value(forKey: "ninnm") as! NSSet
+        let stofnaamArr = Array(stofnaam)
+        var stofnaamString: String = ""
+        for stofn in stofnaamArr {
+            stofnaamString += stofn as! String + " "
+        }
+        
+        cell.stofnm.setTitle(stofnaamString, for: .normal)
+        
+        cell.galnm.setTitle(medicijn?.gal?.ngalnm, for: .normal)
+        cell.ti.setTitle(medicijn?.mp?.hyr?.ti, for: .normal)
         
 
         // Stack middle left
-        cell.stofcv.text = medicijn?.stofcv
+        cell.stofcv.text = stofcvString
         cell.leeg1.text = " "
-        cell.ircv.text = medicijn?.galcv
-        cell.galcv.text = medicijn?.galcv
+        cell.ircv.text = medicijn?.mp?.ir?.ircv
+        cell.galcv.text = medicijn?.gal?.galcv
         cell.leeg2.text = " "
         
         // Stack Bottom left
@@ -72,7 +91,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.ogc.text = medicijn?.ogc
         cell.law.text = medicijn?.law
         cell.ssecr.text = medicijn?.ssecr
-        cell.wadan.text = medicijn?.wadan
+        cell.wadan.text = medicijn?.mp?.wadan
         
         // Stack Bottom right
         if (medicijn?.cheapest)! {
@@ -85,12 +104,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         } else {
             cell.bt.text = "Nee"
         }
-        if (medicijn?.pip)! {
+        if (medicijn?.mp?.ir?.pip)! {
             cell.pip.text = "Ja"
         } else {
             cell.pip.text = "Nee"
         }
-        if (medicijn?.orphan)! {
+        if (medicijn?.mp?.orphan)! {
             cell.orphan.text = "Ja"
         } else {
             cell.orphan.text = "Nee"
@@ -119,12 +138,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         // Stack End Left
         cell.kast.text = "In medicijnkast"
         cell.aankoop.text = "In aankooplijst"
-        if medicijn?.kast.hashValue == 0 {
+        if medicijn?.userdata?.medicijnkast.hashValue == 0 {
             cell.kastimage.image = #imageLiteral(resourceName: "kruisje")
         } else {
             cell.kastimage.image = #imageLiteral(resourceName: "vinkje")
         }
-        if medicijn?.aankoop.hashValue == 0 {
+        if medicijn?.userdata?.aankooplijst.hashValue == 0 {
             cell.aankoopimage.image = #imageLiteral(resourceName: "kruisje")
         } else {
             cell.aankoopimage.image = #imageLiteral(resourceName: "vinkje")
@@ -133,7 +152,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.noteButton.layer.cornerRadius = 3
         cell.noteButton.layer.masksToBounds = true
         cell.noteButton.layer.borderWidth = 1
-        if medicijn?.note != "no data" {
+        if medicijn?.note != "_" {
             cell.noteButton.layer.borderColor = UIColor.black.cgColor
             cell.noteButton.layer.backgroundColor = UIColor.green.cgColor
 
@@ -143,15 +162,15 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         }
         
         // Footer
-        if medicijn?.updatedAt != nil {
+        if medicijn?.lastupdate != nil {
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .medium
-            let timeString = dateFormatter.string(from: medicijn?.updatedAt as! Date)
+            let timeString = dateFormatter.string(from: medicijn?.lastupdate as! Date)
             cell.updatedAt.text = timeString
         } else {
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .medium
-            let timeString = dateFormatter.string(from: medicijn?.createdAt as! Date)
+            let timeString = dateFormatter.string(from: UserDefaults.standard.value(forKey: "last_update") as! Date)
             cell.updatedAt.text = timeString
         }
         return cell
@@ -181,14 +200,14 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             let selectedObject = medicijn
             destination.medicijn = selectedObject
             
-            let selectedLink = medicijn?.link2pvt
+            let selectedLink = medicijn?.ggr_link?.link2pvt
             destination.link = selectedLink
         case mpg:
             let destination = segue.destination as! BCFIWebViewController
             let selectedObject = medicijn
             destination.medicijn = selectedObject
             
-            let selectedLink = medicijn?.link2mpg
+            let selectedLink = medicijn?.ggr_link?.link2mpg
             destination.link = selectedLink
         default:
             print("Unknown segue: \(segue.identifier)")

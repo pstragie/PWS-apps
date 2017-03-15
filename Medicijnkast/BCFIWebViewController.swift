@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 
 class BCFIWebViewController: UIViewController, WKUIDelegate {
-    weak var medicijn: Medicijn?
+    weak var medicijn: MPP?
     var link: String?
     @IBOutlet weak var webView: WKWebView!
     
@@ -29,7 +29,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
         webstring = link
-        navigationItem.title = "BCFI: \((medicijn?.mpnm)!)"
+        navigationItem.title = "BCFI: \((medicijn?.mp?.mpnm)!)"
         
         //let webstring = "https://www.apple.com"
         let myURL = URL(string: webstring!)      // ! because medicijn?

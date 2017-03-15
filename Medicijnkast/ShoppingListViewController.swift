@@ -14,13 +14,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromShopToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    let coreData = CoreDataStack()
     
     // MARK: - Properties Variables
     var totalePrijs:Dictionary<String,Float> = [:]
-    var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mpnm, 8.70] */
+    var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mppnm, 8.70] */
     var gdkpprijs:Float = 0.0
-    var gdkpnaam:Dictionary<String,String> = [:] /* [vosnm: mpnm */
+    var gdkpnaam:Dictionary<String,String> = [:] /* [vosnm: mppnm */
     var verschil:Float = 0.0
 
     var sortDescriptorIndex: Int?=nil
@@ -29,10 +28,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     var searchActive: Bool = false
     
     var zoekwoord:String = ""
-    var filterKeyword:String = "mpnm"
+    var filterKeyword:String = "mppnm"
     var zoekoperator:String = "BEGINSWITH"
-    var format:String = "mpnm BEGINSWITH[c] %@"
-    var sortKeyword:String = "mpnm"
+    var format:String = "mppnm BEGINSWITH[c] %@"
+    var sortKeyword:String = "mppnm"
     
     // MARK: - Referencing Outlets
     @IBOutlet weak var showGraphButton: UIButton!
@@ -195,15 +194,15 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     // MARK: - fetchedResultsController
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Medicijn> = {
+    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
         
         // Create Fetch Request
-        let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mpnm", ascending: true)]
-        let predicate = NSPredicate(format: "aankoop == true")
+        let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
+        let predicate = NSPredicate(format: "userdata.aankoop == true")
         fetchRequest.predicate = predicate
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -299,12 +298,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         switch selectedScope {
         case 0:
             print("scope: merknaam")
-            filterKeyword = "mpnm"
-            sortKeyword = "mpnm"
+            filterKeyword = "mppnm"
+            sortKeyword = "mppnm"
         case 1:
             print("scope: stofnaam")
-            filterKeyword = "vosnm"
-            sortKeyword = "vosnm"
+            filterKeyword = "vosnm_"
+            sortKeyword = "vosnm_"
         case 2:
             print("scope: firmanaam")
             filterKeyword = "nirnm"
@@ -312,10 +311,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         case 3:
             print("scope: alles")
             filterKeyword = "alles"
-            sortKeyword = "mpnm"
+            sortKeyword = "mppnm"
         default:
-            filterKeyword = "mpnm"
-            sortKeyword = "mpnm"
+            filterKeyword = "mppnm"
+            sortKeyword = "mppnm"
         }
         
         print("scope changed: \(selectedScope)")
@@ -376,8 +375,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        filterKeyword = "mpnm"
-        sortKeyword = "mpnm"
+        filterKeyword = "mppnm"
+        sortKeyword = "mppnm"
         print("Cancel clicked")
         searchBar.showsScopeBar = false
         searchBar.sizeToFit()
@@ -404,13 +403,13 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         if scopeIndex == 3 || scopeIndex == -1 {
             if searchText.isEmpty == true {
                 print("scope -1 or 3 and no text in searchBar")
-                let predicate = NSPredicate(format: "aankoop == true")
+                let predicate = NSPredicate(format: "userdata.aankoop == true")
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 
             } else {
-                format = ("mpnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@ || nirnm \(zoekoperator)[c] %@")
+                format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@ || nirnm \(zoekoperator)[c] %@")
                 let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
-                let predicate2 = NSPredicate(format: "aankoop == true")
+                let predicate2 = NSPredicate(format: "userdata.aankoop == true")
                 let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
             }
@@ -418,18 +417,18 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         } else {
             if searchText.isEmpty == true {
                 print("scope = 0, 1 or 2 and no text in searchBar")
-                let predicate = NSPredicate(format: "aankoop == true")
+                let predicate = NSPredicate(format: "userdata.aankoop == true")
                 self.fetchedResultsController.fetchRequest.predicate = predicate
             } else {
                 if filterKeyword == "alles" {
-                    format = ("mpnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@ || vosnm \(zoekoperator)[c] %@")
+                    format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
                     let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
-                    let predicate2 = NSPredicate(format: "aankoop == true")
+                    let predicate2 = NSPredicate(format: "userdata.aankoop == true")
                     let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                     self.fetchedResultsController.fetchRequest.predicate = predicate
                 } else {
                     let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
-                    let predicate2 = NSPredicate(format: "aankoop == true")
+                    let predicate2 = NSPredicate(format: "userdata.aankoop == true")
                     let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                     print("predicate: \(predicate)")
                     self.fetchedResultsController.fetchRequest.predicate = predicate
@@ -481,8 +480,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - View Methods
     private func TotalePrijs(managedObjectContext: NSManagedObjectContext) -> Dictionary<String,Float> {
-        let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        let pred = NSPredicate(format: "aankoop == true")
+        let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
+        let pred = NSPredicate(format: "userdata.aankoop == true")
         fetchReq.predicate = pred
         
         var totaleprijs:Dictionary<String,Float> = [:]
@@ -512,7 +511,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     private func rekenen() {
         // Rekenen
         
-        totalePrijs = TotalePrijs(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
+        totalePrijs = TotalePrijs(managedObjectContext: self.appDelegate.viewContext)
         totalePupr.text = "\((totalePrijs["pupr"])!) €"
         totaalRemA.text = "\((totalePrijs["rema"])!) €"
         totaalRemW.text = "\((totalePrijs["remw"])!) €"
@@ -548,7 +547,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             
             x = medicijnen.count
             
-            let totaalAankoop = countAankoop(managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext)
+            let totaalAankoop = countAankoop(managedObjectContext: self.appDelegate.viewContext)
             if searchActive || hasMedicijnen {
                 totaalAantal.text = "\(x)/\(totaalAankoop)"
                 tableView.isHidden = false
@@ -566,8 +565,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {
-        let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-        let pred = NSPredicate(format: "aankoop == true")
+        let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
+        let pred = NSPredicate(format: "userdata.aankooplijst == true")
         fetchReq.predicate = pred
         
         do {
@@ -585,12 +584,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - Notification Handling
     func applicationDidEnterBackground(_ notification: Notification) {
-        do {
-            try CoreDataStack.shared.persistentContainer.viewContext.save()
-        } catch {
-            print("Unable to Save Changes")
-            print("\(error), \(error.localizedDescription)")
-        }
+        self.appDelegate.saveContext()
     }
     
 }
@@ -654,10 +648,10 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         cell.layer.masksToBounds = true
         cell.layer.borderWidth = 1
 
-        cell.mpnm.text = medicijn.mpnm
+        cell.mppnm.text = medicijn.mp?.mpnm
         cell.mppnm.text = medicijn.mppnm
-        cell.vosnm.text = medicijn.vosnm
-        cell.nirnm.text = medicijn.nirnm
+        cell.vosnm.text = medicijn.vosnm_
+        cell.nirnm.text = medicijn.mp?.ir?.nirnm
         
         cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
         cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
@@ -679,7 +673,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             let medicijn = self.fetchedResultsController.object(at: indexPath)
             medicijn.setValue(false, forKey: "aankoop")
             medicijn.setValue(true, forKey: "aankooparchief")
-            let context = self.coreData.persistentContainer.viewContext
+            let context = self.appDelegate.viewContext
             
             do {
                 try context.save()
@@ -698,7 +692,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             let medicijn = self.fetchedResultsController.object(at: indexPath)
             medicijn.setValue(true, forKey: "kast")
             
-            let context = self.coreData.persistentContainer.viewContext
+            let context = self.appDelegate.viewContext
             do {
                 try context.save()
                 print("med saved in medicijnkast")
@@ -720,24 +714,24 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     func fetchCheapest(categorie: String) -> Dictionary<String, Dictionary<String,Float>> {
         
         // fetch alle medicijnen in aankooplijst (aankoop == true)
-        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return ["vosnaam":["mpnm":0.0]] as Dictionary<String, Dictionary<String,Float>> }
+        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return ["vosnaam":["mp.mppnm":0.0]] as Dictionary<String, Dictionary<String,Float>> }
         var vosarray:Array<String> = []
         for med in medicijnen {
             // vosnaam opvragen
-            vosarray.append(med.vosnm!)
+            vosarray.append(med.vosnm_!)
         }
         
         // alle medicijnen opvragen
         // voor elke stofnaam het goedkoopste alternatief zoeken (cheapest true of zelf berekenen?)
-        var resultaat:Array<Medicijn> = []
+        var resultaat:Array<MPP> = []
         var vosdict: Dictionary<String,Dictionary<String,Float>> = [:]
         
         for vos in vosarray {
-            let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-            let predicate = NSPredicate(format: "vosnm == %@", vos)
+            let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
+            let predicate = NSPredicate(format: "vosnm_ == %@", vos)
             fetchReq.predicate = predicate
             do {
-                resultaat = try CoreDataStack.shared.persistentContainer.viewContext.fetch(fetchReq)
+                resultaat = try self.appDelegate.viewContext.fetch(fetchReq)
             } catch {
                 print("fetching error in calculateCheapestPrice")
             }
@@ -749,7 +743,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
                     prijsdict[med.pupr!.floatValue!] = med.mppcv!
                 }
                 if categorie == "rema" {
-                    prijsdict[med.rema!.floatValue!] = med.mppcv!
+                    prijsdict[med.rema!.floatValue!] = med.mpcv!
                 }
                 if categorie == "remw" {
                     prijsdict[med.remw!.floatValue!] = med.mppcv!

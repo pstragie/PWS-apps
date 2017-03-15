@@ -6,27 +6,30 @@
 //  Copyright © 2017 PWS. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreData 
 
 class Rekenen {
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
     /*
-    fileprivate lazy var fR: NSFetchedResultsController<Medicijn> = {
+    fileprivate lazy var fR: NSFetchedResultsController<MPP> = {
         
         // Create Fetch Request
-        let fetchRequest: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
+        let fetchRequest: NSFetchRequest<MPP> = MPP()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mpnm", ascending: true)]
         let predicate = NSPredicate(format: "aankoop == true")
         fetchRequest.predicate = predicate
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         // Configure Fetched Results Controller
         
         return fetchedResultsController
     }()
     */
-    func TotalePrijs(_ fetchedResultsController: NSFetchedResultsController<Medicijn>) -> Dictionary<String,Double> {
+    func TotalePrijs(_ fetchedResultsController: NSFetchedResultsController<MPP>) -> Dictionary<String,Double> {
         var totaleprijs:Dictionary<String,Double> = [:]
         
         // fetch alle medicijnen in aankooplijst (aankoop == true)
@@ -39,27 +42,27 @@ class Rekenen {
         return totaleprijs
     }
 
-    func fetchCheapest(_ fetchedResultsController: NSFetchedResultsController<Medicijn>, categorie: String) -> Dictionary<String, Dictionary<String,Double>> {
+    func fetchCheapest(_ fetchedResultsController: NSFetchedResultsController<MPP>, categorie: String) -> Dictionary<String, Dictionary<String,Double>> {
         
         // fetch alle medicijnen in aankooplijst (aankoop == true)
-        guard let medicijnen = fetchedResultsController.fetchedObjects else { return ["vosnaam":["mpnm":0.0]] as Dictionary<String, Dictionary<String,Double>> }
+        guard let medicijnen = fetchedResultsController.fetchedObjects else { return ["vosnaam":["mppnm":0.0]] as Dictionary<String, Dictionary<String,Double>> }
         var vosarray:Array<String> = []
         for med in medicijnen {
             // vosnaam opvragen
-            vosarray.append(med.vosnm!)
+            vosarray.append(med.vosnm_!)
         }
         
         // alle medicijnen opvragen
         // voor elke stofnaam het goedkoopste alternatief zoeken (cheapest true of zelf berekenen?)
-        var resultaat:Array<Medicijn> = []
+        var resultaat:Array<MPP> = []
         var vosdict: Dictionary<String,Dictionary<String,Double>> = [:]
         
         for vos in vosarray {
-            let fetchReq: NSFetchRequest<Medicijn> = Medicijn.fetchRequest()
-            let predicate = NSPredicate(format: "vosnm == %@", vos)
+            let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
+            let predicate = NSPredicate(format: "vosnm_ == %@", vos)
             fetchReq.predicate = predicate
             do {
-                resultaat = try CoreDataStack.shared.persistentContainer.viewContext.fetch(fetchReq)
+                resultaat = try self.appDelegate.viewContext.fetch(fetchReq)
                 print("aantal matches: \(resultaat.count)")
             } catch {
                 print("fetching error in calculateCheapestPrice")
@@ -69,13 +72,13 @@ class Rekenen {
             var prijsdict:Dictionary<Double, String> = [:]
             for med in resultaat {
                 if categorie == "pupr" {
-                    prijsdict[med.pupr!.doubleValue!] = med.mpnm!
+                    prijsdict[med.pupr!.doubleValue!] = med.mp?.mpnm!
                 }
                 if categorie == "rema" {
-                    prijsdict[med.rema!.doubleValue!] = med.mpnm!
+                    prijsdict[med.rema!.doubleValue!] = med.mp?.mpnm!
                 }
                 if categorie == "remw" {
-                    prijsdict[med.remw!.doubleValue!] = med.mpnm!
+                    prijsdict[med.remw!.doubleValue!] = med.mp?.mpnm!
                 }
             }
         
@@ -91,7 +94,7 @@ class Rekenen {
     func berekenGoedkoopsteAlternatief(vosdict: Dictionary<String, Dictionary<String,Double>>, categorie: String) -> Double {
         // Bereken totaal
         var totaalprijs:Double = 0.0
-        for (_, value) in vosdict {  /* key = vosnm, value = dict(merknaam, prijs) */
+        for (_, value) in vosdict {  /* key = vosnm_, value = dict(merknaam, prijs) */
             for (_, v) in value {
                 totaalprijs += v
             }
@@ -103,7 +106,7 @@ class Rekenen {
         // Bereken totaal
         var lijstalternatieven:Dictionary<String,Array<String>> = [:]
         
-        for (key, value) in vosdict {  /* key = vosnm, value = dict(merknaam, prijs) */
+        for (key, value) in vosdict {  /* key = vosnm_, value = dict(merknaam, prijs) */
             lijstalternatieven[key] = Array(value.keys)
         }
         return lijstalternatieven
