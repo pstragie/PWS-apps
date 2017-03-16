@@ -14,7 +14,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromShopToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
+    //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
+
     // MARK: - Properties Variables
     var totalePrijs:Dictionary<String,Float> = [:]
     var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mppnm, 8.70] */
@@ -199,10 +200,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         // Create Fetch Request
         let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
-        let predicate = NSPredicate(format: "userdata.aankoop == true")
+        let predicate = NSPredicate(format: "userdata.aankooplijst == true")
         fetchRequest.predicate = predicate
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -234,6 +235,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     override func viewDidLayoutSubviews() {
         setupGraphView()
         setupMenuView()
+        tableView.reloadData()
+        self.updateView()
         print("view Did Layout subviews")
     }
     override func viewDidLoad() {
@@ -255,8 +258,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             print("Unable to Perform Fetch Request")
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
-        
-        self.updateView()
+        tableView.reloadData()
+        updateView()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
 
@@ -403,13 +406,13 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         if scopeIndex == 3 || scopeIndex == -1 {
             if searchText.isEmpty == true {
                 print("scope -1 or 3 and no text in searchBar")
-                let predicate = NSPredicate(format: "userdata.aankoop == true")
+                let predicate = NSPredicate(format: "userdata.aankooplijst == true")
                 self.fetchedResultsController.fetchRequest.predicate = predicate
                 
             } else {
                 format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@ || nirnm \(zoekoperator)[c] %@")
                 let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
-                let predicate2 = NSPredicate(format: "userdata.aankoop == true")
+                let predicate2 = NSPredicate(format: "userdata.aankooplijst == true")
                 let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                 self.fetchedResultsController.fetchRequest.predicate = predicate
             }
@@ -417,18 +420,18 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         } else {
             if searchText.isEmpty == true {
                 print("scope = 0, 1 or 2 and no text in searchBar")
-                let predicate = NSPredicate(format: "userdata.aankoop == true")
+                let predicate = NSPredicate(format: "userdata.aankooplijst == true")
                 self.fetchedResultsController.fetchRequest.predicate = predicate
             } else {
                 if filterKeyword == "alles" {
                     format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
                     let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
-                    let predicate2 = NSPredicate(format: "userdata.aankoop == true")
+                    let predicate2 = NSPredicate(format: "userdata.aankooplijst == true")
                     let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                     self.fetchedResultsController.fetchRequest.predicate = predicate
                 } else {
                     let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
-                    let predicate2 = NSPredicate(format: "userdata.aankoop == true")
+                    let predicate2 = NSPredicate(format: "userdata.aankooplijst == true")
                     let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
                     print("predicate: \(predicate)")
                     self.fetchedResultsController.fetchRequest.predicate = predicate
@@ -481,7 +484,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     // MARK: - View Methods
     private func TotalePrijs(managedObjectContext: NSManagedObjectContext) -> Dictionary<String,Float> {
         let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
-        let pred = NSPredicate(format: "userdata.aankoop == true")
+        let pred = NSPredicate(format: "userdata.aankooplijst == true")
         fetchReq.predicate = pred
         
         var totaleprijs:Dictionary<String,Float> = [:]
@@ -511,7 +514,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     private func rekenen() {
         // Rekenen
         
-        totalePrijs = TotalePrijs(managedObjectContext: self.appDelegate.viewContext)
+        totalePrijs = TotalePrijs(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
         totalePupr.text = "\((totalePrijs["pupr"])!) €"
         totaalRemA.text = "\((totalePrijs["rema"])!) €"
         totaalRemW.text = "\((totalePrijs["remw"])!) €"
@@ -547,7 +550,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             
             x = medicijnen.count
             
-            let totaalAankoop = countAankoop(managedObjectContext: self.appDelegate.viewContext)
+            let totaalAankoop = countAankoop(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
             if searchActive || hasMedicijnen {
                 totaalAantal.text = "\(x)/\(totaalAankoop)"
                 tableView.isHidden = false
@@ -603,6 +606,10 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch (type) {
+        case .update:
+            if let indexPath = indexPath {
+                tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            }
         case .insert:
             if let indexPath = newIndexPath {
                 tableView.insertRows(at: [indexPath], with: .fade)
@@ -648,7 +655,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         cell.layer.masksToBounds = true
         cell.layer.borderWidth = 1
 
-        cell.mppnm.text = medicijn.mp?.mpnm
+        cell.mpnm.text = medicijn.mp?.mpnm
         cell.mppnm.text = medicijn.mppnm
         cell.vosnm.text = medicijn.vosnm_
         cell.nirnm.text = medicijn.mp?.ir?.nirnm
@@ -671,18 +678,23 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             print("naar medicijnkast")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.setValue(false, forKey: "aankoop")
-            medicijn.setValue(true, forKey: "aankooparchief")
-            let context = self.appDelegate.viewContext
-            
+            medicijn.userdata?.setValue(false, forKey: "aankooplijst")
+            medicijn.userdata?.setValue(true, forKey: "aankooparchief")
+            let context = self.appDelegate.persistentContainer.viewContext
+            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "aankooplijst", uservalue: false, managedObjectContext: context)
+            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "aankooparchief", uservalue: true, managedObjectContext: context)
             do {
                 try context.save()
                 print("medicijn verwijderd uit de lijst!")
             } catch {
                 print(error.localizedDescription)
             }
+            
             self.tableView.reloadData()
             self.updateView()
+            
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.layer.backgroundColor = UIColor.red.withAlphaComponent(0.5).cgColor
         }
         deleteFromAankoopLijst.backgroundColor = UIColor.red
         
@@ -690,9 +702,8 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             print("Uit lijst verwijderd")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.setValue(true, forKey: "kast")
-            
-            let context = self.appDelegate.viewContext
+            let context = self.appDelegate.persistentContainer.viewContext
+            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkast", uservalue: true, managedObjectContext: context)
             do {
                 try context.save()
                 print("med saved in medicijnkast")
@@ -731,7 +742,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             let predicate = NSPredicate(format: "vosnm_ == %@", vos)
             fetchReq.predicate = predicate
             do {
-                resultaat = try self.appDelegate.viewContext.fetch(fetchReq)
+                resultaat = try self.appDelegate.persistentContainer.viewContext.fetch(fetchReq)
             } catch {
                 print("fetching error in calculateCheapestPrice")
             }
@@ -786,6 +797,63 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         let prijsverschil = huidig[categorie]! - altern
         
         return prijsverschil
+    }
+    
+    private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
+        // Helpers
+        var result: NSManagedObject?
+        // Create Entity Description
+        let entityDescription = NSEntityDescription.entity(forEntityName: entity, in: managedObjectContext)
+        if let entityDescription = entityDescription {
+            // Create Managed Object
+            result = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
+        }
+        return result
+    }
+    
+    private func fetchRecordsForEntity(_ entity: String, key: String, arg: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
+        // Create Fetch Request
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let predicate = NSPredicate(format: "%K == %@", key, arg)
+        fetchRequest.predicate = predicate
+        // Helpers
+        var result = [NSManagedObject]()
+        
+        do {
+            // Execute Fetch Request
+            let records = try managedObjectContext.fetch(fetchRequest)
+            if let records = records as? [NSManagedObject] {
+                result = records
+            }
+        } catch {
+            print("Unable to fetch managed objects for entity \(entity).")
+        }
+        return result
+    }
+    
+    func addUserData(mppcvValue: String, userkey: String, uservalue: Bool, managedObjectContext: NSManagedObjectContext) {
+        // one-to-one relationship
+        // Check if record exists
+        let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
+        if userdata.count == 0 {
+            print("data line does not exist")
+            if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
+                newUserData.setValue(uservalue, forKey: userkey)
+                newUserData.setValue(mppcvValue, forKey: "mppcv")
+                let mpps = fetchRecordsForEntity("MPP", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
+                newUserData.setValue(Date(), forKey: "lastupdate")
+                for mpp in mpps {
+                    mpp.setValue(newUserData, forKeyPath: "userdata")
+                }
+            }
+        } else {
+            print("data line exists")
+            for userData in userdata {
+                userData.setValue(uservalue, forKey: userkey)
+                userData.setValue(mppcvValue, forKey: "mppcv")
+                userData.setValue(Date(), forKey: "lastupdate")
+            }
+        }
     }
 }
 

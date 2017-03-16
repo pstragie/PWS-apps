@@ -226,8 +226,10 @@
         <attribute name="aantal" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="afbeelding" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="expdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="medicijnkast" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="medicijnkastarchief" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mppcv" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="patient" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="restant" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="mpp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MPP" inverseName="userdata" inverseEntity="MPP" syncable="YES"/>
@@ -262,7 +264,7 @@
         <element name="OGCCodes" positionX="-110" positionY="342" width="128" height="90"/>
         <element name="Sam" positionX="-405" positionY="162" width="128" height="465"/>
         <element name="Stof" positionX="-407" positionY="644" width="128" height="255"/>
-        <element name="Userdata" positionX="-234" positionY="812" width="128" height="195"/>
+        <element name="Userdata" positionX="-234" positionY="812" width="128" height="225"/>
         <element name="WadaCodes" positionX="34" positionY="162" width="128" height="298"/>
     </elements>
 </model>

@@ -62,7 +62,7 @@ class Rekenen {
             let predicate = NSPredicate(format: "vosnm_ == %@", vos)
             fetchReq.predicate = predicate
             do {
-                resultaat = try self.appDelegate.viewContext.fetch(fetchReq)
+                resultaat = try self.appDelegate.persistentContainer.viewContext.fetch(fetchReq)
                 print("aantal matches: \(resultaat.count)")
             } catch {
                 print("fetching error in calculateCheapestPrice")

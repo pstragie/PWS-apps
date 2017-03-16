@@ -32,7 +32,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         navigationItem.title = "BCFI: \((medicijn?.mp?.mpnm)!)"
         
         //let webstring = "https://www.apple.com"
-        let myURL = URL(string: webstring!)      // ! because medicijn?
+        let myURL = URL(string: webstring!)
         let myRequest = URLRequest(url: myURL!)
         
         webView.load(myRequest)

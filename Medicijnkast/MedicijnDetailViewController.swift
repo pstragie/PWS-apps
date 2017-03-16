@@ -170,7 +170,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         } else {
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = .medium
-            let timeString = dateFormatter.string(from: UserDefaults.standard.value(forKey: "last_update") as! Date)
+            let timeString = dateFormatter.string(from: medicijn?.createdAt as! Date)
             cell.updatedAt.text = timeString
         }
         return cell

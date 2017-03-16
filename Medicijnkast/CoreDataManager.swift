@@ -21,7 +21,7 @@ final class CoreDataManager {
     // MARK: - Core Data Stack
     
     lazy var applicationDocumentsDirectory: URL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.appcoda.Medicijnkast" in the application's documents Application Support directory.
+        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.PWS.Medicijnkast" in the application's documents Application Support directory.
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count-1]
     }()
@@ -44,21 +44,29 @@ final class CoreDataManager {
     }()
     
     private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+        print("Loading persistentStoreCoordinator")
+        let persistentStoreCoordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         
         let fileManager = FileManager.default
         let storeName = "\(self.modelName).sqlite"
         
         let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let persistentStoreURL = documentsDirectoryURL.appendingPathComponent(storeName)
+
+        
+        
+        var error: NSError? = nil
+        var failureReason = "There was an error creating or loading the applications's saved data"
+        
+        let options = [NSInferMappingModelAutomaticallyOption: true, NSMigratePersistentStoresAutomaticallyOption: true]
         
         do {
-            let options = [NSInferMappingModelAutomaticallyOption: true, NSMigratePersistentStoresAutomaticallyOption: true]
-            try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: persistentStoreURL, options: options)
+            try persistentStoreCoordinator?.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: persistentStoreURL, options: options)
         } catch {
             fatalError("Unable to Load Persistent Store")
         }
-        return persistentStoreCoordinator
+ 
+        return persistentStoreCoordinator!
     }()
     
 }

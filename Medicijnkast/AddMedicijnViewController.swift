@@ -11,11 +11,10 @@ import CoreData
 
 class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     
-    var context: NSManagedObjectContext?
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromAddToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
+    //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
     
     // MARK: - Properties Variables
     var sortDescriptorIndex: Int?=nil
@@ -144,15 +143,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         fetchRequest.predicate = predicate
         print("Predicate = \(predicate)")
         // Create Fetched Results Controller
-        let moc1 = self.appDelegate.viewContext
-        let moc2 = self.coreDataManager.managedObjectContext
-        let moc3 = self.context
-        print(moc1)
-        print(moc2)
-        print(moc3)
         
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.coreDataManager.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        print(fetchedResultsController)
+        let context = self.appDelegate.persistentContainer.viewContext
+        print(context)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
         return fetchedResultsController
@@ -172,18 +166,15 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
         print("Addmedicijn View did load!")
         setupLayout()
         setUpSearchBar()
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
-        if #available(iOS 10.0, *) {
-            context = self.appDelegate.viewContext
-        } else {
-            context = self.coreDataManager.managedObjectContext
-        }
-
+        
         do {
             try self.fetchedResultsController.performFetch()
         } catch {
@@ -495,28 +486,27 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             print("naar medicijnkast")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.setValue(true, forKey: "kast")
-            //let context = self.appDelegate.viewContext
-            self.context?.perform {
-                do {
-                    try self.context?.save()
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
-                    print("saved!")
-                } catch {
-                    print(error.localizedDescription)
-                }
-                self.appDelegate.saveContext()
+            let context = self.appDelegate.persistentContainer.viewContext
+            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkast", uservalue: true, managedObjectContext: context)
+            do {
+                try context.save()
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
+                print("med saved in medicijnkast")
+            } catch {
+                print(error.localizedDescription)
             }
         }
         addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
+        
         let addToShoppingList = UITableViewRowAction(style: .normal, title: "Naar\nAankooplijst") { (action, indexPath) in
             print("naar aankooplijst")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.setValue(true, forKey: "aankoop")
-            //let context = self.appDelegate.viewContext
+            medicijn.userdata?.setValue(true, forKey: "aankooplijst")
+            let context = self.appDelegate.persistentContainer.viewContext
+            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "aankooplijst", uservalue: true, managedObjectContext: context)
             do {
-                try self.context?.save()
+                try context.save()
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedAankoop"), object: nil)
                 print("med saved in aankooplijst")
             } catch {
@@ -560,4 +550,61 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         return cell
     }
     
+    private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
+        // Helpers
+        var result: NSManagedObject?
+        // Create Entity Description
+        let entityDescription = NSEntityDescription.entity(forEntityName: entity, in: managedObjectContext)
+        if let entityDescription = entityDescription {
+            // Create Managed Object
+            result = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
+        }
+        return result
+    }
+    
+    private func fetchRecordsForEntity(_ entity: String, key: String, arg: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
+        // Create Fetch Request
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let predicate = NSPredicate(format: "%K == %@", key, arg)
+        fetchRequest.predicate = predicate
+        // Helpers
+        var result = [NSManagedObject]()
+        
+        do {
+            // Execute Fetch Request
+            let records = try managedObjectContext.fetch(fetchRequest)
+            if let records = records as? [NSManagedObject] {
+                result = records
+            }
+        } catch {
+            print("Unable to fetch managed objects for entity \(entity).")
+        }
+        return result
+    }
+
+    func addUserData(mppcvValue: String, userkey: String, uservalue: Bool, managedObjectContext: NSManagedObjectContext) {
+        // one-to-one relationship
+        // Check if record exists
+        
+        let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
+        if userdata.count == 0 {
+            print("data line does not exist")
+            if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
+                newUserData.setValue(uservalue, forKey: userkey)
+                newUserData.setValue(mppcvValue, forKey: "mppcv")
+                let mpps = fetchRecordsForEntity("MPP", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
+                newUserData.setValue(Date(), forKey: "lastupdate")
+                for mpp in mpps {
+                    mpp.setValue(newUserData, forKeyPath: "userdata")
+                }
+            }
+        } else {
+            print("data line exists")
+            for userData in userdata {
+                userData.setValue(uservalue, forKey: userkey)
+                userData.setValue(mppcvValue, forKey: "mppcv")
+                userData.setValue(Date(), forKey: "lastupdate")
+            }
+        }
+    }
 }

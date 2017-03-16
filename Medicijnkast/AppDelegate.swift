@@ -13,28 +13,23 @@ import Foundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
+    //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
     var errorHandler: (Error) -> Void = {_ in }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        print(coreDataManager.managedObjectContext)
-        let managedObjectContext = coreDataManager.managedObjectContext
+        preloadDBData()
+        print("NSHomeDir: \(NSHomeDirectory())")
+        // Print local file directory
         let fm = FileManager.default
         let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
         print(appdir)
         
-        seedPersistentStoreWithManagedObjectContext(managedObjectContext)
+        // First time only! Load persistent store with data from csv files.
+        //seedPersistentStoreWithManagedObjectContext(managedObjectContext)
         
-                
-        do {
-            // Save Managed Object Context
-            try managedObjectContext.save()
-        } catch {
-            // Error Handling
-            print("Unable to save managed object context.")
-        }
-        
+        // Save Managed Object Context
+        self.saveContext()
         
         let navigationBarAppearance = UINavigationBar.appearance()
         
@@ -106,8 +101,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // MARK: - Core Data stack
+    func preloadDBData() {
+        let fileManager = FileManager.default
+
+        if !fileManager.fileExists(atPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite") {
+            let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
+            let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
+            
+            for index in 0 ..< sourceSqliteURLs.count {
+                do {
+                    try fileManager.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
+                    print("Files Copied!")
+                } catch {
+                    fatalError("Could not copy sqlite to destination.")
+                }
+            }
+        } else {
+            print("Files Exist!")
+        }
+    }
     
     lazy var persistentContainer: NSPersistentContainer = {
+        print("Loading persistentContainer")
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
@@ -135,31 +150,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
     
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        //let modelURL = Bundle.main.url(forResource: "Medicijnkast", withExtension: "momd")!
-        //return NSManagedObjectModel(contentsOf: modelURL)!
-        return self.persistentContainer.managedObjectModel
-    }()
-    
-    lazy var applicationDocumentsDirectory: URL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.appcoda.Medicijnkast" in the application's documents Application Support directory.
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return urls[urls.count-1]
-    }()
-    
-    lazy var viewContext: NSManagedObjectContext = {
-        return self.persistentContainer.viewContext
-    }()
-    
     // Optional
     lazy var backgroundContext: NSManagedObjectContext = {
         return self.persistentContainer.newBackgroundContext()
     }()
     
     func performForegroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        self.viewContext.perform {
-            block(self.viewContext)
+        self.persistentContainer.viewContext.perform {
+            block(self.persistentContainer.viewContext)
         }
     }
     
@@ -195,11 +193,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
-    }
-    
-    func getContext() -> NSManagedObjectContext {
-        let coreData = UIApplication.shared.delegate as! AppDelegate
-        return coreData.persistentContainer.viewContext
     }
     
     func loadAllAttributes(entitynaam: String) {
@@ -281,11 +274,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func saveAttributes(entitynaam: String, dict: [String:Any]) {
-        let managedObjectContext = coreDataManager.managedObjectContext
+        let managedObjectContext = persistentContainer.viewContext
         print("saving attributes...")
-        
-        //let newSam = NSManagedObject(entity: entitySam!, insertInto: managedObjectContext)
-        //let newRel = NSManagedObject(entity: entityRel!, insertInto: managedObjectContext)
         
         if entitynaam == "MPP" {
             if let newMPP = createRecordForEntity("MPP", inManagedObjectContext: managedObjectContext) {
@@ -335,9 +325,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let mpps = fetchRecordsForEntity("MPP", key: "mpcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
                 
                 newMP.setValue(Date(), forKey: "createdAt")
-                // Set Relationship
-                //newMP.setValue(NSSet(object: mpp!), forKey: "mpp")
-                // Add item to items
                 for mpp in mpps {
                     mpp.setValue(newMP, forKeyPath: "mp")
                 }
@@ -400,9 +387,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let mps = fetchRecordsForEntity("MP", key: "ircv", arg: recordKey, inManagedObjectContext: managedObjectContext)
                 
                 newIr.setValue(Date(), forKey: "createdAt")
-                // Set Relationship
-                //newIr.setValue(NSSet(object: mpp!), forKey: "mp")
-                // Add item to items
                 for mp in mps {
                     mp.setValue(newIr, forKeyPath: "ir")
                 }
@@ -421,9 +405,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let sams = fetchRecordsForEntity("Sam", key: "stofcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
                 
                 newStof.setValue(Date(), forKey: "createdAt")
-                // Set Relationship
-                //newStof.setValue(NSSet(object: mpp!), forKey: "sam")
-                // Add item to items
                 for sam in sams {
                     sam.setValue(newStof, forKeyPath: "stof")
                 }
@@ -443,9 +424,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let mpps = fetchRecordsForEntity("MPP", key: "mppcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
                 
                 newGgr.setValue(Date(), forKey: "createdAt")
-                // Set Relationship
-                //newGgr.setValue(mpp!, forKey: "mpp")
-                // Add item to items
                 for mpp in mpps {
                     mpp.setValue(newGgr, forKeyPath: "ggr_link")
                 }
@@ -561,18 +539,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let filename = entitynaam + "_swift"
         var items:[Dictionary<String,String>] = [[:]]
         print("Preloading data...")
-        // Retrieve data from the source file 
-        //let d = ["MP":"MP.csv", "MPP":"MPP.csv", "Sam":"Sam.csv", "Stof":"Stof.csv", "Gal":"Gal.csv", "Ggr_Link":"Ggr_Link.csv", "Hyr":"Hyr.csv", "Ir":"Ir.csv"
-        //if let remoteURL = NSURL(string: "https://medcabinet.byethost7.com/csv/nl/\(entitynaam).csv") {
+        // Retrieve data from the source file
         if let path = Bundle.main.path(forResource: filename, ofType: "csv") {
             let contentsOfURL = NSURL(fileURLWithPath: path)
             //print(remoteURL)
-            // Remove all entity items before preloading
-            
             
             var error:NSError?
-            //parseCSV -> [Dictionary<String,String>]
-            //if let values = parseCSV(contentsOf: remoteURL, encoding: String.Encoding.utf8, error: &error) {
             if let values = parseCSV(contentsOf: contentsOfURL, encoding: String.Encoding.utf8, error: &error) {
                 print("parsing data successful...")
                 //item -> Dictionary<String,String>
@@ -610,7 +582,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func cleanCoreData(entitynaam: String) {
         // Remove the existing items
         print("Cleaning core data... \(entitynaam)")
-        let context = viewContext
+        let context = persistentContainer.viewContext
         /*
         var list: NSManagedObject? = nil
         let lists = fetchRecordsForEntity(entitynaam, inManagedObjectContext: context)
@@ -653,7 +625,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Remove all Data from Medicijn before adding the parsed data.
     func cleanCoreDataMedicijn() {
         print("Cleaning core data...")
-        let context = CoreDataStack.shared.persistentContainer.viewContext
+        let context = self.persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
         
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
@@ -691,143 +663,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     // Update core data
     
-    private func updateCoreData() {
-        let managedObjectContext = CoreDataStack.shared.persistentContainer.viewContext
-        
-        // Helpers
-        //var list: NSManagedObject? = nil
-        
-        // Fetch List Records
-        //let lists = fetchRecordsForEntity("Medicijn", inManagedObjectContext: managedObjectContext) // Array<NSManagedObject>
-        // Get csv data
-        print("Fetching csv data...")
-        // Get csv data and store in list of dictionaries
-        let medicijnen = preloadData(entitynaam: "MP") // [Dictionary<String,String>]
-        // Read every dictionary
-        for medicijn in medicijnen {
-            for (key, value) in medicijn {
-                if key == "update" && value == "true" {
-                    let predicate = NSPredicate(format: "mppcv == %@", medicijn["mppcv"]!)
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Medicijn")
-                    fetchRequest.predicate = predicate
-                    
-                    do {
-                        let fetchedEntities = try managedObjectContext.execute(fetchRequest)
-                        print("found changed record: \(medicijn["mppcv"])")
-                        var ambvalue:NSNumber?
-                        var btvalue:NSNumber?
-                        var hospvalue:NSNumber?
-                        var cheapestvalue:NSNumber?
-                        var narcoticvalue:NSNumber?
-                        var orphanvalue:NSNumber?
-                        var specrulesvalue:NSNumber?
-                        var updatevalue:NSNumber?
-                        var pipvalue:NSNumber?
-                        
-                        if medicijn["amb"] == "true" {
-                            ambvalue = 1
-                        } else {
-                            ambvalue = 0
-                        }
-                        if medicijn["bt"] == "true" {
-                            btvalue = 1
-                        } else {
-                            btvalue = 0
-                        }
-                        if medicijn["hosp"] == "true" {
-                            hospvalue = 1
-                        } else {
-                            hospvalue = 0
-                        }
-                        if medicijn["cheapest"] == "true" {
-                            cheapestvalue = 1;
-                        } else {
-                            cheapestvalue = 0
-                        }
-                        if medicijn["narcotic"] == "true" {
-                            narcoticvalue = 1
-                        } else {
-                            narcoticvalue = 0
-                        }
-                        if medicijn["orphan"] == "true" {
-                            orphanvalue = 1
-                        } else {
-                            orphanvalue = 0
-                        }
-                        if medicijn["specrules"] == "true" {
-                            specrulesvalue = 1
-                        } else {
-                            specrulesvalue = 0
-                        }
-                        if medicijn["update"] == "true" {
-                            updatevalue = 1
-                        } else {
-                            updatevalue = 0
-                        }
-                        if medicijn["pip"] == "true" {
-                            pipvalue = 1
-                        } else {
-                            pipvalue = 0
-                        }
-                        fetchedEntities.setValue(ambvalue, forKey: "amb")
-                        fetchedEntities.setValue(btvalue, forKey: "bt")
-                        fetchedEntities.setValue(cheapestvalue, forKey: "cheapest")
-                        fetchedEntities.setValue(medicijn["galcv"], forKey: "galcv")
-                        fetchedEntities.setValue(medicijn["galnm"], forKey: "galnm")
-                        fetchedEntities.setValue(hospvalue, forKey: "hosp")
-                        fetchedEntities.setValue(medicijn["hyrcv"], forKey: "hyrcv")
-                        fetchedEntities.setValue(medicijn["index"], forKey: "index")
-                        fetchedEntities.setValue(medicijn["inncnk"], forKey: "inncnk")
-                        fetchedEntities.setValue(medicijn["intro"], forKey: "intro")
-                        fetchedEntities.setValue(medicijn["ircv"], forKey: "ircv")
-                        fetchedEntities.setValue(medicijn["law"], forKey: "law")
-                        fetchedEntities.setValue(medicijn["link2mpg"], forKey: "link2mpg")
-                        fetchedEntities.setValue(medicijn["link2pvt"], forKey: "link2pvt")
-                        fetchedEntities.setValue(medicijn["mpcv"], forKey: "mpcv")
-                        fetchedEntities.setValue(medicijn["mpnm"], forKey: "mpnm")
-                        fetchedEntities.setValue(medicijn["mppnm"], forKey: "mppnm")
-                        fetchedEntities.setValue(narcoticvalue, forKey: "narcotic")
-                        fetchedEntities.setValue(medicijn["nirnm"], forKey: "nirnm")
-                        fetchedEntities.setValue(medicijn["ninnm"], forKey: "ninnm")
-                        fetchedEntities.setValue(medicijn["note"], forKey: "note")
-                        fetchedEntities.setValue(medicijn["ogc"], forKey: "ogc")
-                        fetchedEntities.setValue(orphanvalue, forKey: "orphan")
-                        fetchedEntities.setValue(pipvalue, forKey: "pip")
-                        fetchedEntities.setValue(medicijn["ppgal"], forKey: "ppgal")
-                        fetchedEntities.setValue(medicijn["pupr"], forKey: "pupr")
-                        fetchedEntities.setValue(medicijn["rema"], forKey: "rema")
-                        fetchedEntities.setValue(medicijn["remw"], forKey: "remw")
-                        fetchedEntities.setValue(specrulesvalue, forKey: "specrules")
-                        fetchedEntities.setValue(medicijn["spef"], forKey: "spef")
-                        fetchedEntities.setValue(medicijn["ssecr"], forKey: "ssecr")
-                        fetchedEntities.setValue(medicijn["stofcv"], forKey: "stofcv")
-                        fetchedEntities.setValue(medicijn["stofnm"], forKey: "stofnm")
-                        fetchedEntities.setValue(medicijn["ti"], forKey: "ti")
-                        fetchedEntities.setValue(medicijn["use"], forKey: "use")
-                        fetchedEntities.setValue(medicijn["volgnr"], forKey: "volgnr")
-                        fetchedEntities.setValue(medicijn["vosnm"], forKey: "vosnm")
-                        fetchedEntities.setValue(medicijn["wadan"], forKey: "wadan")
-                        fetchedEntities.setValue(updatevalue, forKey: "update")
-                        fetchedEntities.setValue(Date(), forKey: "updatedAt")
-
-                    } catch {
-                        print("fetching failed, new record?")
-                        saveAttributes(dict: medicijn)
-                    }
-                }
-            }
-        }
-        
-        
-        do {
-            // Save Managed Object Context
-            try managedObjectContext.save()
-        } catch {
-            print("Unable to save managed object context")
-        }
-
-    }
- 
     // Existing installation with existing data - check for updates
     private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
         // Helpers

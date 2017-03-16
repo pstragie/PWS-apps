@@ -63,7 +63,7 @@ class BestellingPlaatsenViewController: UIViewController, MFMailComposeViewContr
         let predicate = NSPredicate(format: "aankoop == true")
         fetchRequest.predicate = predicate
         // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -90,7 +90,7 @@ class BestellingPlaatsenViewController: UIViewController, MFMailComposeViewContr
         fetchReq.predicate = pred
         
         do {
-            aankoopResultsList = try self.appDelegate.viewContext.fetch(fetchReq)
+            aankoopResultsList = try self.appDelegate.persistentContainer.viewContext.fetch(fetchReq)
         } catch {
             print("Error in fetching objects.")
         }

@@ -14,6 +14,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromKastToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+	//let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
 
 	// MARK: - Properties Variables
 	var sortDescriptorIndex:Int?=nil
@@ -124,11 +125,11 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
 		//let predicate = NSPredicate(format: "cheapest contains %@", NSNumber(booleanLiteral: true))
-		let predicate = NSPredicate(format: "userdata.medicijnkast == false")
+		let predicate = NSPredicate(format: "userdata.medicijnkast == true")
 		fetchRequest.predicate = predicate
 		print("Predicate = \(predicate)")
 		// Create Fetched Results Controller
-		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 		
         // Configure Fetched Results Controller
         fetchedResultsController.delegate = self
@@ -182,17 +183,21 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
 		setupMenuView()
 		progressView.isHidden = true
 		btnCloseMenuView.isHidden = true
 		btnCloseMenuView.isEnabled = false
 		print("view Did Layout subviews")
+		tableView.reloadData()
+		self.updateView()
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(true)
 		print("View did appear")
-		
+		tableView.reloadData()
+		self.updateView()
 		/* update if new bcfi files */
 	}
 	
@@ -430,7 +435,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			
 			x = medicijnen.count
 			
-			let totaalKast = countKast(managedObjectContext: appDelegate.viewContext)
+			let totaalKast = countKast(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
 			if searchActive || hasMedicijnen {
 				totaalAantal.text = "\(x)/\(totaalKast)"
 				tableView.isHidden = false
@@ -539,10 +544,10 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 		cell.layer.masksToBounds = true
 		cell.layer.borderWidth = 1
 		
-		cell.mppnm.text = medicijn.mp?.mpnm
+		cell.mpnm.text = medicijn.mp?.mpnm
 		
 		
-		cell.mppnm.text = medicijn.mppcv
+		cell.mppnm.text = medicijn.mppnm
 		cell.vosnm.text = medicijn.vosnm_
 		cell.nirnm.text = medicijn.mp?.ir?.nirnm
 		
@@ -563,10 +568,10 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			print("naar medicijnkast")
 			// Fetch Medicijn
 			let medicijn = self.fetchedResultsController.object(at: indexPath)
-			medicijn.setValue(false, forKey: "kast")
-			medicijn.setValue(true, forKey: "kastarchief")
-			let context = self.appDelegate.viewContext
-			
+			let context = self.appDelegate.persistentContainer.viewContext
+			self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkast", uservalue: false, managedObjectContext: context)
+			self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkastarchief", uservalue: true, managedObjectContext: context)
+
 			do {
 				try context.save()
 				print("medicijn verwijderd uit de lijst!")
@@ -575,14 +580,16 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			}
 			self.tableView.reloadData()
 			self.updateView()
+			let cell = tableView.cellForRow(at: indexPath)
+			cell?.layer.backgroundColor = UIColor.red.withAlphaComponent(0.5).cgColor
 		}
 		deleteFromMedicijnkast.backgroundColor = UIColor.red
 		
 		let addToShoppingList = UITableViewRowAction(style: .normal, title: "Naar\nAankooplijst") { (action, indexPath) in
 			// Fetch Medicijn
 			let medicijn = self.fetchedResultsController.object(at: indexPath)
-			medicijn.setValue(true, forKey: "aankoop")
-			let context = self.appDelegate.viewContext
+			let context = self.appDelegate.persistentContainer.viewContext
+			self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "aankooplijst", uservalue: true, managedObjectContext: context)
 			do {
 				try context.save()
 				print("med saved in aankooplijst")
@@ -600,6 +607,62 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 	}
 
+	private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
+		// Helpers
+		var result: NSManagedObject?
+		// Create Entity Description
+		let entityDescription = NSEntityDescription.entity(forEntityName: entity, in: managedObjectContext)
+		if let entityDescription = entityDescription {
+			// Create Managed Object
+			result = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
+		}
+		return result
+	}
+	
+	private func fetchRecordsForEntity(_ entity: String, key: String, arg: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
+		// Create Fetch Request
+		let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+		let predicate = NSPredicate(format: "%K == %@", key, arg)
+		fetchRequest.predicate = predicate
+		// Helpers
+		var result = [NSManagedObject]()
+		
+		do {
+			// Execute Fetch Request
+			let records = try managedObjectContext.fetch(fetchRequest)
+			if let records = records as? [NSManagedObject] {
+				result = records
+			}
+		} catch {
+			print("Unable to fetch managed objects for entity \(entity).")
+		}
+		return result
+	}
+	
+	func addUserData(mppcvValue: String, userkey: String, uservalue: Bool, managedObjectContext: NSManagedObjectContext) {
+		// one-to-one relationship
+		// Check if record exists
+		let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
+		if userdata.count == 0 {
+			print("data line does not exist")
+			if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
+				newUserData.setValue(uservalue, forKey: userkey)
+				newUserData.setValue(mppcvValue, forKey: "mppcv")
+				let mpps = fetchRecordsForEntity("MPP", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
+				newUserData.setValue(Date(), forKey: "lastupdate")
+				for mpp in mpps {
+					mpp.setValue(newUserData, forKeyPath: "userdata")
+				}
+			}
+		} else {
+			print("data line exists")
+			for userData in userdata {
+				userData.setValue(uservalue, forKey: userkey)
+				userData.setValue(mppcvValue, forKey: "mppcv")
+				userData.setValue(Date(), forKey: "lastupdate")
+			}
+		}
+	}
 }
 
 class Person: NSObject, NSCoding {
