@@ -196,8 +196,8 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(true)
 		print("View did appear")
-		tableView.reloadData()
-		self.updateView()
+		//tableView.reloadData()
+		//self.updateView()
 		/* update if new bcfi files */
 	}
 	
@@ -578,10 +578,15 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			} catch {
 				print(error.localizedDescription)
 			}
+			do {
+				try self.fetchedResultsController.performFetch()
+			} catch {
+				let fetchError = error as NSError
+				print("Unable to Perform Fetch Request")
+				print("\(fetchError), \(fetchError.localizedDescription)")
+			}
 			self.tableView.reloadData()
 			self.updateView()
-			let cell = tableView.cellForRow(at: indexPath)
-			cell?.layer.backgroundColor = UIColor.red.withAlphaComponent(0.5).cgColor
 		}
 		deleteFromMedicijnkast.backgroundColor = UIColor.red
 		

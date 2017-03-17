@@ -1827,22 +1827,22 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1eE-Av-wld">
-                                        <rect key="frame" x="13" y="40" width="383" height="871"/>
+                                        <rect key="frame" x="5" y="40" width="391" height="871"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="sectionIndexBackgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="cLT-Um-6lP" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="383" height="110"/>
+                                                <rect key="frame" x="0.0" y="28" width="391" height="110"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cLT-Um-6lP" id="WSm-UE-KQw">
-                                                    <rect key="frame" x="0.0" y="0.0" width="383" height="110"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="391" height="110"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="RW4-rD-sOM">
-                                                            <rect key="frame" x="4" y="2" width="375" height="101.5"/>
+                                                            <rect key="frame" x="4" y="2" width="383" height="101.5"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" tag="8" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="MVM-p9-5yh">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="101.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="258" height="101.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwn-8M-Fjq">
                                                                             <rect key="frame" x="0.0" y="0.0" width="104" height="26.5"/>
@@ -1874,7 +1874,7 @@
                                                                     </constraints>
                                                                 </stackView>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="EOQ-b3-1Ou">
-                                                                    <rect key="frame" x="255" y="0.0" width="120" height="101.5"/>
+                                                                    <rect key="frame" x="263" y="0.0" width="120" height="101.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eTh-hP-3mL">
                                                                             <rect key="frame" x="84.5" y="0.0" width="35.5" height="25.5"/>
@@ -1939,7 +1939,7 @@
                                     <constraint firstItem="1eE-Av-wld" firstAttribute="top" secondItem="ffx-CF-Uhh" secondAttribute="top" constant="40" id="Fkf-c0-AGC"/>
                                     <constraint firstItem="Vd7-KI-7Q6" firstAttribute="centerX" secondItem="ffx-CF-Uhh" secondAttribute="centerX" id="WvF-tR-9vI"/>
                                     <constraint firstAttribute="bottom" secondItem="1eE-Av-wld" secondAttribute="bottom" id="f81-Ao-jeP"/>
-                                    <constraint firstItem="1eE-Av-wld" firstAttribute="leading" secondItem="ffx-CF-Uhh" secondAttribute="leadingMargin" constant="5" id="m8m-Jh-lFE"/>
+                                    <constraint firstItem="1eE-Av-wld" firstAttribute="leading" secondItem="ffx-CF-Uhh" secondAttribute="leading" constant="5" id="m8m-Jh-lFE"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="1eE-Av-wld" secondAttribute="trailing" id="w8C-cp-nT1"/>
                                     <constraint firstItem="Vd7-KI-7Q6" firstAttribute="top" secondItem="ffx-CF-Uhh" secondAttribute="top" id="xzg-KT-JT9"/>
                                 </constraints>

@@ -86,8 +86,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBAction func showMenuView(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            print("menuView center x: \(self.menuView.center.x)")
-            print("bounds: \(self.view.bounds.width)")
+            //print("menuView center x: \(self.menuView.center.x)")
+            //print("bounds: \(self.view.bounds.width)")
             if self.menuView.center.x >= 0 {
                 self.menuView.center.x -= self.view.bounds.width
                 self.btnCloseMenuView.isHidden = true
@@ -149,14 +149,14 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBAction func showGraphView(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            print("graphView center x: \(self.graphView.center.x)")
-            print("bounds: \(self.view.bounds.width)")
+            //print("graphView center x: \(self.graphView.center.x)")
+            //print("bounds: \(self.view.bounds.width)")
             if self.graphView.center.x >= 0 {
-                print(">0: \(self.graphView.center.x)")
+                //print(">0: \(self.graphView.center.x)")
                 self.graphView.center.x -= self.view.bounds.width
                 self.popButton.isEnabled = false
             } else {
-                print("<0: \(self.graphView.center.x)")
+                //print("<0: \(self.graphView.center.x)")
                 self.graphView.center.x += self.view.bounds.width
                 self.popButton.isEnabled = true
             }
@@ -180,9 +180,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func setupGraphView() {
-        print("original x: \(self.graphView.center.x)")
+        //print("original x: \(self.graphView.center.x)")
         self.graphView.center.x -= view.bounds.width
-        print("new x: \(self.graphView.center.x)")
+        //print("new x: \(self.graphView.center.x)")
         graphView.layer.cornerRadius = 8
         graphView.layer.borderWidth = 1
         graphView.layer.borderColor = UIColor.black.cgColor
@@ -469,13 +469,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         case "SegueFromShopToCompare":
             let destination = segue.destination as! CompareAankoopLijstViewController
             let gdkp = fetchCheapest(categorie: "rema")
-            let gdkpnaam = alternatieven(vosdict: gdkp, categorie: "rema")
-            var gdkpmppcv:Array<String> = []
-            for (_, v) in gdkpnaam {
-                gdkpmppcv.append(v)
-            }
-            let selectedObject:Array<String> = gdkpmppcv
-            destination.receivedData = selectedObject
+            let gdkpmppcv = alternatieven(altdict: gdkp, categorie: "rema")
+            let ObjectsRight:Array<String> = Array(Set(gdkpmppcv))
+            let ObjectsLeft:Array<String> = uniekInAankooplijst()
+            destination.receivedData = [ObjectsLeft, ObjectsRight]
         default:
             print("Unknown segue: \(segue.identifier)")
         }
@@ -522,9 +519,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         let cheappupr = fetchCheapest(categorie: "pupr")
         let cheaprema = fetchCheapest(categorie: "rema")
         let cheapremw = fetchCheapest(categorie: "remw")
-        let gdkpaltpupr = berekenGoedkoopsteAlternatief(vosdict: cheappupr, categorie: "pupr")
-        let gdkpaltrema = berekenGoedkoopsteAlternatief(vosdict: cheaprema, categorie: "rema")
-        let gdkpaltremw = berekenGoedkoopsteAlternatief(vosdict: cheapremw, categorie: "remw")
+        let gdkpaltpupr = berekenGoedkoopsteAlternatief(altdict: cheappupr, categorie: "pupr")
+        let gdkpaltrema = berekenGoedkoopsteAlternatief(altdict: cheaprema, categorie: "rema")
+        let gdkpaltremw = berekenGoedkoopsteAlternatief(altdict: cheapremw, categorie: "remw")
         altPupr.text = "\(gdkpaltpupr) €"
         altRema.text = "\(gdkpaltrema) €"
         altRemw.text = "\(gdkpaltremw) €"
@@ -621,7 +618,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             }
             break;
         default:
-            print("...")
+            print("...ShoppingList didChange anObject")
         }
     }
     
@@ -690,11 +687,17 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
                 print(error.localizedDescription)
             }
             
+            do {
+                try self.fetchedResultsController.performFetch()
+            } catch {
+                let fetchError = error as NSError
+                print("Unable to Perform Fetch Request")
+                print("\(fetchError), \(fetchError.localizedDescription)")
+            }
             self.tableView.reloadData()
             self.updateView()
             
-            let cell = tableView.cellForRow(at: indexPath)
-            cell?.layer.backgroundColor = UIColor.red.withAlphaComponent(0.5).cgColor
+            
         }
         deleteFromAankoopLijst.backgroundColor = UIColor.red
         
@@ -710,7 +713,12 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             } catch {
                 print(error.localizedDescription)
             }
+            let cell = tableView.cellForRow(at: indexPath)
+            UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
+            )
+    
             self.tableView.reloadData()
+
         }
         addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:0.5)
         self.tableView.setEditing(false, animated: true)
@@ -722,31 +730,36 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     
     // Rekenen
     
-    func fetchCheapest(categorie: String) -> Dictionary<String, Dictionary<String,Float>> {
-        
-        // fetch alle medicijnen in aankooplijst (aankoop == true)
-        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return ["vosnaam":["mp.mppnm":0.0]] as Dictionary<String, Dictionary<String,Float>> }
-        var vosarray:Array<String> = []
+    func vosdict() -> Dictionary<String,String> {
+        // fetch alle medicijnen in aankooplijst (userdata.aankooplijst == true)
+        // vosarray = [aankooplijst mppcv : aankooplijst vosnm_]
+        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return ["":""] as Dictionary<String,String> }
+        var versusdict:Dictionary<String,String> = [:]
         for med in medicijnen {
             // vosnaam opvragen
-            vosarray.append(med.vosnm_!)
+            versusdict[med.mppcv!] = med.vosnm_!
         }
-        
+        //print("versusdict: \(versusdict)")
+        return versusdict
+    }
+    func fetchCheapest(categorie: String) -> Dictionary<String,Array<Any>> {
+        // ["aankoop mppcv 3073251": ["alternatief mppcv 3073251", "paracetamol oraal 1g", "1.25"]]
+        let versusdict = vosdict()
         // alle medicijnen opvragen
-        // voor elke stofnaam het goedkoopste alternatief zoeken (cheapest true of zelf berekenen?)
+        // voor elke stofnaam het goedkoopste alternatief zoeken (cheapest true (nee) of zelf berekenen (ja)?)
         var resultaat:Array<MPP> = []
-        var vosdict: Dictionary<String,Dictionary<String,Float>> = [:]
+        var altdict: Dictionary<String,Array<Any>> = [:]
         
-        for vos in vosarray {
+        for (key, value) in versusdict {
             let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
-            let predicate = NSPredicate(format: "vosnm_ == %@", vos)
+            let predicate = NSPredicate(format: "vosnm_ == %@", value)
             fetchReq.predicate = predicate
             do {
                 resultaat = try self.appDelegate.persistentContainer.viewContext.fetch(fetchReq)
             } catch {
                 print("fetching error in calculateCheapestPrice")
             }
-            
+            //print("resultaat: \(resultaat.count)")
             // Steek merknaam en prijscategorie (pupr, rema of remw) in dictionary
             var prijsdict:Dictionary<Float, String> = [:]
             for med in resultaat {
@@ -754,7 +767,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
                     prijsdict[med.pupr!.floatValue!] = med.mppcv!
                 }
                 if categorie == "rema" {
-                    prijsdict[med.rema!.floatValue!] = med.mpcv!
+                    prijsdict[med.rema!.floatValue!] = med.mppcv!
                 }
                 if categorie == "remw" {
                     prijsdict[med.remw!.floatValue!] = med.mppcv!
@@ -763,36 +776,56 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             // Pik er het medicijn met de laagste prijs uit
             let minprijs = prijsdict.keys.min()
             let minprijsMppcv = prijsdict[minprijs!]
-            
-            vosdict[vos] = [minprijsMppcv!:minprijs!]
+            altdict[key] = [minprijsMppcv!, value, minprijs!]
+            //vosdict[vos] = [minprijsMppcv!:minprijs!]
         }
-        return vosdict
+        //print("altdict: \(altdict)")
+        return altdict
     }
     
-    func berekenGoedkoopsteAlternatief(vosdict: Dictionary<String, Dictionary<String,Float>>, categorie: String) -> Float {
+    func berekenGoedkoopsteAlternatief(altdict: Dictionary<String,Array<Any>>, categorie: String) -> Float {
+        // Voor elke vosnm in vosarray, goedkoopste alternatief optellen
         // Bereken totaal
         var totaalprijs:Float = 0.0
-        for (_, value) in vosdict {  /* key = vosnm, value = dict(merknaam, prijs) */
-            for (_, v) in value {
-                totaalprijs += v
-            }
+        for (_, value) in altdict {
+            let v = value[2]  /* key = vosnm, value = dict(merknaam, prijs) */
+            totaalprijs += Float(v as! Float)
         }
         return totaalprijs
     }
     
-    func alternatieven(vosdict: Dictionary<String, Dictionary<String,Float>>, categorie: String) -> Dictionary<String,String> {
-        // Bereken totaal
-        var lijstalternatieven:Dictionary<String,String> = [:]
-        
-        for (key, value) in vosdict {  /* key = vosnm, value = dict(mppcv, prijs) */
-            var mppcv:String = ""
-            for (k, _) in value {
-                mppcv = k
-                lijstalternatieven[key] = mppcv
-            }
+    func uniekInAankooplijst() -> Array<String> {
+        // fetch alle medicijnen in aankooplijst (userdata.aankooplijst == true)
+        // vosarray = [aankooplijst mppcv : aankooplijst vosnm_]
+        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return [""] as Array<String> }
+        var versusdict:Dictionary<String,String> = [:]
+        for med in medicijnen {
+            // vosnaam opvragen
+            versusdict[med.vosnm_!] = med.mppcv!
         }
-        return lijstalternatieven
+        var uniek: Array<String> = []
+        for (_, value) in versusdict {
+            uniek.append(value)
+        }
+        //print("unieke vos: \(uniek)")
+        return uniek
     }
+    
+    func alternatieven(altdict: Dictionary<String,Array<Any>>, categorie: String) -> Array<String> {
+        // Lijst = [Aankooplijst mppcv: Alternatief mppcv]
+        // Bereken totaal
+        var lijstalternatieven:Array<String> = []
+        
+        for (_, value) in altdict {  /* key = aankooplijst mppcv, value = array */
+            var mppcv:String = ""
+            /* key = vosnm, value = dict(mppcv, prijs) */
+            mppcv = String(describing: value[0])
+            lijstalternatieven.append(mppcv)
+        }
+        //print("lijstalternatieven: \(lijstalternatieven)")
+        return Array(Set(lijstalternatieven))
+    }
+    
     func berekenVerschil(categorie: String, huidig:Dictionary<String,Float>, altern: Float) -> Float {
         let prijsverschil = huidig[categorie]! - altern
         

@@ -19,13 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         preloadDBData()
-        print("NSHomeDir: \(NSHomeDirectory())")
+        //print("NSHomeDir: \(NSHomeDirectory())")
         // Print local file directory
-        let fm = FileManager.default
-        let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        print(appdir)
+        //let fm = FileManager.default
+        //let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        //print(appdir)
         
-        // First time only! Load persistent store with data from csv files.
+        // Developer use only! Load persistent store with data from csv files.
         //seedPersistentStoreWithManagedObjectContext(managedObjectContext)
         
         // Save Managed Object Context

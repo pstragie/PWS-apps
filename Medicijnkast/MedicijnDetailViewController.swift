@@ -138,12 +138,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         // Stack End Left
         cell.kast.text = "In medicijnkast"
         cell.aankoop.text = "In aankooplijst"
-        if medicijn?.userdata?.medicijnkast.hashValue == 0 {
+        if medicijn?.userdata == nil || medicijn?.userdata?.medicijnkast == false {
             cell.kastimage.image = #imageLiteral(resourceName: "kruisje")
         } else {
             cell.kastimage.image = #imageLiteral(resourceName: "vinkje")
         }
-        if medicijn?.userdata?.aankooplijst.hashValue == 0 {
+        if medicijn?.userdata == nil || medicijn?.userdata?.aankooplijst == false {
             cell.aankoopimage.image = #imageLiteral(resourceName: "kruisje")
         } else {
             cell.aankoopimage.image = #imageLiteral(resourceName: "vinkje")

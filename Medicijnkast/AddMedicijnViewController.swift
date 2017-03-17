@@ -15,7 +15,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let segueShowDetail = "SegueFromAddToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
-    
+    var infoView = UIView()
     // MARK: - Properties Variables
     var sortDescriptorIndex: Int?=nil
     var selectedScope: Int = -1
@@ -28,7 +28,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var zoekoperator:String = "BEGINSWITH"
     var format:String = "mppnm BEGINSWITH[c] %@"
     var sortKeyword:String = "mppnm"
-    @IBOutlet weak var menuView: UIView!
     
     // MARK: - Referencing Outlets
     
@@ -38,9 +37,23 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var segmentedButton: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
+    @IBOutlet weak var menuView: UIView!
     
     // MARK: - Referencing Actions
     @IBAction func geavanceerdZoeken(_ sender: UIButton) {
+        print(self.infoView.center.y)
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+            if self.infoView.center.y >= 0 {
+                self.infoView.center.y -= self.view.bounds.height
+                self.view.bringSubview(toFront: self.infoView)
+
+            } else {
+                self.infoView.center.y += self.view.bounds.height
+                self.view.bringSubview(toFront: self.infoView)
+            }
+        }, completion: nil
+        )
+        
     }
     
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
@@ -56,8 +69,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBAction func showMenuView(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            print("menuView center x: \(self.menuView.center.x)")
-            print("bounds: \(self.view.bounds.width)")
+            //print("menuView center x: \(self.menuView.center.x)")
+            //print("bounds: \(self.view.bounds.width)")
             if self.menuView.center.x >= 0 {
                 self.menuView.center.x -= self.view.bounds.width
             } else {
@@ -161,12 +174,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     override func viewDidLayoutSubviews() {
         setupMenuView()
+        setupInfoView()
         print("view Did Layout subviews")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
         print("Addmedicijn View did load!")
         setupLayout()
@@ -202,6 +215,15 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.btnCloseMenuView.isEnabled = false
     }
     
+    func setupInfoView() {
+        self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200))
+        self.infoView.center.y -= view.bounds.height-120
+        infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        infoView.layer.cornerRadius = 8
+        infoView.layer.borderWidth = 1
+        infoView.layer.borderColor = UIColor.black.cgColor
+        self.view.addSubview(infoView)
+    }
     // MARK: - search bar related
     fileprivate func setUpSearchBar() {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
@@ -495,6 +517,9 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             } catch {
                 print(error.localizedDescription)
             }
+            let cell = tableView.cellForRow(at: indexPath)
+            UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
+            )
         }
         addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         
@@ -512,7 +537,9 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             } catch {
                 print("med not saved in aankooplijst!")
             }
-            
+            let cell = tableView.cellForRow(at: indexPath)
+            UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
+            )
         }
         addToShoppingList.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:1)
         self.tableView.setEditing(false, animated: true)
