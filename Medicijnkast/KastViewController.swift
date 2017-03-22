@@ -46,8 +46,9 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	@IBOutlet weak var loadProgress: UILabel!
 	
 	// MARK: - Referencing Actions
-	@IBAction func geavanceerdZoeken(_ sender: UIButton) {
-	}
+    @IBAction func info(_ sender: UIButton) {
+    }
+	
 		
 	func openTextAlert() {
 		// Create Alert Controller

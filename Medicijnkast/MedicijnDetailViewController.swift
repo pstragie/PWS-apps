@@ -15,10 +15,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     weak var medicijn: MPP?
     weak var dataPassed: MPP?
     weak var stofdb: Stof?
-    let wadadict: Dictionary<String,String> = ["A":"Anabolica, ten allen tijde verboden", "B":"Beta-blokkers, verboden bij bepaalde concentratiesporten binnen wedstrijdverband en ten alle tijde verboden bij (boog)schieten.", "B2":"Alle beta2-mimetica zijn verboden, behalve salbutamol, salmeterol en formoterol die via inhalatie en in overeenkomstig met het therapeutisch regime, worden gebruikt.", "C":"Corticosteroïden, verboden binnen wedstrijdverband behalve bij nasaal of dermatologisch gebruik of via inhalatie.", "c": "Opgelet. Corticosteroïden (nasaal, dermatologisch, inhalatie). Geen TTN (toestemming tot therapeutische noodzaak) vereist maar gebruik ervan te melden aan de controlearts.", "D":"Diuretica, ten allen tijde verboden", "d":"Opgelet. Bevat codeïne of ethylmorfine. Geen formulier toestemming tot therapeutische noodzaak vereist, maar gebruik ervan te melden aan de controlearts.", "DB":"Bevat diuretica, ten allen tijde verboden.", "Hman":"Ten allen tijde verboden voor mannelijke atleten.", "H":"Ten allen tijde verboden.", "M":"Maskerende middelen, ten allen tijde verboden.", "N":"Narcotica, verboden binnen wedstrijdverband.", "O":"Anti-oestrogene middelen, ten allen tijde verboden.", "AO":"Anti-oestrogene middelen, ten allen tijde verboden.", "P":"Opgelet! Kan mogelijk aanleiding geven tot een afwijkend analyseresultaat voor cathine. Geen 'toestemming tot therapeutische noodzaak' vereist, maar gebruik ervan te melden aan de controlearts.", "S":"Stimulantia, verboden binnen wedstrijdverband.", "s":"Opgelet! Bevat stimulantia en kan mogelijk aanleiding geven tot een positieve dopingtest. Geen 'toestemming tot therapeutische noodzaak' vereist, maar gebruik ervan te melden aan de controlearts.", "_":"Niet op de dopinglijst."]
-    let ssecrdict: Dictionary<String,String> = ["a":"categorie a", "b":"categorie b", "c":"categorie c", "cx":"categorie cx", "cs":"categorie cs", "b2":"b2: a priori controle", "c2":"c2: a priori controle", "a4":"a4: a posteriori controle", "b4":"b4: a posteriori controle", "c4":"c4: a posteriori controle", "s4":"s4: a posteriori controle", "h": "h: enkel terugbetaling in hospitaalgebruik", "J":"J: speciale toelage door RIZIV voor vrouwen < 21j.", "aJ":"aJ: gratis voor vrouwen < 21j.", "Chr":"Chr: speciale toelage door RIZIV voor chronische pijn.", "_":"geen"]
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("View did load!")
@@ -53,7 +50,8 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         // Stack middle Center
         cell.vosnm.setTitle(medicijn?.vosnm_, for: .normal)
         cell.irnm.setTitle(medicijn?.mp?.ir?.nirnm, for: .normal)
-        
+        let toepassing = Dictionaries().hierarchy(hyr: (medicijn?.mp?.hyr?.hyr)!)
+        cell.ti.setTitle(toepassing, for: .normal)
         let stofcv = medicijn?.sam?.value(forKey: "stofcv") as! NSSet /* (AnyObject) __NSSetI */
         let stofcvArr = Array(stofcv)
         
@@ -84,9 +82,9 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         } else {
             cell.law.text = "Nee"
         }
-        cell.ssecr.text = ssecrdict[(medicijn?.ssecr)!]
+        cell.ssecr.text = Dictionaries().ssecr(ssecr: (medicijn?.ssecr)!)
         print((medicijn?.mp?.wadan)!)
-        cell.wadan.text = wadadict[(medicijn?.mp?.wadan)!]
+        cell.wadan.text = Dictionaries().wada(wada: (medicijn?.mp?.wadan)!)
         if medicijn?.use == "H" {
             cell.use.text = "Hospitaal"
         } else {
