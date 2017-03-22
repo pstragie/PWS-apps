@@ -75,7 +75,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     }
     
     func setupSlideUpInfoView() {
-        self.slideUpInfoView=UIView(frame:CGRect(x: 10, y: 0, width: self.view.bounds.width-20, height: 160))
+        self.slideUpInfoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 160))
         //self.slideUpInfoView.addGestureRecognizer(.init(target: slideUpInfoView, action: #selector(slideUpAlert())))
         self.slideUpInfoView.center.y += view.bounds.height
         print("setup: \(self.slideUpInfoView.center.y)")
@@ -177,10 +177,8 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         var cell:MedicijnTableViewCell?
         let objectsLeft = receivedData?[0]
         let objectsRight = receivedData?[1]
-        
         if tableView == self.tableViewLeft {
             tableViewRight.scrollToRow(at: indexPath, at: .bottom, animated: true)
-            
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
             
             // Filter medicijnen
@@ -195,7 +193,6 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 print("\(fetchError), \(fetchError.localizedDescription)")
             }
 
-      
             cell?.selectionStyle = .none
             // Fetch Medicijn
             let medicijn = fetchedResultsControllerLeft.object(at: indexPath)
@@ -215,13 +212,10 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.layer.cornerRadius = 3
             cell?.layer.masksToBounds = true
             cell?.layer.borderWidth = 1
-            
             cell?.mpnm.text = medicijn.mp?.mpnm
-            
             cell?.mppnm.text = medicijn.mppnm
             cell?.vosnm.text = medicijn.vosnm_
             cell?.nirnm.text = medicijn.mp?.ir?.nirnm
-            
             cell?.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
             cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
             cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
@@ -231,11 +225,9 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         
         if tableView == self.tableViewRight {
             tableViewLeft.scrollToRow(at: indexPath, at: .top, animated: true)
-            
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
 
             // Filter medicijnen
-            //print("ReceivedData for Right: \(objectsRight)")
             let predicate = NSPredicate(format: "mppcv IN %@", objectsRight!)
             self.fetchedResultsControllerRight.fetchRequest.predicate = predicate
 
@@ -247,8 +239,6 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 print("\(fetchError), \(fetchError.localizedDescription)")
             }
 
-            
-            
             cell?.selectionStyle = .none
             // Fetch Medicijn
             let medicijn = self.fetchedResultsControllerRight.object(at: indexPath)
@@ -273,9 +263,63 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         }
         return cell!
     }
-
+    
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        /*
+        if tableView == self.tableViewLeft {
+            let oriMedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
+            if oriMedicijn.userdata?.aankooplijst == true {
+                return false
+            }
+        } */
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if tableView == self.tableViewLeft {
+            let oriMedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
+            if oriMedicijn.userdata?.aankooplijst == true {
+                return .none
+            }
+        }
+        return UITableViewCellEditingStyle.delete
+    }
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         var btnArray = [UITableViewRowAction()]
+        if tableView == self.tableViewLeft {
+            let undoReplace = UITableViewRowAction(style: .normal, title: "Annuleer") { (action, indexPath) in
+                // Fetch Origineel Medicijn
+                let origineelMedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
+                if origineelMedicijn.userdata?.aankooplijst == false {
+                    let context = self.appDelegate.persistentContainer.viewContext
+                    self.addUserData(mppcvValue: origineelMedicijn.mppcv!, userkey: "aankooplijst", uservalue: true, managedObjectContext: context)
+                    
+                    // Fetch alternative medicijn in aankooplijst
+                    let altmedicijn = self.fetchedResultsControllerRight.object(at: indexPath)
+                    self.addUserData(mppcvValue: altmedicijn.mppcv!, userkey: "aankooplijst", uservalue: false, managedObjectContext: context)
+                    let cell = self.tableViewLeft.cellForRow(at: indexPath)
+                    cell?.layer.backgroundColor = UIColor.white.cgColor
+                    
+                    do {
+                        try self.fetchedResultsControllerLeft.performFetch()
+                        try self.fetchedResultsControllerRight.performFetch()
+                    } catch {
+                        let fetchError = error as NSError
+                        print("Unable to Perform Fetch Request")
+                        print("\(fetchError), \(fetchError.localizedDescription)")
+                    }
+                    self.tableViewLeft.reloadData()
+                    self.tableViewRight.reloadData()
+                } else {
+                    self.tableViewLeft.touchesShouldCancel(in: self.tableViewLeft) // Not working
+                }
+            }
+            undoReplace.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:0.5)
+            self.tableViewLeft.setEditing(false, animated: true)
+            btnArray.append(undoReplace)
+        }
+        
         if tableView == self.tableViewRight {
             let replaceInShoppingList = UITableViewRowAction(style: .normal, title: "Naar\nAankooplijst") { (action, indexPath) in
                 // Fetch Medicijn
@@ -283,7 +327,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 let context = self.appDelegate.persistentContainer.viewContext
                 self.addUserData(mppcvValue: altmedicijn.mppcv!, userkey: "aankooplijst", uservalue: true, managedObjectContext: context)
                 
-                // Fetch the original medicine in aankooplijst (by indexPath if possible?)
+                // Fetch the original medicine in aankooplijst
                 let aankoopmedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
                 self.addUserData(mppcvValue: aankoopmedicijn.mppcv!, userkey: "aankooplijst", uservalue: false, managedObjectContext: context)
                 let cell = self.tableViewLeft.cellForRow(at: indexPath)
