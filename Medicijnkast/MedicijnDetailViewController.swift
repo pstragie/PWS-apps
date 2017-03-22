@@ -15,8 +15,8 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     weak var medicijn: MPP?
     weak var dataPassed: MPP?
     weak var stofdb: Stof?
-    
-    //@IBOutlet weak var mpnm: UILabel!
+    let wadadict: Dictionary<String,String> = ["A":"Anabolica, ten allen tijde verboden", "B":"Beta-blokkers, verboden bij bepaalde concentratiesporten binnen wedstrijdverband en ten alle tijde verboden bij (boog)schieten.", "B2":"Alle beta2-mimetica zijn verboden, behalve salbutamol, salmeterol en formoterol die via inhalatie en in overeenkomstig met het therapeutisch regime, worden gebruikt.", "C":"Corticosteroïden, verboden binnen wedstrijdverband behalve bij nasaal of dermatologisch gebruik of via inhalatie.", "c": "Opgelet. Corticosteroïden (nasaal, dermatologisch, inhalatie). Geen TTN (toestemming tot therapeutische noodzaak) vereist maar gebruik ervan te melden aan de controlearts.", "D":"Diuretica, ten allen tijde verboden", "d":"Opgelet. Bevat codeïne of ethylmorfine. Geen formulier toestemming tot therapeutische noodzaak vereist, maar gebruik ervan te melden aan de controlearts.", "DB":"Bevat diuretica, ten allen tijde verboden.", "Hman":"Ten allen tijde verboden voor mannelijke atleten.", "H":"Ten allen tijde verboden.", "M":"Maskerende middelen, ten allen tijde verboden.", "N":"Narcotica, verboden binnen wedstrijdverband.", "O":"Anti-oestrogene middelen, ten allen tijde verboden.", "AO":"Anti-oestrogene middelen, ten allen tijde verboden.", "P":"Opgelet! Kan mogelijk aanleiding geven tot een afwijkend analyseresultaat voor cathine. Geen 'toestemming tot therapeutische noodzaak' vereist, maar gebruik ervan te melden aan de controlearts.", "S":"Stimulantia, verboden binnen wedstrijdverband.", "s":"Opgelet! Bevat stimulantia en kan mogelijk aanleiding geven tot een positieve dopingtest. Geen 'toestemming tot therapeutische noodzaak' vereist, maar gebruik ervan te melden aan de controlearts.", "_":"Niet op de dopinglijst."]
+    let ssecrdict: Dictionary<String,String> = ["a":"categorie a", "b":"categorie b", "c":"categorie c", "cx":"categorie cx", "cs":"categorie cs", "b2":"b2: a priori controle", "c2":"c2: a priori controle", "a4":"a4: a posteriori controle", "b4":"b4: a posteriori controle", "c4":"c4: a posteriori controle", "s4":"s4: a posteriori controle", "h": "h: enkel terugbetaling in hospitaalgebruik", "J":"J: speciale toelage door RIZIV voor vrouwen < 21j.", "aJ":"aJ: gratis voor vrouwen < 21j.", "Chr":"Chr: speciale toelage door RIZIV voor chronische pijn.", "_":"geen"]
     
     
     override func viewDidLoad() {
@@ -71,43 +71,59 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         }
         
         cell.stofnm.setTitle(stofnaamString, for: .normal)
-        
-        cell.galnm.setTitle(medicijn?.gal?.ngalnm, for: .normal)
-        cell.ti.setTitle(medicijn?.mp?.hyr?.ti, for: .normal)
-        
+        cell.galnm.text = medicijn?.gal?.ngalnm
 
         // Stack middle left
-        cell.stofcv.text = stofcvString
-        cell.leeg1.text = " "
-        cell.ircv.text = medicijn?.mp?.ir?.ircv
-        cell.galcv.text = medicijn?.gal?.galcv
-        cell.leeg2.text = " "
-        
         // Stack Bottom left
         cell.pupr.text = "\((medicijn?.pupr)!) €"
         cell.rema.text = "\((medicijn?.rema)!) €"
         cell.remw.text = "\((medicijn?.remw)!) €"
-        cell.index.text = medicijn?.index
-        cell.ogc.text = medicijn?.ogc
-        cell.law.text = medicijn?.law
-        cell.ssecr.text = medicijn?.ssecr
-        cell.wadan.text = medicijn?.mp?.wadan
-        
+        cell.index.text = "\((medicijn?.index)!) cent"
+        if (medicijn?.law) == "R" {
+            cell.law.text = "Ja"
+        } else {
+            cell.law.text = "Nee"
+        }
+        cell.ssecr.text = ssecrdict[(medicijn?.ssecr)!]
+        print((medicijn?.mp?.wadan)!)
+        cell.wadan.text = wadadict[(medicijn?.mp?.wadan)!]
+        if medicijn?.use == "H" {
+            cell.use.text = "Hospitaal"
+        } else {
+            cell.use.text = "Algemeen"
+        }
+        if (medicijn?.ouc == "O") {
+            cell.ouc.text = "Mono-ingrediënt"
+        } else if (medicijn?.ouc == "U") {
+            cell.ouc.text = "Multi-ingrediënt"
+        } else if (medicijn?.ouc == "C") {
+            cell.ouc.text = "Gecombineerd multi-ingrediënt"
+        }
+        if (medicijn?.ogc == "G") {
+            cell.ogc.text = "Verpakking zonder supplement voor de patiënt en in categorie goedkoop."
+        } else if (medicijn?.ogc == "B") {
+            cell.ogc.text = "Verpakking zonder supplement voor de patiënt maar niet in categorie goedkoop."
+        } else if (medicijn?.ogc == "R") {
+            cell.ogc.text = "Verpakking met supplement voor de patiënt en niet in categorie goedkoop."
+        } else {
+            cell.ogc.text = "Geen terugbetaling door RIZIV."
+        }
+
         // Stack Bottom right
         if (medicijn?.cheapest)! {
             cell.cheapest.text = "Ja"
         } else {
             cell.cheapest.text = "Nee"
         }
+        if (medicijn?.gdkp)! {
+            cell.gdkp.text = "Ja"
+        } else {
+            cell.gdkp.text = "Nee"
+        }
         if (medicijn?.bt)! {
             cell.bt.text = "Ja"
         } else {
             cell.bt.text = "Nee"
-        }
-        if (medicijn?.mp?.ir?.pip)! {
-            cell.pip.text = "Ja"
-        } else {
-            cell.pip.text = "Nee"
         }
         if (medicijn?.mp?.orphan)! {
             cell.orphan.text = "Ja"
@@ -118,16 +134,6 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             cell.narcotic.text = "Ja"
         } else {
             cell.narcotic.text = "Nee"
-        }
-        if (medicijn?.amb)! {
-            cell.amb.text = "Ja"
-        } else {
-            cell.amb.text = "Nee"
-        }
-        if (medicijn?.hosp)! {
-            cell.hosp.text = "Ja"
-        } else {
-            cell.hosp.text = "Nee"
         }
         if (medicijn?.specrules)! {
             cell.specrules.text = "Ja"
@@ -164,12 +170,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         // Footer
         if medicijn?.lastupdate != nil {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
+            dateFormatter.dateFormat = "dd/MM/yy"
             let timeString = dateFormatter.string(from: medicijn?.lastupdate as! Date)
             cell.updatedAt.text = timeString
         } else {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
+            dateFormatter.dateFormat = "dd/MM/yy"
             let timeString = dateFormatter.string(from: medicijn?.createdAt as! Date)
             cell.updatedAt.text = timeString
         }

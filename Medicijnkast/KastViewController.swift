@@ -14,9 +14,11 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromKastToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-	//let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
 
 	// MARK: - Properties Variables
+	var upArrow = UIView()
+	weak var receivedData: MPP?
+	var zoekwoord: String? = nil
 	var sortDescriptorIndex:Int?=nil
 	var selectedScope:Int = -1
 	var selectedSegmentIndex:Int = 0
@@ -26,7 +28,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	var totalLines:Float = 0.0
 	var readLines:Float = 0.0
 	// MARK: - filter and sort
-	var zoekwoord:String = ""
 	var filterKeyword:String = "mppnm"
 	var zoekoperator:String = "BEGINSWITH"
 	var format:String = "mppnm BEGINSWITH[c] %@"
@@ -127,7 +128,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		//let predicate = NSPredicate(format: "cheapest contains %@", NSNumber(booleanLiteral: true))
 		let predicate = NSPredicate(format: "userdata.medicijnkast == true")
 		fetchRequest.predicate = predicate
-		print("Predicate = \(predicate)")
 		// Create Fetched Results Controller
 		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
 		
@@ -189,6 +189,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		btnCloseMenuView.isHidden = true
 		btnCloseMenuView.isEnabled = false
 		print("view Did Layout subviews")
+		setupUpArrow()
 		tableView.reloadData()
 		self.updateView()
 	}
@@ -238,6 +239,9 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		segmentedButton.setTitle("B....", forSegmentAt: 0)
 		segmentedButton.setTitle("..c..", forSegmentAt: 1)
 		segmentedButton.setTitle("....e", forSegmentAt: 2)
+	}
+	
+	@IBAction func unwindToSearch(segue: UIStoryboardSegue) {
 	}
 	
 	// MARK: Set Scope
@@ -292,7 +296,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		searchBar.updateFocusIfNeeded()
 		searchBar.becomeFirstResponder()
 		searchActive = true
-		self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
+		self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
 		// Tell the searchBar that the searchBarSearchButton was clicked
 		self.tableView.reloadData()
 		updateView()
@@ -320,7 +324,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	func searchBarSearchButtonClicked(_: UISearchBar) {
 		searchActive = true
-		self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
+		self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
 		searchBar.becomeFirstResponder()
 	}
 	
@@ -333,7 +337,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		searchBar.resignFirstResponder()
 		searchBar.text = ""
 		zoekwoord = searchBar.text!
-		self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: -1)
+		self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: -1)
 		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
 		self.tableView.reloadData()
 		updateView()
@@ -378,7 +382,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 					let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
 					let predicate2 = NSPredicate(format: "userdata.medicijnkast == true")
 					let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-					print("predicate: \(predicate)")
 					self.fetchedResultsController.fetchRequest.predicate = predicate
 				}
 			}
@@ -422,6 +425,29 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private func setupView() {
         setupMessageLabel()
     }
+	
+	func setupUpArrow() {
+		self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-200, width: 50, height: 50))
+		upArrow.isHidden = true
+		upArrow.backgroundColor = UIColor.black.withAlphaComponent(0.50)
+		upArrow.layer.cornerRadius = 25
+		//upArrow.layer.borderWidth = 1
+		//upArrow.layer.borderColor = UIColor.black.cgColor
+		self.view.addSubview(upArrow)
+		let button = UIButton()
+		button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+		button.setTitle("Top", for: .normal)
+		button.layer.cornerRadius = 20
+		button.setTitleColor(UIColor.white, for: .normal)
+		button.addTarget(self, action: #selector(scrollToTop), for: UIControlEvents.touchUpInside)
+		self.upArrow.addSubview(button)
+	}
+	
+	func scrollToTop() {
+		print("Scroll to top button clicked")
+		let topOffset = CGPoint(x: 0, y: 0)
+		tableView.setContentOffset(topOffset, animated: true)
+	}
 	
 	fileprivate func updateView() {
 		print("Updating view...")
@@ -544,9 +570,12 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 		cell.layer.masksToBounds = true
 		cell.layer.borderWidth = 1
 		
+		if (medicijn.law == "R") {
+			cell.boxImage?.image = #imageLiteral(resourceName: "Rx")
+		} else {
+			cell.boxImage?.image = #imageLiteral(resourceName: "noRx")
+		}
 		cell.mpnm.text = medicijn.mp?.mpnm
-		
-		
 		cell.mppnm.text = medicijn.mppnm
 		cell.vosnm.text = medicijn.vosnm_
 		cell.nirnm.text = medicijn.mp?.ir?.nirnm
@@ -601,6 +630,10 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			} catch {
 				print(error.localizedDescription)
 			}
+			let cell = tableView.cellForRow(at: indexPath)
+			UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
+			)
+
 			self.tableView.reloadData()
 		}
 		addToShoppingList.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:0.5)

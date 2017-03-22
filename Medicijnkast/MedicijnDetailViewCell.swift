@@ -23,39 +23,25 @@ class MedicijnDetailViewCell: UITableViewCell {
     @IBOutlet weak var stofnm: UIButton!
     @IBOutlet weak var vosnm: UIButton!
     @IBOutlet weak var irnm: UIButton!
-    @IBOutlet weak var galnm: UIButton!
-    @IBOutlet weak var ti: UIButton!
-    //@IBOutlet var stofnm: UILabel!
-    //@IBOutlet var vosnm: UILabel!
-    //@IBOutlet var irnm: UILabel!
-    //@IBOutlet weak var galnm: UILabel!
-    //@IBOutlet weak var ti: UILabel!
-    
-    @IBOutlet weak var stofcv: UILabel!
-    @IBOutlet weak var leeg1: UILabel!
-    @IBOutlet weak var ircv: UILabel!
-    @IBOutlet weak var galcv: UILabel!
-    @IBOutlet weak var leeg2: UILabel!
-    @IBOutlet weak var leeg3: UILabel!
+    @IBOutlet weak var galnm: UILabel!
     
     @IBOutlet weak var pupr: UILabel!
     @IBOutlet weak var rema: UILabel!
     @IBOutlet weak var remw: UILabel!
-    @IBOutlet weak var index: UILabel!
+    @IBOutlet weak var use: UILabel!
+    @IBOutlet weak var ouc: UILabel!
     @IBOutlet weak var ogc: UILabel!
     @IBOutlet weak var law: UILabel!
     @IBOutlet weak var ssecr: UILabel!
     @IBOutlet weak var wadan: UILabel!
     
+    @IBOutlet weak var index: UILabel!
+    @IBOutlet weak var gdkp: UILabel!
     @IBOutlet weak var cheapest: UILabel!
     @IBOutlet weak var narcotic: UILabel!
     @IBOutlet weak var orphan: UILabel!
-    @IBOutlet weak var amb: UILabel!
-    @IBOutlet weak var hosp: UILabel!
     @IBOutlet weak var specrules: UILabel!
     @IBOutlet weak var bt: UILabel!
-    @IBOutlet weak var pip: UILabel!
-    
     
     @IBOutlet var kast: UILabel!
     @IBOutlet weak var kastimage: UIImageView!

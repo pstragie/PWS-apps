@@ -16,7 +16,7 @@ class MedicijnTableViewCell: UITableViewCell {
 
     // MARK: -
 
-    @IBOutlet weak var boxImage: UIImage?
+    @IBOutlet weak var boxImage: UIImageView?
     @IBOutlet weak var mpnm: UILabel!
     @IBOutlet weak var mppnm: UILabel!
     @IBOutlet weak var vosnm: UILabel!

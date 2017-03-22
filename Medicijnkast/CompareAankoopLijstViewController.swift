@@ -13,15 +13,13 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var receivedData:Array<Array<String>>? = []
-    
+    var slideUpInfoView = UIView()
     
     @IBOutlet weak var tableViewLeft: UITableView!
     @IBOutlet weak var tableViewRight: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkForDoubles()
-
         print("Compare view did load!")
         // Do any additional setup after loading the view.
         navigationItem.title = "Vergelijk"
@@ -43,6 +41,11 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupSlideUpInfoView()
+        checkForDoubles()
+    }
     
     // MARK: - share button
     func shareTapped() {
@@ -67,26 +70,65 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         let inCompare = receivedData?[0].count
         if inCompare! < inAankooplijst {
             // Show message
-            openTextAlert()
+            slideUpAlert()
         }
     }
     
+    func setupSlideUpInfoView() {
+        self.slideUpInfoView=UIView(frame:CGRect(x: 10, y: 0, width: self.view.bounds.width-20, height: 160))
+        //self.slideUpInfoView.addGestureRecognizer(.init(target: slideUpInfoView, action: #selector(slideUpAlert())))
+        self.slideUpInfoView.center.y += view.bounds.height
+        print("setup: \(self.slideUpInfoView.center.y)")
+        slideUpInfoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        slideUpInfoView.layer.cornerRadius = 8
+        slideUpInfoView.layer.borderWidth = 1
+        slideUpInfoView.layer.borderColor = UIColor.black.cgColor
+        self.view.addSubview(slideUpInfoView)
+        let label = UILabel()
+        label.frame = CGRect(x: 10, y: 0, width: self.view.bounds.width-60, height: 160)
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.text = "U heeft meerdere medicijnen in uw aankooplijst met dezelde voorschriftnaam. Enkel unieke medicijnen worden hier getoond."
+        label.layer.cornerRadius = 20
+        label.textColor = UIColor.white
+        self.slideUpInfoView.addSubview(label)
+    }
+    
     // MARK: - Show Alert
+    func slideUpAlert() {
+        UIView.animate(withDuration: 0.1, delay: 0.5, options: [.curveEaseIn], animations: {
+            print(self.slideUpInfoView.center.y)
+            if self.slideUpInfoView.center.y >= self.view.bounds.height {
+                self.slideUpInfoView.center.y -= 200
+            } else {
+                self.slideUpInfoView.center.y += 200
+            }
+            print(self.slideUpInfoView.center.y)
+        }, completion: {_ in UIView.animate(withDuration: 0.1, delay: 1.0, animations: {
+            print(self.slideUpInfoView.center.y)
+            if self.slideUpInfoView.center.y >= self.view.bounds.height {
+                self.slideUpInfoView.center.y -= 200
+            } else {
+                self.slideUpInfoView.center.y += 200
+            }
+            print(self.slideUpInfoView.center.y)
+        })}
+        )
+    }
+    
+
+    
     func openTextAlert() {
         // Create Alert Controller
         let alertCompare = UIAlertController(title: "Dubbele medicijnen", message: "U heeft meerdere medicijnen met dezelfde voorschriftnaam (maar in andere dosis) in uw aankooplijst. Deze vergelijking toont enkele unieke voorschriften.", preferredStyle: UIAlertControllerStyle.alert)
-        
         // Create cancel action
         //let cancelAlert = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         //alertCompare.addAction(cancel9)
-        
         // Create OK Action
         let okCompare = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in print("OK")
-            
         }
-        
         alertCompare.addAction(okCompare)
-
         // Present Alert Controller
         self.present(alertCompare, animated:true, completion:nil)
     }

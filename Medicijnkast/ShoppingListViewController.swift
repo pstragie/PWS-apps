@@ -15,7 +15,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     let segueShowDetail = "SegueFromShopToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
-
+    var upArrow = UIView()
     // MARK: - Properties Variables
     var totalePrijs:Dictionary<String,Float> = [:]
     var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mppnm, 8.70] */
@@ -166,50 +166,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         graphView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         graphView.tintColor = UIColor.white
         popButton.isHidden = false
-        
-        
     }
-    
-    func setupMenuView() {
-        self.menuView.center.x -= view.bounds.width
-        menuView.layer.cornerRadius = 8
-        menuView.layer.borderWidth = 1
-        menuView.layer.borderColor = UIColor.black.cgColor
-        self.btnCloseMenuView.isHidden = true
-        self.btnCloseMenuView.isEnabled = false
-    }
-    
-    func setupGraphView() {
-        //print("original x: \(self.graphView.center.x)")
-        self.graphView.center.x -= view.bounds.width
-        //print("new x: \(self.graphView.center.x)")
-        graphView.layer.cornerRadius = 8
-        graphView.layer.borderWidth = 1
-        graphView.layer.borderColor = UIColor.black.cgColor
-        showGraphButton.layer.cornerRadius = 8
-        self.popButton.isEnabled = false
-        self.popButton.isHidden = true
-    }
-    
-    @IBAction func geavanceerdZoeken(_ sender: UIButton) {
-    }
-    
-    // MARK: - fetchedResultsController
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
-        
-        // Create Fetch Request
-        let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
-        let predicate = NSPredicate(format: "userdata.aankooplijst == true")
-        fetchRequest.predicate = predicate
-        // Create Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        fetchedResultsController.delegate = self
-        
-        return fetchedResultsController
-    }()
     
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -236,6 +193,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         setupGraphView()
         setupMenuView()
         tableView.reloadData()
+        setupUpArrow()
         self.updateView()
         print("view Did Layout subviews")
     }
@@ -250,7 +208,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bestellen, target: self, action: #selector(bestellingDoorsturen))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
-
+        
         do {
             try self.fetchedResultsController.performFetch()
         } catch {
@@ -263,6 +221,70 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
 
+    func setupMenuView() {
+        self.menuView.center.x -= view.bounds.width
+        menuView.layer.cornerRadius = 8
+        menuView.layer.borderWidth = 1
+        menuView.layer.borderColor = UIColor.black.cgColor
+        self.btnCloseMenuView.isHidden = true
+        self.btnCloseMenuView.isEnabled = false
+    }
+    
+    func setupGraphView() {
+        //print("original x: \(self.graphView.center.x)")
+        self.graphView.center.x -= view.bounds.width
+        //print("new x: \(self.graphView.center.x)")
+        graphView.layer.cornerRadius = 20
+        graphView.layer.borderWidth = 1
+        graphView.layer.borderColor = UIColor.black.cgColor
+        showGraphButton.layer.cornerRadius = 8
+        self.popButton.isEnabled = false
+        self.popButton.isHidden = true
+    }
+    
+    func setupUpArrow() {
+        self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-200, width: 50, height: 50))
+        upArrow.isHidden = true
+        upArrow.backgroundColor = UIColor.black.withAlphaComponent(0.50)
+        upArrow.layer.cornerRadius = 25
+        //upArrow.layer.borderWidth = 1
+        //upArrow.layer.borderColor = UIColor.black.cgColor
+        self.view.addSubview(upArrow)
+        let button = UIButton()
+        button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        button.setTitle("Top", for: .normal)
+        button.layer.cornerRadius = 20
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.addTarget(self, action: #selector(scrollToTop), for: UIControlEvents.touchUpInside)
+        self.upArrow.addSubview(button)
+    }
+    
+    func scrollToTop() {
+        print("Scroll to top button clicked")
+        let topOffset = CGPoint(x: 0, y: 0)
+        tableView.setContentOffset(topOffset, animated: true)
+    }
+    
+    @IBAction func geavanceerdZoeken(_ sender: UIButton) {
+    }
+    
+    // MARK: - fetchedResultsController
+    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
+        
+        // Create Fetch Request
+        let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
+        let predicate = NSPredicate(format: "userdata.aankooplijst == true")
+        fetchRequest.predicate = predicate
+        // Create Fetched Results Controller
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        // Configure Fetched Results Controller
+        fetchedResultsController.delegate = self
+        
+        return fetchedResultsController
+    }()
+    
     // MARK: - share button
     func shareTapped() {
         let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
@@ -433,7 +455,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
                     let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
                     let predicate2 = NSPredicate(format: "userdata.aankooplijst == true")
                     let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-                    print("predicate: \(predicate)")
                     self.fetchedResultsController.fetchRequest.predicate = predicate
                 }
             }
@@ -626,6 +647,16 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        //print("view did end decelerating")
+        //print("offset: \(scrollView.contentOffset)")
+        if (scrollView.contentOffset.y == 0.0) {  // TOP
+            upArrow.isHidden = true
+        } else {
+            upArrow.isHidden = false
+        }
+    }
+    
     // MARK: table data
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
@@ -652,6 +683,11 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         cell.layer.masksToBounds = true
         cell.layer.borderWidth = 1
 
+        if (medicijn.law == "R") {
+            cell.boxImage?.image = #imageLiteral(resourceName: "Rx")
+        } else {
+            cell.boxImage?.image = #imageLiteral(resourceName: "noRx")
+        }
         cell.mpnm.text = medicijn.mp?.mpnm
         cell.mppnm.text = medicijn.mppnm
         cell.vosnm.text = medicijn.vosnm_
@@ -716,6 +752,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             let cell = tableView.cellForRow(at: indexPath)
             UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
             )
+
     
             self.tableView.reloadData()
 
