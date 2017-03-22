@@ -33,10 +33,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXh-CO-XD9" userLabel="info">
-                                <rect key="frame" x="588" y="64" width="160" height="40"/>
+                                <rect key="frame" x="708" y="64" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="ELA-Pw-eDW"/>
-                                    <constraint firstAttribute="width" constant="160" id="e6u-ZE-0MD"/>
+                                    <constraint firstAttribute="width" constant="40" id="e6u-ZE-0MD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="info">
@@ -270,7 +270,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.73135016025641031" green="0.0" blue="0.006846721416490619" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="ll8-gN-kpW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4VO-8U-AmE"/>
@@ -335,10 +335,10 @@
             </objects>
             <point key="canvasLocation" x="1050" y="-676.171875"/>
         </scene>
-        <!--Zoeken-->
+        <!--Add Medicijn View Controller Scene-->
         <scene sceneID="Axt-KB-BfJ">
             <objects>
-                <viewController storyboardIdentifier="AddMedicijn" title="Zoeken" id="ruK-Vs-qsG" customClass="AddMedicijnViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddMedicijn" title="Zoeken" id="ruK-Vs-qsG" userLabel="Add Medicijn View Controller Scene" customClass="AddMedicijnViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="S4F-Nc-Ffg"/>
                         <viewControllerLayoutGuide type="bottom" id="CSG-21-VtL"/>
@@ -478,16 +478,16 @@
                                     <outlet property="delegate" destination="ruK-Vs-qsG" id="6zG-jI-nM6"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DeK-kj-0bp" userLabel="Geavanceerd zoeken">
-                                <rect key="frame" x="593" y="64" width="160" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DeK-kj-0bp">
+                                <rect key="frame" x="708" y="64" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="2Mr-u4-6Yc"/>
-                                    <constraint firstAttribute="width" constant="160" id="RoO-Jc-1a5"/>
+                                    <constraint firstAttribute="width" constant="40" id="RoO-Jc-1a5"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="Geavanceerd zoeken"/>
+                                <state key="normal" title="info"/>
                                 <connections>
-                                    <action selector="geavanceerdZoeken:" destination="ruK-Vs-qsG" eventType="touchUpInside" id="hjN-UY-tXq"/>
+                                    <action selector="info:" destination="ruK-Vs-qsG" eventType="touchUpInside" id="Znr-H5-50s"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aantal medicijnen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKU-5D-8sb" userLabel="Aantal medicijnen">
@@ -562,7 +562,7 @@
                             <constraint firstItem="0Do-ef-P1o" firstAttribute="centerX" secondItem="Z2W-am-1NK" secondAttribute="centerX" id="ei9-td-FF8"/>
                             <constraint firstAttribute="trailing" secondItem="Dph-jZ-McT" secondAttribute="trailing" constant="402" id="h0l-X6-H1e"/>
                             <constraint firstItem="X2q-W9-6hE" firstAttribute="top" secondItem="pKU-5D-8sb" secondAttribute="bottom" id="iQO-s5-sOg"/>
-                            <constraint firstItem="DeK-kj-0bp" firstAttribute="trailing" secondItem="Z2W-am-1NK" secondAttribute="trailingMargin" constant="5" id="lnv-Rl-rAR"/>
+                            <constraint firstItem="DeK-kj-0bp" firstAttribute="trailing" secondItem="Z2W-am-1NK" secondAttribute="trailingMargin" id="lnv-Rl-rAR"/>
                             <constraint firstItem="pZC-tX-BQm" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="40" id="m6l-Xc-0Kj"/>
                             <constraint firstAttribute="trailing" secondItem="X2q-W9-6hE" secondAttribute="trailing" id="mHt-CJ-rmX"/>
                             <constraint firstItem="LO8-kl-SQB" firstAttribute="leading" secondItem="Z2W-am-1NK" secondAttribute="leading" constant="5" id="pQS-94-sdf"/>
@@ -1421,16 +1421,16 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vgc-gq-m5U" userLabel="Geavanceerd zoeken">
-                                <rect key="frame" x="583" y="64" width="160" height="40"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vgc-gq-m5U" userLabel="info">
+                                <rect key="frame" x="708" y="64" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="JoL-b5-PX9"/>
+                                    <constraint firstAttribute="width" constant="40" id="JoL-b5-PX9"/>
                                     <constraint firstAttribute="height" constant="40" id="UbZ-1m-n0B"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="Geavanceerd zoeken"/>
+                                <state key="normal" title="info"/>
                                 <connections>
-                                    <action selector="geavanceerdZoeken:" destination="DcK-cA-pBQ" eventType="touchUpInside" id="873-eQ-eKG"/>
+                                    <action selector="info:" destination="DcK-cA-pBQ" eventType="touchUpInside" id="ghj-Ct-ZvB"/>
                                 </connections>
                             </button>
                             <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fzA-TF-SSa" userLabel="Show Graph Button">
@@ -1663,7 +1663,7 @@
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="PwR-EG-kcb" firstAttribute="leading" secondItem="7SY-Hx-9if" secondAttribute="leading" constant="10" id="0RP-Yk-sum"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Vgc-gq-m5U" secondAttribute="trailing" constant="5" id="37T-4w-6a9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Vgc-gq-m5U" secondAttribute="trailing" id="37T-4w-6a9"/>
                             <constraint firstItem="Hqt-e9-mdB" firstAttribute="top" secondItem="PwR-EG-kcb" secondAttribute="bottom" id="433-1B-mjl"/>
                             <constraint firstItem="b2P-gJ-vgg" firstAttribute="centerY" secondItem="7SY-Hx-9if" secondAttribute="centerY" id="AZz-WA-w0x"/>
                             <constraint firstItem="dnW-Ox-cZT" firstAttribute="centerY" secondItem="7SY-Hx-9if" secondAttribute="centerY" id="Etm-6c-H8R"/>
@@ -2155,7 +2155,7 @@
         <image name="vinkje" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oM1-mF-OuT"/>
+        <segue reference="Rdq-mC-hCz"/>
         <segue reference="tdq-xo-ula"/>
     </inferredMetricsTieBreakers>
 </document>

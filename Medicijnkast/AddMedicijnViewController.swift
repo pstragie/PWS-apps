@@ -14,10 +14,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromAddToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
+    // MARK: - Properties Variables
     var infoView = UIView()
     var upArrow = UIView()
-    // MARK: - Properties Variables
     var sortDescriptorIndex: Int? = nil
     var selectedScope: Int = -1
     var selectedSegmentIndex: Int = 0
@@ -40,31 +39,43 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var menuView: UIView!
     
     // MARK: - Referencing Actions
-    @IBAction func geavanceerdZoeken(_ sender: UIButton) {
-        print(self.infoView.center.y)
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            if self.infoView.center.y >= 0 {
-                self.infoView.center.y -= self.view.bounds.height
-                self.view.bringSubview(toFront: self.infoView)
-
-            } else {
-                self.infoView.center.y += self.view.bounds.height
-                self.view.bringSubview(toFront: self.infoView)
-            }
-        }, completion: nil
-        )
-        
-    }
-    
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
         print("btnCloseMenuView pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.menuView.center.x -= self.view.bounds.width
+            if self.menuView.center.x >= 0 {
+                self.menuView.center.x -= self.view.bounds.width
+            } else {
+                self.menuView.center.x += self.view.bounds.width
+            }
+            if self.infoView.center.y >= 0 {
+                self.infoView.center.y -= self.view.bounds.height
+                self.view.bringSubview(toFront: self.infoView)
+                
+            } else {
+                self.infoView.center.y += self.view.bounds.height
+                self.view.bringSubview(toFront: self.view)
+            }
         }, completion: nil
         )
         menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         btnCloseMenuView.isHidden = true
         btnCloseMenuView.isEnabled = false
+    }
+    
+    @IBAction func info(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+            if self.infoView.center.y >= 0 {
+                self.infoView.center.y -= self.view.bounds.height
+                self.view.bringSubview(toFront: self.infoView)
+                
+            } else {
+                self.infoView.center.y += self.view.bounds.height
+                self.view.bringSubview(toFront: self.view)
+            }
+        }, completion: nil
+        )
+        btnCloseMenuView.isHidden = false
+        btnCloseMenuView.isEnabled = true
     }
     
     @IBAction func showMenuView(_ sender: UIButton) {
@@ -212,13 +223,73 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func setupInfoView() {
-        self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200))
-        self.infoView.center.y -= view.bounds.height-120
+        self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 156))
+        self.infoView.center.y -= view.bounds.height-104
         infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         infoView.layer.cornerRadius = 8
         infoView.layer.borderWidth = 1
         infoView.layer.borderColor = UIColor.black.cgColor
         self.view.addSubview(infoView)
+        
+        let labelmp = UILabel()
+        labelmp.text = "Productnaam"
+        labelmp.font = UIFont.boldSystemFont(ofSize: 22)
+        labelmp.textColor = UIColor.white
+        let labelmpp = UILabel()
+        labelmpp.text = "Verpakking"
+        labelmpp.font = UIFont.systemFont(ofSize: 17)
+        labelmpp.textColor = UIColor.white
+        let labelvos = UILabel()
+        labelvos.text = "Voorschrift"
+        labelvos.font = UIFont.systemFont(ofSize: 13)
+        labelvos.textColor = UIColor.white
+        let labelfirma = UILabel()
+        labelfirma.text = "Firmanaam (of distributeur)"
+        labelfirma.font = UIFont.systemFont(ofSize: 17)
+        labelfirma.textColor = UIColor.white
+        let labelpupr = UILabel()
+        labelpupr.text = "Prijs voor het publiek"
+        labelpupr.textColor = UIColor.white
+        let labelrema = UILabel()
+        labelrema.text = "Remgeld A:"
+        labelrema.textColor = UIColor.white
+        let labelremadescription = UILabel()
+        labelremadescription.text = "Bedrag voor patiënten zonder OMNIO statuut."
+        labelremadescription.textColor = UIColor.white
+        labelremadescription.font = UIFont.systemFont(ofSize: 13)
+        let labelremw = UILabel()
+        labelremw.text = "Remgeld W:"
+        labelremw.textColor = UIColor.white
+        let labelremwdescription = UILabel()
+        labelremwdescription.text = "Bedrag voor patiënten met OMNIO/WIGW statuut."
+        labelremwdescription.textColor = UIColor.white
+        labelremwdescription.font = UIFont.systemFont(ofSize: 13)
+        
+        let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma])
+        leftStack.axis = .vertical
+        leftStack.distribution = .fillEqually
+        leftStack.alignment = .fill
+        leftStack.spacing = 5
+        leftStack.translatesAutoresizingMaskIntoConstraints = true
+        let rightStack = UIStackView(arrangedSubviews: [labelpupr, labelrema, labelremadescription, labelremw, labelremwdescription])
+        rightStack.axis = .vertical
+        rightStack.distribution = .fillEqually
+        rightStack.alignment = .fill
+        rightStack.spacing = 5
+        rightStack.translatesAutoresizingMaskIntoConstraints = true
+        let horstack = UIStackView(arrangedSubviews: [leftStack, rightStack])
+        horstack.axis = .horizontal
+        horstack.distribution = .fillProportionally
+        horstack.alignment = .fill
+        horstack.spacing = 5
+        horstack.translatesAutoresizingMaskIntoConstraints = false
+        self.infoView.addSubview(horstack)
+        //Stackview Layout
+        let viewsDictionary = ["stackView": horstack]
+        let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-115-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[stackView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        infoView.addConstraints(stackView_H)
+        infoView.addConstraints(stackView_V)
     }
     
     // MARK: - search bar related

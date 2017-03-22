@@ -16,6 +16,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
 	// MARK: - Properties Variables
+	var infoView = UIView()
 	var upArrow = UIView()
 	weak var receivedData: MPP?
 	var zoekwoord: String? = nil
@@ -23,16 +24,18 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	var selectedScope:Int = -1
 	var selectedSegmentIndex:Int = 0
 	var searchActive:Bool = false
-	// MARK: - Progress Bar
+	
+	// Progress bar (update)
 	var progressie:Float = 0.0
 	var totalLines:Float = 0.0
 	var readLines:Float = 0.0
-	// MARK: - filter and sort
+	
 	var filterKeyword:String = "mppnm"
 	var zoekoperator:String = "BEGINSWITH"
 	var format:String = "mppnm BEGINSWITH[c] %@"
 	var sortKeyword:String = "mppnm"
 	var myPeopleList = [Person]()
+	
 	// MARK: - Referencing Outlets
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet var tableView: UITableView!
@@ -46,43 +49,22 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	@IBOutlet weak var loadProgress: UILabel!
 	
 	// MARK: - Referencing Actions
-    @IBAction func info(_ sender: UIButton) {
-    }
-	
-		
-	func openTextAlert() {
-		// Create Alert Controller
-		let alert9 = UIAlertController(title: "Persoon toevoegen", message: nil, preferredStyle: UIAlertControllerStyle.alert)
-		
-		// Create cancel action
-		let cancel9 = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-		alert9.addAction(cancel9)
-		
-		// Create OK Action
-		let ok9 = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in print("OK")
-			let textfield = alert9.textFields?[0]
-			
-			let newPerson = Person(name: (textfield?.text!)!)
-			self.myPeopleList.append(newPerson)
-			let encodedData = NSKeyedArchiver.archivedData(withRootObject: self.myPeopleList)
-			UserDefaults.standard.set(encodedData, forKey: "people")
-		}
-		
-		alert9.addAction(ok9)
-		
-		// Add text field
-		alert9.addTextField { (textfield: UITextField) in
-			textfield.placeholder = "Nieuwe persoon"
-		}
-		
-		// Present Alert Controller
-		self.present(alert9, animated:true, completion:nil)
-	}
-	
 	@IBAction func btnCloseMenuView(_ sender: UIButton) {
 		print("btnCloseMenuView pressed!")
 		UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-			self.menuView.center.x -= self.view.bounds.width
+			if self.menuView.center.x >= 0 {
+				self.menuView.center.x -= self.view.bounds.width
+			} else {
+				self.menuView.center.x += self.view.bounds.width
+			}
+			if self.infoView.center.y >= 0 {
+				self.infoView.center.y -= self.view.bounds.height
+				self.view.bringSubview(toFront: self.infoView)
+				
+			} else {
+				self.infoView.center.y += self.view.bounds.height
+				self.view.bringSubview(toFront: self.view)
+			}
 		}, completion: nil
 		)
 		menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
@@ -90,10 +72,24 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		btnCloseMenuView.isEnabled = false
 	}
 	
+	@IBAction func info(_ sender: UIButton) {
+		UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+			if self.infoView.center.y >= 0 {
+				self.infoView.center.y -= self.view.bounds.height
+				self.view.bringSubview(toFront: self.infoView)
+				
+			} else {
+				self.infoView.center.y += self.view.bounds.height
+				self.view.bringSubview(toFront: self.view)
+			}
+		}, completion: nil
+		)
+		btnCloseMenuView.isHidden = false
+		btnCloseMenuView.isEnabled = true
+	}
+
 	@IBAction func showMenuView(_ sender: UIButton) {
 		UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-			print("menuView center x: \(self.menuView.center.x)")
-			print("bounds: \(self.view.bounds.width)")
 			if self.menuView.center.x >= 0 {
 				self.menuView.center.x -= self.view.bounds.width
 			} else {
@@ -107,7 +103,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		btnCloseMenuView.isEnabled = true
 	}
 	
-	// MARK: - close menu view
 	@IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
 		print("swipe action")
 		UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
@@ -119,26 +114,27 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		btnCloseMenuView.isEnabled = false
 	}
 
-    // MARK: - fetchedResultsController
-    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
-
-		// Create Fetch Request
-		let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
-		
-		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
-		//let predicate = NSPredicate(format: "cheapest contains %@", NSNumber(booleanLiteral: true))
-		let predicate = NSPredicate(format: "userdata.medicijnkast == true")
-		fetchRequest.predicate = predicate
-		// Create Fetched Results Controller
-		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-		
-        // Configure Fetched Results Controller
-        fetchedResultsController.delegate = self
-
-		return fetchedResultsController
-	}()
-	
     // MARK: - View Life Cycle
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(true)
+		self.appDelegate.saveContext()
+		
+		print("View will appear, fetching...")
+		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
+		
+		do {
+			try self.fetchedResultsController.performFetch()
+		} catch {
+			let fetchError = error as NSError
+			print("Unable to Perform Fetch Request")
+			print("\(fetchError), \(fetchError.localizedDescription)")
+		}
+		NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+		
+		tableView.reloadData()
+		self.updateView()
+	}
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		print("KastView did load!")
@@ -163,34 +159,16 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(true)
-		self.appDelegate.saveContext()
-		
-		print("View will appear, fetching...")
-		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
-		
-		do {
-			try self.fetchedResultsController.performFetch()
-		} catch {
-			let fetchError = error as NSError
-			print("Unable to Perform Fetch Request")
-			print("\(fetchError), \(fetchError.localizedDescription)")
-		}
-		NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
-		
-		tableView.reloadData()
-		self.updateView()
-	}
 	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		setupMenuView()
+		setupInfoView()
+		setupUpArrow()
 		progressView.isHidden = true
 		btnCloseMenuView.isHidden = true
 		btnCloseMenuView.isEnabled = false
 		print("view Did Layout subviews")
-		setupUpArrow()
 		tableView.reloadData()
 		self.updateView()
 	}
@@ -203,23 +181,141 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		/* update if new bcfi files */
 	}
 	
-		
-	// MARK: - Save attributes
-	/* saveAttributes in AppDelegate */
-
-	// MARK: - share button
-	func shareTapped() {
-		let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
-		vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-		present(vc, animated: true)
-	}
-	
+	// MARK: Setup views
 	func setupMenuView() {
 		self.menuView.center.x -= view.bounds.width
 		menuView.layer.cornerRadius = 8
 		menuView.layer.borderWidth = 1
 		menuView.layer.borderColor = UIColor.black.cgColor
+	}
+	
+	func setupInfoView() {
+		self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 156))
+		self.infoView.center.y -= view.bounds.height-104
+		infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+		infoView.layer.cornerRadius = 8
+		infoView.layer.borderWidth = 1
+		infoView.layer.borderColor = UIColor.black.cgColor
+		self.view.addSubview(infoView)
 		
+		let labelmp = UILabel()
+		labelmp.text = "Productnaam"
+		labelmp.font = UIFont.boldSystemFont(ofSize: 22)
+		labelmp.textColor = UIColor.white
+		let labelmpp = UILabel()
+		labelmpp.text = "Verpakking"
+		labelmpp.font = UIFont.systemFont(ofSize: 17)
+		labelmpp.textColor = UIColor.white
+		let labelvos = UILabel()
+		labelvos.text = "Voorschrift"
+		labelvos.font = UIFont.systemFont(ofSize: 13)
+		labelvos.textColor = UIColor.white
+		let labelfirma = UILabel()
+		labelfirma.text = "Firmanaam (of distributeur)"
+		labelfirma.font = UIFont.systemFont(ofSize: 17)
+		labelfirma.textColor = UIColor.white
+		let labelpupr = UILabel()
+		labelpupr.text = "Prijs voor het publiek"
+		labelpupr.textColor = UIColor.white
+		let labelrema = UILabel()
+		labelrema.text = "Remgeld A:"
+		labelrema.textColor = UIColor.white
+		let labelremadescription = UILabel()
+		labelremadescription.text = "Bedrag voor patiënten zonder OMNIO statuut."
+		labelremadescription.textColor = UIColor.white
+		labelremadescription.font = UIFont.systemFont(ofSize: 13)
+		let labelremw = UILabel()
+		labelremw.text = "Remgeld W:"
+		labelremw.textColor = UIColor.white
+		let labelremwdescription = UILabel()
+		labelremwdescription.text = "Bedrag voor patiënten met OMNIO/WIGW statuut."
+		labelremwdescription.textColor = UIColor.white
+		labelremwdescription.font = UIFont.systemFont(ofSize: 13)
+		
+		let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma])
+		leftStack.axis = .vertical
+		leftStack.distribution = .fillEqually
+		leftStack.alignment = .fill
+		leftStack.spacing = 5
+		leftStack.translatesAutoresizingMaskIntoConstraints = true
+		let rightStack = UIStackView(arrangedSubviews: [labelpupr, labelrema, labelremadescription, labelremw, labelremwdescription])
+		rightStack.axis = .vertical
+		rightStack.distribution = .fillEqually
+		rightStack.alignment = .fill
+		rightStack.spacing = 5
+		rightStack.translatesAutoresizingMaskIntoConstraints = true
+		let horstack = UIStackView(arrangedSubviews: [leftStack, rightStack])
+		horstack.axis = .horizontal
+		horstack.distribution = .fillProportionally
+		horstack.alignment = .fill
+		horstack.spacing = 5
+		horstack.translatesAutoresizingMaskIntoConstraints = false
+		self.infoView.addSubview(horstack)
+		//Stackview Layout
+		let viewsDictionary = ["stackView": horstack]
+		let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-115-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+		let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[stackView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+		infoView.addConstraints(stackView_H)
+		infoView.addConstraints(stackView_V)
+	}
+	
+	func setupLayout() {
+		segmentedButton.setTitle("B....", forSegmentAt: 0)
+		segmentedButton.setTitle("..c..", forSegmentAt: 1)
+		segmentedButton.setTitle("....e", forSegmentAt: 2)
+	}
+
+	private func setupView() {
+		setupMessageLabel()
+	}
+	
+	func setupUpArrow() {
+		self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-200, width: 50, height: 50))
+		upArrow.isHidden = true
+		upArrow.backgroundColor = UIColor.black.withAlphaComponent(0.50)
+		upArrow.layer.cornerRadius = 25
+		//upArrow.layer.borderWidth = 1
+		//upArrow.layer.borderColor = UIColor.black.cgColor
+		self.view.addSubview(upArrow)
+		let button = UIButton()
+		button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+		button.setTitle("Top", for: .normal)
+		button.layer.cornerRadius = 20
+		button.setTitleColor(UIColor.white, for: .normal)
+		button.addTarget(self, action: #selector(scrollToTop), for: UIControlEvents.touchUpInside)
+		self.upArrow.addSubview(button)
+	}
+
+	func scrollToTop() {
+		print("Scroll to top button clicked")
+		let topOffset = CGPoint(x: 0, y: 0)
+		tableView.setContentOffset(topOffset, animated: true)
+	}
+	
+	// MARK: - fetchedResultsController
+	fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
+		
+		// Create Fetch Request
+		let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
+		
+		fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
+		//let predicate = NSPredicate(format: "cheapest contains %@", NSNumber(booleanLiteral: true))
+		let predicate = NSPredicate(format: "userdata.medicijnkast == true")
+		fetchRequest.predicate = predicate
+		// Create Fetched Results Controller
+		let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+		
+		// Configure Fetched Results Controller
+		fetchedResultsController.delegate = self
+		
+		return fetchedResultsController
+	}()
+	
+	// MARK: - share button
+	func shareTapped() {
+		let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+		vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+		present(vc, animated: true)
 	}
 	
 	// MARK: - search bar related
@@ -235,13 +331,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		self.tableView.tableHeaderView = searchBar
     }
 	
-	// MARK: Layout
-	func setupLayout() {
-		segmentedButton.setTitle("B....", forSegmentAt: 0)
-		segmentedButton.setTitle("..c..", forSegmentAt: 1)
-		segmentedButton.setTitle("....e", forSegmentAt: 2)
-	}
-	
+	// MARK: - Unwind
 	@IBAction func unwindToSearch(segue: UIStoryboardSegue) {
 	}
 	
@@ -423,33 +513,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
     // MARK: - View Methods
-    private func setupView() {
-        setupMessageLabel()
-    }
-	
-	func setupUpArrow() {
-		self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-200, width: 50, height: 50))
-		upArrow.isHidden = true
-		upArrow.backgroundColor = UIColor.black.withAlphaComponent(0.50)
-		upArrow.layer.cornerRadius = 25
-		//upArrow.layer.borderWidth = 1
-		//upArrow.layer.borderColor = UIColor.black.cgColor
-		self.view.addSubview(upArrow)
-		let button = UIButton()
-		button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-		button.setTitle("Top", for: .normal)
-		button.layer.cornerRadius = 20
-		button.setTitleColor(UIColor.white, for: .normal)
-		button.addTarget(self, action: #selector(scrollToTop), for: UIControlEvents.touchUpInside)
-		self.upArrow.addSubview(button)
-	}
-	
-	func scrollToTop() {
-		print("Scroll to top button clicked")
-		let topOffset = CGPoint(x: 0, y: 0)
-		tableView.setContentOffset(topOffset, animated: true)
-	}
-	
 	fileprivate func updateView() {
 		print("Updating view...")
 		var hasMedicijnen = false
@@ -502,7 +565,35 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.appDelegate.saveContext()
     }
 	
-	
+	func openTextAlert() {
+		// Create Alert Controller
+		let alert9 = UIAlertController(title: "Persoon toevoegen", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+		
+		// Create cancel action
+		let cancel9 = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+		alert9.addAction(cancel9)
+		
+		// Create OK Action
+		let ok9 = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in print("OK")
+			let textfield = alert9.textFields?[0]
+			
+			let newPerson = Person(name: (textfield?.text!)!)
+			self.myPeopleList.append(newPerson)
+			let encodedData = NSKeyedArchiver.archivedData(withRootObject: self.myPeopleList)
+			UserDefaults.standard.set(encodedData, forKey: "people")
+		}
+		
+		alert9.addAction(ok9)
+		
+		// Add text field
+		alert9.addTextField { (textfield: UITextField) in
+			textfield.placeholder = "Nieuwe persoon"
+		}
+		
+		// Present Alert Controller
+		self.present(alert9, animated:true, completion:nil)
+	}
+
 
 }
 

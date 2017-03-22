@@ -14,9 +14,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromShopToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
-    var upArrow = UIView()
+    
     // MARK: - Properties Variables
+    var infoView = UIView()
+    var upArrow = UIView()
     var totalePrijs:Dictionary<String,Float> = [:]
     var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mppnm, 8.70] */
     var gdkpprijs:Float = 0.0
@@ -58,9 +59,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet var graphView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var bestellen: UIBarButtonItem!
-    
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var btnCloseMenuView: UIButton!
+    
     // MARK: - Referencing Actions
     @IBAction func popButton(_ sender: UIButton) {
         print("popButton pressed!")
@@ -76,7 +77,19 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
         print("btnCloseMenuView pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.menuView.center.x -= self.view.bounds.width
+            if self.menuView.center.x >= 0 {
+                self.menuView.center.x -= self.view.bounds.width
+            } else {
+                self.menuView.center.x += self.view.bounds.width
+            }
+            if self.infoView.center.y >= 0 {
+                self.infoView.center.y -= self.view.bounds.height
+                self.view.bringSubview(toFront: self.infoView)
+                
+            } else {
+                self.infoView.center.y += self.view.bounds.height
+                self.view.bringSubview(toFront: self.view)
+            }
         }, completion: nil
         )
         menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
@@ -84,14 +97,26 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         btnCloseMenuView.isEnabled = false
     }
     
+    @IBAction func info(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+            if self.infoView.center.y >= 0 {
+                self.infoView.center.y -= self.view.bounds.height
+                self.view.bringSubview(toFront: self.infoView)
+                
+            } else {
+                self.infoView.center.y += self.view.bounds.height
+                self.view.bringSubview(toFront: self.view)
+            }
+        }, completion: nil
+        )
+        btnCloseMenuView.isHidden = false
+        btnCloseMenuView.isEnabled = true
+    }
+    
     @IBAction func showMenuView(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            //print("menuView center x: \(self.menuView.center.x)")
-            //print("bounds: \(self.view.bounds.width)")
             if self.menuView.center.x >= 0 {
                 self.menuView.center.x -= self.view.bounds.width
-                self.btnCloseMenuView.isHidden = true
-                self.btnCloseMenuView.isEnabled = false
             } else {
                 self.menuView.center.x += self.view.bounds.width
                 if self.graphView.center.x >= 0 {
@@ -108,7 +133,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         popButton.isHidden = true
         
     }
-
+    
     @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
         print("swipe action")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
@@ -189,14 +214,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         self.updateView()
     }
     
-    override func viewDidLayoutSubviews() {
-        setupGraphView()
-        setupMenuView()
-        tableView.reloadData()
-        setupUpArrow()
-        self.updateView()
-        print("view Did Layout subviews")
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Aankooplijst view did load!")
@@ -220,7 +237,18 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         updateView()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
-
+    
+    override func viewDidLayoutSubviews() {
+        setupGraphView()
+        setupMenuView()
+        setupInfoView()
+        tableView.reloadData()
+        setupUpArrow()
+        self.updateView()
+        print("view Did Layout subviews")
+    }
+    
+    // MARK: Setup views
     func setupMenuView() {
         self.menuView.center.x -= view.bounds.width
         menuView.layer.cornerRadius = 8
@@ -228,6 +256,82 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         menuView.layer.borderColor = UIColor.black.cgColor
         self.btnCloseMenuView.isHidden = true
         self.btnCloseMenuView.isEnabled = false
+    }
+    
+    func setupInfoView() {
+        self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 156))
+        self.infoView.center.y -= view.bounds.height-104
+        infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        infoView.layer.cornerRadius = 8
+        infoView.layer.borderWidth = 1
+        infoView.layer.borderColor = UIColor.black.cgColor
+        self.view.addSubview(infoView)
+        
+        let labelmp = UILabel()
+        labelmp.text = "Productnaam"
+        labelmp.font = UIFont.boldSystemFont(ofSize: 22)
+        labelmp.textColor = UIColor.white
+        let labelmpp = UILabel()
+        labelmpp.text = "Verpakking"
+        labelmpp.font = UIFont.systemFont(ofSize: 17)
+        labelmpp.textColor = UIColor.white
+        let labelvos = UILabel()
+        labelvos.text = "Voorschrift"
+        labelvos.font = UIFont.systemFont(ofSize: 13)
+        labelvos.textColor = UIColor.white
+        let labelfirma = UILabel()
+        labelfirma.text = "Firmanaam (of distributeur)"
+        labelfirma.font = UIFont.systemFont(ofSize: 17)
+        labelfirma.textColor = UIColor.white
+        let labelpupr = UILabel()
+        labelpupr.text = "Prijs voor het publiek"
+        labelpupr.textColor = UIColor.white
+        let labelrema = UILabel()
+        labelrema.text = "Remgeld A:"
+        labelrema.textColor = UIColor.white
+        let labelremadescription = UILabel()
+        labelremadescription.text = "Bedrag voor patiënten zonder OMNIO statuut."
+        labelremadescription.textColor = UIColor.white
+        labelremadescription.font = UIFont.systemFont(ofSize: 13)
+        let labelremw = UILabel()
+        labelremw.text = "Remgeld W:"
+        labelremw.textColor = UIColor.white
+        let labelremwdescription = UILabel()
+        labelremwdescription.text = "Bedrag voor patiënten met OMNIO/WIGW statuut."
+        labelremwdescription.textColor = UIColor.white
+        labelremwdescription.font = UIFont.systemFont(ofSize: 13)
+        
+        let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma])
+        leftStack.axis = .vertical
+        leftStack.distribution = .fillEqually
+        leftStack.alignment = .fill
+        leftStack.spacing = 5
+        leftStack.translatesAutoresizingMaskIntoConstraints = true
+        let rightStack = UIStackView(arrangedSubviews: [labelpupr, labelrema, labelremadescription, labelremw, labelremwdescription])
+        rightStack.axis = .vertical
+        rightStack.distribution = .fillEqually
+        rightStack.alignment = .fill
+        rightStack.spacing = 5
+        rightStack.translatesAutoresizingMaskIntoConstraints = true
+        let horstack = UIStackView(arrangedSubviews: [leftStack, rightStack])
+        horstack.axis = .horizontal
+        horstack.distribution = .fillProportionally
+        horstack.alignment = .fill
+        horstack.spacing = 5
+        horstack.translatesAutoresizingMaskIntoConstraints = false
+        self.infoView.addSubview(horstack)
+        //Stackview Layout
+        let viewsDictionary = ["stackView": horstack]
+        let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-115-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[stackView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        infoView.addConstraints(stackView_H)
+        infoView.addConstraints(stackView_V)
+    }
+    
+    func setupLayout() {
+        segmentedButton.setTitle("B....", forSegmentAt: 0)
+        segmentedButton.setTitle("..c..", forSegmentAt: 1)
+        segmentedButton.setTitle("....e", forSegmentAt: 2)
     }
     
     func setupGraphView() {
@@ -259,13 +363,14 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         self.upArrow.addSubview(button)
     }
     
+    private func setupView() {
+        setupMessageLabel()
+    }
+    
     func scrollToTop() {
         print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)
         tableView.setContentOffset(topOffset, animated: true)
-    }
-    
-    @IBAction func geavanceerdZoeken(_ sender: UIButton) {
     }
     
     // MARK: - fetchedResultsController
@@ -292,10 +397,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         present(vc, animated: true)
     }
     
-    // MARK: - Bestelling doorsturen
-    func bestellingDoorsturen() {
-    }
-    
     // MARK: - search bar related
     fileprivate func setUpSearchBar() {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
@@ -307,13 +408,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         searchBar.delegate = self
         
         self.tableView.tableHeaderView = searchBar
-    }
-    
-    // MARK: Layout
-    func setupLayout() {
-        segmentedButton.setTitle("B....", forSegmentAt: 0)
-        segmentedButton.setTitle("..c..", forSegmentAt: 1)
-        segmentedButton.setTitle("....e", forSegmentAt: 2)
     }
     
     // MARK: Set Scope
@@ -550,10 +644,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         verschilPupr.text = "\(berekenVerschil(categorie: "pupr", huidig: totalePrijs, altern: gdkpaltpupr)) €"
         verschilRema.text = "\(berekenVerschil(categorie: "rema", huidig: totalePrijs, altern: gdkpaltrema)) €"
         verschilRemw.text = "\(berekenVerschil(categorie: "remw", huidig: totalePrijs, altern: gdkpaltremw)) € "
-    }
-    
-    private func setupView() {
-        setupMessageLabel()
     }
     
     fileprivate func updateView() {
