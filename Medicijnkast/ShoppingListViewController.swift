@@ -79,16 +79,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
             if self.menuView.center.x >= 0 {
                 self.menuView.center.x -= self.view.bounds.width
-            } else {
-                self.menuView.center.x += self.view.bounds.width
             }
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
-                
-            } else {
-                self.infoView.center.y += self.view.bounds.height
-                self.view.bringSubview(toFront: self.view)
             }
         }, completion: nil
         )
@@ -244,6 +238,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         setupInfoView()
         tableView.reloadData()
         setupUpArrow()
+        btnCloseMenuView.setTitle("", for: .normal)
         self.updateView()
         print("view Did Layout subviews")
     }

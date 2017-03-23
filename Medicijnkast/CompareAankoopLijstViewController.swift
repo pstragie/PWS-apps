@@ -144,7 +144,6 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             tableViewLeft.layer.masksToBounds = true
             tableViewLeft.layer.borderWidth = 1
             count = objectsLeft?.count
-            //print("Count receivedData: \(count)")
         }
         
         if tableView == self.tableViewRight {
@@ -177,6 +176,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         var cell:MedicijnTableViewCell?
         let objectsLeft = receivedData?[0]
         let objectsRight = receivedData?[1]
+        
         if tableView == self.tableViewLeft {
             tableViewRight.scrollToRow(at: indexPath, at: .bottom, animated: true)
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
@@ -264,26 +264,14 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         return cell!
     }
     
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        /*
-        if tableView == self.tableViewLeft {
-            let oriMedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
-            if oriMedicijn.userdata?.aankooplijst == true {
-                return false
-            }
-        } */
-        return true
-    }
-    
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        if tableView == self.tableViewLeft {
-            let oriMedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
-            if oriMedicijn.userdata?.aankooplijst == true {
+        if tableView == tableViewLeft {
+            let origineelMedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
+            if origineelMedicijn.userdata?.aankooplijst == true {
                 return .none
             }
         }
-        return UITableViewCellEditingStyle.delete
+        return .delete
     }
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         var btnArray = [UITableViewRowAction()]
@@ -312,7 +300,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                     self.tableViewLeft.reloadData()
                     self.tableViewRight.reloadData()
                 } else {
-                    self.tableViewLeft.touchesShouldCancel(in: self.tableViewLeft) // Not working
+                    //self.tableViewLeft.touchesShouldCancel(in: self.tableViewLeft) // Not working
                 }
             }
             undoReplace.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:0.5)
