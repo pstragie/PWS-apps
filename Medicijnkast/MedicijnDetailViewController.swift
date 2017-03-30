@@ -15,7 +15,9 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     weak var medicijn: MPP?
     weak var dataPassed: MPP?
     weak var stofdb: Stof?
-
+    var arrayPassed: Array<String> = []
+    var stofnaamArr: Array<String> = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("View did load!")
@@ -24,6 +26,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         dataPassed = medicijn
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        print("View did appear, arrayPassed: \(stofnaamArr)")
+        arrayPassed = stofnaamArr
+    }
+    
     // MARK: - share button
     func shareTapped() {
         let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
@@ -52,23 +60,55 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.irnm.setTitle(medicijn?.mp?.ir?.nirnm, for: .normal)
         let toepassing = Dictionaries().hierarchy(hyr: (medicijn?.mp?.hyr?.hyr)!)
         cell.ti.setTitle(toepassing, for: .normal)
-        let stofcv = medicijn?.sam?.value(forKey: "stofcv") as! NSSet /* (AnyObject) __NSSetI */
-        let stofcvArr = Array(stofcv)
-        
-        
-        var stofcvString: String = ""
-        for stof in stofcvArr {
-            stofcvString += stof as! String+" "
-        }
+        //let stofcv = medicijn?.sam?.value(forKey: "stofcv") as! NSSet /* (AnyObject) __NSSetI */
+        //let stofcvArr = Array(stofcv)
+        //var stofcvString: String = ""
+        //for stof in stofcvArr {
+        //    stofcvString += stof as! String+" "
+        //}
         let samsam = medicijn?.sam?.value(forKey: "stof")
         let stofnaam = (samsam! as AnyObject).value(forKey: "ninnm") as! NSSet
-        let stofnaamArr = Array(stofnaam)
-        var stofnaamString: String = ""
-        for stofn in stofnaamArr {
-            stofnaamString += stofn as! String + " "
+        
+        for s in stofnaam {
+            stofnaamArr.append(s as! String)
+        }
+        //var stofnaamString: String = ""
+        if stofnaamArr.count == 1 {
+            cell.stofnm1.setTitle(stofnaamArr[0], for: .normal)
+            cell.stofnm2.isHidden = true
+            cell.stofnm3.isHidden = true
+            cell.stofnm4.isHidden = true
+            cell.stofnm5.isHidden = true
+        }
+        if stofnaamArr.count == 2 {
+            cell.stofnm1.setTitle(stofnaamArr[0], for: .normal)
+            cell.stofnm2.setTitle(stofnaamArr[1], for: .normal)
+            cell.stofnm3.isHidden = true
+            cell.stofnm4.isHidden = true
+            cell.stofnm5.isHidden = true
+        }
+        if stofnaamArr.count == 3 {
+            cell.stofnm1.setTitle(stofnaamArr[0], for: .normal)
+            cell.stofnm2.setTitle(stofnaamArr[1], for: .normal)
+            cell.stofnm3.setTitle(stofnaamArr[2], for: .normal)
+            cell.stofnm4.isHidden = true
+            cell.stofnm5.isHidden = true
+        }
+        if stofnaamArr.count == 4 {
+            cell.stofnm1.setTitle(stofnaamArr[0], for: .normal)
+            cell.stofnm2.setTitle(stofnaamArr[1], for: .normal)
+            cell.stofnm3.setTitle(stofnaamArr[2], for: .normal)
+            cell.stofnm4.setTitle(stofnaamArr[3], for: .normal)
+            cell.stofnm5.isHidden = true
+        }
+        if stofnaamArr.count >= 5 {
+            cell.stofnm1.setTitle(stofnaamArr[0], for: .normal)
+            cell.stofnm2.setTitle(stofnaamArr[1], for: .normal)
+            cell.stofnm3.setTitle(stofnaamArr[2], for: .normal)
+            cell.stofnm4.setTitle(stofnaamArr[3], for: .normal)
+            cell.stofnm5.setTitle(stofnaamArr[4], for: .normal)
         }
         
-        cell.stofnm.setTitle(stofnaamString, for: .normal)
         cell.galnm.text = medicijn?.gal?.ngalnm
 
         // Stack middle left
@@ -189,7 +229,6 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         return 1
     }
 
-    
     @IBOutlet var tableView: UITableView!
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
@@ -197,6 +236,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     // MARK: - Navigation
     let pvt = "pvtToWeb"
     let mpg = "mpgToWeb"
+    let ti = "tiToKlachten"
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
         case pvt:
@@ -213,11 +253,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             
             let selectedLink = medicijn?.ggr_link?.link2mpg
             destination.link = selectedLink
+        case ti:
+            let destination = segue.destination as! KlachtenViewController
+            let selectedObject = medicijn
+            destination.medicijn = selectedObject
         default:
             print("Unknown segue: \(segue.identifier)")
         }
-        
     }
-    
-    
 }

@@ -19,8 +19,11 @@ class MedicijnDetailViewCell: UITableViewCell {
     @IBOutlet var mpnm: UILabel!
     @IBOutlet var mppnm: UILabel!
     
-    
-    @IBOutlet weak var stofnm: UIButton!
+    @IBOutlet weak var stofnm1: UIButton!
+    @IBOutlet weak var stofnm2: UIButton!
+    @IBOutlet weak var stofnm3: UIButton!
+    @IBOutlet weak var stofnm4: UIButton!
+    @IBOutlet weak var stofnm5: UIButton!
     @IBOutlet weak var vosnm: UIButton!
     @IBOutlet weak var irnm: UIButton!
     @IBOutlet weak var ti: UIButton!

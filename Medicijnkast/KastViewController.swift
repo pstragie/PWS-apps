@@ -17,24 +17,22 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 	// MARK: - Properties Variables
 	var infoView = UIView()
+	var menuView = UIView()
 	var upArrow = UIView()
-	weak var receivedData: MPP?
 	var zoekwoord: String? = nil
 	var sortDescriptorIndex:Int?=nil
 	var selectedScope:Int = -1
 	var selectedSegmentIndex:Int = 0
 	var searchActive:Bool = false
-	
-	// Progress bar (update)
-	var progressie:Float = 0.0
-	var totalLines:Float = 0.0
-	var readLines:Float = 0.0
-	
 	var filterKeyword:String = "mppnm"
 	var zoekoperator:String = "BEGINSWITH"
 	var format:String = "mppnm BEGINSWITH[c] %@"
 	var sortKeyword:String = "mppnm"
 	var myPeopleList = [Person]()
+	// Progress bar (update)
+	var progressie:Float = 0.0
+	var totalLines:Float = 0.0
+	var readLines:Float = 0.0
 	
 	// MARK: - Referencing Outlets
     @IBOutlet var messageLabel: UILabel!
@@ -44,7 +42,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	@IBOutlet weak var totaalAantal: UILabel!
 	@IBOutlet weak var segmentedButton: UISegmentedControl!
 	@IBOutlet weak var searchBar: UISearchBar!
-	@IBOutlet weak var menuView: UIView!
 	@IBOutlet weak var btnCloseMenuView: UIButton!
 	@IBOutlet weak var loadProgress: UILabel!
 	
@@ -54,16 +51,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
 			if self.menuView.center.x >= 0 {
 				self.menuView.center.x -= self.view.bounds.width
-			} else {
-				self.menuView.center.x += self.view.bounds.width
 			}
 			if self.infoView.center.y >= 0 {
 				self.infoView.center.y -= self.view.bounds.height
 				self.view.bringSubview(toFront: self.infoView)
-				
-			} else {
-				self.infoView.center.y += self.view.bounds.height
-				self.view.bringSubview(toFront: self.view)
 			}
 		}, completion: nil
 		)
@@ -183,14 +174,19 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	// MARK: Setup views
 	func setupMenuView() {
-		self.menuView.center.x -= view.bounds.width
+		self.menuView=UIView(frame:CGRect(x:0, y:0, width: 300, height: self.view.bounds.height))
+		menuView.center.x -= self.view.bounds.width
+		menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
 		menuView.layer.cornerRadius = 8
 		menuView.layer.borderWidth = 1
 		menuView.layer.borderColor = UIColor.black.cgColor
+		self.view.addSubview(menuView)
+		self.btnCloseMenuView.isHidden = true
+		self.btnCloseMenuView.isEnabled = false
 	}
 	
 	func setupInfoView() {
-		self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 156))
+		self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 178))
 		self.infoView.center.y -= view.bounds.height-104
 		infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
 		infoView.layer.cornerRadius = 8
@@ -214,6 +210,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		labelfirma.text = "Firmanaam (of distributeur)"
 		labelfirma.font = UIFont.systemFont(ofSize: 17)
 		labelfirma.textColor = UIColor.white
+		let toepassingsgebied = UILabel()
+		toepassingsgebied.text = "Toepassingsgebied"
+		toepassingsgebied.font = UIFont.systemFont(ofSize: 17)
+		toepassingsgebied.textColor = UIColor.white
 		let labelpupr = UILabel()
 		labelpupr.text = "Prijs voor het publiek"
 		labelpupr.textColor = UIColor.white
@@ -232,7 +232,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		labelremwdescription.textColor = UIColor.white
 		labelremwdescription.font = UIFont.systemFont(ofSize: 13)
 		
-		let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma])
+		let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma, toepassingsgebied])
 		leftStack.axis = .vertical
 		leftStack.distribution = .fillEqually
 		leftStack.alignment = .fill
@@ -330,11 +330,15 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 		self.tableView.tableHeaderView = searchBar
     }
-	
+	/*
 	// MARK: - Unwind
 	@IBAction func unwindToSearch(segue: UIStoryboardSegue) {
+		let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+		let _ = storyBoard.instantiateViewController(withIdentifier: "AddMedicijn") as! AddMedicijnViewController
+		
+		//self.navigationController?.pushViewController(nextViewController, animated: true)
 	}
-	
+	*/
 	// MARK: Set Scope
 	func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
 		/* FILTER SCOPE */
@@ -644,7 +648,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 110.0
+		return 135.0
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -661,25 +665,45 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 		cell.layer.cornerRadius = 3
 		cell.layer.masksToBounds = true
 		cell.layer.borderWidth = 1
-		
-		if (medicijn.law == "R") {
-			cell.boxImage?.image = #imageLiteral(resourceName: "Rx")
+		if (medicijn.use == "H") {
+			cell.H_label.text = "H"
 		} else {
-			cell.boxImage?.image = #imageLiteral(resourceName: "noRx")
+			cell.H_label.text = ""
+		}
+		if (medicijn.law == "R") {
+			cell.Rx_label.text = "Rx"
+		} else {
+			cell.Rx_label.text = ""
+		}
+		if (medicijn.mp?.wadan != "_") {
+			cell.Wada_label.text = "W"
+		} else {
+			cell.Wada_label.text = ""
+		}
+		if (medicijn.cheapest == true) {
+			cell.Cheap_label.text = "€"
+		} else {
+			cell.Cheap_label.text = ""
 		}
 		cell.mpnm.text = medicijn.mp?.mpnm
 		cell.mppnm.text = medicijn.mppnm
 		cell.vosnm.text = medicijn.vosnm_
 		cell.nirnm.text = medicijn.mp?.ir?.nirnm
-		
+		let toepassing = Dictionaries().hierarchy(hyr: (medicijn.mp?.hyr?.hyr)!)
+		cell.hyr.text = toepassing
 		cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
 		cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
 		cell.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
-		cell.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
+		if medicijn.cheapest == false {
+			cell.cheapest.text = "gdkp: Nee"
+		} else {
+			cell.cheapest.text = "gdkp: Ja"
+		}
 		return cell
 	}
 	
 	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		let _:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddMedicijn") as! AddMedicijnViewController
 		return true
 	}
 

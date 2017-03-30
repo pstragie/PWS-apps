@@ -9,19 +9,31 @@
 import UIKit
 import CoreData
 
-class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
+class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromAddToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let level0dict = Dictionaries().level0Picker()
+    let level0Picker = UIPickerView()
+    var level1dict = Dictionaries().level1Picker()
+    let level1Picker = UIPickerView()
+    
+
     // MARK: - Properties Variables
+    var hyrView: Bool = false
+    var selectedHyr0: String = "D"
+    var selectedHyr1: String = "DA"
     var infoView = UIView()
+    var menuView = UIView()
+    var hyrPickerView = UIView()
     var upArrow = UIView()
     var sortDescriptorIndex: Int? = nil
     var selectedScope: Int = -1
     var selectedSegmentIndex: Int = 0
     var searchActive: Bool = false
     weak var receivedData: MPP?
+    var receivedArray: Array<String> = []
     var zoekwoord: String? = nil
     var filterKeyword:String = "mppnm"
     var zoekoperator:String = "BEGINSWITH"
@@ -36,7 +48,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var segmentedButton: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
-    @IBOutlet weak var menuView: UIView!
     
     // MARK: - Referencing Actions
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
@@ -44,16 +55,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
             if self.menuView.center.x >= 0 {
                 self.menuView.center.x -= self.view.bounds.width
-            } else {
-                self.menuView.center.x += self.view.bounds.width
             }
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
-                
-            } else {
-                self.infoView.center.y += self.view.bounds.height
-                self.view.bringSubview(toFront: self.view)
             }
         }, completion: nil
         )
@@ -107,12 +112,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         btnCloseMenuView.isEnabled = false
     }
 
+    // MARK: - Unwind actions
     @IBAction func unwindToSearch(segue: UIStoryboardSegue) {
         if let sourceViewController = segue.source as? MedicijnDetailViewController {
             receivedData = sourceViewController.dataPassed
-            print("received data: \(receivedData)")
+            //print("received data: \(receivedData)")
+            receivedArray = sourceViewController.arrayPassed
+            print("received string: \(receivedArray)")
         }
-        print("button pressed")
         var selectedScope: Int = -1
         
         switch segue.identifier {
@@ -122,31 +129,77 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = (receivedData?.vosnm_)!
             selectedScope = 2
             print("vosnm_: \(zoekwoord!)")
-        case "stofnmToSearch"?:
-            filterKeyword = "ANY sam.stof.ninnm" /* temp change stofnm */
+        case "stofnaam1"?:
+            filterKeyword = "ANY sam.stof.ninnm"
             sortKeyword = "vosnm_"
+            zoekwoord = receivedArray[0]
             selectedScope = 2
-            //let dbSet = receivedData?.sam
-            //print(dbSet)
-            print("stofnm")
+            print("stofnm1")
+        case "stofnaam2"?:
+            filterKeyword = "ANY sam.stof.ninnm"
+            sortKeyword = "vosnm_"
+            zoekwoord = receivedArray[1]
+            selectedScope = 2
+            print("stofnm2")
+        case "stofnaam3"?:
+            filterKeyword = "ANY sam.stof.ninnm"
+            sortKeyword = "vosnm_"
+            zoekwoord = receivedArray[2]
+            selectedScope = 2
+            print("stofnm3")
+        case "stofnaam4"?:
+            filterKeyword = "ANY sam.stof.ninnm"
+            sortKeyword = "vosnm_"
+            zoekwoord = receivedArray[3]
+            selectedScope = 2
+            print("stofnm4")
+        case "stofnaam5"?:
+            filterKeyword = "ANY sam.stof.ninnm"
+            sortKeyword = "vosnm_"
+            zoekwoord = receivedArray[4]
+            selectedScope = 2
+            print("stofnm5")
         case "irnmToSearch"?:
             filterKeyword = "mp.ir.nirnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = (receivedData?.mp?.ir?.nirnm)!
             selectedScope = 3
             print("irnm")
-        case "galnmToSearch"?:
-            filterKeyword = "gal.galnm"
+        case "hyrToSearch"?:
+            hyrView = true
+            let hyr:String = (receivedData?.mp?.hyr?.hyr)!
+            let firstCharacter = hyr[hyr.index(hyr.startIndex, offsetBy: 0)]
+            var secondCharacter: Character?
+            let start = hyr.index(hyr.startIndex, offsetBy: 0)
+            let end = hyr.index(hyr.startIndex, offsetBy: 1)
+            let range = start...end
+            let firstTwoCharacters = hyr[range]
+            var hyrstring:String?
+            if hyr.characters.count == 1 {
+                hyrstring = String(firstCharacter)
+            } else {
+                secondCharacter = hyr[hyr.index(hyr.startIndex, offsetBy: 1)]
+                hyrstring = String(firstTwoCharacters)
+            }
+            filterKeyword = "mp.hyr.hyr"
             sortKeyword = "mp.mpnm"
-            zoekwoord = (receivedData?.gal?.ngalnm)!
-            selectedScope = -1
-            print("galnm")
-        case "tiToSearch"?:
-            filterKeyword = "mp.hyr.ti"
-            sortKeyword = "mp.mpnm"
-            zoekwoord = (receivedData?.mp?.hyr?.ti)!
-            selectedScope = -1
-            print("ti")
+            zoekwoord = hyrstring!
+            selectedScope = 4
+            print("hyr")
+            var x: Int = 0
+            let v = level0dict[String(firstCharacter)]
+            x = sortData(level0dict).index(of: v!)!
+            level0Picker.selectRow(x, inComponent: 0, animated: true)
+            selectedHyr0 = String(firstCharacter)
+            print("selectedHyr0: \(selectedHyr0)")
+            updatePicker1()
+            
+            var y: Int = 0
+            let w = Dictionaries().level1Picker()[String(firstCharacter)+String(secondCharacter!)]
+            print("w: \(w!)")
+            y = sortData(level1dict).index(of: w!)!
+            print("y: \(y)")
+            level1Picker.selectRow(y, inComponent: 0, animated: true)
             
         default:
             filterKeyword = "mppnm"
@@ -164,7 +217,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print("Addmedicijn View did load!")
         setupLayout()
         setUpSearchBar(selectedScope: -1)
@@ -177,6 +229,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             print("Unable to Perform Fetch Request")
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
+        level0Picker.delegate = self
+        level0Picker.dataSource = self
+        level1Picker.delegate = self
+        level1Picker.dataSource = self
+        updatePicker1() // Fill second picker with options matching row 0 in first picker
+        setupHyrPickerView()
+
         self.updateView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -184,6 +243,27 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        print("Layout selectedHyr0 \(selectedHyr0)")
+        updatePicker1()
+        level1Picker.reloadAllComponents()
+        print("hyrView: \(hyrView)")
+        if hyrView == true {
+            self.hyrPickerView.isHidden = false
+            self.view.bringSubview(toFront: hyrPickerView)
+            let topOffset = CGPoint(x: 0, y: -188)
+            if self.tableView.contentOffset != topOffset {
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.beginFromCurrentState], animations: {
+                self.tableView.setContentOffset(topOffset, animated: false)
+                })
+            }
+        } else {
+            self.hyrPickerView.isHidden = true
+            self.view.sendSubview(toBack: hyrPickerView)
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseOut], animations: {
+                let topOffset = CGPoint(x: 0, y: 0)
+                self.tableView.setContentOffset(topOffset, animated: true)
+            })
+        }
         setupMenuView()
         setupInfoView()
         setupUpArrow()
@@ -215,15 +295,48 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func setupMenuView() {
+        self.menuView=UIView(frame:CGRect(x:0, y:0, width: 300, height: self.view.bounds.height))
         self.menuView.center.x -= view.bounds.width
+        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         menuView.layer.cornerRadius = 8
         menuView.layer.borderWidth = 1
         menuView.layer.borderColor = UIColor.black.cgColor
+        self.view.addSubview(menuView)
+        self.btnCloseMenuView.isHidden = true
         self.btnCloseMenuView.isEnabled = false
     }
     
+    func setupHyrPickerView() {
+        self.hyrPickerView.isHidden = false
+        self.hyrPickerView=UIView(frame:CGRect(x:10, y:104, width: self.view.bounds.width-20, height: 188))
+        //self.hyrPickerView.center.y -= view.bounds.height
+        hyrPickerView.backgroundColor = UIColor.white.withAlphaComponent(1)
+        hyrPickerView.layer.cornerRadius = 8
+        hyrPickerView.layer.borderWidth = 1
+        hyrPickerView.layer.borderColor = UIColor.gray.cgColor
+        self.view.addSubview(hyrPickerView)
+        self.btnCloseMenuView.isHidden = true
+        self.btnCloseMenuView.isEnabled = false
+        
+        let horstack = UIStackView(arrangedSubviews: [level0Picker, level1Picker])
+        horstack.axis = .horizontal
+        horstack.distribution = .fillProportionally
+        horstack.alignment = .fill
+        horstack.spacing = 5
+        horstack.translatesAutoresizingMaskIntoConstraints = false
+        self.hyrPickerView.addSubview(horstack)
+        //Stackview Layout
+        let viewsDictionary = ["stackView": horstack]
+        let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[stackView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        hyrPickerView.addConstraints(stackView_H)
+        hyrPickerView.addConstraints(stackView_V)
+        
+        self.view.sendSubview(toBack: self.hyrPickerView)
+    }
+    
     func setupInfoView() {
-        self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 156))
+        self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 178))
         self.infoView.center.y -= view.bounds.height-104
         infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         infoView.layer.cornerRadius = 8
@@ -247,6 +360,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         labelfirma.text = "Firmanaam (of distributeur)"
         labelfirma.font = UIFont.systemFont(ofSize: 17)
         labelfirma.textColor = UIColor.white
+        let toepassingsgebied = UILabel()
+        toepassingsgebied.text = "Toepassingsgebied"
+        toepassingsgebied.font = UIFont.systemFont(ofSize: 17)
+        toepassingsgebied.textColor = UIColor.white
         let labelpupr = UILabel()
         labelpupr.text = "Prijs voor het publiek"
         labelpupr.textColor = UIColor.white
@@ -265,7 +382,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         labelremwdescription.textColor = UIColor.white
         labelremwdescription.font = UIFont.systemFont(ofSize: 13)
         
-        let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma])
+        let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma, toepassingsgebied])
         leftStack.axis = .vertical
         leftStack.distribution = .fillEqually
         leftStack.alignment = .fill
@@ -292,13 +409,93 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         infoView.addConstraints(stackView_V)
     }
     
+    @available(iOS 2.0, *)
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView == level0Picker {
+            return Array(level0dict.values).count
+        } else if pickerView == level1Picker {
+            return Array(level1dict.values).count
+        }
+        return 0
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView == level0Picker {
+            let sortedValues: Array<String> = sortData(level0dict)
+            return sortedValues[row]
+        } else if pickerView == level1Picker {
+            return Array(level1dict.values).sorted()[row]
+        }
+        return nil
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView == level0Picker {
+            let hyrvalue = sortData(level0dict)[row]
+            for (key, value) in level0dict {
+                if value == hyrvalue {
+                    selectedHyr0 = key
+                }
+            }
+            filterContentForSearchText(searchText: selectedHyr0, scopeIndex: 4)
+            updatePicker1()
+            //self.tableView.reloadData()
+        }
+        if pickerView == level1Picker {
+            let hyrvalue = sortData(level1dict)[row] // Array sorted
+            for (key, value) in level1dict {
+                if value == hyrvalue {
+                    selectedHyr1 = key
+                }
+            }
+            filterContentForSearchText(searchText: selectedHyr1, scopeIndex: 4)
+        }
+    }
+    
+    func sortData(_ dict: Dictionary<String,String>) -> Array<String> {
+        let dictarray = Array(dict.keys)
+        let orderedkeys = dictarray.sorted()
+        var valuearray: Array<String> = []
+        for k in orderedkeys {
+            for (key, value) in dict {
+                if k == key {
+                    valuearray.append(value)
+                }
+            }
+        }
+        return valuearray.sorted()
+    }
+    
+    func updatePicker1() {
+        // Get first character hyr
+        let firstCharacter = selectedHyr0
+        // Filter level1 dictionary
+        var tempArray: Dictionary<String, String> = [selectedHyr0:" Alle"]
+        for (key, value) in Dictionaries().level1Picker() {
+            let firstCharacterofKey = key[key.index(key.startIndex, offsetBy: 0)]
+            if String(firstCharacterofKey) == String(firstCharacter) {
+                tempArray[key] = value
+            }
+        }
+        level1dict = tempArray
+        let row1 = level1Picker.selectedRow(inComponent: 0)
+        if row1 != 0 {
+            level1Picker.selectRow(row1, inComponent: 0, animated: true)
+        } else {
+            level1Picker.selectRow(0, inComponent: 0, animated: true)
+        }
+    }
+    
     // MARK: - search bar related
     fileprivate func setUpSearchBar(selectedScope: Int) {
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         searchBar.isHidden = false
         searchBar.showsScopeBar = true
         // cope button titles: mpnm, mppnm, vosnm_, nirnnm, alles(mpnm,vosnm,nirnm)
-        searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "alles"]
+        searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "toepassing", "alles"]
         searchBar.selectedScopeButtonIndex = selectedScope
         print("Current zoekwoord: \(zoekwoord)")
         searchBar.text = zoekwoord
@@ -326,7 +523,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     func scrollToTop() {
         print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)
-        tableView.setContentOffset(topOffset, animated: true)
+        let offset = CGPoint(x: 0, y: -188)
+        if hyrView == true {
+            tableView.setContentOffset(offset, animated: false)
+        } else {
+            tableView.setContentOffset(topOffset, animated: false)
+        }
     }
     // MARK: Layout
     func setupLayout() {
@@ -345,32 +547,64 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             print("scope: merknaam")
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
+            zoekwoord = searchBar.text!
+            hyrView = false
         case 1:
             print("scope: verpakking")
             filterKeyword = "mppnm"
             sortKeyword = "mppnm"
+            zoekwoord = searchBar.text!
+            hyrView = false
         case 2:
             print("scope: vosnaam")
             filterKeyword = "vosnm_"
             sortKeyword = "vosnm_"
+            zoekwoord = searchBar.text!
+            hyrView = false
         case 3:
             print("scope: firmanaam")
             filterKeyword = "mp.ir.nirnm"
             sortKeyword = "mp.ir.nirnm"
+            zoekwoord = searchBar.text!
+            hyrView = false
         case 4:
+            print("scope: hierarchie")
+            filterKeyword = "mp.hyr.hyr"
+            sortKeyword = "mp.mpnm"
+            let z: Int = level0Picker.selectedRow(inComponent: 0)
+            let valz = sortData(level0dict)[z]
+            for (key, value) in level0dict {
+                if value == valz {
+                    //zoekwoord = key
+                    selectedHyr0 = key
+                }
+            }
+            let a: Int = level1Picker.selectedRow(inComponent: 0)
+            let vala = sortData(level1dict)[a]
+            for (key, value) in level1dict {
+                if value == vala {
+                    zoekwoord = key
+                    selectedHyr1 = key
+                }
+            }
+            hyrView = true
+        case 5:
             print("scope: alles")
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
+            hyrView = false
+            zoekwoord = searchBar.text!
         default:
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
+            zoekwoord = searchBar.text!
         }
         
         print("scope changed: \(selectedScope)")
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
-        zoekwoord = searchBar.text!
-        self.filterContentForSearchText(searchText: searchBar.text!, scopeIndex: selectedScope)
+        
+        self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: selectedScope)
         
         }
     
@@ -427,6 +661,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         filterKeyword = "mppnm"
         sortKeyword = "mppnm"
+        hyrView = false
         print("Cancel clicked")
         searchBar.showsScopeBar = false
         searchBar.sizeToFit()
@@ -447,9 +682,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 
     // MARK: Zoekfilter
     func filterContentForSearchText(searchText: String, scopeIndex: Int) {
+        let offset = CGPoint(x: 0, y: -188)
         var sortDescriptors: Array<NSSortDescriptor>?
         var predicate: NSPredicate?
-        if scopeIndex == 4 || scopeIndex == -1 {
+        if scopeIndex == 5 || scopeIndex == -1 {
             if searchText.isEmpty == true {
                 //print("scope -1 or 3 and no text in searchBar")
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
@@ -459,6 +695,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [predicate1, predicate2])
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
             }
+        } else if scopeIndex == 4 {
+            predicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", searchText)
+            sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
+        
         } else {
             if searchText.isEmpty == true {
                 //print("scope = 0, 1, 2 or 3 and no text in searchBar")
@@ -477,7 +717,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             let fetchError = error as NSError
             print("\(fetchError), \(fetchError.userInfo)")
         }
-        self.tableView.reloadData()
+        if self.tableView.contentOffset == offset {
+            self.tableView.reloadData()
+            self.tableView.setContentOffset(offset, animated: false)
+        } else {
+            self.tableView.reloadData()
+        }
         print("filterKeyword: \(filterKeyword)")
         print("sortkeyword \(sortKeyword)")
         print("searchText: \(searchText)")
@@ -494,7 +739,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             let selectedObject = fetchedResultsController.object(at: indexPath)
             destination.medicijn = selectedObject
         default:
-            print("Unknown segue: \(segue.identifier)")
+            print("Unknown segue: \(segue.identifier!)")
         }
     }
 
@@ -581,7 +826,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110.0
+        return 135.0
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -648,22 +893,40 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         cell.layer.cornerRadius = 3
         cell.layer.masksToBounds = true
         cell.layer.borderWidth = 1
-
-        if (medicijn.law == "R") {
-            cell.boxImage?.image = #imageLiteral(resourceName: "Rx")
+        if (medicijn.use == "H") {
+            cell.H_label.text = "H"
         } else {
-            cell.boxImage?.image = #imageLiteral(resourceName: "noRx")
+            cell.H_label.text = ""
         }
+        if (medicijn.law == "R") {
+            cell.Rx_label.text = "Rx"
+        } else {
+            cell.Rx_label.text = ""
+        }
+        if (medicijn.mp?.wadan != "_") {
+            cell.Wada_label.text = "W"
+        } else {
+            cell.Wada_label.text = ""
+        }
+        if (medicijn.cheapest == true) {
+            cell.Cheap_label.text = "€"
+        } else {
+            cell.Cheap_label.text = ""
+        }        
         cell.mpnm.text = medicijn.mp?.mpnm
         cell.mppnm.text = medicijn.mppnm
         cell.vosnm.text = medicijn.vosnm_
         cell.nirnm.text = medicijn.mp?.ir?.nirnm
-        
+        let toepassing = Dictionaries().hierarchy(hyr: (medicijn.mp?.hyr?.hyr)!)
+        cell.hyr.text = toepassing
         cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
         cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
         cell.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
-        cell.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
-        
+        if medicijn.cheapest == false {
+            cell.cheapest.text = "gdkp: Nee"
+        } else {
+            cell.cheapest.text = "gdkp: Ja"
+        }
         return cell
     }
     

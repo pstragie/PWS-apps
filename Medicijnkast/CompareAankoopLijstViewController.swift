@@ -11,13 +11,20 @@ import CoreData
 
 class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    // MARK: Variables
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var receivedData:Array<Array<String>>? = []
     var slideUpInfoView = UIView()
-    
+    var prijsremaRight:Float? = 0.00
+    var prijsremaLeft:Float? = 0.00
+    var prijzenRight:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
+    var prijzenLeft:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
+    let CellLeftDetailIdentifier = "SegueFromCompareLeftToDetail"
+    let CellRightDetailIdentifier = "SegueFromCompareRightToDetail"
     @IBOutlet weak var tableViewLeft: UITableView!
     @IBOutlet weak var tableViewRight: UITableView!
     
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Compare view did load!")
@@ -33,7 +40,8 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             print("Unable to Perform Fetch Request")
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
-        
+        self.tableViewLeft.bounces = true
+        self.tableViewRight.bounces = true
         self.tableViewLeft.reloadData()
         self.tableViewRight.reloadData()
         
@@ -73,7 +81,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             slideUpAlert()
         }
     }
-    
+    // MARK: - Setup slide info view
     func setupSlideUpInfoView() {
         self.slideUpInfoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 160))
         //self.slideUpInfoView.addGestureRecognizer(.init(target: slideUpInfoView, action: #selector(slideUpAlert())))
@@ -117,8 +125,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         )
     }
     
-
-    
+    // MARK: - Text alert
     func openTextAlert() {
         // Create Alert Controller
         let alertCompare = UIAlertController(title: "Dubbele medicijnen", message: "U heeft meerdere medicijnen met dezelfde voorschriftnaam (maar in andere dosis) in uw aankooplijst. Deze vergelijking toont enkele unieke voorschriften.", preferredStyle: UIAlertControllerStyle.alert)
@@ -167,18 +174,13 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         return CGFloat(height)
     }
     
-    var prijsremaRight:Float? = 0.00
-    var prijsremaLeft:Float? = 0.00
-    var prijzenRight:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
-    var prijzenLeft:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:MedicijnTableViewCell?
         let objectsLeft = receivedData?[0]
         let objectsRight = receivedData?[1]
         
         if tableView == self.tableViewLeft {
-            tableViewRight.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            //tableViewRight.scrollToRow(at: indexPath, at: .top, animated: true)
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
             
             // Filter medicijnen
@@ -224,7 +226,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         }
         
         if tableView == self.tableViewRight {
-            tableViewLeft.scrollToRow(at: indexPath, at: .top, animated: true)
+            //tableViewLeft.scrollToRow(at: indexPath, at: .top, animated: true)
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
 
             // Filter medicijnen
@@ -299,8 +301,6 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                     }
                     self.tableViewLeft.reloadData()
                     self.tableViewRight.reloadData()
-                } else {
-                    //self.tableViewLeft.touchesShouldCancel(in: self.tableViewLeft) // Not working
                 }
             }
             undoReplace.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:0.5)
@@ -345,8 +345,6 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     }
     
     // MARK: - Navigation
-    let CellLeftDetailIdentifier = "SegueFromCompareLeftToDetail"
-    let CellRightDetailIdentifier = "SegueFromCompareRightToDetail"
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
         case CellLeftDetailIdentifier:
@@ -366,8 +364,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     
     // MARK: - Notification Handling
     
-    // MARK: -
-    
+    // MARK: - Fetch Results
     fileprivate lazy var fetchedResultsControllerLeft: NSFetchedResultsController<MPP> = {
         
         // Create Fetch Request
@@ -400,6 +397,21 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     
     func applicationDidEnterBackground(_ notification: Notification) {
         self.appDelegate.saveContext()
+    }
+    
+    // MARK: - Synchronous scrolling behaviour
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.isEqual(tableViewLeft), scrollView.isDragging {
+            var offset = tableViewRight.contentOffset
+            offset.y = tableViewLeft.contentOffset.y
+            print("offset left: \(offset.y)")
+            tableViewRight.setContentOffset(offset, animated: true)
+        } else if scrollView.isEqual(tableViewRight), scrollView.isDragging {
+            var offset = tableViewLeft.contentOffset
+            offset.y = tableViewRight.contentOffset.y
+            print("offset right: \(offset.y)")
+            tableViewLeft.setContentOffset(offset, animated: true)
+        }
     }
 }
 

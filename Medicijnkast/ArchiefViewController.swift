@@ -1,30 +1,25 @@
 //
-//  ShoppingListViewController.swift
-//  Medicijnkast
+//  ArchiefViewController.swift
+//  MedCabinetFree
 //
-//  Created by Pieter Stragier on 09/02/17.
+//  Created by Pieter Stragier on 30/03/17.
 //  Copyright © 2017 PWS. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class ShoppingListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
+class ArchiefViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     
     // MARK: - Properties Constants
-    let segueShowDetail = "SegueFromShopToDetail"
+    let segueShowDetail = "SegueFromArchiefToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     // MARK: - Properties Variables
     var infoView = UIView()
     var menuView = UIView()
     var upArrow = UIView()
-    var totalePrijs:Dictionary<String,Float> = [:]
-    var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mppnm, 8.70] */
-    var gdkpprijs:Float = 0.0
-    var gdkpnaam:Dictionary<String,String> = [:] /* [vosnm: mppnm */
-    var verschil:Float = 0.0
-
+    
     var sortDescriptorIndex: Int?=nil
     var selectedScope: Int = -1
     var selectedSegmentIndex: Int = 0
@@ -37,43 +32,13 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     var sortKeyword:String = "mppnm"
     
     // MARK: - Referencing Outlets
-    @IBOutlet weak var showGraphButton: UIButton!
-    @IBOutlet weak var popButton: UIButton!
-    @IBOutlet weak var totalePupr: UILabel!
-    @IBOutlet weak var totaalRemA: UILabel!
-    @IBOutlet weak var totaalRemW: UILabel!
-    
-    @IBOutlet weak var altPupr: UILabel!
-    @IBOutlet weak var altRema: UILabel!
-    @IBOutlet weak var altRemw: UILabel!
-    
-    @IBOutlet weak var verschilPupr: UILabel!
-    @IBOutlet weak var verschilRema: UILabel!
-    @IBOutlet weak var verschilRemw: UILabel!
-    
-    @IBOutlet weak var totaalAantal: UILabel!
     @IBOutlet var messageLabel: UILabel!
-    @IBOutlet weak var showAlternativeButton: UIButton!
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var segmentedButton: UISegmentedControl!
-    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
-    @IBOutlet var graphView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var bestellen: UIBarButtonItem!
     @IBOutlet weak var btnCloseMenuView: UIButton!
-    
+    @IBOutlet weak var totaalAantal: UILabel!
     // MARK: - Referencing Actions
-    @IBAction func popButton(_ sender: UIButton) {
-        print("popButton pressed!")
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.graphView.center.x -= self.view.bounds.width
-        }, completion: nil
-        )
-        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.99)
-        popButton.isHidden = true
-        popButton.isEnabled = false
-    }
-    
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
         print("btnCloseMenuView pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
@@ -113,9 +78,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
                 self.menuView.center.x -= self.view.bounds.width
             } else {
                 self.menuView.center.x += self.view.bounds.width
-                if self.graphView.center.x >= 0 {
-                    self.graphView.center.x -= self.view.bounds.width
-                }
             }
         }, completion: nil
         )
@@ -123,9 +85,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         menuView.tintColor = UIColor.white
         btnCloseMenuView.isHidden = false
         btnCloseMenuView.isEnabled = true
-        popButton.isEnabled = false
-        popButton.isHidden = true
-        
     }
     
     @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
@@ -137,61 +96,14 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         btnCloseMenuView.isHidden = true
         btnCloseMenuView.isEnabled = false
-        self.popButton.isEnabled = false
         self.menuView.center.x -= self.view.bounds.width
-        
-    }
-    
-    @IBAction func swipeToCloseGraphView(recognizer: UISwipeGestureRecognizer) {
-        print("swipe action")
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.menuView.center.x -= self.view.bounds.width
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        popButton.isHidden = true
-        popButton.isEnabled = false
-    }
-    
-    @IBAction func showAlternativeButton(_ sender: UIButton) {
-    }
-    @IBAction func closeGraphView(_ sender: UIButton) {
-        //view.willRemoveSubview(blurEffectView)
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.graphView.center.x -= self.view.bounds.width
-            self.popButton.isEnabled = false
-        }, completion: nil
-        )
-        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.99)
-        popButton.isHidden = true
-    }
-    
-    @IBAction func showGraphView(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            //print("graphView center x: \(self.graphView.center.x)")
-            //print("bounds: \(self.view.bounds.width)")
-            if self.graphView.center.x >= 0 {
-                //print(">0: \(self.graphView.center.x)")
-                self.graphView.center.x -= self.view.bounds.width
-                self.popButton.isEnabled = false
-            } else {
-                //print("<0: \(self.graphView.center.x)")
-                self.graphView.center.x += self.view.bounds.width
-                self.popButton.isEnabled = true
-            }
-        }, completion: nil
-        )
-        
-        graphView.backgroundColor = UIColor.black
-        graphView.tintColor = UIColor.white
-        popButton.isHidden = false
     }
     
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.appDelegate.saveContext()
-        print("Aankooplijst view will appear, fetching...")
+        print("Archief view will appear, fetching...")
         
         do {
             try self.fetchedResultsController.performFetch()
@@ -200,8 +112,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             print("Unable to Perform Fetch Request")
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
-        rekenen()
-        print("berekenen...")
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         
         tableView.reloadData()
@@ -210,12 +120,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Aankooplijst view did load!")
+        print("Archief view did load!")
         setupLayout()
         setUpSearchBar()
         setupView()
         
-        navigationItem.title = "Aankooplijst"
+        navigationItem.title = "Archief"
         
         //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bestellen, target: self, action: #selector(bestellingDoorsturen))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
@@ -233,7 +143,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     override func viewDidLayoutSubviews() {
-        setupGraphView()
         setupMenuView()
         setupInfoView()
         tableView.reloadData()
@@ -336,18 +245,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         segmentedButton.setTitle("....e", forSegmentAt: 2)
     }
     
-    func setupGraphView() {
-        //print("original x: \(self.graphView.center.x)")
-        self.graphView.center.x -= view.bounds.width
-        //print("new x: \(self.graphView.center.x)")
-        graphView.layer.cornerRadius = 20
-        graphView.layer.borderWidth = 1
-        graphView.layer.borderColor = UIColor.black.cgColor
-        showGraphButton.layer.cornerRadius = 8
-        self.popButton.isEnabled = false
-        self.popButton.isHidden = true
-    }
-    
     func setupUpArrow() {
         self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-200, width: 50, height: 50))
         upArrow.isHidden = true
@@ -381,7 +278,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         // Create Fetch Request
         let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
-        let predicate = NSPredicate(format: "userdata.aankooplijst == true")
+        let predicate = NSPredicate(format: "userdata.medicijnkastarchief == true")
         fetchRequest.predicate = predicate
         // Create Fetched Results Controller
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -469,7 +366,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.reloadData()
         updateView()
     }
-
+    
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         print("Search should begin editing")
         searchBar.showsScopeBar = true
@@ -494,7 +391,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
         searchBar.becomeFirstResponder()
     }
-
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         filterKeyword = "mppnm"
         sortKeyword = "mppnm"
@@ -572,9 +469,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         print("searchText: \(searchText)")
         self.updateView()
     }
-
+    
     // MARK: - Navigation
-    let CellDetailIdentifier = "SegueFromShopToDetail"
+    let CellDetailIdentifier = "SegueFromArchiefToDetail"
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
         case CellDetailIdentifier:
@@ -583,71 +480,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             let selectedObject = fetchedResultsController.object(at: indexPath)
             destination.medicijn = selectedObject
             
-        case "SegueFromShopToCompare":
-            let destination = segue.destination as! CompareAankoopLijstViewController
-            let gdkp = fetchCheapest(categorie: "rema")
-            let gdkpmppcv = alternatieven(altdict: gdkp, categorie: "rema")
-            let ObjectsRight:Array<String> = Array(Set(gdkpmppcv))
-            let ObjectsLeft:Array<String> = uniekInAankooplijst()
-            destination.receivedData = [ObjectsLeft, ObjectsRight]
         default:
             print("Unknown segue: \(segue.identifier)")
         }
     }
     
     // MARK: - View Methods
-    private func TotalePrijs(managedObjectContext: NSManagedObjectContext) -> Dictionary<String,Float> {
-        let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
-        let pred = NSPredicate(format: "userdata.aankooplijst == true")
-        fetchReq.predicate = pred
-        
-        var totaleprijs:Dictionary<String,Float> = [:]
-        
-        // fetch alle medicijnen in aankooplijst (aankoop == true)
-        var totpupr: Float = 0.0
-        var totrema: Float = 0.0
-        var totremw: Float = 0.0
-        do {
-            let medicijnen = try managedObjectContext.fetch(fetchReq)
-            for med in medicijnen {
-                totpupr += (med.pupr?.floatValue)!
-                totrema += (med.rema?.floatValue)!
-                totremw += (med.remw?.floatValue)!
-            }
-            totaleprijs["pupr"] = totpupr
-            totaleprijs["rema"] = totrema
-            totaleprijs["remw"] = totremw
-            
-
-        } catch {
-            return ["pupr":1.0, "rema":1.0, "remw":1.0]
-        }
-        return totaleprijs
-    }
-
-    private func rekenen() {
-        // Rekenen
-        
-        totalePrijs = TotalePrijs(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
-        totalePupr.text = "\((totalePrijs["pupr"])!) €"
-        totaalRemA.text = "\((totalePrijs["rema"])!) €"
-        totaalRemW.text = "\((totalePrijs["remw"])!) €"
-        
-        let cheappupr = fetchCheapest(categorie: "pupr")
-        let cheaprema = fetchCheapest(categorie: "rema")
-        let cheapremw = fetchCheapest(categorie: "remw")
-        let gdkpaltpupr = berekenGoedkoopsteAlternatief(altdict: cheappupr, categorie: "pupr")
-        let gdkpaltrema = berekenGoedkoopsteAlternatief(altdict: cheaprema, categorie: "rema")
-        let gdkpaltremw = berekenGoedkoopsteAlternatief(altdict: cheapremw, categorie: "remw")
-        altPupr.text = "\(gdkpaltpupr) €"
-        altRema.text = "\(gdkpaltrema) €"
-        altRemw.text = "\(gdkpaltremw) €"
-        
-        verschilPupr.text = "\(berekenVerschil(categorie: "pupr", huidig: totalePrijs, altern: gdkpaltpupr)) €"
-        verschilRema.text = "\(berekenVerschil(categorie: "rema", huidig: totalePrijs, altern: gdkpaltrema)) €"
-        verschilRemw.text = "\(berekenVerschil(categorie: "remw", huidig: totalePrijs, altern: gdkpaltremw)) € "
-    }
-    
     fileprivate func updateView() {
         print("Updating view...")
         var hasMedicijnen = false
@@ -679,7 +517,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {
         let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
-        let pred = NSPredicate(format: "userdata.aankooplijst == true")
+        let pred = NSPredicate(format: "userdata.medicijnkastarchief == true")
         fetchReq.predicate = pred
         
         do {
@@ -692,7 +530,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: -
     private func setupMessageLabel() {
-        messageLabel.text = "Je aankooplijst is leeg."
+        messageLabel.text = "Hier verschijnen alle medicijnen die ooit in je medicijnkast zaten."
     }
     
     // MARK: - Notification Handling
@@ -702,7 +540,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
 }
 
-extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
+extension ArchiefViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -818,15 +656,13 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteFromAankoopLijst = UITableViewRowAction(style: .normal, title: "Verwijderen uit Aankooplijst") { (action, indexPath) in
+        let deleteFromArchiefLijst = UITableViewRowAction(style: .normal, title: "Verwijderen uit Archief") { (action, indexPath) in
             print("naar medicijnkast")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.userdata?.setValue(false, forKey: "aankooplijst")
-            medicijn.userdata?.setValue(true, forKey: "aankooparchief")
+            medicijn.userdata?.setValue(false, forKey: "medicijnkastarchief")
             let context = self.appDelegate.persistentContainer.viewContext
-            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "aankooplijst", uservalue: false, managedObjectContext: context)
-            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "aankooparchief", uservalue: true, managedObjectContext: context)
+            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkastarchief", uservalue: false, managedObjectContext: context)
             do {
                 try context.save()
                 print("medicijn verwijderd uit de lijst!")
@@ -846,7 +682,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             
             
         }
-        deleteFromAankoopLijst.backgroundColor = UIColor.red
+        deleteFromArchiefLijst.backgroundColor = UIColor.red
         
         let addToMedicijnkast = UITableViewRowAction(style: .normal, title: "Naar medicijnkast") { (action, indexPath) in
             print("Uit lijst verwijderd")
@@ -863,10 +699,10 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             let cell = tableView.cellForRow(at: indexPath)
             UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
             )
-
-    
+            
+            
             self.tableView.reloadData()
-
+            
         }
         addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:0.5)
         self.tableView.setEditing(false, animated: true)

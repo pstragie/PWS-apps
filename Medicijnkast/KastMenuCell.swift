@@ -16,7 +16,6 @@ class KastMenuCell: UITableViewCell {
     
     // MARK: -
     
-    @IBOutlet weak var boxImage: UIImage?
     @IBOutlet weak var persoon: UILabel!
     
     
