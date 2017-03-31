@@ -30,11 +30,13 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     var zoekoperator:String = "BEGINSWITH"
     var format:String = "mppnm BEGINSWITH[c] %@"
     var sortKeyword:String = "mppnm"
+    lazy var archiefOperator:String = "medicijnkastarchief"
     
     // MARK: - Referencing Outlets
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var segmentedButton: UISegmentedControl!
+    @IBOutlet weak var segmentedButton2: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
     @IBOutlet weak var totaalAantal: UILabel!
@@ -243,6 +245,8 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         segmentedButton.setTitle("B....", forSegmentAt: 0)
         segmentedButton.setTitle("..c..", forSegmentAt: 1)
         segmentedButton.setTitle("....e", forSegmentAt: 2)
+        segmentedButton2.setTitle("Medicijnkast", forSegmentAt: 0)
+        segmentedButton2.setTitle("Aankooplijst", forSegmentAt: 1)
     }
     
     func setupUpArrow() {
@@ -277,8 +281,9 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         
         // Create Fetch Request
         let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mppnm", ascending: true)]
-        let predicate = NSPredicate(format: "userdata.medicijnkastarchief == true")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
+        let format = ("userdata.\(self.archiefOperator) == true")
+        let predicate = NSPredicate(format: format)
         fetchRequest.predicate = predicate
         // Create Fetched Results Controller
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -301,7 +306,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         
         searchBar.showsScopeBar = false
-        searchBar.scopeButtonTitles = ["merknaam", "stofnaam", "firmanaam", "alles"]
+        searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "alles"]
         searchBar.selectedScopeButtonIndex = -1
         print("Scope: \(searchBar.selectedScopeButtonIndex)")
         searchBar.delegate = self
@@ -316,25 +321,34 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         switch selectedScope {
         case 0:
             print("scope: merknaam")
+            filterKeyword = "mp.mpnm"
+            sortKeyword = "mp.mpnm"
+            zoekwoord = searchBar.text!
+        case 1:
+            print("scope: verpakking")
             filterKeyword = "mppnm"
             sortKeyword = "mppnm"
-        case 1:
-            print("scope: stofnaam")
+            zoekwoord = searchBar.text!
+        case 2:
+            print("scope: vosnaam")
             filterKeyword = "vosnm_"
             sortKeyword = "vosnm_"
-        case 2:
-            print("scope: firmanaam")
-            filterKeyword = "nirnm"
-            sortKeyword = "nirnm"
+            zoekwoord = searchBar.text!
         case 3:
+            print("scope: firmanaam")
+            filterKeyword = "mp.ir.nirnm"
+            sortKeyword = "mp.ir.nirnm"
+            zoekwoord = searchBar.text!
+        case 4:
             print("scope: alles")
-            filterKeyword = "alles"
-            sortKeyword = "mppnm"
+            filterKeyword = "mp.mpnm"
+            sortKeyword = "mp.mpnm"
+            zoekwoord = searchBar.text!
         default:
-            filterKeyword = "mppnm"
-            sortKeyword = "mppnm"
+            filterKeyword = "mp.mpnm"
+            sortKeyword = "mp.mpnm"
+            zoekwoord = searchBar.text!
         }
-        
         print("scope changed: \(selectedScope)")
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
@@ -353,20 +367,38 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
             zoekoperator = "ENDSWITH"
         default:
             zoekoperator = "BEGINSWITH"
-            break
+            
         }
-        
-        print("Segment changed: \(segmentedButton.selectedSegmentIndex)")
         // Focus searchBar (om onmiddellijk typen mogelijk te maken)
         searchBar.updateFocusIfNeeded()
         searchBar.becomeFirstResponder()
         searchActive = true
         self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
-        // Tell the searchBar that the searchBarSearchButton was clicked
         self.tableView.reloadData()
         updateView()
     }
     
+    // MARK: Set archief operator
+    @IBAction func archiefChanged(_sender: UISegmentedControl) {
+        switch segmentedButton2.selectedSegmentIndex {
+        case 0:
+            print("0")
+            archiefOperator = "medicijnkastarchief"
+        case 1:
+            print("1")
+            archiefOperator = "aankooparchief"
+        default:
+            archiefOperator = "medicijnkastarchief"
+            
+        }
+        // Focus searchBar (om onmiddellijk typen mogelijk te maken)
+        searchBar.updateFocusIfNeeded()
+        searchBar.becomeFirstResponder()
+        searchActive = true
+        self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
+        self.tableView.reloadData()
+        updateView()
+    }
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         print("Search should begin editing")
         searchBar.showsScopeBar = true
@@ -393,8 +425,8 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        filterKeyword = "mppnm"
-        sortKeyword = "mppnm"
+        filterKeyword = "mp.mpnm"
+        sortKeyword = "mp.mpnm"
         print("Cancel clicked")
         searchBar.showsScopeBar = false
         searchBar.sizeToFit()
@@ -417,44 +449,34 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: Zoekfilter
     func filterContentForSearchText(searchText: String, scopeIndex: Int) {
-        
-        if scopeIndex == 3 || scopeIndex == -1 {
+        var sortDescriptors: Array<NSSortDescriptor>?
+        var predicate: NSPredicate?
+        if scopeIndex == 4 || scopeIndex == -1 {
             if searchText.isEmpty == true {
-                print("scope -1 or 3 and no text in searchBar")
-                let predicate = NSPredicate(format: "userdata.aankooplijst == true")
-                self.fetchedResultsController.fetchRequest.predicate = predicate
-                
+                predicate = NSPredicate(format: "userdata.\(archiefOperator) == true")
             } else {
-                format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@ || nirnm \(zoekoperator)[c] %@")
-                let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
-                let predicate2 = NSPredicate(format: "userdata.aankooplijst == true")
-                let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-                self.fetchedResultsController.fetchRequest.predicate = predicate
+                format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
+                let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
+                let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText)
+                let sub3 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText)
+                let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2, sub3])
+                let predicate2 = NSPredicate(format: "userdata.\(archiefOperator) == true")
+                predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+                sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
+
             }
-            
         } else {
             if searchText.isEmpty == true {
-                print("scope = 0, 1 or 2 and no text in searchBar")
-                let predicate = NSPredicate(format: "userdata.aankooplijst == true")
-                self.fetchedResultsController.fetchRequest.predicate = predicate
+                predicate = NSPredicate(format: "userdata.\(archiefOperator) == true")
             } else {
-                if filterKeyword == "alles" {
-                    format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
-                    let predicate1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
-                    let predicate2 = NSPredicate(format: "userdata.aankooplijst == true")
-                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-                    self.fetchedResultsController.fetchRequest.predicate = predicate
-                } else {
-                    let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
-                    let predicate2 = NSPredicate(format: "userdata.aankooplijst == true")
-                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
-                    self.fetchedResultsController.fetchRequest.predicate = predicate
-                }
+                let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
+                let predicate2 = NSPredicate(format: "userdata.\(archiefOperator) == true")
+                predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
+                sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
             }
         }
-        
-        let sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
         self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
+        self.fetchedResultsController.fetchRequest.predicate = predicate
         
         do {
             try self.fetchedResultsController.performFetch()
@@ -517,7 +539,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     
     private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {
         let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
-        let pred = NSPredicate(format: "userdata.medicijnkastarchief == true")
+        let pred = NSPredicate(format: "userdata.\(self.archiefOperator) == true")
         fetchReq.predicate = pred
         
         do {
@@ -530,7 +552,11 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: -
     private func setupMessageLabel() {
-        messageLabel.text = "Hier verschijnen alle medicijnen die ooit in je medicijnkast zaten."
+        if archiefOperator == "medicijnkastarchief" {
+            messageLabel.text = "Hier verschijnen alle medicijnen die ooit in je medicijnkast zaten."
+        } else {
+            messageLabel.text = "Hier verschijnen alle medicijnen die ooit in je aankooplijst zaten."
+        }
     }
     
     // MARK: - Notification Handling
@@ -656,13 +682,14 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteFromArchiefLijst = UITableViewRowAction(style: .normal, title: "Verwijderen uit Archief") { (action, indexPath) in
+        let deleteFromArchiefLijst = UITableViewRowAction(style: .normal, title: "Verwijderen\n uit archief") { (action, indexPath) in
             print("naar medicijnkast")
             // Fetch Medicijn
+            print(self.archiefOperator)
             let medicijn = self.fetchedResultsController.object(at: indexPath)
-            medicijn.userdata?.setValue(false, forKey: "medicijnkastarchief")
+            medicijn.userdata?.setValue(false, forKey: "\(self.archiefOperator)")
             let context = self.appDelegate.persistentContainer.viewContext
-            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkastarchief", uservalue: false, managedObjectContext: context)
+            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "\(self.archiefOperator)", uservalue: false, managedObjectContext: context)
             do {
                 try context.save()
                 print("medicijn verwijderd uit de lijst!")
@@ -684,7 +711,7 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
         }
         deleteFromArchiefLijst.backgroundColor = UIColor.red
         
-        let addToMedicijnkast = UITableViewRowAction(style: .normal, title: "Naar medicijnkast") { (action, indexPath) in
+        let addToMedicijnkast = UITableViewRowAction(style: .normal, title: "Naar\nmedicijnkast") { (action, indexPath) in
             print("Uit lijst verwijderd")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
@@ -699,121 +726,31 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
             let cell = tableView.cellForRow(at: indexPath)
             UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
             )
-            
-            
             self.tableView.reloadData()
-            
         }
-        addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:0.5)
+        addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
+        
+        let addToAankoopLijst = UITableViewRowAction(style: .normal, title: "Naar\naankooplijst") { (action, indexPath) in
+            // Fetch Medicijn
+            let medicijn = self.fetchedResultsController.object(at: indexPath)
+            let context = self.appDelegate.persistentContainer.viewContext
+            self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "aankooplijst", uservalue: true, managedObjectContext: context)
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
+            let cell = tableView.cellForRow(at: indexPath)
+            UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
+            )
+            self.tableView.reloadData()
+        }
+        addToAankoopLijst.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:1)
         self.tableView.setEditing(false, animated: true)
-        return [deleteFromAankoopLijst, addToMedicijnkast]
+        return [deleteFromArchiefLijst, addToAankoopLijst, addToMedicijnkast]
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-    }
-    
-    // Rekenen
-    
-    func vosdict() -> Dictionary<String,String> {
-        // fetch alle medicijnen in aankooplijst (userdata.aankooplijst == true)
-        // vosarray = [aankooplijst mppcv : aankooplijst vosnm_]
-        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return ["":""] as Dictionary<String,String> }
-        var versusdict:Dictionary<String,String> = [:]
-        for med in medicijnen {
-            // vosnaam opvragen
-            versusdict[med.mppcv!] = med.vosnm_!
-        }
-        //print("versusdict: \(versusdict)")
-        return versusdict
-    }
-    func fetchCheapest(categorie: String) -> Dictionary<String,Array<Any>> {
-        // ["aankoop mppcv 3073251": ["alternatief mppcv 3073251", "paracetamol oraal 1g", "1.25"]]
-        let versusdict = vosdict()
-        // alle medicijnen opvragen
-        // voor elke stofnaam het goedkoopste alternatief zoeken (cheapest true (nee) of zelf berekenen (ja)?)
-        var resultaat:Array<MPP> = []
-        var altdict: Dictionary<String,Array<Any>> = [:]
-        
-        for (key, value) in versusdict {
-            let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
-            let predicate = NSPredicate(format: "vosnm_ == %@", value)
-            fetchReq.predicate = predicate
-            do {
-                resultaat = try self.appDelegate.persistentContainer.viewContext.fetch(fetchReq)
-            } catch {
-                print("fetching error in calculateCheapestPrice")
-            }
-            //print("resultaat: \(resultaat.count)")
-            // Steek merknaam en prijscategorie (pupr, rema of remw) in dictionary
-            var prijsdict:Dictionary<Float, String> = [:]
-            for med in resultaat {
-                if categorie == "pupr" {
-                    prijsdict[med.pupr!.floatValue!] = med.mppcv!
-                }
-                if categorie == "rema" {
-                    prijsdict[med.rema!.floatValue!] = med.mppcv!
-                }
-                if categorie == "remw" {
-                    prijsdict[med.remw!.floatValue!] = med.mppcv!
-                }
-            }
-            // Pik er het medicijn met de laagste prijs uit
-            let minprijs = prijsdict.keys.min()
-            let minprijsMppcv = prijsdict[minprijs!]
-            altdict[key] = [minprijsMppcv!, value, minprijs!]
-            //vosdict[vos] = [minprijsMppcv!:minprijs!]
-        }
-        //print("altdict: \(altdict)")
-        return altdict
-    }
-    
-    func berekenGoedkoopsteAlternatief(altdict: Dictionary<String,Array<Any>>, categorie: String) -> Float {
-        // Voor elke vosnm in vosarray, goedkoopste alternatief optellen
-        // Bereken totaal
-        var totaalprijs:Float = 0.0
-        for (_, value) in altdict {
-            let v = value[2]  /* key = vosnm, value = dict(merknaam, prijs) */
-            totaalprijs += Float(v as! Float)
-        }
-        return totaalprijs
-    }
-    
-    func uniekInAankooplijst() -> Array<String> {
-        // fetch alle medicijnen in aankooplijst (userdata.aankooplijst == true)
-        // vosarray = [aankooplijst mppcv : aankooplijst vosnm_]
-        guard let medicijnen = self.fetchedResultsController.fetchedObjects else { return [""] as Array<String> }
-        var versusdict:Dictionary<String,String> = [:]
-        for med in medicijnen {
-            // vosnaam opvragen
-            versusdict[med.vosnm_!] = med.mppcv!
-        }
-        var uniek: Array<String> = []
-        for (_, value) in versusdict {
-            uniek.append(value)
-        }
-        //print("unieke vos: \(uniek)")
-        return uniek
-    }
-    
-    func alternatieven(altdict: Dictionary<String,Array<Any>>, categorie: String) -> Array<String> {
-        // Lijst = [Aankooplijst mppcv: Alternatief mppcv]
-        // Bereken totaal
-        var lijstalternatieven:Array<String> = []
-        
-        for (_, value) in altdict {  /* key = aankooplijst mppcv, value = array */
-            var mppcv:String = ""
-            /* key = vosnm, value = dict(mppcv, prijs) */
-            mppcv = String(describing: value[0])
-            lijstalternatieven.append(mppcv)
-        }
-        //print("lijstalternatieven: \(lijstalternatieven)")
-        return Array(Set(lijstalternatieven))
-    }
-    
-    func berekenVerschil(categorie: String, huidig:Dictionary<String,Float>, altern: Float) -> Float {
-        let prijsverschil = huidig[categorie]! - altern
-        
-        return prijsverschil
     }
     
     private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {

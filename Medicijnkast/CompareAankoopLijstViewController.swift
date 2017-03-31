@@ -309,7 +309,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         }
         
         if tableView == self.tableViewRight {
-            let replaceInShoppingList = UITableViewRowAction(style: .normal, title: "Naar\nAankooplijst") { (action, indexPath) in
+            let replaceInShoppingList = UITableViewRowAction(style: .normal, title: "Naar\naankooplijst") { (action, indexPath) in
                 // Fetch Medicijn
                 let altmedicijn = self.fetchedResultsControllerRight.object(at: indexPath)
                 let context = self.appDelegate.persistentContainer.viewContext
@@ -333,7 +333,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 self.tableViewRight.reloadData()
                 
             }
-            replaceInShoppingList.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:0.5)
+            replaceInShoppingList.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:1)
             self.tableViewRight.setEditing(false, animated: true)
             btnArray.append(replaceInShoppingList)
         }

@@ -687,10 +687,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         var predicate: NSPredicate?
         if scopeIndex == 5 || scopeIndex == -1 {
             if searchText.isEmpty == true {
-                //print("scope -1 or 3 and no text in searchBar")
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
-                let predicate1 = NSPredicate(format: "mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@", argumentArray: [searchText, searchText])
+                format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
+                let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
+                let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText)
+                let sub3 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText)
+                let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2, sub3])
                 let predicate2 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText)
                 predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [predicate1, predicate2])
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
@@ -701,7 +704,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         
         } else {
             if searchText.isEmpty == true {
-                //print("scope = 0, 1, 2 or 3 and no text in searchBar")
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
                 predicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
@@ -834,7 +836,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let addToMedicijnkast = UITableViewRowAction(style: .normal, title: "Naar\nMedicijnkast") { (action, indexPath) in
+        let addToMedicijnkast = UITableViewRowAction(style: .normal, title: "Naar\nmedicijnkast") { (action, indexPath) in
             print("naar medicijnkast")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
@@ -853,7 +855,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         }
         addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         
-        let addToShoppingList = UITableViewRowAction(style: .normal, title: "Naar\nAankooplijst") { (action, indexPath) in
+        let addToShoppingList = UITableViewRowAction(style: .normal, title: "Naar\naankooplijst") { (action, indexPath) in
             print("naar aankooplijst")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)

@@ -23,15 +23,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="messageLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ll8-gN-kpW">
-                                <rect key="frame" x="264" y="502" width="240" height="21"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0CH-Em-woC">
+                                <rect key="frame" x="5" y="64" width="46" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="glA-am-Vqk"/>
+                                    <constraint firstAttribute="height" constant="40" id="LHY-SQ-hvB"/>
+                                    <constraint firstAttribute="width" constant="46" id="fyg-ZW-5aW"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <state key="normal" title="Menu"/>
+                                <connections>
+                                    <action selector="showMenuView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tgj-nv-5XE"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXh-CO-XD9" userLabel="info">
                                 <rect key="frame" x="708" y="64" width="40" height="40"/>
                                 <constraints>
@@ -260,17 +262,15 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="UCC-Xk-VNP"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0CH-Em-woC">
-                                <rect key="frame" x="5" y="64" width="46" height="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="messageLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ll8-gN-kpW">
+                                <rect key="frame" x="264" y="502" width="240" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="LHY-SQ-hvB"/>
-                                    <constraint firstAttribute="width" constant="46" id="fyg-ZW-5aW"/>
+                                    <constraint firstAttribute="width" constant="240" id="glA-am-Vqk"/>
                                 </constraints>
-                                <state key="normal" title="Menu"/>
-                                <connections>
-                                    <action selector="showMenuView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tgj-nv-5XE"/>
-                                </connections>
-                            </button>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6q-ER-mvO" userLabel="Button Close Menu">
                                 <rect key="frame" x="0.0" y="64" width="768" height="911"/>
                                 <state key="normal" title="Hide"/>
@@ -394,12 +394,91 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pcc-8E-GJR">
+                                <rect key="frame" x="5" y="64" width="46" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="029-rz-dFp"/>
+                                    <constraint firstAttribute="height" constant="40" id="Ei6-Cc-pd4"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="46" id="Ipp-2B-Gwe"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="leL-0U-jIe"/>
+                                </constraints>
+                                <state key="normal" title="Menu">
+                                    <color key="titleColor" red="0.99600225687026978" green="0.99612122774124146" blue="0.99596184492111206" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="showMenuView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VfQ-39-oP3"/>
+                                    <action selector="showMenuView:" destination="7NF-ZY-APK" eventType="touchUpInside" id="w3P-Pd-ojk"/>
+                                </connections>
+                            </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="CNk-Rd-6GH">
+                                <rect key="frame" x="59" y="69" width="121" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="AJP-G5-ovb"/>
+                                    <constraint firstAttribute="width" constant="121" id="CTf-k6-HGH"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="B...."/>
+                                    <segment title="Second"/>
+                                    <segment title=""/>
+                                </segments>
+                                <color key="tintColor" red="0.99600225687026978" green="0.99612122774124146" blue="0.99596184492111206" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="indexChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="6SD-G4-e7Z"/>
+                                    <action selector="indexChanged:" destination="ruK-Vs-qsG" eventType="valueChanged" id="h5H-1T-t1r"/>
+                                    <action selector="indexChanged:" destination="7NF-ZY-APK" eventType="valueChanged" id="yyr-fS-IAv"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="OJc-4I-Jpp">
+                                <rect key="frame" x="579" y="69" width="121" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="Wh2-iJ-s9u"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="121" id="mQR-ax-pRt"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                                <color key="tintColor" red="0.99600225687026978" green="0.99612122774124146" blue="0.99596184492111206" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="archiefChangedWith_sender:" destination="7NF-ZY-APK" eventType="valueChanged" id="4Uy-Wm-fXk"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aantal medicijnen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xii-LZ-vwf" userLabel="Aantal medicijnen">
+                                <rect key="frame" x="284" y="65" width="200" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="IEE-DM-gkl"/>
+                                    <constraint firstAttribute="width" constant="200" id="ML7-ny-5mr"/>
+                                    <constraint firstAttribute="height" constant="40" id="Pwg-mf-Q12"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Ybg-wZ-box"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7yK-u5-rv0" userLabel="info">
+                                <rect key="frame" x="708" y="64" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="G7a-UU-4YZ"/>
+                                    <constraint firstAttribute="height" constant="40" id="XqQ-6I-Z1E"/>
+                                    <constraint firstAttribute="width" constant="40" id="aPv-h9-BaN"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="zbD-PM-65M"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="info">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="info:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zkt-dw-anm"/>
+                                    <action selector="info:" destination="7NF-ZY-APK" eventType="touchUpInside" id="ciL-D1-t6P"/>
+                                </connections>
+                            </button>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="100" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZaR-Fr-s7v">
                                 <rect key="frame" x="10" y="104" width="748" height="871"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" text="Zoek in je medicijnkast" placeholder="Zoek in je medicijnkast" id="A4J-rj-g4b">
+                                <searchBar key="tableHeaderView" contentMode="redraw" text="Zoek in je archief" placeholder="Zoek in je archief" id="A4J-rj-g4b">
                                     <rect key="frame" x="0.0" y="0.0" width="748" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <textInputTraits key="textInputTraits"/>
                                     <connections>
                                         <outlet property="delegate" destination="7NF-ZY-APK" id="hgw-Va-aEZ"/>
@@ -582,64 +661,6 @@
                                     <outlet property="delegate" destination="7NF-ZY-APK" id="slh-TR-aLG"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TMT-WK-XiK" userLabel="Button Close Menu">
-                                <rect key="frame" x="0.0" y="67" width="768" height="911"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Hide"/>
-                                <connections>
-                                    <action selector="btnCloseMenuView:" destination="7NF-ZY-APK" eventType="touchUpInside" id="haG-3t-5rw"/>
-                                    <action selector="btnCloseMenuView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z7F-Ob-XNe"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7yK-u5-rv0" userLabel="info">
-                                <rect key="frame" x="708" y="64" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="G7a-UU-4YZ"/>
-                                    <constraint firstAttribute="height" constant="40" id="XqQ-6I-Z1E"/>
-                                    <constraint firstAttribute="width" constant="40" id="aPv-h9-BaN"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="zbD-PM-65M"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="info">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="info:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Zkt-dw-anm"/>
-                                    <action selector="info:" destination="7NF-ZY-APK" eventType="touchUpInside" id="ciL-D1-t6P"/>
-                                </connections>
-                            </button>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="CNk-Rd-6GH">
-                                <rect key="frame" x="59" y="69" width="121" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="AJP-G5-ovb"/>
-                                    <constraint firstAttribute="width" constant="121" id="CTf-k6-HGH"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="HAS-HR-glZ"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="121" id="Mjp-pf-J9u"/>
-                                </constraints>
-                                <segments>
-                                    <segment title="B...."/>
-                                    <segment title="Second"/>
-                                    <segment title=""/>
-                                </segments>
-                                <connections>
-                                    <action selector="indexChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="6SD-G4-e7Z"/>
-                                    <action selector="indexChanged:" destination="ruK-Vs-qsG" eventType="valueChanged" id="h5H-1T-t1r"/>
-                                </connections>
-                            </segmentedControl>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pcc-8E-GJR">
-                                <rect key="frame" x="5" y="64" width="46" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="029-rz-dFp"/>
-                                    <constraint firstAttribute="height" constant="40" id="Ei6-Cc-pd4"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="46" id="Ipp-2B-Gwe"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="leL-0U-jIe"/>
-                                </constraints>
-                                <state key="normal" title="Menu"/>
-                                <connections>
-                                    <action selector="showMenuView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VfQ-39-oP3"/>
-                                    <action selector="showMenuView:" destination="7NF-ZY-APK" eventType="touchUpInside" id="w3P-Pd-ojk"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="messageLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jnE-wA-wVl">
                                 <rect key="frame" x="264" y="502" width="240" height="21"/>
                                 <constraints>
@@ -651,18 +672,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aantal medicijnen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xii-LZ-vwf" userLabel="Aantal medicijnen">
-                                <rect key="frame" x="284" y="65" width="200" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="IEE-DM-gkl"/>
-                                    <constraint firstAttribute="width" constant="200" id="ML7-ny-5mr"/>
-                                    <constraint firstAttribute="height" constant="40" id="Pwg-mf-Q12"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Ybg-wZ-box"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TMT-WK-XiK" userLabel="Button Close Menu">
+                                <rect key="frame" x="0.0" y="67" width="768" height="911"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Hide">
+                                    <color key="titleColor" red="0.99600225687026978" green="0.99612122774124146" blue="0.99596184492111206" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnCloseMenuView:" destination="7NF-ZY-APK" eventType="touchUpInside" id="haG-3t-5rw"/>
+                                    <action selector="btnCloseMenuView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z7F-Ob-XNe"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -675,6 +695,8 @@
                             <constraint firstAttribute="trailingMargin" secondItem="7yK-u5-rv0" secondAttribute="trailing" id="JGL-BI-wZj"/>
                             <constraint firstItem="7yK-u5-rv0" firstAttribute="top" secondItem="x8c-Fz-M46" secondAttribute="bottom" id="QeG-K9-lRX"/>
                             <constraint firstItem="Xii-LZ-vwf" firstAttribute="top" secondItem="B2S-Fx-Ic1" secondAttribute="top" constant="65" id="SIi-gF-gV0"/>
+                            <constraint firstItem="OJc-4I-Jpp" firstAttribute="top" secondItem="x8c-Fz-M46" secondAttribute="bottom" constant="5" id="YCT-p5-otZ"/>
+                            <constraint firstItem="7yK-u5-rv0" firstAttribute="leading" secondItem="OJc-4I-Jpp" secondAttribute="trailing" constant="8" id="Z0y-eV-hs5"/>
                             <constraint firstItem="ZaR-Fr-s7v" firstAttribute="top" secondItem="x8c-Fz-M46" secondAttribute="bottom" constant="40" id="grb-G2-2l1"/>
                             <constraint firstAttribute="trailing" secondItem="ZaR-Fr-s7v" secondAttribute="trailing" constant="10" id="jLs-eP-toe"/>
                             <constraint firstItem="CNk-Rd-6GH" firstAttribute="top" secondItem="x8c-Fz-M46" secondAttribute="bottom" constant="5" id="leh-5X-jjR"/>
@@ -689,6 +711,7 @@
                         <outlet property="searchBar" destination="A4J-rj-g4b" id="o5e-9o-mKh"/>
                         <outlet property="searchDisplayController" destination="Ijd-4e-cY8" id="fyu-ID-ZdU"/>
                         <outlet property="segmentedButton" destination="CNk-Rd-6GH" id="R4v-rK-MV7"/>
+                        <outlet property="segmentedButton2" destination="OJc-4I-Jpp" id="GLm-cV-67e"/>
                         <outlet property="tableView" destination="ZaR-Fr-s7v" id="XGF-Kj-zw8"/>
                         <outlet property="totaalAantal" destination="Xii-LZ-vwf" id="oEC-dw-crb"/>
                     </connections>

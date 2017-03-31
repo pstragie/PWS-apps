@@ -21,9 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         preloadDBData()
         //print("NSHomeDir: \(NSHomeDirectory())")
         // Print local file directory
-        //let fm = FileManager.default
-        //let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        //print(appdir)
+        let fm = FileManager.default
+        let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        print(appdir)
         
         // Developer use only! Load persistent store with data from csv files.
         //seedPersistentStoreWithManagedObjectContext(managedObjectContext)
@@ -44,10 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarAppearance = UITabBar.appearance()
         // Change tint and bar tint
         tabBarAppearance.tintColor = UIColor.black.withAlphaComponent(1.0)
-        tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.0)
-        
-        
-        
+        tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.8)
+
+        let searchBarAppearance = UISearchBar.appearance()
+        searchBarAppearance.tintColor = UIColor.white
+        //searchBarAppearance.barTintColor = UIColor.red
         
         return true
     }
