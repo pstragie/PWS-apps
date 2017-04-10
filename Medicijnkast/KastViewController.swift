@@ -172,6 +172,8 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		/* update if new bcfi files */
 	}
 	
+	
+	
 	// MARK: Setup views
 	func setupMenuView() {
 		self.menuView=UIView(frame:CGRect(x:0, y:0, width: 300, height: self.view.bounds.height))
@@ -203,7 +205,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		labelmpp.font = UIFont.systemFont(ofSize: 17)
 		labelmpp.textColor = UIColor.white
 		let labelvos = UILabel()
-		labelvos.text = "Voorschrift"
+		labelvos.text = "Voorschriftnaam (VOS)"
 		labelvos.font = UIFont.systemFont(ofSize: 13)
 		labelvos.textColor = UIColor.white
 		let labelfirma = UILabel()

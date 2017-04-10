@@ -274,7 +274,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         labelmpp.font = UIFont.systemFont(ofSize: 17)
         labelmpp.textColor = UIColor.white
         let labelvos = UILabel()
-        labelvos.text = "Voorschrift"
+        labelvos.text = "Voorschriftnaam (VOS)"
         labelvos.font = UIFont.systemFont(ofSize: 13)
         labelvos.textColor = UIColor.white
         let labelfirma = UILabel()
