@@ -18,15 +18,18 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let level0Picker = UIPickerView()
     var level1dict = Dictionaries().level1Picker()
     let level1Picker = UIPickerView()
-    
+    let localdata = UserDefaults.standard
+
 
     // MARK: - Properties Variables
     var hyrView: Bool = false
     var selectedHyr0: String = "D"
     var selectedHyr1: String = "DA"
+    var toepzoekwoord: String = "D"
     var infoView = UIView()
     var menuView = UIView()
     var hyrPickerView = UIView()
+    var pickerChanged: Bool = false
     var upArrow = UIView()
     var sortDescriptorIndex: Int? = nil
     var selectedScope: Int = -1
@@ -183,7 +186,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
             filterKeyword = "mp.hyr.hyr"
             sortKeyword = "mp.mpnm"
-            zoekwoord = hyrstring!
+            toepzoekwoord = hyrstring!
+            zoekwoord = ""
+            searchBar.text = ""
             selectedScope = 4
             print("hyr")
             var x: Int = 0
@@ -409,6 +414,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         infoView.addConstraints(stackView_V)
     }
     
+    // MARK: PickerView
     @available(iOS 2.0, *)
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -438,9 +444,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             for (key, value) in level0dict {
                 if value == hyrvalue {
                     selectedHyr0 = key
+                    toepzoekwoord = key
                 }
             }
+            pickerChanged = true
             filterContentForSearchText(searchText: selectedHyr0, scopeIndex: 4)
+            
             updatePicker1()
             //self.tableView.reloadData()
         }
@@ -449,8 +458,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             for (key, value) in level1dict {
                 if value == hyrvalue {
                     selectedHyr1 = key
+                    toepzoekwoord = key
                 }
             }
+            pickerChanged = true
             filterContentForSearchText(searchText: selectedHyr1, scopeIndex: 4)
         }
     }
@@ -571,11 +582,16 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             print("scope: hierarchie")
             filterKeyword = "mp.hyr.hyr"
             sortKeyword = "mp.mpnm"
+            if searchBar.text == nil {
+                searchBar.text = ""
+            }
             let z: Int = level0Picker.selectedRow(inComponent: 0)
             let valz = sortData(level0dict)[z]
             for (key, value) in level0dict {
                 if value == valz {
-                    //zoekwoord = key
+                    //zoekwoord = searchBar.text!
+                    print("value == valz")
+                    toepzoekwoord = key
                     selectedHyr0 = key
                 }
             }
@@ -583,10 +599,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             let vala = sortData(level1dict)[a]
             for (key, value) in level1dict {
                 if value == vala {
-                    zoekwoord = key
+                    print("value == vala")
+                    //zoekwoord = key
+                    toepzoekwoord = key
                     selectedHyr1 = key
                 }
             }
+
             hyrView = true
         case 5:
             print("scope: alles")
@@ -603,10 +622,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         print("scope changed: \(selectedScope)")
         print("filterKeyword: \(filterKeyword)")
         print("searchbar text: \(searchBar.text!)")
-        
-        self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: selectedScope)
-        
+        if hyrView == false {
+            print("zoekwoord: \(zoekwoord!)")
+            self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: selectedScope)
+        } else {
+            print("toepzoekwoord: \(toepzoekwoord)")
+            self.filterContentForSearchText(searchText: "", scopeIndex: 4)
         }
+    }
     
     // MARK: Set search operator
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
@@ -627,7 +650,26 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         searchBar.updateFocusIfNeeded()
         searchBar.becomeFirstResponder()
         searchActive = true
-        self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
+        if self.zoekwoord != nil {
+            print("zoekwoord not nil!")
+            print("hyrView: ", hyrView)
+            if hyrView == true {
+                print("scope = 4, toepzoekwoord: ", self.toepzoekwoord)
+                print("zoekwoord: ", self.zoekwoord!)
+                self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: 4)
+            } else {
+                print("huidig zoekwoord: \(self.zoekwoord!)")
+                self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
+            }
+        } else {
+            print("zoekwoord nil!")
+            if hyrView == true {
+                self.filterContentForSearchText(searchText: self.toepzoekwoord, scopeIndex: 4)
+            } else {
+                self.filterContentForSearchText(searchText: "", scopeIndex: self.selectedScope)
+            }
+            
+        }
         // Tell the searchBar that the searchBarSearchButton was clicked
         self.tableView.reloadData()
         updateView()
@@ -647,9 +689,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         print("text did change")
         zoekwoord = searchText
         searchActive = true
-        print("Zoekterm: \(searchBar.text)")
-        
-        self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
+        print("Zoekterm: \(searchBar.text!)")
+        print("Scope: \(self.selectedScope)")
+        if hyrView == false {
+            self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
+        } else {
+            self.filterContentForSearchText(searchText: searchText, scopeIndex: 4)
+        }
     }
     
     func searchBarSearchButtonClicked(_: UISearchBar) {
@@ -690,7 +736,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
                 format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
-                let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
+                let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText])
                 let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText)
                 let sub3 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText)
                 let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2, sub3])
@@ -699,9 +745,24 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
             }
         } else if scopeIndex == 4 {
-            predicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", searchText)
-            sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
-        
+            //print("zoekwoord: ", self.zoekwoord!) /* nil */
+            print("toepassingszoekwoord: ", self.toepzoekwoord)
+            print("searchbar text: ", searchBar.text!)
+            print("searchText: ", searchText)
+            if pickerChanged == false {
+                if searchText.isEmpty == false {
+                    let sub1 = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord)
+                    let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText)
+                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sub1, sub2])
+                } else {
+                    predicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord)
+                }
+                sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
+            } else {
+                predicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", searchText)
+                sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
+                pickerChanged = false
+            }
         } else {
             if searchText.isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
@@ -967,7 +1028,6 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     func addUserData(mppcvValue: String, userkey: String, uservalue: Bool, managedObjectContext: NSManagedObjectContext) {
         // one-to-one relationship
         // Check if record exists
-        
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
             print("data line does not exist")

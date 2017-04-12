@@ -14,7 +14,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: - Properties Constants
     let segueShowDetail = "SegueFromKastToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
+	let localdata = UserDefaults.standard
 	// MARK: - Properties Variables
 	var infoView = UIView()
 	var menuView = UIView()
@@ -120,6 +120,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			print("Unable to Perform Fetch Request")
 			print("\(fetchError), \(fetchError.localizedDescription)")
 		}
+		
 		NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
 		
 		tableView.reloadData()
@@ -403,7 +404,9 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		searchBar.updateFocusIfNeeded()
 		searchBar.becomeFirstResponder()
 		searchActive = true
-		self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
+		if self.zoekwoord != nil {
+			self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
+		}
 		// Tell the searchBar that the searchBarSearchButton was clicked
 		self.tableView.reloadData()
 		updateView()
@@ -520,6 +523,12 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 	}
 	
+	fileprivate func storeToDefaults() {
+		if let medicijnen = fetchedResultsController.fetchedObjects {
+			let medarray = medicijnen
+		}
+	}
+	
     // MARK: - View Methods
 	fileprivate func updateView() {
 		print("Updating view...")
@@ -530,7 +539,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		if let medicijnen = fetchedResultsController.fetchedObjects {
 			hasMedicijnen = medicijnen.count > 0
 			print("medicijnen aantal: \(medicijnen.count)")
-			
+			print("medicijnen: \(medicijnen.description)")
 			x = medicijnen.count
 			
 			let totaalKast = countKast(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
@@ -719,7 +728,6 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			let context = self.appDelegate.persistentContainer.viewContext
 			self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkast", uservalue: false, managedObjectContext: context)
 			self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkastarchief", uservalue: true, managedObjectContext: context)
-
 			do {
 				try context.save()
 			} catch {

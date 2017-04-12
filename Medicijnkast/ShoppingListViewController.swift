@@ -474,7 +474,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         searchBar.updateFocusIfNeeded()
         searchBar.becomeFirstResponder()
         searchActive = true
-        self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
+        if self.zoekwoord != nil {
+            self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
+        }
         // Tell the searchBar that the searchBarSearchButton was clicked
         self.tableView.reloadData()
         updateView()
@@ -534,7 +536,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         var predicate: NSPredicate?
         if scopeIndex == 4 || scopeIndex == -1 {
             if searchText.isEmpty == true {
-                predicate = NSPredicate(format: "userdata.aankooplijs == true")
+                predicate = NSPredicate(format: "userdata.aankooplijst == true")
             } else {
                 format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
                 let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText, searchText])
