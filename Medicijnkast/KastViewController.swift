@@ -175,7 +175,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	
 	
-	// MARK: Setup views
+	// MARK: - Setup views
 	func setupMenuView() {
 		self.menuView=UIView(frame:CGRect(x:0, y:0, width: 300, height: self.view.bounds.height))
 		menuView.center.x -= self.view.bounds.width
@@ -272,6 +272,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		setupMessageLabel()
 	}
 	
+	// MARK: - Up Arrow
 	func setupUpArrow() {
 		self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-200, width: 50, height: 50))
 		upArrow.isHidden = true
@@ -342,7 +343,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		//self.navigationController?.pushViewController(nextViewController, animated: true)
 	}
 	*/
-	// MARK: Set Scope
+	// MARK: - Set Scope
 	func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
 		/* FILTER SCOPE */
 		
@@ -385,7 +386,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		self.filterContentForSearchText(searchText: searchBar.text!, scopeIndex: selectedScope)
 	}
 	
-	// MARK: Set search operator
+	// MARK: - Set search operator
 	@IBAction func indexChanged(_ sender: UISegmentedControl) {
 		switch segmentedButton.selectedSegmentIndex {
 		case 0:
@@ -461,7 +462,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		return true
 	}
 
-	// MARK: Zoekfilter
+	// MARK: - Zoekfilter
 	func filterContentForSearchText(searchText: String, scopeIndex: Int) {
 		var sortDescriptors: Array<NSSortDescriptor>?
 		var predicate: NSPredicate?
@@ -482,6 +483,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		} else {
 			if searchText.isEmpty == true {
 				predicate = NSPredicate(format: "userdata.medicijnkast == true")
+				sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
 			} else {
 				let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
 				let predicate2 = NSPredicate(format: "userdata.medicijnkast == true")
@@ -650,7 +652,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
         
     }
 	
-	// MARK: table data
+	// MARK: - table data
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
 		print("aantal rijen in tabel: \(medicijnen.count)")
@@ -827,6 +829,8 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			}
 		}
 	}
+	
+	
 }
 
 class Person: NSObject, NSCoding {

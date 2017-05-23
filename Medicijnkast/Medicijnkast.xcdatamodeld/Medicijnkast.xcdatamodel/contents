@@ -221,16 +221,16 @@
         <relationship name="sam" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="Sam" inverseName="stof" inverseEntity="Sam" syncable="YES"/>
     </entity>
     <entity name="Userdata" representedClassName="Userdata" syncable="YES" codeGenerationType="class">
-        <attribute name="aankooparchief" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="aankooplijst" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="aantal" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="afbeelding" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="expdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="aankooparchief" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="aankooplijst" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="aantal" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="1" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="afbeelding" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="expdate" optional="YES" attributeType="Date" defaultDateTimeInterval="516541560" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="medicijnkast" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="medicijnkastarchief" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="mppcv" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="patient" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="medicijnkast" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="medicijnkastarchief" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mppcv" attributeType="String" syncable="YES"/>
+        <attribute name="patient" optional="YES" attributeType="String" defaultValueString="User" syncable="YES"/>
         <attribute name="restant" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="mpp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MPP" inverseName="userdata" inverseEntity="MPP" syncable="YES"/>
     </entity>

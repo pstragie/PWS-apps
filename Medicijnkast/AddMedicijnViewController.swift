@@ -19,7 +19,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var level1dict = Dictionaries().level1Picker()
     let level1Picker = UIPickerView()
     let localdata = UserDefaults.standard
-
+    @IBOutlet weak var zoekenImage: UIImageView!
 
     // MARK: - Properties Variables
     var hyrView: Bool = false
@@ -72,6 +72,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBAction func info(_ sender: UIButton) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+            print("infoview: \(self.infoView.center.y)")
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
@@ -414,7 +415,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         infoView.addConstraints(stackView_V)
     }
     
-    // MARK: PickerView
+    // MARK: - PickerView
     @available(iOS 2.0, *)
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -726,12 +727,23 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         return true
     }
 
-    // MARK: Zoekfilter
+    // MARK: - Zoekfilter
     func filterContentForSearchText(searchText: String, scopeIndex: Int) {
         let offset = CGPoint(x: 0, y: -188)
         var sortDescriptors: Array<NSSortDescriptor>?
         var predicate: NSPredicate?
-        if scopeIndex == 5 || scopeIndex == -1 {
+        if scopeIndex == -1 {
+            if searchText.isEmpty == true {
+                predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
+            } else {
+                format = ("mppnm \(zoekoperator)[c] %@ || mp.mpnm \(zoekoperator)[c] %@")
+                let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText])
+                let sub2 = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", searchText)
+                predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2])
+                sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
+            }
+
+        } else if scopeIndex == 5 {
             if searchText.isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
@@ -810,21 +822,27 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     private func setupView() {
         updateView()
     }
-    
+
     fileprivate func updateView() {
         print("Updating view...")
         tableView.isHidden = false
         var x:Int
         if let medicijnen = fetchedResultsController.fetchedObjects {
+            
             x = medicijnen.count
             if x == 0 {
                 gevondenItemsLabel.isHidden = false
+                tableView.isHidden = true
+                zoekenImage.isHidden = false
             } else {
-            gevondenItemsLabel.isHidden = false
+                gevondenItemsLabel.isHidden = false
+                zoekenImage.isHidden = true
             }
         } else {
             x = 0
             gevondenItemsLabel.isHidden = false
+            zoekenImage.isHidden = false
+            tableView.isHidden = true
         }
         self.tableView.reloadData()
         gevondenItemsLabel.text = "\(x)"
@@ -903,6 +921,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             let medicijn = self.fetchedResultsController.object(at: indexPath)
             let context = self.appDelegate.persistentContainer.viewContext
             self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkast", uservalue: true, managedObjectContext: context)
+            // Save data to context
             do {
                 try context.save()
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
@@ -913,6 +932,8 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             let cell = tableView.cellForRow(at: indexPath)
             UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
             )
+            // Copy entity data to userdefaults
+            self.copyUserdataToUserdefaults(managedObjectContext: context)
         }
         addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         
@@ -1025,6 +1046,25 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         return result
     }
 
+    // MARK: - fetch all records from Userdata
+    private func fetchAllRecordsForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
+        // Create Fetch Request
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        // Helpers
+        var result = [NSManagedObject]()
+        
+        do {
+            // Execute Fetch Request
+            let records = try managedObjectContext.fetch(fetchRequest)
+            if let records = records as? [NSManagedObject] {
+                result = records
+            }
+        } catch {
+            print("Unable to fetch managed objects for entity \(entity).")
+        }
+        return result
+    }
+    // MARK: - add userdata
     func addUserData(mppcvValue: String, userkey: String, uservalue: Bool, managedObjectContext: NSManagedObjectContext) {
         // one-to-one relationship
         // Check if record exists
@@ -1047,6 +1087,37 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
                 userData.setValue(mppcvValue, forKey: "mppcv")
                 userData.setValue(Date(), forKey: "lastupdate")
             }
+        }
+    }
+    
+    // MARK: - Copy to Userdefaults
+    func copyUserdataToUserdefaults(managedObjectContext: NSManagedObjectContext) {
+        print("Copying Userdata to localdata")
+        // Read entity Userdata values
+        let userdata = fetchAllRecordsForEntity("Userdata", inManagedObjectContext: managedObjectContext)
+        var medarray: Array<Any> = []
+        // Check if Userdefaults exist
+        // Store to Userdefaults - Create array and store in localdata under key: mppcv
+        // Read array of userdata in localdata
+        if localdata.object(forKey: "userdata") != nil {
+            print("userdata exists in localdata")
+            medarray = localdata.array(forKey: "userdata")!
+        } else {
+            print("userdata does not exist in localdata")
+            medarray = [] as [Any]
+        }
+        
+        for userData in userdata {
+            print("userData: ", userData)
+            let dict = ["medicijnkast": (userData.value(forKey: "medicijnkast")) as! Bool, "medicijnkastarchief": (userData.value(forKey: "medicijnkastarchief")) as! Bool, "aankooplijst": (userData.value(forKey: "aankooplijst")) as! Bool, "aankooparchief": (userData.value(forKey: "aankooparchief")) as! Bool, "aantal": (userData.value(forKey: "aantal")) as! Int, "lastupdate": (userData.value(forKey: "lastupdate")) as! Date, "mppcv": (userData.value(forKey: "mppcv")) as! String, "restant": (userData.value(forKey: "restant")) as! Int] as [String : Any]
+            print("dict: ", dict)
+            
+            
+            // Add mppcv to array of userdata in localdata
+            medarray.append(userData.value(forKey: "mppcv")!)
+            localdata.set(medarray, forKey: "userdata")
+            localdata.set(dict, forKey: (userData.value(forKey: "mppcv")) as! String)
+            print("saved \(userData.value(forKey: "mppcv")) to localdata")
         }
     }
 }

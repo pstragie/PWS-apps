@@ -468,6 +468,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             if searchText.isEmpty == true {
                 predicate = NSPredicate(format: "userdata.\(archiefOperator) == true")
+                sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
             } else {
                 let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
                 let predicate2 = NSPredicate(format: "userdata.\(archiefOperator) == true")

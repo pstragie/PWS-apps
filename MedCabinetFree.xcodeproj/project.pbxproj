@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04EF229721F6F5A76D7C79E6 /* Pods_MedCabinetFree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39FC31DF2E8CA69E498CC5D /* Pods_MedCabinetFree.framework */; };
 		B60467A91E6A2244006187BC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60467A81E6A2244006187BC /* MenuViewController.swift */; };
 		B60467AB1E6A2701006187BC /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60467AA1E6A2701006187BC /* BaseViewController.swift */; };
 		B60467D01E6C2B9C006187BC /* KastMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60467CF1E6C2B9C006187BC /* KastMenuCell.swift */; };
@@ -42,9 +43,21 @@
 		B67F7BA81E84285200D98F82 /* KlachtenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F7BA71E84285200D98F82 /* KlachtenViewController.swift */; };
 		B69D8A881E5E887000693F12 /* Rekenen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D8A871E5E887000693F12 /* Rekenen.swift */; };
 		B69D8A8A1E5F354700693F12 /* CompareAankoopLijstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */; };
+		B6F94BC51ED09D340076A85F /* MedCabinetFreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F94BC41ED09D340076A85F /* MedCabinetFreeTests.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B6F94BC71ED09D340076A85F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B66B41291E4B4B9300DA2793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B66B41301E4B4B9300DA2793;
+			remoteInfo = MedCabinetFree;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		73840E8F919D647CDDB5DDF6 /* Pods-MedCabinetFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedCabinetFree.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MedCabinetFree/Pods-MedCabinetFree.debug.xcconfig"; sourceTree = "<group>"; };
 		B60467A81E6A2244006187BC /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B60467AA1E6A2701006187BC /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		B60467CF1E6C2B9C006187BC /* KastMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KastMenuCell.swift; sourceTree = "<group>"; };
@@ -83,10 +96,23 @@
 		B67F7BA71E84285200D98F82 /* KlachtenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KlachtenViewController.swift; sourceTree = "<group>"; };
 		B69D8A871E5E887000693F12 /* Rekenen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rekenen.swift; sourceTree = "<group>"; };
 		B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareAankoopLijstViewController.swift; sourceTree = "<group>"; };
+		B6F94BC21ED09D340076A85F /* MedCabinetFreeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MedCabinetFreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6F94BC41ED09D340076A85F /* MedCabinetFreeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedCabinetFreeTests.swift; sourceTree = "<group>"; };
+		B6F94BC61ED09D340076A85F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C43BA72FCF4E7FBB50735EBF /* Pods-MedCabinetFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MedCabinetFree.release.xcconfig"; path = "Pods/Target Support Files/Pods-MedCabinetFree/Pods-MedCabinetFree.release.xcconfig"; sourceTree = "<group>"; };
+		D39FC31DF2E8CA69E498CC5D /* Pods_MedCabinetFree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MedCabinetFree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B66B412E1E4B4B9300DA2793 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04EF229721F6F5A76D7C79E6 /* Pods_MedCabinetFree.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6F94BBF1ED09D340076A85F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -96,6 +122,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F1EBE4F5F1CEC58287F90DF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D39FC31DF2E8CA69E498CC5D /* Pods_MedCabinetFree.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B63D17201E5A7EAE008289BB /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,7 +151,10 @@
 			children = (
 				B63D17201E5A7EAE008289BB /* Core Data */,
 				B66B41331E4B4B9300DA2793 /* Medicijnkast */,
+				B6F94BC31ED09D340076A85F /* MedCabinetFreeTests */,
 				B66B41321E4B4B9300DA2793 /* Products */,
+				C3B00CCB7F5B3CE0ED25DE4B /* Pods */,
+				5F1EBE4F5F1CEC58287F90DF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				B66B41311E4B4B9300DA2793 /* MedCabinetFree.app */,
+				B6F94BC21ED09D340076A85F /* MedCabinetFreeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -163,6 +201,24 @@
 			path = Medicijnkast;
 			sourceTree = "<group>";
 		};
+		B6F94BC31ED09D340076A85F /* MedCabinetFreeTests */ = {
+			isa = PBXGroup;
+			children = (
+				B6F94BC41ED09D340076A85F /* MedCabinetFreeTests.swift */,
+				B6F94BC61ED09D340076A85F /* Info.plist */,
+			);
+			path = MedCabinetFreeTests;
+			sourceTree = "<group>";
+		};
+		C3B00CCB7F5B3CE0ED25DE4B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				73840E8F919D647CDDB5DDF6 /* Pods-MedCabinetFree.debug.xcconfig */,
+				C43BA72FCF4E7FBB50735EBF /* Pods-MedCabinetFree.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -170,9 +226,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B66B41461E4B4B9400DA2793 /* Build configuration list for PBXNativeTarget "MedCabinetFree" */;
 			buildPhases = (
+				AEB2A716546A6E657D50815F /* [CP] Check Pods Manifest.lock */,
 				B66B412D1E4B4B9300DA2793 /* Sources */,
 				B66B412E1E4B4B9300DA2793 /* Frameworks */,
 				B66B412F1E4B4B9300DA2793 /* Resources */,
+				8215B2C0FD9CF74C25B95272 /* [CP] Embed Pods Frameworks */,
+				D25D93231F1DE7A7A60BBCAC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -182,6 +241,24 @@
 			productName = Medicijnkast;
 			productReference = B66B41311E4B4B9300DA2793 /* MedCabinetFree.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B6F94BC11ED09D340076A85F /* MedCabinetFreeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6F94BC91ED09D340076A85F /* Build configuration list for PBXNativeTarget "MedCabinetFreeTests" */;
+			buildPhases = (
+				B6F94BBE1ED09D340076A85F /* Sources */,
+				B6F94BBF1ED09D340076A85F /* Frameworks */,
+				B6F94BC01ED09D340076A85F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B6F94BC81ED09D340076A85F /* PBXTargetDependency */,
+			);
+			name = MedCabinetFreeTests;
+			productName = MedCabinetFreeTests;
+			productReference = B6F94BC21ED09D340076A85F /* MedCabinetFreeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -196,6 +273,11 @@
 					B66B41301E4B4B9300DA2793 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
+					};
+					B6F94BC11ED09D340076A85F = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = B66B41301E4B4B9300DA2793;
 					};
 				};
 			};
@@ -213,6 +295,7 @@
 			projectRoot = "";
 			targets = (
 				B66B41301E4B4B9300DA2793 /* MedCabinetFree */,
+				B6F94BC11ED09D340076A85F /* MedCabinetFreeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -239,7 +322,62 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B6F94BC01ED09D340076A85F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8215B2C0FD9CF74C25B95272 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MedCabinetFree/Pods-MedCabinetFree-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AEB2A716546A6E657D50815F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D25D93231F1DE7A7A60BBCAC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MedCabinetFree/Pods-MedCabinetFree-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B66B412D1E4B4B9300DA2793 /* Sources */ = {
@@ -270,7 +408,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B6F94BBE1ED09D340076A85F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6F94BC51ED09D340076A85F /* MedCabinetFreeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B6F94BC81ED09D340076A85F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B66B41301E4B4B9300DA2793 /* MedCabinetFree */;
+			targetProxy = B6F94BC71ED09D340076A85F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B66B41381E4B4B9400DA2793 /* Main.storyboard */ = {
@@ -387,6 +541,7 @@
 		};
 		B66B41471E4B4B9400DA2793 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 73840E8F919D647CDDB5DDF6 /* Pods-MedCabinetFree.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
@@ -402,6 +557,7 @@
 		};
 		B66B41481E4B4B9400DA2793 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C43BA72FCF4E7FBB50735EBF /* Pods-MedCabinetFree.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
@@ -412,6 +568,36 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		B6F94BCA1ED09D340076A85F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = QUXKFNLMD9;
+				INFOPLIST_FILE = MedCabinetFreeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.PWS.MedCabinetFreeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MedCabinetFree.app/MedCabinetFree";
+			};
+			name = Debug;
+		};
+		B6F94BCB1ED09D340076A85F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = QUXKFNLMD9;
+				INFOPLIST_FILE = MedCabinetFreeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.PWS.MedCabinetFreeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MedCabinetFree.app/MedCabinetFree";
 			};
 			name = Release;
 		};
@@ -435,6 +621,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		B6F94BC91ED09D340076A85F /* Build configuration list for PBXNativeTarget "MedCabinetFreeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6F94BCA1ED09D340076A85F /* Debug */,
+				B6F94BCB1ED09D340076A85F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 

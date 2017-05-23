@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Medicijnkast/KastViewController.swift"
-            timestampString = "513638772.812481"
+            timestampString = "516543155.086021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
             landmarkName = "storeToDefaults()"
             landmarkType = "7">
          </BreakpointContent>

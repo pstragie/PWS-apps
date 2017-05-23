@@ -13,6 +13,7 @@ import Foundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let localdata = UserDefaults.standard
     //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
     var errorHandler: (Error) -> Void = {_ in }
 
@@ -53,6 +54,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func application(_ application: UIApplication, didUpdate userActivity: NSUserActivity) {
+        print("App did update!")
+        // Copy Userdefaults to Userdata entity
+        for mppcv in localdata.array(forKey: "userdata")! {
+            print("mppcv: ", mppcv)
+            let meddict = localdata.dictionary(forKey: mppcv as! String)
+            print("meddict: ", meddict)
+        }
+        // Check if medicine is still present in database
+        
+    }
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -83,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func seedPersistentStoreWithManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) {
         if seedCoreDataContainerIfFirstLaunch() {
             //destroyPersistentStore()
-
+            print("First Launch!!!")
             //let Entities = ["MP", "MPP", "Sam", "Gal", "Stof", "Hyr", "Ggr_Link", "Ir"]
             let Entities = ["MPP", "Gal", "Ggr_Link", "MP", "Sam", "Stof", "Hyr", "Ir"]
             for entitynaam in Entities {
@@ -92,6 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 loadAllAttributes(entitynaam: entitynaam)
             }
         } else {
+            print("Not the first launch!!!")
             // Check for updates
             /* let Entities = ["MPP"]
              for entitynaam in Entities {
@@ -117,8 +130,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     fatalError("Could not copy sqlite to destination.")
                 }
             }
+            // MARK: Copy Userdefault to Userdata
+            print("localdata: ", localdata)
+            for (key, value) in localdata.dictionaryRepresentation() {
+                print("\(key) = \(value) \n")
+            }
         } else {
             print("Files Exist!")
+            print("localdata: ", localdata)
+            for (key, value) in localdata.dictionaryRepresentation() {
+                print("\(key) = \(value) \n")
+            }
+
         }
     }
     
@@ -175,6 +198,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
             
         } else {
+            
             return false
         }
     }

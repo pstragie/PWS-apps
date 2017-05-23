@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SwiftCharts
 
 class ShoppingListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     
@@ -20,6 +21,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     var menuView = UIView()
     var upArrow = UIView()
     var totalePrijs:Dictionary<String,Float> = [:]
+    //var altPrijs:Dictionary<String,Float> = [:]
+    var gdkpaltpupr:Float = 0.0
+    var gdkpaltrema:Float = 0.0
+    var gdkpaltremw:Float = 0.0
     var gdkp:Dictionary<String,Dictionary<String,Float>> = [:] /* [vosnm: [mppnm, 8.70] */
     var gdkpprijs:Float = 0.0
     var gdkpnaam:Dictionary<String,String> = [:] /* [vosnm: mppnm */
@@ -346,6 +351,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         showGraphButton.layer.cornerRadius = 8
         self.popButton.isEnabled = false
         self.popButton.isHidden = true
+        // MARK: - Bar Chart
+        let chartConfig = BarsChartConfig(valsAxisConfig: ChartAxisConfig(from: 0, to: Double(totalePrijs["pupr"]!)+10, by: 1))
+        let frame = CGRect(x: 125, y: 190, width: 300, height: 200)
+        let chart = BarsChart(frame: frame, chartConfig: chartConfig, xTitle: "Categorie", yTitle: "Prijs €", bars: [("pubprijs", Double(totalePrijs["pupr"]!)), ("pubprijs alt", Double(gdkpaltpupr)), ("", 0), ("remA", Double(totalePrijs["rema"]!)), ("remA alt", Double(gdkpaltrema)), ("", 0),("remW", Double(totalePrijs["remw"]!)), ("remW alt", Double(gdkpaltremw))], color: UIColor.white, barWidth: 25)
+        self.graphView.addSubview(chart.view)
+        //self.chart = chart
     }
     
     func setupUpArrow() {
@@ -474,7 +485,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         searchBar.updateFocusIfNeeded()
         searchBar.becomeFirstResponder()
         searchActive = true
-        if self.zoekwoord != nil {
+        if self.zoekwoord != "" {
             self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
         }
         // Tell the searchBar that the searchBarSearchButton was clicked
@@ -551,6 +562,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         } else {
             if searchText.isEmpty == true {
                 predicate = NSPredicate(format: "userdata.aankooplijst == true")
+                sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
             } else {
                 let predicate1 = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
                 let predicate2 = NSPredicate(format: "userdata.aankooplijst == true")
@@ -638,9 +650,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         let cheappupr = fetchCheapest(categorie: "pupr")
         let cheaprema = fetchCheapest(categorie: "rema")
         let cheapremw = fetchCheapest(categorie: "remw")
-        let gdkpaltpupr = berekenGoedkoopsteAlternatief(altdict: cheappupr, categorie: "pupr")
-        let gdkpaltrema = berekenGoedkoopsteAlternatief(altdict: cheaprema, categorie: "rema")
-        let gdkpaltremw = berekenGoedkoopsteAlternatief(altdict: cheapremw, categorie: "remw")
+        gdkpaltpupr = berekenGoedkoopsteAlternatief(altdict: cheappupr, categorie: "pupr")
+        gdkpaltrema = berekenGoedkoopsteAlternatief(altdict: cheaprema, categorie: "rema")
+        gdkpaltremw = berekenGoedkoopsteAlternatief(altdict: cheapremw, categorie: "remw")
         altPupr.text = "\(gdkpaltpupr) €"
         altRema.text = "\(gdkpaltrema) €"
         altRemw.text = "\(gdkpaltremw) €"
@@ -701,7 +713,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     func applicationDidEnterBackground(_ notification: Notification) {
         self.appDelegate.saveContext()
     }
-    
 }
 
 extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
