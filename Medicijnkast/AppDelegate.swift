@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         for mppcv in localdata.array(forKey: "userdata")! {
             print("mppcv: ", mppcv)
             let meddict = localdata.dictionary(forKey: mppcv as! String)
-            print("meddict: ", meddict)
+            print("meddict: ", meddict!)
         }
         // Check if medicine is still present in database
         

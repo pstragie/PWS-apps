@@ -249,10 +249,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("Layout selectedHyr0 \(selectedHyr0)")
+        //print("Layout selectedHyr0 \(selectedHyr0)")
         updatePicker1()
+        zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")
         level1Picker.reloadAllComponents()
-        print("hyrView: \(hyrView)")
+        //print("hyrView: \(hyrView)")
         if hyrView == true {
             self.hyrPickerView.isHidden = false
             self.view.bringSubview(toFront: hyrPickerView)
@@ -832,13 +833,17 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             x = medicijnen.count
             if x == 0 {
                 gevondenItemsLabel.isHidden = false
-                tableView.isHidden = true
+                tableView.isHidden = false
+                tableView.tableFooterView = UIView()
                 zoekenImage.isHidden = false
+                self.view.bringSubview(toFront: self.zoekenImage)
+
             } else {
                 gevondenItemsLabel.isHidden = false
                 zoekenImage.isHidden = true
             }
         } else {
+            print("ELSE")
             x = 0
             gevondenItemsLabel.isHidden = false
             zoekenImage.isHidden = false

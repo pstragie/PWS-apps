@@ -525,11 +525,13 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 	}
 	
+	/*
 	fileprivate func storeToDefaults() {
 		if let medicijnen = fetchedResultsController.fetchedObjects {
 			let medarray = medicijnen
 		}
 	}
+	*/
 	
     // MARK: - View Methods
 	fileprivate func updateView() {
