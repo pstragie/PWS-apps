@@ -507,7 +507,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         print("text did change")
         zoekwoord = searchText
         searchActive = true
-        print("Zoekterm: \(searchBar.text)")
+        print("Zoekterm: \(String(describing: searchBar.text))")
         
         self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
     }
@@ -605,7 +605,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             let ObjectsLeft:Array<String> = uniekInAankooplijst()
             destination.receivedData = [ObjectsLeft, ObjectsRight]
         default:
-            print("Unknown segue: \(segue.identifier)")
+            print("Unknown segue: \(String(describing: segue.identifier))")
         }
     }
     

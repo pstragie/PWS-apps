@@ -358,7 +358,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             let selectedObject = fetchedResultsControllerRight.object(at: indexPath)
             destination.medicijn = selectedObject
         default:
-            print("Unknown segue: \(segue.identifier)")
+            print("Unknown segue: \(String(describing: segue.identifier))")
         }
     }
     

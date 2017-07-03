@@ -547,6 +547,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				DEVELOPMENT_TEAM = QUXKFNLMD9;
 				INFOPLIST_FILE = Medicijnkast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PWS.MedCabinetFree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -563,6 +564,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
 				DEVELOPMENT_TEAM = QUXKFNLMD9;
 				INFOPLIST_FILE = Medicijnkast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.PWS.MedCabinetFree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -629,6 +631,7 @@
 				B6F94BCB1ED09D340076A85F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

@@ -18,6 +18,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let level0Picker = UIPickerView()
     var level1dict = Dictionaries().level1Picker()
     let level1Picker = UIPickerView()
+    let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
     @IBOutlet weak var zoekenImage: UIImageView!
 
@@ -170,6 +171,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             selectedScope = 3
             print("irnm")
         case "hyrToSearch"?:
+            self.view.endEditing(true)
             hyrView = true
             let hyr:String = (receivedData?.mp?.hyr?.hyr)!
             let firstCharacter = hyr[hyr.index(hyr.startIndex, offsetBy: 0)]
@@ -245,6 +247,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.updateView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        
+        // Temp: read localdata
+        let context = self.appDelegate.persistentContainer.viewContext
+        self.copyUserDefaultsToUserData(managedObjectContext: context)
     }
     
     override func viewDidLayoutSubviews() {
@@ -313,6 +319,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.btnCloseMenuView.isEnabled = false
     }
     
+    // MARK: - Setup HyrPickerView
     func setupHyrPickerView() {
         self.hyrPickerView.isHidden = false
         self.hyrPickerView=UIView(frame:CGRect(x:10, y:104, width: self.view.bounds.width-20, height: 188))
@@ -321,6 +328,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         hyrPickerView.layer.cornerRadius = 8
         hyrPickerView.layer.borderWidth = 1
         hyrPickerView.layer.borderColor = UIColor.gray.cgColor
+        hyrPickerView.autoresizingMask = .flexibleWidth
+        
         self.view.addSubview(hyrPickerView)
         self.btnCloseMenuView.isHidden = true
         self.btnCloseMenuView.isEnabled = false
@@ -329,19 +338,22 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         horstack.axis = .horizontal
         horstack.distribution = .fillProportionally
         horstack.alignment = .fill
+        horstack.autoresizingMask = .flexibleWidth
         horstack.spacing = 5
         horstack.translatesAutoresizingMaskIntoConstraints = false
         self.hyrPickerView.addSubview(horstack)
-        //Stackview Layout
+        // MARK: Stackview Layout
+        
         let viewsDictionary = ["stackView": horstack]
         let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[stackView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         hyrPickerView.addConstraints(stackView_H)
         hyrPickerView.addConstraints(stackView_V)
-        
+ 
         self.view.sendSubview(toBack: self.hyrPickerView)
     }
     
+    // MARK: - Setup infoView
     func setupInfoView() {
         self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 178))
         self.infoView.center.y -= view.bounds.height-104
@@ -408,7 +420,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         horstack.spacing = 5
         horstack.translatesAutoresizingMaskIntoConstraints = false
         self.infoView.addSubview(horstack)
-        //Stackview Layout
+        // MARK: Stackview Layout
         let viewsDictionary = ["stackView": horstack]
         let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-115-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[stackView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
@@ -421,6 +433,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
+    /*
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        let width = screenWidth - 10
+        return width
+    }
+    */
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView == level0Picker {
             return Array(level0dict.values).count
@@ -437,6 +457,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else if pickerView == level1Picker {
             return Array(level1dict.values).sorted()[row]
         }
+        
         return nil
     }
     
@@ -504,13 +525,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - search bar related
     fileprivate func setUpSearchBar(selectedScope: Int) {
+        print("setting up searchbar")
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         searchBar.isHidden = false
         searchBar.showsScopeBar = true
-        // cope button titles: mpnm, mppnm, vosnm_, nirnnm, alles(mpnm,vosnm,nirnm)
+        // scope button titles: mpnm, mppnm, vosnm_, nirnnm, alles(mpnm,vosnm,nirnm)
         searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "toepassing", "alles"]
         searchBar.selectedScopeButtonIndex = selectedScope
-        print("Current zoekwoord: \(zoekwoord)")
+        print("Current zoekwoord: \(String(describing: zoekwoord))")
         searchBar.text = zoekwoord
         searchBar.delegate = self
         self.tableView.tableHeaderView = searchBar
@@ -582,6 +604,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             hyrView = false
         case 4:
             print("scope: hierarchie")
+            self.view.endEditing(true)
             filterKeyword = "mp.hyr.hyr"
             sortKeyword = "mp.mpnm"
             if searchBar.text == nil {
@@ -806,7 +829,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: - Navigation
-    let CellDetailIdentifier = "SegueFromAddToDetail"
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
         case CellDetailIdentifier:
@@ -835,7 +857,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 gevondenItemsLabel.isHidden = false
                 tableView.isHidden = false
                 tableView.tableFooterView = UIView()
-                zoekenImage.isHidden = false
+                if hyrView == false {
+                    zoekenImage.isHidden = false
+                } else {
+                    zoekenImage.isHidden = true
+                }
                 self.view.bringSubview(toFront: self.zoekenImage)
 
             } else {
@@ -897,6 +923,13 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         //print("offset: \(scrollView.contentOffset)")
         if (scrollView.contentOffset.y == 0.0) {  // TOP
             upArrow.isHidden = true
+            let topOffset = CGPoint(x: 0, y: 0)
+            let offset = CGPoint(x: 0, y: -188)
+            if hyrView == true {
+                tableView.setContentOffset(offset, animated: false)
+            } else {
+                tableView.setContentOffset(topOffset, animated: false)
+            }
         } else {
             upArrow.isHidden = false
         }
@@ -919,7 +952,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
+        // MARK: Add to Medicijnkast
         let addToMedicijnkast = UITableViewRowAction(style: .normal, title: "Naar\nmedicijnkast") { (action, indexPath) in
             print("naar medicijnkast")
             // Fetch Medicijn
@@ -942,6 +975,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         }
         addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         
+        // MARK: Add to Shoppinglist
         let addToShoppingList = UITableViewRowAction(style: .normal, title: "Naar\naankooplijst") { (action, indexPath) in
             print("naar aankooplijst")
             // Fetch Medicijn
@@ -1122,7 +1156,21 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             medarray.append(userData.value(forKey: "mppcv")!)
             localdata.set(medarray, forKey: "userdata")
             localdata.set(dict, forKey: (userData.value(forKey: "mppcv")) as! String)
-            print("saved \(userData.value(forKey: "mppcv")) to localdata")
+            print("saved \(String(describing: userData.value(forKey: "mppcv"))) to localdata")
         }
+    }
+    
+    // MARK: - Copy Userdefaults to UserData (DB) --> after update!
+    func copyUserDefaultsToUserData(managedObjectContext: NSManagedObjectContext) {
+        print("Copying localdata to Userdata")
+        // Read UserDefaults array: from localdata, key: userdata
+        print("Localdata: \(String(describing: localdata.array(forKey: "userdata")))")
+        // Use UserDefaults array values to obtain dictionary data
+        for userData in localdata.array(forKey: "userdata")! {
+            print("userdata: \(userData)")
+            //print("ld: ")
+        }
+        // Store data from dict from localdata (forKey: "mppcv") to UserData
+        
     }
 }

@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         } else {
             print("Files Exist!")
-            print("localdata: ", localdata)
+            print("Stored Userdefaults: \(localdata)")
             for (key, value) in localdata.dictionaryRepresentation() {
                 print("\(key) = \(value) \n")
             }
@@ -158,7 +158,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                NSLog("CoreData error \(error), \(error._userInfo)")
+                NSLog("CoreData error \(error), \(String(describing: error._userInfo))")
                 self.errorHandler(error)
                 /*
                  Typical reasons for an error here include:
@@ -527,7 +527,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         // Store the value into the values array
                         
-                        values.append(value as! String)
+                        values.append(value! as String)
                         
                         
                         // Retrieve the unscanned remainder of the string

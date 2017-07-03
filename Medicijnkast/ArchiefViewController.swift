@@ -413,7 +413,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         print("text did change")
         zoekwoord = searchText
         searchActive = true
-        print("Zoekterm: \(searchBar.text)")
+        print("Zoekterm: \(String(describing: searchBar.text))")
         
         self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
     }
@@ -504,7 +504,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
             destination.medicijn = selectedObject
             
         default:
-            print("Unknown segue: \(segue.identifier)")
+            print("Unknown segue: \(String(describing: segue.identifier))")
         }
     }
     

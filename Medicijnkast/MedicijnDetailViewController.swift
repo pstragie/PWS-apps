@@ -258,7 +258,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             let selectedObject = medicijn
             destination.medicijn = selectedObject
         default:
-            print("Unknown segue: \(segue.identifier)")
+            print("Unknown segue: \(String(describing: segue.identifier))")
         }
     }
 }

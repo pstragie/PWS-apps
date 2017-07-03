@@ -428,7 +428,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		print("text did change")
 		zoekwoord = searchText
 		searchActive = true
-		print("Zoekterm: \(searchBar.text)")
+		print("Zoekterm: \(searchBar.text ?? "zoekterm")")
 		
 		self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
 	}
@@ -520,7 +520,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			
 			//navigationController?.pushViewController(destination, animated: true)
 		default:
-			print("Unknown segue: \(segue.identifier)")
+			print("Unknown segue: \(String(describing: segue.identifier))")
 		}
 		
 	}
@@ -543,7 +543,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		if let medicijnen = fetchedResultsController.fetchedObjects {
 			hasMedicijnen = medicijnen.count > 0
 			print("medicijnen aantal: \(medicijnen.count)")
-			print("medicijnen: \(medicijnen.description)")
+			/*print("medicijnen: \(medicijnen.description)")*/
 			x = medicijnen.count
 			
 			let totaalKast = countKast(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
@@ -725,7 +725,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 	}
 
 	func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-		
+		// MARK: delete from medicijnkast
 		let deleteFromMedicijnkast = UITableViewRowAction(style: .normal, title: "Verwijder uit\nmedicijnkast") { (action, indexPath) in
 			// Fetch Medicijn
 			let medicijn = self.fetchedResultsController.object(at: indexPath)
@@ -749,6 +749,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 		}
 		deleteFromMedicijnkast.backgroundColor = UIColor.red
 		
+		// MARK: add to shoppinglist
 		let addToShoppingList = UITableViewRowAction(style: .normal, title: "Naar\naankooplijst") { (action, indexPath) in
 			// Fetch Medicijn
 			let medicijn = self.fetchedResultsController.object(at: indexPath)
