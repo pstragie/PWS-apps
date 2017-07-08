@@ -1167,7 +1167,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         // Use UserDefaults array values to obtain dictionary data
         for userData in localdata.array(forKey: "userdata")! {
             print("userdata: \(userData)")
-            //print("ld: ")
+            print("ld: ")
         }
     }
 }

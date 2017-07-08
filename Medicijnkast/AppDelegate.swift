@@ -13,7 +13,7 @@ import Foundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let AddMed = UIApplication.shared.delegate as! AddMedicijnViewController
+    //let AddMed = AddMedicijnViewController()
     let localdata = UserDefaults.standard
     //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
     var errorHandler: (Error) -> Void = {_ in }
@@ -91,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("meddict: ", meddict!)
         }
         // Check if medicine is still present in database
-        AddMed.copyUserDefaultsToUserData(managedObjectContext: persistentContainer.viewContext)
+        //AddMed.copyUserDefaultsToUserData(managedObjectContext: persistentContainer.viewContext)
     }
 
     
