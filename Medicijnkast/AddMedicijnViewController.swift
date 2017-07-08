@@ -247,6 +247,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.updateView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        
+        /*// MARK: - Temp copy defaults to userdata
+        let context = self.appDelegate.persistentContainer.viewContext
+        copyUserDefaultsToUserData(managedObjectContext: context)*/
     }
     
     override func viewDidLayoutSubviews() {
@@ -1106,6 +1110,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     func addUserData(mppcvValue: String, userkey: String, uservalue: Bool, managedObjectContext: NSManagedObjectContext) {
         // one-to-one relationship
         // Check if record exists
+        print("addUserData: \(mppcvValue), \(userkey), \(uservalue)")
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
             print("data line does not exist")
@@ -1119,7 +1124,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
                 }
             }
         } else {
-            //print("data line exists")
+            print("data line exists")
             for userData in userdata {
                 userData.setValue(uservalue, forKey: userkey)
                 userData.setValue(mppcvValue, forKey: "mppcv")
@@ -1161,13 +1166,20 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     
     // MARK: - Copy Userdefaults to UserData (DB) --> after update!
     func copyUserDefaultsToUserData(managedObjectContext: NSManagedObjectContext) {
+        let context = self.appDelegate.persistentContainer.viewContext
         print("Copying localdata to Userdata")
         // Read UserDefaults array: from localdata, key: userdata
         print("Localdata: \(String(describing: localdata.array(forKey: "userdata")))")
         // Use UserDefaults array values to obtain dictionary data
         for userData in localdata.array(forKey: "userdata")! {
             print("userdata: \(userData)")
-            print("ld: ")
+            let dict = localdata.dictionary(forKey: (userData as! String))
+            print("Dict: \(dict!)")
+            for (key, value) in dict! {
+                if key == "medicijnkast" || key == "medicijnkastarchief" || key == "aankooplijst" || key == "aankooparchief" {
+                    addUserData(mppcvValue: (userData as! String), userkey: key, uservalue: (value as! Bool), managedObjectContext: context)
+                }
+            }
         }
     }
 }

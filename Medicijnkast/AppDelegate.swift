@@ -91,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("meddict: ", meddict!)
         }
         // Check if medicine is still present in database
-        //AddMed.copyUserDefaultsToUserData(managedObjectContext: persistentContainer.viewContext)
+        AddMedicijnViewController().copyUserDefaultsToUserData(managedObjectContext: persistentContainer.viewContext)
     }
 
     
@@ -166,17 +166,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     fatalError("Could not copy sqlite to destination.")
                 }
             }
-            // MARK: Copy Userdefault to Userdata
-            print("localdata: ", localdata)
+            // MARK: Print UserDefaults
+            /*print("localdata: ", localdata)
             for (key, value) in localdata.dictionaryRepresentation() {
                 print("\(key) = \(value) \n")
-            }
+            }*/
         } else {
             print("Files Exist!")
-            print("Stored Userdefaults: \(localdata)")
-            for (key, value) in localdata.dictionaryRepresentation() {
+            //print("Stored Userdefaults: \(localdata)")
+            /*for (key, value) in localdata.dictionaryRepresentation() {
                 print("\(key) = \(value) \n")
-            }
+            }*/
 
         }
     }

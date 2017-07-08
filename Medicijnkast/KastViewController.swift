@@ -47,7 +47,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	// MARK: - Referencing Actions
 	@IBAction func btnCloseMenuView(_ sender: UIButton) {
-		print("btnCloseMenuView pressed!")
+		//print("btnCloseMenuView pressed!")
 		UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
 			if self.menuView.center.x >= 0 {
 				self.menuView.center.x -= self.view.bounds.width
@@ -95,7 +95,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	@IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
-		print("swipe action")
+		//print("swipe action")
 		UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
 			self.menuView.center.x -= self.view.bounds.width
 		}, completion: nil
@@ -110,7 +110,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		super.viewWillAppear(true)
 		self.appDelegate.saveContext()
 		
-		print("View will appear, fetching...")
+		//print("View will appear, fetching...")
 		//tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
 		
 		do {
@@ -129,7 +129,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		print("KastView did load!")
+		//print("KastView did load!")
 		setupLayout()
 		setUpSearchBar()
 		setupView()
@@ -160,14 +160,14 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		progressView.isHidden = true
 		btnCloseMenuView.isHidden = true
 		btnCloseMenuView.isEnabled = false
-		print("view Did Layout subviews")
+		//print("view Did Layout subviews")
 		tableView.reloadData()
-		self.updateView()
+		//self.updateView()
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(true)
-		print("View did appear")
+		//print("View did appear")
 		//tableView.reloadData()
 		//self.updateView()
 		/* update if new bcfi files */
@@ -291,7 +291,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func scrollToTop() {
-		print("Scroll to top button clicked")
+		//print("Scroll to top button clicked")
 		let topOffset = CGPoint(x: 0, y: 0)
 		tableView.setContentOffset(topOffset, animated: true)
 	}
@@ -349,27 +349,27 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 		switch selectedScope {
 		case 0:
-			print("scope: merknaam")
+			//print("scope: merknaam")
 			filterKeyword = "mp.mpnm"
 			sortKeyword = "mp.mpnm"
 			zoekwoord = searchBar.text!
 		case 1:
-			print("scope: verpakking")
+			//print("scope: verpakking")
 			filterKeyword = "mppnm"
 			sortKeyword = "mppnm"
 			zoekwoord = searchBar.text!
 		case 2:
-			print("scope: vosnaam")
+			//print("scope: vosnaam")
 			filterKeyword = "vosnm_"
 			sortKeyword = "vosnm_"
 			zoekwoord = searchBar.text!
 		case 3:
-			print("scope: firmanaam")
+			//print("scope: firmanaam")
 			filterKeyword = "mp.ir.nirnm"
 			sortKeyword = "mp.ir.nirnm"
 			zoekwoord = searchBar.text!
 		case 4:
-			print("scope: alles")
+			//print("scope: alles")
 			filterKeyword = "mp.mpnm"
 			sortKeyword = "mp.mpnm"
 			zoekwoord = searchBar.text!
@@ -379,9 +379,9 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			zoekwoord = searchBar.text!
 		}
 
-		print("scope changed: \(selectedScope)")
-		print("filterKeyword: \(filterKeyword)")
-		print("searchbar text: \(searchBar.text!)")
+		//print("scope changed: \(selectedScope)")
+		//print("filterKeyword: \(filterKeyword)")
+		//print("searchbar text: \(searchBar.text!)")
 		zoekwoord = searchBar.text!
 		self.filterContentForSearchText(searchText: searchBar.text!, scopeIndex: selectedScope)
 	}
@@ -400,7 +400,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			break
 		}
 		
-		print("Segment changed: \(segmentedButton.selectedSegmentIndex)")
+		//print("Segment changed: \(segmentedButton.selectedSegmentIndex)")
 		// Focus searchBar (om onmiddellijk typen mogelijk te maken)
 		searchBar.updateFocusIfNeeded()
 		searchBar.becomeFirstResponder()
@@ -414,7 +414,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 
 	func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-		print("Search should begin editing")
+		//print("Search should begin editing")
 		searchBar.showsScopeBar = true
 		searchBar.sizeToFit()
 		searchBar.setShowsCancelButton(true, animated: true)
@@ -425,10 +425,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	
 	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-		print("text did change")
+		//print("text did change")
 		zoekwoord = searchText
 		searchActive = true
-		print("Zoekterm: \(searchBar.text ?? "zoekterm")")
+		//print("Zoekterm: \(searchBar.text ?? "zoekterm")")
 		
 		self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
 	}
@@ -442,7 +442,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		filterKeyword = "mp.mpnm"
 		sortKeyword = "mp.mpnm"
-		print("Cancel clicked")
+		//print("Cancel clicked")
 		searchBar.showsScopeBar = false
 		searchBar.sizeToFit()
 		searchActive = false
@@ -457,7 +457,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-		print("should end editing")
+		//print("should end editing")
 		self.tableView.reloadData()
 		return true
 	}
@@ -496,15 +496,15 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 		do {
 			try self.fetchedResultsController.performFetch()
-			print("fetching...")
+			//print("fetching...")
 		} catch {
 			let fetchError = error as NSError
 			print("\(fetchError), \(fetchError.userInfo)")
 		}
 		self.tableView.reloadData()
-		print("filterKeyword: \(filterKeyword)")
-		print("sortkeyword \(sortKeyword)")
-		print("searchText: \(searchText)")
+		//print("filterKeyword: \(filterKeyword)")
+		//print("sortkeyword \(sortKeyword)")
+		//print("searchText: \(searchText)")
 		self.updateView()
 	}
 
@@ -535,14 +535,14 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
     // MARK: - View Methods
 	fileprivate func updateView() {
-		print("Updating view...")
+		//print("Updating view...")
 		var hasMedicijnen = false
 		
 		var x:Int
 
 		if let medicijnen = fetchedResultsController.fetchedObjects {
 			hasMedicijnen = medicijnen.count > 0
-			print("medicijnen aantal: \(medicijnen.count)")
+			//print("medicijnen aantal: \(medicijnen.count)")
 			/*print("medicijnen: \(medicijnen.description)")*/
 			x = medicijnen.count
 			
@@ -658,7 +658,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 	// MARK: - table data
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
-		print("aantal rijen in tabel: \(medicijnen.count)")
+		//print("aantal rijen in tabel: \(medicijnen.count)")
 		tableView.layer.cornerRadius = 3
 		tableView.layer.masksToBounds = true
 		tableView.layer.borderWidth = 1
@@ -762,7 +762,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "aankooplijst", uservalue: true, managedObjectContext: context)
 			do {
 				try context.save()
-				print("med saved in aankooplijst")
+				//print("med saved in aankooplijst")
 			} catch {
 				print(error.localizedDescription)
 			}
@@ -829,7 +829,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 				}
 			}
 		} else {
-			print("data line exists")
+			//print("data line exists")
 			for userData in userdata {
 				userData.setValue(uservalue, forKey: userkey)
 				userData.setValue(mppcvValue, forKey: "mppcv")

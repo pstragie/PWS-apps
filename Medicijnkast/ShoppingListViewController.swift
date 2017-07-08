@@ -69,7 +69,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - Referencing Actions
     @IBAction func popButton(_ sender: UIButton) {
-        print("popButton pressed!")
+        //print("popButton pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
             self.graphView.center.x -= self.view.bounds.width
         }, completion: nil
@@ -80,7 +80,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
-        print("btnCloseMenuView pressed!")
+        //print("btnCloseMenuView pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
             if self.menuView.center.x >= 0 {
                 self.menuView.center.x -= self.view.bounds.width
@@ -134,7 +134,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
-        print("swipe action")
+        //print("swipe action")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
             self.menuView.center.x -= self.view.bounds.width
         }, completion: nil
@@ -148,7 +148,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     @IBAction func swipeToCloseGraphView(recognizer: UISwipeGestureRecognizer) {
-        print("swipe action")
+        //print("swipe action")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
             self.menuView.center.x -= self.view.bounds.width
         }, completion: nil
@@ -196,7 +196,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.appDelegate.saveContext()
-        print("Aankooplijst view will appear, fetching...")
+        //print("Aankooplijst view will appear, fetching...")
         
         do {
             try self.fetchedResultsController.performFetch()
@@ -206,7 +206,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             print("\(fetchError), \(fetchError.localizedDescription)")
         }
         rekenen()
-        print("berekenen...")
+        //print("berekenen...")
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         
         tableView.reloadData()
@@ -215,7 +215,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Aankooplijst view did load!")
+        //print("Aankooplijst view did load!")
         setupLayout()
         setUpSearchBar()
         setupView()
@@ -244,8 +244,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         tableView.reloadData()
         setupUpArrow()
         btnCloseMenuView.setTitle("", for: .normal)
-        self.updateView()
-        print("view Did Layout subviews")
+        //self.updateView()
+        //print("view Did Layout subviews")
     }
     
     // MARK: Setup views
@@ -382,7 +382,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func scrollToTop() {
-        print("Scroll to top button clicked")
+        //print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)
         tableView.setContentOffset(topOffset, animated: true)
     }
@@ -418,7 +418,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         searchBar.showsScopeBar = false
         searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "alles"]
         searchBar.selectedScopeButtonIndex = -1
-        print("Scope: \(searchBar.selectedScopeButtonIndex)")
+        //print("Scope: \(searchBar.selectedScopeButtonIndex)")
         searchBar.delegate = self
         
         self.tableView.tableHeaderView = searchBar
@@ -430,27 +430,27 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         searchActive = true
         switch selectedScope {
         case 0:
-            print("scope: merknaam")
+            //print("scope: merknaam")
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
         case 1:
-            print("scope: verpakking")
+            //print("scope: verpakking")
             filterKeyword = "mppnm"
             sortKeyword = "mppnm"
             zoekwoord = searchBar.text!
         case 2:
-            print("scope: vosnaam")
+            //print("scope: vosnaam")
             filterKeyword = "vosnm_"
             sortKeyword = "vosnm_"
             zoekwoord = searchBar.text!
         case 3:
-            print("scope: firmanaam")
+            //print("scope: firmanaam")
             filterKeyword = "mp.ir.nirnm"
             sortKeyword = "mp.ir.nirnm"
             zoekwoord = searchBar.text!
         case 4:
-            print("scope: alles")
+            //print("scope: alles")
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
@@ -460,9 +460,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             zoekwoord = searchBar.text!
         }
         
-        print("scope changed: \(selectedScope)")
-        print("filterKeyword: \(filterKeyword)")
-        print("searchbar text: \(searchBar.text!)")
+        //print("scope changed: \(selectedScope)")
+        //print("filterKeyword: \(filterKeyword)")
+        //print("searchbar text: \(searchBar.text!)")
         zoekwoord = searchBar.text!
         self.filterContentForSearchText(searchText: searchBar.text!, scopeIndex: selectedScope)
     }
@@ -481,7 +481,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             break
         }
         
-        print("Segment changed: \(segmentedButton.selectedSegmentIndex)")
+        //print("Segment changed: \(segmentedButton.selectedSegmentIndex)")
         // Focus searchBar (om onmiddellijk typen mogelijk te maken)
         searchBar.updateFocusIfNeeded()
         searchBar.becomeFirstResponder()
@@ -495,7 +495,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        print("Search should begin editing")
+        //print("Search should begin editing")
         searchBar.showsScopeBar = true
         searchBar.sizeToFit()
         searchBar.setShowsCancelButton(true, animated: true)
@@ -505,10 +505,10 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("text did change")
+        //print("text did change")
         zoekwoord = searchText
         searchActive = true
-        print("Zoekterm: \(String(describing: searchBar.text))")
+        //print("Zoekterm: \(String(describing: searchBar.text))")
         
         self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
     }
@@ -522,7 +522,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         filterKeyword = "mp.mpnm"
         sortKeyword = "mp.mpnm"
-        print("Cancel clicked")
+        //print("Cancel clicked")
         searchBar.showsScopeBar = false
         searchBar.sizeToFit()
         searchActive = false
@@ -537,7 +537,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        print("should end editing")
+        //print("should end editing")
         self.tableView.reloadData()
         return true
     }
@@ -576,15 +576,15 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         do {
             try self.fetchedResultsController.performFetch()
-            print("fetching...")
+            //print("fetching...")
         } catch {
             let fetchError = error as NSError
             print("\(fetchError), \(fetchError.userInfo)")
         }
         self.tableView.reloadData()
-        print("filterKeyword: \(filterKeyword)")
-        print("sortkeyword \(sortKeyword)")
-        print("searchText: \(searchText)")
+        //print("filterKeyword: \(filterKeyword)")
+        //print("sortkeyword \(sortKeyword)")
+        //print("searchText: \(searchText)")
         self.updateView()
     }
     
@@ -681,14 +681,14 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     // MARK: - update view
     fileprivate func updateView() {
-        print("Updating view...")
+        //print("Updating view...")
         var hasMedicijnen = false
         
         var x:Int
         
         if let medicijnen = fetchedResultsController.fetchedObjects {
             hasMedicijnen = medicijnen.count > 0
-            print("medicijnen aantal: \(medicijnen.count)")
+            //print("medicijnen aantal: \(medicijnen.count)")
             
             x = medicijnen.count
             
@@ -978,7 +978,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             let minprijs = prijsdict.keys.min()
             let minprijsMppcv = prijsdict[minprijs!]
             altdict[key] = [minprijsMppcv!, value, minprijs!]
-            print("altdict index: \(altdict)")
+            //print("altdict index: \(altdict)")
             //vosdict[vos] = [minprijsMppcv!:minprijs!]
         }
         //print("altdict: \(altdict)")
