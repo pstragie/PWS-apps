@@ -13,11 +13,38 @@ import Foundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let AddMed = UIApplication.shared.delegate as! AddMedicijnViewController
     let localdata = UserDefaults.standard
     //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
     var errorHandler: (Error) -> Void = {_ in }
 
+    // MARK: - DidFinishLaunchingWithOptions
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        // MARK: Check current version
+        let defaults = UserDefaults.standard
+        let cAV = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        guard let currentAppVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let previousVersion = defaults.string(forKey: "appVersion") else {
+            // Key does not exist in UserDefaults, must be a fresh install
+            print("fresh install")
+            // Writing version to UserDefaults for the first time
+            defaults.set(cAV, forKey: "appVersion")
+            return false
+        }
+        
+        let comparisonResult = currentAppVersion.compare(previousVersion, options: .numeric, range: nil, locale: nil)
+        switch comparisonResult {
+        case .orderedSame:
+            print("same version is running like before")
+        case .orderedAscending:
+            print("earlier version is running")
+        case .orderedDescending:
+            print("older version is running")
+        }
+        
+        // Updating new version to UserDefaults
+        defaults.set(currentAppVersion, forKey: "appVersion")
+        
         // Override point for customization after application launch.
         preloadDBData()
         //print("NSHomeDir: \(NSHomeDirectory())")
@@ -54,6 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    // MARK: - didUpdate userActivity
     func application(_ application: UIApplication, didUpdate userActivity: NSUserActivity) {
         print("App did update!")
         // Copy Userdefaults to Userdata entity
@@ -63,13 +91,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("meddict: ", meddict!)
         }
         // Check if medicine is still present in database
-        
+        AddMed.copyUserDefaultsToUserData(managedObjectContext: persistentContainer.viewContext)
     }
+
+    
+    // MARK: - applicationWillResignActive
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
+    // MARK: - applicationDidEnterBackground
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
@@ -78,20 +110,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //checkForUpdates()
     }
 
+    // MARK: - applicationWillEnterForeground
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
+    // MARK: - applicationDidBecomeActive
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
+    // MARK: - applicationWillTerminate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
     }
 
+    // MARK: - seedPersistentStoreWithManagedObjectContext
     func seedPersistentStoreWithManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) {
         if seedCoreDataContainerIfFirstLaunch() {
             //destroyPersistentStore()
@@ -114,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    // MARK: - Core Data stack
+    // MARK: - preloadDBData Core Data stack
     func preloadDBData() {
         let fileManager = FileManager.default
 
@@ -145,6 +181,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    // MARK: persistentContainer
     lazy var persistentContainer: NSPersistentContainer = {
         print("Loading persistentContainer")
         /*
@@ -174,7 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
     
-    // Optional
+    // MARK: Optional
     lazy var backgroundContext: NSManagedObjectContext = {
         return self.persistentContainer.newBackgroundContext()
     }()
@@ -189,7 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.persistentContainer.performBackgroundTask(block)
     }
     
-    
+    // MARK: seedCoreDataContainerIfFirstLaunch
     func seedCoreDataContainerIfFirstLaunch() -> Bool {
         //1
         let previouslyLaunched = UserDefaults.standard.bool(forKey: "previouslyLaunched")
@@ -205,7 +242,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     // MARK: - Core Data Saving support
-    
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -266,6 +302,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     */
+    
+    // MARK: - createRecordForEntity
     private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
         // Helpers
         var result: NSManagedObject?
@@ -278,6 +316,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return result
     }
     
+    // MARK: - fetchRecordsForEntity
     private func fetchRecordsForEntity(_ entity: String, key: String, arg: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
         // Create Fetch Request
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
@@ -298,6 +337,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return result
     }
     
+    // MARK: - saveAttributes
     func saveAttributes(entitynaam: String, dict: [String:Any]) {
         let managedObjectContext = persistentContainer.viewContext
         print("saving attributes...")

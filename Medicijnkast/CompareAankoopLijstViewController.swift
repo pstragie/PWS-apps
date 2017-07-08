@@ -19,14 +19,17 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     var prijsremaLeft:Float? = 0.00
     var prijzenRight:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
     var prijzenLeft:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
+    var altscope: String = "VOS"
     let CellLeftDetailIdentifier = "SegueFromCompareLeftToDetail"
     let CellRightDetailIdentifier = "SegueFromCompareRightToDetail"
     @IBOutlet weak var tableViewLeft: UITableView!
     @IBOutlet weak var tableViewRight: UITableView!
+    @IBOutlet weak var vosIndexSwitch: UISegmentedControl!
     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupLayout()
         print("Compare view did load!")
         // Do any additional setup after loading the view.
         navigationItem.title = "Vergelijk"
@@ -61,6 +64,13 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: true)
     }
+    
+    // MARK: - segmented button
+    func setupLayout() {
+        vosIndexSwitch.setTitle("Verpakking", forSegmentAt: 0)
+        vosIndexSwitch.setTitle("Unit", forSegmentAt: 1)
+    }
+    
     // MARK: - Check for doubles (vosnm_) in aankooplijst en verwittig de gebruiker
     func checkForDoubles() {
         // Fetch en count aankooplijst
@@ -140,6 +150,23 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         self.present(alertCompare, animated:true, completion:nil)
     }
 
+    @IBAction func indexChanged(_ sender: UISegmentedControl) {
+        switch vosIndexSwitch.selectedSegmentIndex {
+        case 0:
+            altscope = "VOS"
+        case 1:
+            altscope = "Unit"
+        default:
+            altscope = "VOS"
+            break
+        }
+        
+        print("Altscope changed: \(vosIndexSwitch.selectedSegmentIndex)")
+        
+        self.tableViewRight.reloadData()
+        
+    }
+    
     // MARK: - Table setup
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count:Int?
@@ -178,6 +205,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         var cell:MedicijnTableViewCell?
         let objectsLeft = receivedData?[0]
         let objectsRight = receivedData?[1]
+        let objectsRightIndex = receivedData?[2]
         
         if tableView == self.tableViewLeft {
             //tableViewRight.scrollToRow(at: indexPath, at: .top, animated: true)
@@ -221,16 +249,20 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
             cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
             cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
-            cell?.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
-            
+            //cell?.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
+            cell?.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
         }
         
         if tableView == self.tableViewRight {
             //tableViewLeft.scrollToRow(at: indexPath, at: .top, animated: true)
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
-
+            var predicate = NSPredicate(format: "mppcv IN %@", objectsRight!)
+            if altscope == "VOS" {
+                predicate = NSPredicate(format: "mppcv IN %@", objectsRight!)
+            } else {
+                predicate = NSPredicate(format: "mppcv IN %@", objectsRightIndex!)
+            }
             // Filter medicijnen
-            let predicate = NSPredicate(format: "mppcv IN %@", objectsRight!)
             self.fetchedResultsControllerRight.fetchRequest.predicate = predicate
 
             do {
@@ -261,7 +293,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
             cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
             cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
-            cell?.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
+            cell?.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
         }
         return cell!
     }

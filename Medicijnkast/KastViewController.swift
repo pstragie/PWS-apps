@@ -586,6 +586,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.appDelegate.saveContext()
     }
 	
+	// MARK: - Obsolete: open text alert window
 	func openTextAlert() {
 		// Create Alert Controller
 		let alert9 = UIAlertController(title: "Persoon toevoegen", message: nil, preferredStyle: UIAlertControllerStyle.alert)
@@ -617,7 +618,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 
 }
-
+// MARK: - Extension
 extension KastViewController: NSFetchedResultsControllerDelegate {
 	
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -711,11 +712,15 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 		cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
 		cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
 		cell.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
+		/*
 		if medicijn.cheapest == false {
 			cell.cheapest.text = "gdkp: Nee"
 		} else {
 			cell.cheapest.text = "gdkp: Ja"
 		}
+		*/
+		cell.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
+
 		return cell
 	}
 	

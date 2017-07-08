@@ -341,6 +341,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         segmentedButton.setTitle("....e", forSegmentAt: 2)
     }
     
+    // MARK: - Setup graph view
     func setupGraphView() {
         //print("original x: \(self.graphView.center.x)")
         self.graphView.center.x -= view.bounds.width
@@ -351,7 +352,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         showGraphButton.layer.cornerRadius = 8
         self.popButton.isEnabled = false
         self.popButton.isHidden = true
-        // MARK: - Bar Chart
+        // MARK: Bar Chart
         let chartConfig = BarsChartConfig(valsAxisConfig: ChartAxisConfig(from: 0, to: Double(totalePrijs["pupr"]!)+10, by: 1))
         let frame = CGRect(x: 125, y: 190, width: 300, height: 200)
         let chart = BarsChart(frame: frame, chartConfig: chartConfig, xTitle: "Categorie", yTitle: "Prijs €", bars: [("pubprijs", Double(totalePrijs["pupr"]!)), ("pubprijs alt", Double(gdkpaltpupr)), ("", 0), ("remA", Double(totalePrijs["rema"]!)), ("remA alt", Double(gdkpaltrema)), ("", 0),("remW", Double(totalePrijs["remw"]!)), ("remW alt", Double(gdkpaltremw))], color: UIColor.white, barWidth: 25)
@@ -601,15 +602,19 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             let destination = segue.destination as! CompareAankoopLijstViewController
             let gdkp = fetchCheapest(categorie: "rema")
             let gdkpmppcv = alternatieven(altdict: gdkp, categorie: "rema")
+            let gdkpindex = fetchCheapestIndex()
+            let gdkpmppcvindex = alternatievenIndex(altdictIndex: gdkpindex)
             let ObjectsRight:Array<String> = Array(Set(gdkpmppcv))
+            let ObjectsRightIndex:Array<String> = Array(Set(gdkpmppcvindex))
             let ObjectsLeft:Array<String> = uniekInAankooplijst()
-            destination.receivedData = [ObjectsLeft, ObjectsRight]
+            destination.receivedData = [ObjectsLeft, ObjectsRight, ObjectsRightIndex] /*Add ObjectsRightIndex*/
         default:
             print("Unknown segue: \(String(describing: segue.identifier))")
         }
     }
     
-    // MARK: - View Methods
+    // MARK: - Calculator
+    // MARK: Totale prijs berekenen
     private func TotalePrijs(managedObjectContext: NSManagedObjectContext) -> Dictionary<String,Float> {
         let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
         let pred = NSPredicate(format: "userdata.aankooplijst == true")
@@ -638,10 +643,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         }
         return totaleprijs
     }
-
+    
+    // MARK: Alt prijs berekenen (Verpakking)
     private func rekenen() {
-        // Rekenen
-        
         totalePrijs = TotalePrijs(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
         totalePupr.text = "\((totalePrijs["pupr"])!) €"
         totaalRemA.text = "\((totalePrijs["rema"])!) €"
@@ -661,7 +665,21 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         verschilRema.text = "\(berekenVerschil(categorie: "rema", huidig: totalePrijs, altern: gdkpaltrema)) €"
         verschilRemw.text = "\(berekenVerschil(categorie: "remw", huidig: totalePrijs, altern: gdkpaltremw)) € "
     }
+    // MARK: Tel aantal med in aankooplijst
+    private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {
+        let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
+        let pred = NSPredicate(format: "userdata.aankooplijst == true")
+        fetchReq.predicate = pred
+        
+        do {
+            let aantal = try managedObjectContext.fetch(fetchReq).count
+            return aantal
+        } catch {
+            return 0
+        }
+    }
     
+    // MARK: - update view
     fileprivate func updateView() {
         print("Updating view...")
         var hasMedicijnen = false
@@ -691,20 +709,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {
-        let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
-        let pred = NSPredicate(format: "userdata.aankooplijst == true")
-        fetchReq.predicate = pred
-        
-        do {
-            let aantal = try managedObjectContext.fetch(fetchReq).count
-            return aantal
-        } catch {
-            return 0
-        }
-    }
-    
-    // MARK: -
+    // MARK: - setup message label
     private func setupMessageLabel() {
         messageLabel.text = "Je aankooplijst is leeg."
     }
@@ -762,7 +767,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         }
     }
     
-    // MARK: table data
+    // MARK: - table data
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
         tableView.layer.cornerRadius = 3
@@ -816,11 +821,15 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         cell.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
         cell.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
         cell.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
+        /*
         if medicijn.cheapest == false {
             cell.cheapest.text = "gdkp: Nee"
         } else {
             cell.cheapest.text = "gdkp: Ja"
         }
+        */
+        cell.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
+
         return cell
     }
     
@@ -885,8 +894,8 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
     }
     
-    // Rekenen
-    
+    // MARK: - Rekenen
+    // MARK: VOS dictionary
     func vosdict() -> Dictionary<String,String> {
         // fetch alle medicijnen in aankooplijst (userdata.aankooplijst == true)
         // vosarray = [aankooplijst mppcv : aankooplijst vosnm_]
@@ -899,6 +908,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         //print("versusdict: \(versusdict)")
         return versusdict
     }
+    // MARK: Fetch Cheapest
     func fetchCheapest(categorie: String) -> Dictionary<String,Array<Any>> {
         // ["aankoop mppcv 3073251": ["alternatief mppcv 3073251", "paracetamol oraal 1g", "1.25"]]
         let versusdict = vosdict()
@@ -940,6 +950,42 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         return altdict
     }
     
+    // MARK: Fetch Cheapest Index prijs
+    func fetchCheapestIndex() -> Dictionary<String,Array<Any>> {
+        // ["aankoop mppcv 3073251": ["alternatief mppcv 3073251", "paracetamol oraal 1g", "1.25"]]
+        let versusdict = vosdict()
+        // alle medicijnen opvragen
+        // voor elke stofnaam het goedkoopste alternatief zoeken (index prijs)
+        var resultaat:Array<MPP> = []
+        var altdict: Dictionary<String,Array<Any>> = [:]
+        
+        for (key, value) in versusdict {
+            let fetchReq: NSFetchRequest<MPP> = MPP.fetchRequest()
+            let predicate = NSPredicate(format: "vosnm_ == %@", value)
+            fetchReq.predicate = predicate
+            do {
+                resultaat = try self.appDelegate.persistentContainer.viewContext.fetch(fetchReq)
+            } catch {
+                print("fetching error in calculateCheapestPrice")
+            }
+            //print("resultaat: \(resultaat.count)")
+            // Steek index prijs in dictionary
+            var prijsdict:Dictionary<Float, String> = [:]
+            for med in resultaat {
+                prijsdict[med.index!.floatValue!] = med.mppcv!
+            }
+            // Pik er het medicijn met de laagste prijs uit
+            let minprijs = prijsdict.keys.min()
+            let minprijsMppcv = prijsdict[minprijs!]
+            altdict[key] = [minprijsMppcv!, value, minprijs!]
+            print("altdict index: \(altdict)")
+            //vosdict[vos] = [minprijsMppcv!:minprijs!]
+        }
+        //print("altdict: \(altdict)")
+        return altdict
+    }
+    
+    // MARK: Bereken goedkoopste alternatief (tot prijs)
     func berekenGoedkoopsteAlternatief(altdict: Dictionary<String,Array<Any>>, categorie: String) -> Float {
         // Voor elke vosnm in vosarray, goedkoopste alternatief optellen
         // Bereken totaal
@@ -951,6 +997,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         return totaalprijs
     }
     
+    // MARK: uniek in aankooplijst
     func uniekInAankooplijst() -> Array<String> {
         // fetch alle medicijnen in aankooplijst (userdata.aankooplijst == true)
         // vosarray = [aankooplijst mppcv : aankooplijst vosnm_]
@@ -968,6 +1015,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         return uniek
     }
     
+    // MARK: Array alternatieven
     func alternatieven(altdict: Dictionary<String,Array<Any>>, categorie: String) -> Array<String> {
         // Lijst = [Aankooplijst mppcv: Alternatief mppcv]
         // Bereken totaal
@@ -983,12 +1031,29 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         return Array(Set(lijstalternatieven))
     }
     
+    // MARK: Array alternatieven index prijs
+    func alternatievenIndex(altdictIndex: Dictionary<String,Array<Any>>) -> Array<String> {
+        // Lijst = [Aankooplijst mppcv: Alternatief mppcv]
+        // Bereken totaal
+        var lijstalternatievenIndex:Array<String> = []
+        
+        for (_, value) in altdictIndex {  /* key = aankooplijst mppcv, value = array */
+            var mppcv:String = ""
+            /* key = vosnm, value = dict(mppcv, prijs) */
+            mppcv = String(describing: value[0])
+            lijstalternatievenIndex.append(mppcv)
+        }
+        //print("lijstalternatieven: \(lijstalternatieven)")
+        return Array(Set(lijstalternatievenIndex))
+    }
+
+    // MARK: Bereken verschil
     func berekenVerschil(categorie: String, huidig:Dictionary<String,Float>, altern: Float) -> Float {
         let prijsverschil = huidig[categorie]! - altern
-        
         return prijsverschil
     }
     
+    // MARK: - create and fetch records
     private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
         // Helpers
         var result: NSManagedObject?
