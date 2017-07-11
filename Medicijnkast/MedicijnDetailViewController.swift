@@ -34,9 +34,20 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     
     // MARK: - share button
     func shareTapped() {
-        let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+        // text to share
+        var text = ""
+        // fetch medicijn op pagina
+        let med = medicijn!
+        let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
+        text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index!) c€\n"
+        
+        // TODO: add more details
+        
+        // set up activity view controller
+        let textToShare = [ text ]
+        let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true)
+        present(vc, animated: true, completion: nil)
     }
 
     // This variable will hold the data being passed from the Source View Controller

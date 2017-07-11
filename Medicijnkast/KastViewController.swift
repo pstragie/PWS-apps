@@ -317,9 +317,23 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	
 	// MARK: - share button
 	func shareTapped() {
-		let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+		// text to share
+		var text = ""
+		// fetch medicijnen op pagina
+		let medicijnen = fetchedResultsController.fetchedObjects
+		for med in medicijnen! {
+			let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
+			text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index!) c€\n"
+			// draw dashed line
+			text += "___________________________________________\n"
+			
+		}
+		
+		// set up activity view controller
+		let textToShare = [ text ]
+		let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
 		vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-		present(vc, animated: true)
+		present(vc, animated: true, completion: nil)
 	}
 	
 	// MARK: - search bar related
@@ -525,14 +539,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
 	}
 	
-	/*
-	fileprivate func storeToDefaults() {
-		if let medicijnen = fetchedResultsController.fetchedObjects {
-			let medarray = medicijnen
-		}
-	}
-	*/
-	
     // MARK: - View Methods
 	fileprivate func updateView() {
 		//print("Updating view...")
@@ -552,13 +558,17 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 				tableView.isHidden = false
 				messageLabel.isHidden = true
 				self.tableView.reloadData()
+				navigationItem.rightBarButtonItem?.isEnabled = true
 			} else {
 				totaalAantal.text = "\(totaalKast)"
+				navigationItem.rightBarButtonItem?.isEnabled = false
+
 			}
 			
 		} else {
 			tableView.isHidden = !hasMedicijnen
 			messageLabel.isHidden = hasMedicijnen
+			navigationItem.rightBarButtonItem?.isEnabled = false
 			tableView.reloadData()
 		}
 	}
@@ -647,7 +657,8 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 			tableView.reloadData()
 			break;
         default:
-            print("...")
+			break
+            //print("...")
         }
     }
     

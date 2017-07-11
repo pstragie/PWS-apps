@@ -230,6 +230,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         setUpSearchBar(selectedScope: -1)
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
+        
         do {
             try self.fetchedResultsController.performFetch()
         } catch {
@@ -302,9 +303,23 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - share button
     func shareTapped() {
-        let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+        // text to share
+        var text = ""
+        // fetch medicijnen op pagina
+        let medicijnen = fetchedResultsController.fetchedObjects
+        for med in medicijnen! {
+            let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
+            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index!) c€\n"
+            // draw dashed line
+            text += "___________________________________________\n"
+            
+        }
+        
+        // set up activity view controller
+        let textToShare = [ text ]
+        let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true)
+        present(vc, animated: true, completion: nil)
     }
     
     func setupMenuView() {
@@ -433,14 +448,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    /*
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        let screenSize: CGRect = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        let width = screenWidth - 10
-        return width
-    }
-    */
+    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView == level0Picker {
             return Array(level0dict.values).count
@@ -457,7 +465,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else if pickerView == level1Picker {
             return Array(level1dict.values).sorted()[row]
         }
-        
         return nil
     }
     
@@ -863,10 +870,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                     zoekenImage.isHidden = true
                 }
                 self.view.bringSubview(toFront: self.zoekenImage)
-
+                navigationItem.rightBarButtonItem?.isEnabled = false
             } else {
                 gevondenItemsLabel.isHidden = false
                 zoekenImage.isHidden = true
+                navigationItem.rightBarButtonItem?.isEnabled = true
             }
         } else {
             //print("ELSE")
@@ -874,6 +882,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             gevondenItemsLabel.isHidden = false
             zoekenImage.isHidden = false
             tableView.isHidden = true
+            navigationItem.rightBarButtonItem?.isEnabled = false
         }
         self.tableView.reloadData()
         gevondenItemsLabel.text = "\(x)"

@@ -61,6 +61,8 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(webViewTapped))
         webView.addGestureRecognizer(recognizer)
+        
+        self.view.addSubview(webView)
     }
 
     func webViewTapped(recognizer: UITapGestureRecognizer) {
