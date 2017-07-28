@@ -34,6 +34,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     
     // MARK: - share button
     func shareTapped() {
+        /* // Text Version
         // text to share
         var text = ""
         // fetch medicijn op pagina
@@ -46,8 +47,18 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         // set up activity view controller
         let textToShare = [ text ]
         let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
+        */
+        
+        // Image (screenshot version)
+        let bounds = UIScreen.main.bounds
+        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
+        self.view.drawHierarchy(in: bounds, afterScreenUpdates: false)
+        let img = UIGraphicsGetCurrentContext()
+        UIGraphicsEndImageContext()
+        let vc = UIActivityViewController(activityItems: [ img! ], applicationActivities: nil)
+        
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true, completion: nil)
+        present(vc, animated: false, completion: nil)
     }
 
     // This variable will hold the data being passed from the Source View Controller

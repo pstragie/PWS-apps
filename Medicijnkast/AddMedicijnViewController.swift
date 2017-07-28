@@ -183,7 +183,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             var hyrstring:String?
             if hyr.characters.count == 1 {
                 hyrstring = String(firstCharacter)
+            } else if hyr.characters.count == 2 {
+                secondCharacter = hyr[hyr.index(hyr.startIndex, offsetBy: 1)]
+                hyrstring = String(firstTwoCharacters)
             } else {
+                print("More than two characters")
                 secondCharacter = hyr[hyr.index(hyr.startIndex, offsetBy: 1)]
                 hyrstring = String(firstTwoCharacters)
             }
@@ -226,6 +230,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         //print("Addmedicijn View did load!")
+        
         setupLayout()
         setUpSearchBar(selectedScope: -1)
         navigationItem.title = "Zoeken"
@@ -319,7 +324,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         let textToShare = [ text ]
         let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true, completion: nil)
+        present(vc, animated: false, completion: nil)
     }
     
     func setupMenuView() {
@@ -843,8 +848,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             let indexPath = tableView.indexPathForSelectedRow!
             let selectedObject = fetchedResultsController.object(at: indexPath)
             destination.medicijn = selectedObject
+            print("Segue: \(segue.identifier!)!")
         default:
-            print("Unknown segue: \(segue.identifier!)")
+            print("Unknown segue: \(String(describing: segue.identifier!))")
         }
     }
 

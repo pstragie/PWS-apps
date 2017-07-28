@@ -373,6 +373,11 @@
                         <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="0om-xV-9l1"/>
                     </connections>
                 </searchDisplayController>
+                <swipeGestureRecognizer direction="up" id="dME-ue-PAC">
+                    <connections>
+                        <action selector="swipeToCloseInfoViewWithRecognizer:" destination="BYZ-38-t0r" id="aO0-Ug-2Nb"/>
+                    </connections>
+                </swipeGestureRecognizer>
                 <swipeGestureRecognizer direction="left" id="aLX-Hp-fwh">
                     <connections>
                         <action selector="swipeToCloseMenuViewWithRecognizer:" destination="BYZ-38-t0r" id="GJe-sl-RJv"/>

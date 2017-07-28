@@ -62,7 +62,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     func shareTapped() {
         let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true)
+        present(vc, animated: false)
     }
     
     // MARK: - segmented button

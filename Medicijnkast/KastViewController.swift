@@ -67,11 +67,11 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
 			if self.infoView.center.y >= 0 {
 				self.infoView.center.y -= self.view.bounds.height
-				self.view.bringSubview(toFront: self.infoView)
+				//self.view.bringSubview(toFront: self.infoView)
 				
 			} else {
 				self.infoView.center.y += self.view.bounds.height
-				self.view.bringSubview(toFront: self.view)
+				//self.view.bringSubview(toFront: self.view)
 			}
 		}, completion: nil
 		)
@@ -105,7 +105,15 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		btnCloseMenuView.isEnabled = false
 	}
 
-    // MARK: - View Life Cycle
+	@IBAction func swipeToCloseInfoView(recognizer: UISwipeGestureRecognizer) {
+		UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
+			self.infoView.center.y += self.view.bounds.height
+		}, completion: nil)
+		btnCloseMenuView.isHidden = true
+		btnCloseMenuView.isEnabled = false
+	}
+
+	// MARK: - View Life Cycle
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(true)
 		self.appDelegate.saveContext()
@@ -226,22 +234,25 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		let labelremadescription = UILabel()
 		labelremadescription.text = "Bedrag voor patiënten zonder OMNIO statuut."
 		labelremadescription.textColor = UIColor.white
-		labelremadescription.font = UIFont.systemFont(ofSize: 13)
+		labelremadescription.font = UIFont.systemFont(ofSize: 10)
 		let labelremw = UILabel()
 		labelremw.text = "Remgeld W:"
 		labelremw.textColor = UIColor.white
 		let labelremwdescription = UILabel()
 		labelremwdescription.text = "Bedrag voor patiënten met OMNIO/WIGW statuut."
 		labelremwdescription.textColor = UIColor.white
-		labelremwdescription.font = UIFont.systemFont(ofSize: 13)
-		
+		labelremwdescription.font = UIFont.systemFont(ofSize: 10)
+		let labelIndex = UILabel()
+		labelIndex.text = "Prijs per unit in cent"
+		labelIndex.textColor = UIColor.white
+		labelIndex.font = UIFont.systemFont(ofSize: 13)
 		let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma, toepassingsgebied])
 		leftStack.axis = .vertical
 		leftStack.distribution = .fillEqually
 		leftStack.alignment = .fill
 		leftStack.spacing = 5
 		leftStack.translatesAutoresizingMaskIntoConstraints = true
-		let rightStack = UIStackView(arrangedSubviews: [labelpupr, labelrema, labelremadescription, labelremw, labelremwdescription])
+		let rightStack = UIStackView(arrangedSubviews: [labelpupr, labelrema, labelremadescription, labelremw, labelremwdescription, labelIndex])
 		rightStack.axis = .vertical
 		rightStack.distribution = .fillEqually
 		rightStack.alignment = .fill
@@ -333,7 +344,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		let textToShare = [ text ]
 		let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
 		vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-		present(vc, animated: true, completion: nil)
+		present(vc, animated: false, completion: nil)
 	}
 	
 	// MARK: - search bar related
@@ -524,6 +535,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     // MARK: - Navigation
 	let CellDetailIdentifier = "SegueFromKastToDetail"
+	let CellDetailToSearch = "SegueFromDetailToSearch"
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		switch segue.identifier! {
 		case CellDetailIdentifier:

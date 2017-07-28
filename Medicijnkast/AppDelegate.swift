@@ -26,18 +26,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let cAV = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         guard let currentAppVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let previousVersion = defaults.string(forKey: "appVersion") else {
             // Key does not exist in UserDefaults, must be a fresh install
-            print("fresh install")
+            print("Fresh install")
             // Writing version to UserDefaults for the first time
             defaults.set(cAV, forKey: "appVersion")
+            
+            preloadDBData()
+            print("NSHomeDir: \(NSHomeDirectory())")
+            // Print local file directory
+            let fm = FileManager.default
+            let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            print(appdir)
+            
             return false
         }
         
         let comparisonResult = currentAppVersion.compare(previousVersion, options: .numeric, range: nil, locale: nil)
         switch comparisonResult {
         case .orderedSame:
-            print("same version is running like before")
+            print("Same version is running like before")
         case .orderedAscending:
-            print("earlier version is running")
+            print("Earlier version is running")
         case .orderedDescending:
             print("older version is running")
         }
@@ -46,12 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.set(currentAppVersion, forKey: "appVersion")
         
         // Override point for customization after application launch.
-        preloadDBData()
-        //print("NSHomeDir: \(NSHomeDirectory())")
-        // Print local file directory
-        let fm = FileManager.default
-        let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        print(appdir)
+        
         
         // Developer use only! Load persistent store with data from csv files.
         //seedPersistentStoreWithManagedObjectContext(managedObjectContext)
@@ -128,6 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - seedPersistentStoreWithManagedObjectContext
+    // CSV load version: obsolete!
     func seedPersistentStoreWithManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) {
         if seedCoreDataContainerIfFirstLaunch() {
             //destroyPersistentStore()

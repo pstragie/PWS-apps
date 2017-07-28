@@ -82,7 +82,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
     func shareTapped() {
         let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true)
+        present(vc, animated: false)
     }
 
     func refreshTapped() {

@@ -312,7 +312,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         let textToShare = [ text ]
         let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true, completion: nil)
+        present(vc, animated: false, completion: nil)
     }
     
     // MARK: - search bar related
