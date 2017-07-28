@@ -37,6 +37,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             print(appdir)
             
+            // Save Managed Object Context
+            self.saveContext()
+            
+            let navigationBarAppearance = UINavigationBar.appearance()
+            
+            // Change tint and and bar tint
+            navigationBarAppearance.tintColor = UIColor.black
+            navigationBarAppearance.barTintColor = UIColor.white
+            
+            // Change navigation item title color
+            let navbarfont = UIFont(name:"San Franciso", size: 21) ?? UIFont.systemFont(ofSize: 21)
+            navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.black, NSFontAttributeName: navbarfont]
+            
+            let tabBarAppearance = UITabBar.appearance()
+            // Change tint and bar tint
+            tabBarAppearance.tintColor = UIColor.black.withAlphaComponent(1.0)
+            tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.8)
+            
+            let searchBarAppearance = UISearchBar.appearance()
+            searchBarAppearance.tintColor = UIColor.white
+            //searchBarAppearance.barTintColor = UIColor.red
+            
             return false
         }
         
