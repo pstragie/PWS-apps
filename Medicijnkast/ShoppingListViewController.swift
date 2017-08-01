@@ -71,7 +71,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     @IBAction func popButton(_ sender: UIButton) {
         //print("popButton pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.graphView.center.x -= self.view.bounds.width
+            if self.graphView.center.x >= 0 {
+                self.graphView.center.x -= self.view.bounds.width
+            }
+            if self.infoView.center.y >= 0 {
+                self.infoView.center.y -= self.view.bounds.height
+            }
         }, completion: nil
         )
         graphView.backgroundColor = UIColor.black.withAlphaComponent(0.99)
@@ -106,10 +111,13 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
                 self.infoView.center.y += self.view.bounds.height
                 self.view.bringSubview(toFront: self.view)
             }
+            if self.graphView.center.x >= 0 {
+                self.graphView.center.x -= self.view.bounds.width
+            }
         }, completion: nil
         )
-        btnCloseMenuView.isHidden = false
-        btnCloseMenuView.isEnabled = true
+        popButton.isHidden = false
+        popButton.isEnabled = true
     }
     
     @IBAction func showMenuView(_ sender: UIButton) {
@@ -183,6 +191,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
                 //print("<0: \(self.graphView.center.x)")
                 self.graphView.center.x += self.view.bounds.width
                 self.popButton.isEnabled = true
+            }
+            if self.infoView.center.y >= 0 {
+                self.infoView.center.y -= self.view.bounds.height
             }
         }, completion: nil
         )
@@ -269,6 +280,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         infoView.layer.borderWidth = 1
         infoView.layer.borderColor = UIColor.black.cgColor
         self.view.addSubview(infoView)
+        self.btnCloseMenuView.isHidden = true
+        self.btnCloseMenuView.isEnabled = false
         
         let labelmp = UILabel()
         labelmp.text = "Productnaam"

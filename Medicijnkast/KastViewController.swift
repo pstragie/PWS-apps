@@ -135,6 +135,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		self.updateView()
 	}
 
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		//print("KastView did load!")
@@ -159,6 +160,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
+	
 	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
