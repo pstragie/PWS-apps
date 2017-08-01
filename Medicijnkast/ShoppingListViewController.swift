@@ -105,11 +105,11 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
-                self.view.bringSubview(toFront: self.infoView)
+                //self.view.bringSubview(toFront: self.infoView)
                 
             } else {
                 self.infoView.center.y += self.view.bounds.height
-                self.view.bringSubview(toFront: self.view)
+                //self.view.bringSubview(toFront: self.view)
             }
             if self.graphView.center.x >= 0 {
                 self.graphView.center.x -= self.view.bounds.width
@@ -273,6 +273,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func setupInfoView() {
+        self.infoView.isHidden = true
         self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 178))
         self.infoView.center.y -= view.bounds.height-104
         infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
@@ -282,7 +283,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         self.view.addSubview(infoView)
         self.btnCloseMenuView.isHidden = true
         self.btnCloseMenuView.isEnabled = false
-        
+        self.infoView.isHidden = false
         let labelmp = UILabel()
         labelmp.text = "Productnaam"
         labelmp.font = UIFont.boldSystemFont(ofSize: 22)

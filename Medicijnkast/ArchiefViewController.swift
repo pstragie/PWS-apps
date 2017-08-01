@@ -62,11 +62,11 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
-                self.view.bringSubview(toFront: self.infoView)
+                //self.view.bringSubview(toFront: self.infoView)
                 
             } else {
                 self.infoView.center.y += self.view.bounds.height
-                self.view.bringSubview(toFront: self.view)
+                //self.view.bringSubview(toFront: self.view)
             }
         }, completion: nil
         )
@@ -146,12 +146,26 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     
     override func viewDidLayoutSubviews() {
         setupMenuView()
-        setupInfoView()
         tableView.reloadData()
         setupUpArrow()
+        setupInfoView()
         btnCloseMenuView.setTitle("", for: .normal)
         //self.updateView()
         //print("view Did Layout subviews")
+    }
+    
+    // MARK: Detect device rotation
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil)
+        { _ in
+            /*
+            self.setupInfoView()
+            print("Device rotated")
+            //self.view.sendSubview(toBack: self.infoView)
+            self.infoView.center.y -= self.view.bounds.height-104
+            */
+        }
     }
     
     // MARK: Setup views
@@ -168,6 +182,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func setupInfoView() {
+        self.infoView.isHidden = true
         self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 178))
         self.infoView.center.y -= view.bounds.height-104
         infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
@@ -175,7 +190,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         infoView.layer.borderWidth = 1
         infoView.layer.borderColor = UIColor.black.cgColor
         self.view.addSubview(infoView)
-        
+        self.infoView.isHidden = false
         let labelmp = UILabel()
         labelmp.text = "Productnaam"
         labelmp.font = UIFont.boldSystemFont(ofSize: 22)
@@ -205,22 +220,25 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         let labelremadescription = UILabel()
         labelremadescription.text = "Bedrag voor patiënten zonder OMNIO statuut."
         labelremadescription.textColor = UIColor.white
-        labelremadescription.font = UIFont.systemFont(ofSize: 13)
+        labelremadescription.font = UIFont.systemFont(ofSize: 10)
         let labelremw = UILabel()
         labelremw.text = "Remgeld W:"
         labelremw.textColor = UIColor.white
         let labelremwdescription = UILabel()
         labelremwdescription.text = "Bedrag voor patiënten met OMNIO/WIGW statuut."
         labelremwdescription.textColor = UIColor.white
-        labelremwdescription.font = UIFont.systemFont(ofSize: 13)
-        
+        labelremwdescription.font = UIFont.systemFont(ofSize: 10)
+        let labelIndex = UILabel()
+        labelIndex.text = "Prijs per unit in cent"
+        labelIndex.textColor = UIColor.white
+        labelIndex.font = UIFont.systemFont(ofSize: 13)
         let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma, toepassingsgebied])
         leftStack.axis = .vertical
         leftStack.distribution = .fillEqually
         leftStack.alignment = .fill
         leftStack.spacing = 5
         leftStack.translatesAutoresizingMaskIntoConstraints = true
-        let rightStack = UIStackView(arrangedSubviews: [labelpupr, labelrema, labelremadescription, labelremw, labelremwdescription])
+        let rightStack = UIStackView(arrangedSubviews: [labelpupr, labelrema, labelremadescription, labelremw, labelremwdescription, labelIndex])
         rightStack.axis = .vertical
         rightStack.distribution = .fillEqually
         rightStack.alignment = .fill

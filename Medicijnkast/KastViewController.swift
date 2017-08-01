@@ -199,6 +199,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 	}
 	
 	func setupInfoView() {
+		self.infoView.isHidden = true
 		self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 178))
 		self.infoView.center.y -= view.bounds.height-104
 		infoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
@@ -206,7 +207,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		infoView.layer.borderWidth = 1
 		infoView.layer.borderColor = UIColor.black.cgColor
 		self.view.addSubview(infoView)
-		
+		self.infoView.isHidden = false
 		let labelmp = UILabel()
 		labelmp.text = "Productnaam"
 		labelmp.font = UIFont.boldSystemFont(ofSize: 22)
