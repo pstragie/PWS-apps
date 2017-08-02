@@ -54,7 +54,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 			}
 			if self.infoView.center.y >= 0 {
 				self.infoView.center.y -= self.view.bounds.height
-				self.view.bringSubview(toFront: self.infoView)
+				//self.view.bringSubview(toFront: self.infoView)
 			}
 		}, completion: nil
 		)

@@ -231,12 +231,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         if medicijn?.lastupdate != nil {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yy"
-            let timeString = dateFormatter.string(from: medicijn?.lastupdate as! Date)
+            let timeString = dateFormatter.string(from: (medicijn?.lastupdate)! as Date)
             cell.updatedAt.text = timeString
         } else {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd/MM/yy"
-            let timeString = dateFormatter.string(from: medicijn?.createdAt as! Date)
+            let timeString = dateFormatter.string(from: (medicijn?.createdAt)! as Date)
             cell.updatedAt.text = timeString
         }
         return cell

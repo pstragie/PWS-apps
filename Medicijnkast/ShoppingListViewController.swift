@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-import SwiftCharts
+//import SwiftCharts
 
 class ShoppingListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
     
@@ -367,10 +367,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         self.popButton.isEnabled = false
         self.popButton.isHidden = true
         // MARK: Bar Chart
+        /*
         let chartConfig = BarsChartConfig(valsAxisConfig: ChartAxisConfig(from: 0, to: Double(totalePrijs["pupr"]!)+10, by: 1))
         let frame = CGRect(x: 125, y: 190, width: 300, height: 200)
         let chart = BarsChart(frame: frame, chartConfig: chartConfig, xTitle: "Categorie", yTitle: "Prijs €", bars: [("pubprijs", Double(totalePrijs["pupr"]!)), ("pubprijs alt", Double(gdkpaltpupr)), ("", 0), ("remA", Double(totalePrijs["rema"]!)), ("remA alt", Double(gdkpaltrema)), ("", 0),("remW", Double(totalePrijs["remw"]!)), ("remW alt", Double(gdkpaltremw))], color: UIColor.white, barWidth: 25)
         self.graphView.addSubview(chart.view)
+        */
         //self.chart = chart
     }
     
