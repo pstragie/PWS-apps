@@ -307,7 +307,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }()
     
     // MARK: - share button
-    @objc func shareTapped() {
+    func shareTapped() {
         // text to share
         var text = ""
         // fetch medicijnen op pagina
@@ -571,7 +571,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.upArrow.addSubview(button)
     }
     
-    @objc func scrollToTop() {
+    func scrollToTop() {
         //print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)
         let offset = CGPoint(x: 0, y: -188)
@@ -900,7 +900,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: - Notification Handling
-    @objc func applicationDidEnterBackground(_ notification: Notification) {
+    func applicationDidEnterBackground(_ notification: Notification) {
         self.appDelegate.saveContext()
     }
     

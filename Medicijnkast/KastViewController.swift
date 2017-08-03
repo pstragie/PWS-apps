@@ -607,7 +607,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     // MARK: - Notification Handling
-    @objc func applicationDidEnterBackground(_ notification: Notification) {
+    func applicationDidEnterBackground(_ notification: Notification) {
         self.appDelegate.saveContext()
     }
     

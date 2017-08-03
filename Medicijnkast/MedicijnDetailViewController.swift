@@ -33,7 +33,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     // MARK: - share button
-    @objc func shareTapped() {
+    func shareTapped() {
         /* // Text Version
         // text to share
         var text = ""

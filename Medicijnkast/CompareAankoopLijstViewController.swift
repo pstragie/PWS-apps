@@ -59,7 +59,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     }
     
     // MARK: - share button
-    @objc func shareTapped() {
+    func shareTapped() {
         let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: false)
@@ -427,18 +427,18 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         return fetchedResultsControllerRight
     }()
     
-    @objc func applicationDidEnterBackground(_ notification: Notification) {
+    func applicationDidEnterBackground(_ notification: Notification) {
         self.appDelegate.saveContext()
     }
     
     // MARK: - Synchronous scrolling behaviour
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if NSObject.isEqual(tableViewLeft), scrollView.isDragging {
+        if scrollView.isEqual(tableViewLeft), scrollView.isDragging {
             var offset = tableViewRight.contentOffset
             offset.y = tableViewLeft.contentOffset.y
             //print("offset left: \(offset.y)")
             tableViewRight.setContentOffset(offset, animated: true)
-        } else if NSObject.isEqual(tableViewRight), scrollView.isDragging {
+        } else if scrollView.isEqual(tableViewRight), scrollView.isDragging {
             var offset = tableViewLeft.contentOffset
             offset.y = tableViewRight.contentOffset.y
             //print("offset right: \(offset.y)")

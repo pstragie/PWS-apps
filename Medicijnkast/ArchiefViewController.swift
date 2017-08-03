@@ -288,7 +288,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         setupMessageLabel()
     }
     
-    @objc func scrollToTop() {
+    func scrollToTop() {
         //print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)
         tableView.setContentOffset(topOffset, animated: true)
@@ -313,7 +313,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }()
     
     // MARK: - share button
-    @objc func shareTapped() {
+    func shareTapped() {
         // text to share
         var text = ""
         // fetch medicijnen op pagina
@@ -596,7 +596,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     // MARK: - Notification Handling
-    @objc func applicationDidEnterBackground(_ notification: Notification) {
+    func applicationDidEnterBackground(_ notification: Notification) {
         self.appDelegate.saveContext()
     }
     

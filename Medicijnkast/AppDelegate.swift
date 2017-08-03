@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // Change navigation item title color
             let navbarfont = UIFont(name:"San Franciso", size: 21) ?? UIFont.systemFont(ofSize: 21)
-            navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.black, NSAttributedStringKey.font: navbarfont]
+            navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.black, NSFontAttributeName: navbarfont]
             
             let tabBarAppearance = UITabBar.appearance()
             // Change tint and bar tint
@@ -92,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Change navigation item title color
         let navbarfont = UIFont(name:"San Franciso", size: 21) ?? UIFont.systemFont(ofSize: 21)
-        navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.black, NSAttributedStringKey.font: navbarfont]
+        navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.black, NSFontAttributeName: navbarfont]
         
         let tabBarAppearance = UITabBar.appearance()
         // Change tint and bar tint
