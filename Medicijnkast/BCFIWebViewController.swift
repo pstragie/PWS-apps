@@ -65,7 +65,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         self.view.addSubview(webView)
     }
 
-    func webViewTapped(recognizer: UITapGestureRecognizer) {
+    @objc func webViewTapped(recognizer: UITapGestureRecognizer) {
         print("Tapped")
     }
     
@@ -79,24 +79,24 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
     }
     
     // MARK: - share button
-    func shareTapped() {
+    @objc func shareTapped() {
         let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: false)
     }
 
-    func refreshTapped() {
+    @objc func refreshTapped() {
         webstring = link
         let myURL = URL(string: webstring!)
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
     }
 
-    func backTapped() {
+    @objc func backTapped() {
         webView.goBack()
     }
     
-    func forwardTapped() {
+    @objc func forwardTapped() {
         webView.goForward()
     }
     
