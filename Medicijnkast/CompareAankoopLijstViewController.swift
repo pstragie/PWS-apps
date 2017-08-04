@@ -60,7 +60,67 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     
     // MARK: - share button
     func shareTapped() {
-        let vc = UIActivityViewController(activityItems: ["Pieter"], applicationActivities: [])
+        // text to share
+        var text = ""
+        var productL: Array<String>? = []
+        var productR: Array<String>? = []
+        var verpakkingL: Array<String>? = []
+        var verpakkingR: Array<String>? = []
+        var vosL: Array<String>? = []
+        var vosR: Array<String>? = []
+        var firmaL: Array<String>? = []
+        var firmaR: Array<String>? = []
+        var toepL: Array<String>? = []
+        var toepR: Array<String>? = []
+        var prijsL: Array<String>? = []
+        var prijsR: Array<String>? = []
+        var remgeldAL: Array<String>? = []
+        var remgeldAR: Array<String>? = []
+        var remgeldWL: Array<String>? = []
+        var remgeldWR: Array<String>? = []
+        var indexL: Array<String>? = []
+        var indexR: Array<String>? = []
+        
+        // fetch medicijnen op pagina
+        let medicijnenLeft = fetchedResultsControllerLeft.fetchedObjects
+        let medicijnenRight = fetchedResultsControllerRight.fetchedObjects
+
+        for medL in medicijnenLeft! {
+            // Store text left side
+            productL?.append(medL.mp!.mpnm!)
+            verpakkingL?.append(medL.mppnm!)
+            vosL?.append(medL.vosnm_!)
+            firmaL?.append(medL.mp!.ir!.nirnm!)
+            toepL?.append(Dictionaries().hierarchy(hyr: (medL.mp?.hyr?.hyr)!))
+            prijsL?.append(medL.pupr!)
+            remgeldAL?.append(medL.rema!)
+            remgeldWL?.append(medL.remw!)
+            indexL?.append(medL.index!)
+        }
+
+        for medR in medicijnenRight! {
+            // Store text left side
+            productR?.append(medR.mp!.mpnm!)
+            verpakkingR?.append(medR.mppnm!)
+            vosR?.append(medR.vosnm_!)
+            firmaR?.append(medR.mp!.ir!.nirnm!)
+            toepR?.append(Dictionaries().hierarchy(hyr: (medR.mp?.hyr?.hyr)!))
+            prijsR?.append(medR.pupr!)
+            remgeldAR?.append(medR.rema!)
+            remgeldWR?.append(medR.remw!)
+            indexR?.append(medR.index!)
+        }
+
+        
+        let linksAantal = medicijnenLeft?.count
+        for x in 0 ..< linksAantal! {
+            // Glue text from left and right together
+            text += "Product: \(productL![x]) \t\t\t \(productR![x]) \nVerpakking: \(verpakkingL![x])  \t\t\t \(verpakkingR![x])\nVOS: \(vosL![x]) \nFirma: \(firmaL![x]) \t\t\t \(firmaR![x]) \nToepassing: \(toepL![x]) \t\t\t \(toepR![x]) \nPrijs: \(prijsL![x]) € \t\t\t \(prijsR![x]) €\nRemgeld A: \(remgeldAL![x]) € \t\t\t \(remgeldAR![x]) €\nRemgeld W: \(remgeldWL![x]) € \t\t\t \(remgeldWR![x]) €\nIndex \(indexL![x]) c€ \t\t\t \(indexR![x]) c€\n"
+            // draw dashed line
+            text += "___________________________________________\n"
+        }
+        
+        let vc = UIActivityViewController(activityItems: [ text ], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: false)
     }

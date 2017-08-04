@@ -326,7 +326,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }()
     
     // MARK: - share button
-    @objc func shareTapped() {
+    func shareTapped() {
         // text to share
         var text = ""
         // fetch medicijnen op pagina

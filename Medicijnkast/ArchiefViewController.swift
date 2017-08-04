@@ -89,18 +89,6 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         btnCloseMenuView.isEnabled = true
     }
     
-    @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
-        //print("swipe action")
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.menuView.center.x -= self.view.bounds.width
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        btnCloseMenuView.isHidden = true
-        btnCloseMenuView.isEnabled = false
-        self.menuView.center.x -= self.view.bounds.width
-    }
-    
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -117,7 +105,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         
         tableView.reloadData()
-        //self.updateView()
+        self.updateView()
     }
     
     override func viewDidLoad() {
