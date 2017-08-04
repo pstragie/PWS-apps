@@ -48,7 +48,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     @IBOutlet weak var gevondenItemsLabel: UILabel!
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var segmentedButton: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
@@ -896,7 +895,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         }
         self.tableView.reloadData()
         gevondenItemsLabel.text = "\(x)"
-        activityIndicatorView.isHidden = true
     }
     
     // MARK: - Notification Handling

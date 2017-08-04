@@ -28,10 +28,21 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        print("View did appear, arrayPassed: \(stofnaamArr)")
+        //print("View did appear, arrayPassed: \(stofnaamArr)")
         arrayPassed = stofnaamArr
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollToTop()
+    }
+    
+    func scrollToTop() {
+        //print("Scroll to top button clicked")
+        let topOffset = CGPoint(x: 0, y: 0)
+        tableView.setContentOffset(topOffset, animated: true)
+    }
+
     // MARK: - share button
     func shareTapped() {
         /* // Text Version

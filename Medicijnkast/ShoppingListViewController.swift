@@ -61,11 +61,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet weak var showAlternativeButton: UIButton!
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var segmentedButton: UISegmentedControl!
-    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet var graphView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var bestellen: UIBarButtonItem!
-    @IBOutlet weak var btnCloseMenuView: UIButton!
     
     // MARK: - Referencing Actions
     @IBAction func popButton(_ sender: UIButton) {
@@ -82,23 +79,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         graphView.backgroundColor = UIColor.black.withAlphaComponent(0.99)
         popButton.isHidden = true
         popButton.isEnabled = false
-    }
-    
-    @IBAction func btnCloseMenuView(_ sender: UIButton) {
-        //print("btnCloseMenuView pressed!")
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            if self.menuView.center.x >= 0 {
-                self.menuView.center.x -= self.view.bounds.width
-            }
-            if self.infoView.center.y >= 0 {
-                self.infoView.center.y -= self.view.bounds.height
-                self.view.bringSubview(toFront: self.infoView)
-            }
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        btnCloseMenuView.isHidden = true
-        btnCloseMenuView.isEnabled = false
     }
     
     @IBAction func info(_ sender: UIButton) {
@@ -120,27 +100,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         popButton.isEnabled = true
     }
     
-    @IBAction func showMenuView(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            if self.menuView.center.x >= 0 {
-                self.menuView.center.x -= self.view.bounds.width
-            } else {
-                self.menuView.center.x += self.view.bounds.width
-                if self.graphView.center.x >= 0 {
-                    self.graphView.center.x -= self.view.bounds.width
-                }
-            }
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        menuView.tintColor = UIColor.white
-        btnCloseMenuView.isHidden = false
-        btnCloseMenuView.isEnabled = true
-        popButton.isEnabled = false
-        popButton.isHidden = true
-        
-    }
-    
     @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
         //print("swipe action")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
@@ -148,8 +107,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         }, completion: nil
         )
         menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        btnCloseMenuView.isHidden = true
-        btnCloseMenuView.isEnabled = false
+        popButton.isHidden = true
+        popButton.isEnabled = false
         self.popButton.isEnabled = false
         self.menuView.center.x -= self.view.bounds.width
         
@@ -250,27 +209,15 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewDidLayoutSubviews() {
         setupGraphView()
-        setupMenuView()
         setupInfoView()
         tableView.reloadData()
         setupUpArrow()
-        btnCloseMenuView.setTitle("", for: .normal)
         //self.updateView()
         //print("view Did Layout subviews")
     }
     
     // MARK: Setup views
-    func setupMenuView() {
-        self.menuView=UIView(frame:CGRect(x:0, y:0, width: 300, height: self.view.bounds.height))
-        self.menuView.center.x -= view.bounds.width
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        menuView.layer.cornerRadius = 8
-        menuView.layer.borderWidth = 1
-        menuView.layer.borderColor = UIColor.black.cgColor
-        self.view.addSubview(menuView)
-        self.btnCloseMenuView.isHidden = true
-        self.btnCloseMenuView.isEnabled = false
-    }
+
     
     func setupInfoView() {
         self.infoView.isHidden = true
@@ -281,8 +228,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         infoView.layer.borderWidth = 1
         infoView.layer.borderColor = UIColor.black.cgColor
         self.view.addSubview(infoView)
-        self.btnCloseMenuView.isHidden = true
-        self.btnCloseMenuView.isEnabled = false
+        self.popButton.isHidden = true
+        self.popButton.isEnabled = false
         self.infoView.isHidden = false
         let labelmp = UILabel()
         labelmp.text = "Productnaam"

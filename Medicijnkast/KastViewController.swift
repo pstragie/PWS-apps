@@ -37,13 +37,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: - Referencing Outlets
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet var tableView: UITableView!
-    @IBOutlet weak var progressView: UIView!
-    @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var totaalAantal: UILabel!
     @IBOutlet weak var segmentedButton: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
-    @IBOutlet weak var loadProgress: UILabel!
     
     // MARK: - Referencing Actions
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
@@ -167,7 +164,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         setupMenuView()
         setupInfoView()
         setupUpArrow()
-        progressView.isHidden = true
         btnCloseMenuView.isHidden = true
         btnCloseMenuView.isEnabled = false
         //print("view Did Layout subviews")
@@ -304,7 +300,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.upArrow.addSubview(button)
     }
 
-    @objc func scrollToTop() {
+    func scrollToTop() {
         //print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)
         tableView.setContentOffset(topOffset, animated: true)
