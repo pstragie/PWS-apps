@@ -28,7 +28,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var selectedHyr1: String = "DA"
     var toepzoekwoord: String = "D"
     var infoView = UIView()
-    var menuView = UIView()
+    var appVersionView = UIView()
+    var versionView = UIView()
     var hyrPickerView = UIView()
     var pickerChanged: Bool = false
     var upArrow = UIView()
@@ -52,20 +53,32 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
     
+    @IBAction func appVersion(_ sender: UIBarButtonItem) {
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
+            if self.appVersionView.center.x >= 0 {
+                self.appVersionView.center.x -= self.view.bounds.width
+            } else {
+                self.appVersionView.center.x += self.view.bounds.width
+            }
+        }, completion: nil
+        )
+        btnCloseMenuView.isHidden = false
+        btnCloseMenuView.isEnabled = true
+    }
+    
     // MARK: - Referencing Actions
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
         print("btnCloseMenuView pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            if self.menuView.center.x >= 0 {
-                self.menuView.center.x -= self.view.bounds.width
-            }
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
             }
+            if self.appVersionView.center.x >= 0 {
+                self.appVersionView.center.x -= self.view.bounds.width
+            }
         }, completion: nil
         )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         btnCloseMenuView.isHidden = true
         btnCloseMenuView.isEnabled = false
     }
@@ -85,35 +98,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         )
         btnCloseMenuView.isHidden = false
         btnCloseMenuView.isEnabled = true
-    }
-    
-    @IBAction func showMenuView(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            //print("menuView center x: \(self.menuView.center.x)")
-            //print("bounds: \(self.view.bounds.width)")
-            if self.menuView.center.x >= 0 {
-                self.menuView.center.x -= self.view.bounds.width
-            } else {
-                self.menuView.center.x += self.view.bounds.width
-            }
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        menuView.tintColor = UIColor.white
-        btnCloseMenuView.isHidden = false
-        btnCloseMenuView.isEnabled = true
-    }
-    
-    // MARK: - close menu view
-    @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
-        print("swipe action")
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.menuView.center.x -= self.view.bounds.width
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        btnCloseMenuView.isHidden = true
-        btnCloseMenuView.isEnabled = false
     }
 
     // MARK: - Unwind actions
@@ -282,8 +266,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.tableView.setContentOffset(topOffset, animated: true)
             })
         }
-        setupMenuView()
         setupInfoView()
+        setupAppVersionView()
         setupUpArrow()
         //print("view Did Layout subviews")
     }
@@ -324,18 +308,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: false, completion: nil)
-    }
-    
-    func setupMenuView() {
-        self.menuView=UIView(frame:CGRect(x:0, y:0, width: 300, height: self.view.bounds.height))
-        self.menuView.center.x -= view.bounds.width
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        menuView.layer.cornerRadius = 8
-        menuView.layer.borderWidth = 1
-        menuView.layer.borderColor = UIColor.black.cgColor
-        self.view.addSubview(menuView)
-        self.btnCloseMenuView.isHidden = true
-        self.btnCloseMenuView.isEnabled = false
     }
     
     // MARK: - Setup HyrPickerView
@@ -451,6 +423,75 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         infoView.addConstraints(stackView_V)
     }
     
+    // MARK: - Setup appVersionView
+    func setupAppVersionView() {
+        self.appVersionView.isHidden = true
+        self.appVersionView=UIView(frame:CGRect(x: ((self.view.bounds.width)/2)-(self.view.bounds.width)/4, y: ((self.view.bounds.height)/2)-80, width: (self.view.bounds.width)/2, height: 160))
+        self.appVersionView.center.x -= view.bounds.width
+        appVersionView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        appVersionView.layer.cornerRadius = 8
+        appVersionView.layer.borderWidth = 1
+        appVersionView.layer.borderColor = UIColor.black.cgColor
+        self.view.addSubview(appVersionView)
+        self.appVersionView.isHidden = false
+        
+        let labelApp = UILabel()
+        labelApp.text = "MedCabinet Free"
+        labelApp.font = UIFont.boldSystemFont(ofSize: 26)
+        labelApp.textColor = UIColor.white
+        let labelVersion = UILabel()
+        
+        // MARK: Version and build
+        var appVersion = ""
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            appVersion = version
+        }
+        var appBuild = ""
+        if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+            appBuild = build
+        }
+        labelVersion.text = "Version: \(appVersion)"
+        labelVersion.font = UIFont.boldSystemFont(ofSize: 22)
+        labelVersion.textColor = UIColor.white
+        
+        let labelBuild = UILabel()
+        labelBuild.text = "Build: \(appBuild)"
+        labelBuild.font = UIFont.systemFont(ofSize: 17)
+        labelBuild.textColor = UIColor.white
+        
+        // MARK: Rate this app!
+        let buttonRate = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.bounds.width)/2, height: 30))
+        buttonRate.backgroundColor = UIColor.white
+        buttonRate.title("Rate this app")
+        //buttonRate.setTitle("Rate this app", for: .normal)
+        //buttonRate.setTitleColor(UIColor.blue, for: .normal)
+        
+        buttonRate.addTarget(self, action: #selector(self.rateApp), for: .touchUpInside)
+        
+        let vertstack = UIStackView(arrangedSubviews: [labelApp, labelVersion, labelBuild, buttonRate])
+        vertstack.axis = .vertical
+        vertstack.distribution = .fillProportionally
+        vertstack.alignment = .fill
+        vertstack.spacing = 8
+        vertstack.translatesAutoresizingMaskIntoConstraints = false
+        self.appVersionView.addSubview(vertstack)
+        
+        // Layout the stack view
+        let viewsDictionary = ["stackView": vertstack]
+        let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        appVersionView.addConstraints(stackView_H)
+        appVersionView.addConstraints(stackView_V)
+    }
+
+    // MARK: - Rate app in the App Store
+    func rateApp() {
+        let appId = "1257430169"
+        let url_string = "itms-apps://itunes.apple.com/gb/app/id\(appId)?action=write-review&mt=8"
+        if let url = URL(string: url_string) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
     // MARK: - PickerView
     @available(iOS 2.0, *)
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {

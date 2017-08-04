@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B60467A91E6A2244006187BC /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60467A81E6A2244006187BC /* MenuViewController.swift */; };
-		B60467AB1E6A2701006187BC /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60467AA1E6A2701006187BC /* BaseViewController.swift */; };
 		B60467D01E6C2B9C006187BC /* KastMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60467CF1E6C2B9C006187BC /* KastMenuCell.swift */; };
 		B61319B91E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61319B81E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift */; };
 		B61319BB1E57CF06004AD4D7 /* MedicijnDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61319BA1E57CF06004AD4D7 /* MedicijnDetailViewController.swift */; };
@@ -55,8 +53,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B60467A81E6A2244006187BC /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		B60467AA1E6A2701006187BC /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		B60467CF1E6C2B9C006187BC /* KastMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KastMenuCell.swift; sourceTree = "<group>"; };
 		B61319B81E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicijnDetailViewCell.swift; sourceTree = "<group>"; };
 		B61319BA1E57CF06004AD4D7 /* MedicijnDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicijnDetailViewController.swift; sourceTree = "<group>"; };
@@ -170,9 +166,7 @@
 				B66B41511E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift */,
 				B67F7BA51E824B8E00D98F82 /* Dictionaries.swift */,
 				B66B41401E4B4B9400DA2793 /* LaunchScreen.storyboard */,
-				B60467A81E6A2244006187BC /* MenuViewController.swift */,
 				B61319B81E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift */,
-				B60467AA1E6A2701006187BC /* BaseViewController.swift */,
 				B61319BC1E57E5D5004AD4D7 /* CoreDataStack.swift */,
 				B60467CF1E6C2B9C006187BC /* KastMenuCell.swift */,
 				B69D8A871E5E887000693F12 /* Rekenen.swift */,
@@ -297,7 +291,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B63D17151E58F0F3008289BB /* BCFIWebViewController.swift in Sources */,
-				B60467A91E6A2244006187BC /* MenuViewController.swift in Sources */,
 				B60467D01E6C2B9C006187BC /* KastMenuCell.swift in Sources */,
 				B61319B91E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift in Sources */,
 				B67F7BA81E84285200D98F82 /* KlachtenViewController.swift in Sources */,
@@ -313,7 +306,6 @@
 				B66B41581E4D1F0100DA2793 /* ShoppingListViewController.swift in Sources */,
 				B66B414F1E4B63AE00DA2793 /* AddMedicijnViewController.swift in Sources */,
 				B66B413D1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld in Sources */,
-				B60467AB1E6A2701006187BC /* BaseViewController.swift in Sources */,
 				B651518D1E6402B00038BDF1 /* BestellingPlaatsenViewController.swift in Sources */,
 				B64A146D1E8CA77D0066DD33 /* ArchiefViewController.swift in Sources */,
 				B66B41351E4B4B9300DA2793 /* AppDelegate.swift in Sources */,

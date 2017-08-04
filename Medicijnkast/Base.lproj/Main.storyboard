@@ -924,6 +924,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="yue-vO-6Nh">
+                        <barButtonItem key="leftBarButtonItem" title="MedCabinet" id="03G-iU-PPG">
+                            <connections>
+                                <action selector="appVersion:" destination="ruK-Vs-qsG" id="18L-kZ-QRr"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="64x-TL-i1m"/>
                     </navigationItem>
                     <connections>
@@ -2564,6 +2569,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="tdq-xo-ula"/>
-        <segue reference="Vtt-xs-1cs"/>
+        <segue reference="oM1-mF-OuT"/>
     </inferredMetricsTieBreakers>
 </document>
