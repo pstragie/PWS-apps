@@ -52,7 +52,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var segmentedButton: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
-    @IBOutlet weak var buttonRate: UIButton!
+    //@IBOutlet weak var buttonRate: UIButton!
     @IBAction func appVersion(_ sender: UIBarButtonItem) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             if self.appVersionView.center.x >= 0 {
@@ -112,41 +112,41 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         switch segue.identifier {
         case "vosnmToSearch"?:
             filterKeyword = "vosnm_"
-            sortKeyword = "vosnm_"
+            sortKeyword = "index"
             zoekwoord = (receivedData?.vosnm_)!
             self.selectedScope = 2
             hyrView = false
             //print("vosnm_: \(zoekwoord!)")
         case "stofnaam1"?:
             filterKeyword = "ANY sam.stof.ninnm"
-            sortKeyword = "vosnm_"
+            sortKeyword = "index"
             zoekwoord = receivedArray[0]
             self.selectedScope = 2
             hyrView = false
             //print("stofnm1")
         case "stofnaam2"?:
             filterKeyword = "ANY sam.stof.ninnm"
-            sortKeyword = "vosnm_"
+            sortKeyword = "index"
             zoekwoord = receivedArray[1]
             self.selectedScope = 2
             //print("stofnm2")
         case "stofnaam3"?:
             filterKeyword = "ANY sam.stof.ninnm"
-            sortKeyword = "vosnm_"
+            sortKeyword = "index"
             zoekwoord = receivedArray[2]
             self.selectedScope = 2
             hyrView = false
             //print("stofnm3")
         case "stofnaam4"?:
             filterKeyword = "ANY sam.stof.ninnm"
-            sortKeyword = "vosnm_"
+            sortKeyword = "index"
             zoekwoord = receivedArray[3]
             self.selectedScope = 2
             hyrView = false
             //print("stofnm4")
         case "stofnaam5"?:
             filterKeyword = "ANY sam.stof.ninnm"
-            sortKeyword = "vosnm_"
+            sortKeyword = "index"
             zoekwoord = receivedArray[4]
             self.selectedScope = 2
             hyrView = false
@@ -220,7 +220,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
         //print("Addmedicijn View did load!")
         setupLayout()
-        setUpSearchBar(selectedScope: selectedScope)
+        setUpSearchBar(selectedScope: -1)
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
@@ -434,7 +434,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.appVersionView.isHidden = true
         self.appVersionView=UIView(frame:CGRect(x: ((self.view.bounds.width)/2)-(self.view.bounds.width)/4, y: ((self.view.bounds.height)/2)-80, width: (self.view.bounds.width)/2, height: 160))
         self.appVersionView.center.x -= view.bounds.width
-        appVersionView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
+        appVersionView.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         appVersionView.layer.cornerRadius = 8
         appVersionView.layer.borderWidth = 1
         appVersionView.layer.borderColor = UIColor.black.cgColor
@@ -648,30 +648,35 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
+            self.selectedScope = 0
             hyrView = false
         case 1:
             //print("scope: verpakking")
             filterKeyword = "mppnm"
             sortKeyword = "mppnm"
             zoekwoord = searchBar.text!
+            self.selectedScope = 1
             hyrView = false
         case 2:
             //print("scope: vosnaam")
             filterKeyword = "vosnm_"
             sortKeyword = "vosnm_"
             zoekwoord = searchBar.text!
+            self.selectedScope = 2
             hyrView = false
         case 3:
             //print("scope: firmanaam")
             filterKeyword = "mp.ir.nirnm"
             sortKeyword = "mp.ir.nirnm"
             zoekwoord = searchBar.text!
+            self.selectedScope = 3
             hyrView = false
         case 4:
             //print("scope: hierarchie")
             self.view.endEditing(true)
             filterKeyword = "mp.hyr.hyr"
             sortKeyword = "mp.mpnm"
+            self.selectedScope = 4
             if searchBar.text == nil {
                 searchBar.text = ""
             }
@@ -701,12 +706,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             //print("scope: alles")
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
+            self.selectedScope = 5
             hyrView = false
             zoekwoord = searchBar.text!
         default:
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
+            self.selectedScope = -1
         }
         
         //print("scope changed: \(selectedScope)")
@@ -903,7 +910,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             destination.medicijn = selectedObject
             print("Segue: \(segue.identifier!)!")
         default:
-            print("Unknown segue: \(String(describing: segue.identifier!))")
+            print("Segue: \(segue.identifier!)!")
+            break
         }
     }
 

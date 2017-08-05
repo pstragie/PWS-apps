@@ -115,7 +115,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         let linksAantal = medicijnenLeft?.count
         for x in 0 ..< linksAantal! {
             // Glue text from left and right together
-            text += "Product: \(productL![x]) \t\t\t \(productR![x]) \nVerpakking: \(verpakkingL![x])  \t\t\t \(verpakkingR![x])\nVOS: \(vosL![x]) \nFirma: \(firmaL![x]) \t\t\t \(firmaR![x]) \nToepassing: \(toepL![x]) \t\t\t \(toepR![x]) \nPrijs: \(prijsL![x]) € \t\t\t \(prijsR![x]) €\nRemgeld A: \(remgeldAL![x]) € \t\t\t \(remgeldAR![x]) €\nRemgeld W: \(remgeldWL![x]) € \t\t\t \(remgeldWR![x]) €\nIndex \(indexL![x]) c€ \t\t\t \(indexR![x]) c€\n"
+            text += "Product: \(productL![x])      | \(productR![x]) \nVerpakking: \(verpakkingL![x])        | \(verpakkingR![x])\nVOS: \(vosL![x]) \nFirma: \(firmaL![x])       | \(firmaR![x]) \nToepassing: \(toepL![x])       | \(toepR![x]) \nPrijs: \(prijsL![x]) €        | \(prijsR![x]) €\nRemgeld A: \(remgeldAL![x]) €        | \(remgeldAR![x]) €\nRemgeld W: \(remgeldWL![x]) €         | \(remgeldWR![x]) €\nIndex \(indexL![x]) c€        | \(indexR![x]) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
         }
@@ -396,6 +396,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 }
             }
             undoReplace.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:0.5)
+            
             self.tableViewLeft.setEditing(false, animated: true)
             btnArray.append(undoReplace)
         }

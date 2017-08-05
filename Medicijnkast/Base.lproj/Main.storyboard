@@ -2323,7 +2323,7 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="sectionIndexBackgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="4Ll-Gn-Mly" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="4Ll-Gn-Mly" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="502" height="110"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Ll-Gn-Mly" id="7BZ-NJ-c2k">
@@ -2441,11 +2441,11 @@
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9f2-wg-I6C" firstAttribute="top" secondItem="UQr-n9-oxn" secondAttribute="bottom" id="1Ot-8H-Jg6"/>
-                            <constraint firstItem="ZCj-ke-YZa" firstAttribute="top" secondItem="9f2-wg-I6C" secondAttribute="bottom" id="2aB-AH-kuH"/>
-                            <constraint firstItem="UQr-n9-oxn" firstAttribute="top" secondItem="Dtn-rP-Jn8" secondAttribute="bottom" constant="5" id="8NU-wH-hsx"/>
+                            <constraint firstItem="ZCj-ke-YZa" firstAttribute="top" secondItem="9f2-wg-I6C" secondAttribute="bottom" id="Gjf-U2-Ln4"/>
                             <constraint firstItem="9f2-wg-I6C" firstAttribute="centerX" secondItem="KUG-He-t7q" secondAttribute="centerX" id="PD7-uR-h1b"/>
                             <constraint firstItem="9f2-wg-I6C" firstAttribute="leading" secondItem="KUG-He-t7q" secondAttribute="leading" constant="10" id="ajG-ER-QKY"/>
                             <constraint firstAttribute="trailing" secondItem="9f2-wg-I6C" secondAttribute="trailing" constant="10" id="jiq-uq-o8K"/>
+                            <constraint firstItem="UQr-n9-oxn" firstAttribute="top" secondItem="Dtn-rP-Jn8" secondAttribute="bottom" constant="5" id="pIi-tg-hVo"/>
                             <constraint firstItem="UQr-n9-oxn" firstAttribute="centerX" secondItem="KUG-He-t7q" secondAttribute="centerX" id="yWV-hq-ZIR"/>
                         </constraints>
                     </view>
@@ -2569,6 +2569,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="tdq-xo-ula"/>
-        <segue reference="oM1-mF-OuT"/>
+        <segue reference="FGf-rR-VNs"/>
     </inferredMetricsTieBreakers>
 </document>

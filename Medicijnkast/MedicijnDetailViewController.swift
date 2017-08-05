@@ -278,14 +278,12 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             let destination = segue.destination as! BCFIWebViewController
             let selectedObject = medicijn
             destination.medicijn = selectedObject
-            
             let selectedLink = medicijn?.ggr_link?.link2pvt
             destination.link = selectedLink
         case mpg:
             let destination = segue.destination as! BCFIWebViewController
             let selectedObject = medicijn
             destination.medicijn = selectedObject
-            
             let selectedLink = medicijn?.ggr_link?.link2mpg
             destination.link = selectedLink
         case ti:
@@ -293,7 +291,8 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             let selectedObject = medicijn
             destination.medicijn = selectedObject
         default:
-            print("Unknown segue: \(String(describing: segue.identifier))")
+            //print("Segue: \(String(describing: segue.identifier!))")
+            break
         }
     }
 }
