@@ -19,7 +19,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     var prijsremaLeft:Float? = 0.00
     var prijzenRight:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
     var prijzenLeft:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
-    var altscope: String = "VOS"
+    var altscope: String = "Unit"
     let CellLeftDetailIdentifier = "SegueFromCompareLeftToDetail"
     let CellRightDetailIdentifier = "SegueFromCompareRightToDetail"
     @IBOutlet weak var tableViewLeft: UITableView!
@@ -127,8 +127,8 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     
     // MARK: - segmented button
     func setupLayout() {
-        vosIndexSwitch.setTitle("Verpakking", forSegmentAt: 0)
-        vosIndexSwitch.setTitle("Unit", forSegmentAt: 1)
+        vosIndexSwitch.setTitle("Unit", forSegmentAt: 0)
+        vosIndexSwitch.setTitle("Verpakking", forSegmentAt: 1)
     }
     
     // MARK: - Check for doubles (vosnm_) in aankooplijst en verwittig de gebruiker
@@ -213,11 +213,11 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
         switch vosIndexSwitch.selectedSegmentIndex {
         case 0:
-            altscope = "VOS"
-        case 1:
             altscope = "Unit"
-        default:
+        case 1:
             altscope = "VOS"
+        default:
+            altscope = "Unit"
             break
         }
         

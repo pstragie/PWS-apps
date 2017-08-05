@@ -52,7 +52,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var segmentedButton: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
-    
+    @IBOutlet weak var buttonRate: UIButton!
     @IBAction func appVersion(_ sender: UIBarButtonItem) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             if self.appVersionView.center.x >= 0 {
@@ -108,50 +108,55 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             receivedArray = sourceViewController.arrayPassed
             //print("received string: \(receivedArray)")
         }
-        var selectedScope: Int = -1
         
         switch segue.identifier {
         case "vosnmToSearch"?:
             filterKeyword = "vosnm_"
             sortKeyword = "vosnm_"
             zoekwoord = (receivedData?.vosnm_)!
-            selectedScope = 2
+            self.selectedScope = 2
+            hyrView = false
             //print("vosnm_: \(zoekwoord!)")
         case "stofnaam1"?:
             filterKeyword = "ANY sam.stof.ninnm"
             sortKeyword = "vosnm_"
             zoekwoord = receivedArray[0]
-            selectedScope = 2
+            self.selectedScope = 2
+            hyrView = false
             //print("stofnm1")
         case "stofnaam2"?:
             filterKeyword = "ANY sam.stof.ninnm"
             sortKeyword = "vosnm_"
             zoekwoord = receivedArray[1]
-            selectedScope = 2
+            self.selectedScope = 2
             //print("stofnm2")
         case "stofnaam3"?:
             filterKeyword = "ANY sam.stof.ninnm"
             sortKeyword = "vosnm_"
             zoekwoord = receivedArray[2]
-            selectedScope = 2
+            self.selectedScope = 2
+            hyrView = false
             //print("stofnm3")
         case "stofnaam4"?:
             filterKeyword = "ANY sam.stof.ninnm"
             sortKeyword = "vosnm_"
             zoekwoord = receivedArray[3]
-            selectedScope = 2
+            self.selectedScope = 2
+            hyrView = false
             //print("stofnm4")
         case "stofnaam5"?:
             filterKeyword = "ANY sam.stof.ninnm"
             sortKeyword = "vosnm_"
             zoekwoord = receivedArray[4]
-            selectedScope = 2
+            self.selectedScope = 2
+            hyrView = false
             //print("stofnm5")
         case "irnmToSearch"?:
             filterKeyword = "mp.ir.nirnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = (receivedData?.mp?.ir?.nirnm)!
-            selectedScope = 3
+            self.selectedScope = 3
+            hyrView = false
             //print("irnm")
         case "hyrToSearch"?:
             self.view.endEditing(true)
@@ -179,7 +184,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             toepzoekwoord = hyrstring!
             zoekwoord = ""
             searchBar.text = ""
-            selectedScope = 4
+            self.selectedScope = 4
             //print("hyr")
             var x: Int = 0
             let v = level0dict[String(firstCharacter)]
@@ -195,10 +200,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             y = sortData(level1dict).index(of: w!)!
             //print("y: \(y)")
             level1Picker.selectRow(y, inComponent: 0, animated: true)
-            
+            hyrView = true
         default:
             filterKeyword = "mppnm"
         }
+        //print("Unwind selectedScope: \(selectedScope)")
         self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: selectedScope)
     }
     
@@ -213,9 +219,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         //print("Addmedicijn View did load!")
-        
         setupLayout()
-        setUpSearchBar(selectedScope: -1)
+        setUpSearchBar(selectedScope: selectedScope)
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
@@ -234,7 +239,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         setupHyrPickerView()
 
         self.updateView()
-        
+        setupAppVersionView()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         
         /*// MARK: - Temp copy defaults to userdata
@@ -244,6 +249,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        //print("SelectedScope: \(selectedScope)")
+        setUpSearchBar(selectedScope: selectedScope)
         //print("Layout selectedHyr0 \(selectedHyr0)")
         updatePicker1()
         zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")
@@ -267,7 +274,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             })
         }
         setupInfoView()
-        setupAppVersionView()
         setupUpArrow()
         //print("view Did Layout subviews")
     }
@@ -460,14 +466,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         labelBuild.textColor = UIColor.white
         
         // MARK: Rate this app!
+        
         let buttonRate = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.bounds.width)/2, height: 30))
-        buttonRate.backgroundColor = UIColor.white
-        buttonRate.title("Rate this app")
-        //buttonRate.setTitle("Rate this app", for: .normal)
-        //buttonRate.setTitleColor(UIColor.blue, for: .normal)
-        
-        buttonRate.addTarget(self, action: #selector(self.rateApp), for: .touchUpInside)
-        
+        buttonRate.backgroundColor = .white
+        buttonRate.layer.cornerRadius = 8        
+        buttonRate.setTitle("Rate this app", for: .normal)
+        buttonRate.setTitleColor(UIColor.blue, for: .normal)
+        buttonRate.addTarget(self, action: #selector(rateApp), for: .touchUpInside)
+ 
         let vertstack = UIStackView(arrangedSubviews: [labelApp, labelVersion, labelBuild, buttonRate])
         vertstack.axis = .vertical
         vertstack.distribution = .fillProportionally
@@ -486,12 +492,15 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 
     // MARK: - Rate app in the App Store
     func rateApp() {
+        print("buttonRate pressed!")
         let appId = "1257430169"
-        let url_string = "itms-apps://itunes.apple.com/gb/app/id\(appId)?action=write-review&mt=8"
+        let url_string = "itms-apps://itunes.apple.com/gb/app/id\(appId)"
+        /* ?action=write-review&mt=8 */
         if let url = URL(string: url_string) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
+    
     // MARK: - PickerView
     @available(iOS 2.0, *)
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {

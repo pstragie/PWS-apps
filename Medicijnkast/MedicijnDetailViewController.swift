@@ -20,7 +20,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("View did load!")
+        //print("View did load!")
         navigationItem.title = "Info: \((medicijn?.mp?.mpnm)!)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         dataPassed = medicijn
@@ -52,21 +52,23 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         let med = medicijn!
         let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
         text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index!) c€\n"
-        
+        */
         // TODO: add more details
         
         // set up activity view controller
-        let textToShare = [ text ]
-        let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
-        */
+        //let textToShare = [ text ]
+        //let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
+ 
         
         // Image (screenshot version)
-        let bounds = UIScreen.main.bounds
-        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
-        self.view.drawHierarchy(in: bounds, afterScreenUpdates: false)
-        let img = UIGraphicsGetCurrentContext()
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        let vc = UIActivityViewController(activityItems: [ img! ], applicationActivities: nil)
+        var imagesToShare = [AnyObject]()
+        imagesToShare.append(image!)
+        
+        let vc = UIActivityViewController(activityItems: imagesToShare, applicationActivities: nil)
         
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: false, completion: nil)
@@ -156,7 +158,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             cell.law.text = "Nee"
         }
         cell.ssecr.text = Dictionaries().ssecr(ssecr: (medicijn?.ssecr)!)
-        print((medicijn?.mp?.wadan)!)
+        //print((medicijn?.mp?.wadan)!)
         cell.wadan.text = Dictionaries().wada(wada: (medicijn?.mp?.wadan)!)
         if medicijn?.use == "H" {
             cell.use.text = "Hospitaal"
