@@ -28,7 +28,6 @@ class MedicijnDetailViewCell: UITableViewCell {
     @IBOutlet weak var irnm: UIButton!
     @IBOutlet weak var ti: UIButton!
     @IBOutlet weak var galnm: UILabel!
-    
     @IBOutlet weak var pupr: UILabel!
     @IBOutlet weak var rema: UILabel!
     @IBOutlet weak var remw: UILabel!
@@ -47,6 +46,8 @@ class MedicijnDetailViewCell: UITableViewCell {
     @IBOutlet weak var specrules: UILabel!
     @IBOutlet weak var bt: UILabel!
     
+    @IBOutlet weak var kastWijzigen: UIButton!
+    @IBOutlet weak var lijstWijzigen: UIButton!
     @IBOutlet var kast: UILabel!
     @IBOutlet weak var kastimage: UIImageView!
     @IBOutlet var aankoop: UILabel!
@@ -66,8 +67,6 @@ class MedicijnDetailViewCell: UITableViewCell {
         noteButton.layer.borderColor = UIColor.white.cgColor
         // show popover
     }
-    
-    
     
     
     

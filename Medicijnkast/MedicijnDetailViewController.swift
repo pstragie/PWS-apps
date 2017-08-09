@@ -17,7 +17,41 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     weak var stofdb: Stof?
     var arrayPassed: Array<String> = []
     var stofnaamArr: Array<String> = []
+
+    // MARK: - Button actions
+    var kastRichting: Bool = false
+    var lijstRichting: Bool = false
+
+    @IBAction func kastWijzigen(_ sender: UIButton) {
+        medicijn?.userdata?.setValue(true, forKey: "medicijnkast")
+        let context = self.appDelegate.persistentContainer.viewContext
+        AddMedicijnViewController().addUserData(mppcvValue: (medicijn?.mppcv!)!, userkey: "medicijnkast", uservalue: kastRichting, managedObjectContext: context)
+        do {
+            try context.save()
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
+            //print("med saved in aankooplijst")
+        } catch {
+            print("med not saved in aankooplijst!")
+        }
+        tableView.reloadData()
+    }
     
+    @IBAction func lijstWijzigen(_ sender: UIButton) {
+        medicijn?.userdata?.setValue(true, forKey: "aankooplijst")
+        let context = self.appDelegate.persistentContainer.viewContext
+        AddMedicijnViewController().addUserData(mppcvValue: (medicijn?.mppcv!)!, userkey: "aankooplijst", uservalue: lijstRichting, managedObjectContext: context)
+        do {
+            try context.save()
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedAankoop"), object: nil)
+            //print("med saved in aankooplijst")
+        } catch {
+            print("med not saved in aankooplijst!")
+        }
+        tableView.reloadData()
+    }
+
+    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         //print("View did load!")
@@ -219,13 +253,29 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.aankoop.text = "In aankooplijst"
         if medicijn?.userdata == nil || medicijn?.userdata?.medicijnkast == false {
             cell.kastimage.image = #imageLiteral(resourceName: "kruisje")
+            cell.kastWijzigen.setTitle("+", for: .normal)
+            cell.kastWijzigen.setTitleColor(UIColor.green, for: .normal)
+            cell.kastWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            kastRichting = true
         } else {
             cell.kastimage.image = #imageLiteral(resourceName: "vinkje")
+            cell.kastWijzigen.setTitle("-", for: .normal)
+            cell.kastWijzigen.setTitleColor(UIColor.red, for: .normal)
+            cell.kastWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            kastRichting = false
         }
         if medicijn?.userdata == nil || medicijn?.userdata?.aankooplijst == false {
             cell.aankoopimage.image = #imageLiteral(resourceName: "kruisje")
+            cell.lijstWijzigen.setTitle("+", for: .normal)
+            cell.lijstWijzigen.setTitleColor(UIColor.green, for: .normal)
+            cell.lijstWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            lijstRichting = true
         } else {
             cell.aankoopimage.image = #imageLiteral(resourceName: "vinkje")
+            cell.lijstWijzigen.setTitle("-", for: .normal)
+            cell.lijstWijzigen.setTitleColor(UIColor.red, for: .normal)
+            cell.lijstWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            lijstRichting = false
         }
         
         cell.noteButton.layer.cornerRadius = 3
@@ -238,6 +288,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         } else {
             cell.noteButton.layer.borderColor = UIColor.gray.cgColor
             cell.noteButton.layer.backgroundColor = UIColor.gray.cgColor
+            cell.noteButton.isHidden = true
         }
         
         // Footer

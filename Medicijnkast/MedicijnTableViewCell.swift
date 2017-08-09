@@ -29,6 +29,8 @@ class MedicijnTableViewCell: UITableViewCell {
     @IBOutlet weak var rema: UILabel!
     @IBOutlet weak var remw: UILabel!
     @IBOutlet weak var cheapest: UILabel!
+    @IBOutlet weak var iconKast: UIImageView!
+    @IBOutlet weak var iconLijst: UIImageView!
     
     // MARK: - Initialization
 

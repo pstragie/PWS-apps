@@ -20,6 +20,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let level1Picker = UIPickerView()
     let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
+    var asc = true
     @IBOutlet weak var zoekenImage: UIImageView!
 
     // MARK: - Properties Variables
@@ -594,6 +595,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         searchBar.isHidden = false
         searchBar.showsScopeBar = true
+        searchBar.tintColor = UIColor.gray
         // scope button titles: mpnm, mppnm, vosnm_, nirnnm, alles(mpnm,vosnm,nirnm)
         searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "toepassing", "alles"]
         searchBar.selectedScopeButtonIndex = selectedScope
@@ -827,7 +829,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     func filterContentForSearchText(searchText: String, scopeIndex: Int) {
         let offset = CGPoint(x: 0, y: -188)
         var sortDescriptors: Array<NSSortDescriptor>?
-        var predicate: NSPredicate?
+        var predicate: NSPredicate
         if scopeIndex == -1 {
             if searchText.isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
@@ -876,9 +878,16 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
                 predicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
-                sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
+                if sortKeyword == "index" {
+                    self.asc = false
+                } else {
+                    self.asc = true
+                }
+                print("ascending = \(self.asc)")
+                sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: self.asc)]
             }
         }
+        print("still ascending = \(self.asc)")
         self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
         self.fetchedResultsController.fetchRequest.predicate = predicate
         do {
@@ -1080,8 +1089,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell else {
             fatalError("Unexpected Index Path")
         }
-        //cell.backgroundColor = UIColor.blue
-        //cell.contentView.backgroundColor = UIColor.purple
+        
         cell.selectionStyle = .none
         
         // Fetch Medicijn
@@ -1112,6 +1120,13 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             cell.Cheap_label.text = ""
         }        
         cell.mpnm.text = medicijn.mp?.mpnm
+        if medicijn.userdata != nil || medicijn.userdata?.medicijnkast == true {
+            cell.iconKast.image = #imageLiteral(resourceName: "medicijnkast_icon75x75")
+        }
+        if medicijn.userdata != nil || medicijn.userdata?.aankooplijst == true {
+            cell.iconLijst.image = #imageLiteral(resourceName: "aankooplijst_icon75x75")
+            
+        }
         cell.mppnm.text = medicijn.mppnm
         cell.vosnm.text = medicijn.vosnm_
         cell.nirnm.text = medicijn.mp?.ir?.nirnm
