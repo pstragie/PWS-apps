@@ -64,16 +64,19 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
+				self.btnCloseMenuView.isHidden = true
+				self.btnCloseMenuView.isEnabled = false
                 //self.view.bringSubview(toFront: self.infoView)
                 
             } else {
                 self.infoView.center.y += self.view.bounds.height
+				self.btnCloseMenuView.isHidden = false
+				self.btnCloseMenuView.isEnabled = true
                 //self.view.bringSubview(toFront: self.view)
             }
         }, completion: nil
         )
-        btnCloseMenuView.isHidden = false
-        btnCloseMenuView.isEnabled = true
+		
     }
 
     @IBAction func showMenuView(_ sender: UIButton) {
@@ -333,7 +336,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index!) c€\n"
+            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
             
@@ -741,7 +744,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
             cell.cheapest.text = "gdkp: Ja"
         }
         */
-        cell.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
+        cell.cheapest.text = "index: \((medicijn.index)) c€"
 
         return cell
     }

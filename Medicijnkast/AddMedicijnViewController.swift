@@ -89,16 +89,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             //print("infoview: \(self.infoView.center.y)")
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
+                self.btnCloseMenuView.isHidden = true
+                self.btnCloseMenuView.isEnabled = false
                 //self.view.bringSubview(toFront: self.infoView)
                 
             } else {
                 self.infoView.center.y += self.view.bounds.height
+                self.btnCloseMenuView.isHidden = false
+                self.btnCloseMenuView.isEnabled = true
                 //self.view.bringSubview(toFront: self.view)
             }
         }, completion: nil
         )
-        btnCloseMenuView.isHidden = false
-        btnCloseMenuView.isEnabled = true
+        
     }
 
     // MARK: - Unwind actions
@@ -304,7 +307,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index!) c€\n"
+            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
             
@@ -1122,10 +1125,11 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         cell.mpnm.text = medicijn.mp?.mpnm
         if medicijn.userdata != nil || medicijn.userdata?.medicijnkast == true {
             cell.iconKast.image = #imageLiteral(resourceName: "medicijnkast_icon75x75")
+            cell.iconKast.tintColor = UIColor.black
         }
         if medicijn.userdata != nil || medicijn.userdata?.aankooplijst == true {
             cell.iconLijst.image = #imageLiteral(resourceName: "aankooplijst_icon75x75")
-            
+            cell.iconLijst.tintColor = UIColor.black
         }
         cell.mppnm.text = medicijn.mppnm
         cell.vosnm.text = medicijn.vosnm_
@@ -1142,7 +1146,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             cell.cheapest.text = "gdkp: Ja"
         }
         */
-        cell.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
+        cell.cheapest.text = "index: \(medicijn.index) c€"
         return cell
     }
     

@@ -85,10 +85,14 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
+                self.popButton.isHidden = true
+                self.popButton.isEnabled = false
                 //self.view.bringSubview(toFront: self.infoView)
                 
             } else {
                 self.infoView.center.y += self.view.bounds.height
+                self.popButton.isHidden = false
+                self.popButton.isEnabled = true
                 //self.view.bringSubview(toFront: self.view)
             }
             if self.graphView.center.x >= 0 {
@@ -96,8 +100,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             }
         }, completion: nil
         )
-        popButton.isHidden = false
-        popButton.isEnabled = true
+        
     }
     
     @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
@@ -375,7 +378,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index!) c€\n"
+            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
             
@@ -808,7 +811,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             cell.cheapest.text = "gdkp: Ja"
         }
         */
-        cell.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
+        cell.cheapest.text = "index: \((medicijn.index)) c€"
 
         return cell
     }
@@ -952,7 +955,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             // Steek index prijs in dictionary
             var prijsdict:Dictionary<Float, String> = [:]
             for med in resultaat {
-                prijsdict[med.index!.floatValue!] = med.mppcv!
+                prijsdict[med.index] = med.mppcv!
             }
             // Pik er het medicijn met de laagste prijs uit
             let minprijs = prijsdict.keys.min()

@@ -95,7 +95,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             prijsL?.append(medL.pupr!)
             remgeldAL?.append(medL.rema!)
             remgeldWL?.append(medL.remw!)
-            indexL?.append(medL.index!)
+            indexL?.append(String(medL.index))
         }
 
         for medR in medicijnenRight! {
@@ -108,7 +108,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             prijsR?.append(medR.pupr!)
             remgeldAR?.append(medR.rema!)
             remgeldWR?.append(medR.remw!)
-            indexR?.append(medR.index!)
+            indexR?.append(String(medR.index))
         }
 
         
@@ -310,7 +310,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
             cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
             //cell?.cheapest.text = "gdkp: \(medicijn.cheapest.description)"
-            cell?.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
+            cell?.cheapest.text = "index: \(medicijn.index) c€"
         }
         
         if tableView == self.tableViewRight {
@@ -353,7 +353,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.pupr.text = "Prijs: \((medicijn.pupr?.floatValue)!) €"
             cell?.rema.text = "remA: \((medicijn.rema?.floatValue)!) €"
             cell?.remw.text = "remW: \((medicijn.remw?.floatValue)!) €"
-            cell?.cheapest.text = "index: \((medicijn.index?.floatValue)!) c€"
+            cell?.cheapest.text = "index: \((medicijn.index)) c€"
         }
         return cell!
     }

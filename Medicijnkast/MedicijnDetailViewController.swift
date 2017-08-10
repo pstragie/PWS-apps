@@ -15,6 +15,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     weak var medicijn: MPP?
     weak var dataPassed: MPP?
     weak var stofdb: Stof?
+    var noteView = UIView()
     var arrayPassed: Array<String> = []
     var stofnaamArr: Array<String> = []
 
@@ -50,6 +51,34 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         tableView.reloadData()
     }
 
+    @IBAction func noteView(_ sender: UIButton) {
+        if self.noteView.isHidden == true {
+            self.noteView.isHidden = false
+        } else {
+            self.noteView.isHidden = true
+        }
+    }
+    
+    func setupNoteView() {
+        self.noteView=UIView(frame:CGRect(x: (self.view.bounds.width)/8, y: (self.view.bounds.height)/8, width: self.view.bounds.width-((self.view.bounds.width)/4), height: self.view.bounds.height-((self.view.bounds.height)/4)))
+        noteView.backgroundColor = UIColor.white.withAlphaComponent(1)
+        noteView.layer.cornerRadius = 8
+        noteView.layer.borderWidth = 1
+        noteView.layer.borderColor = UIColor.black.cgColor
+        self.view.addSubview(noteView)
+        self.popButton.isHidden = true
+        self.popButton.isEnabled = false
+        self.noteView.isHidden = false
+        
+        let closenote = UIButton()
+        closenote.setTitle("Sluiten", for: .normal)
+        closenote.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        closenote.titleLabel?.textColor = UIColor.blue
+        let labelnote = UILabel()
+        labelnote.text = medicijn?.note
+        labelnote.font = UIFont.boldSystemFont(ofSize: 14)
+        labelnote.textColor = UIColor.black
+    }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -79,20 +108,6 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
 
     // MARK: - share button
     func shareTapped() {
-        /* // Text Version
-        // text to share
-        var text = ""
-        // fetch medicijn op pagina
-        let med = medicijn!
-        let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-        text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index!) c€\n"
-        */
-        // TODO: add more details
-        
-        // set up activity view controller
-        //let textToShare = [ text ]
-        //let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
- 
         
         // Image (screenshot version)
         UIGraphicsBeginImageContext(view.frame.size)
@@ -282,6 +297,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.noteButton.layer.masksToBounds = true
         cell.noteButton.layer.borderWidth = 1
         if medicijn?.note != "_" {
+            cell.noteButton.isHidden = false
             cell.noteButton.layer.borderColor = UIColor.black.cgColor
             cell.noteButton.layer.backgroundColor = UIColor.green.cgColor
 

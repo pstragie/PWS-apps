@@ -142,7 +142,7 @@
         <attribute name="hosp" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="hyr_" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hyrcv" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="index" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="inncnk" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastupdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="law" optional="YES" attributeType="String" syncable="YES"/>

@@ -20,6 +20,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - DidFinishLaunchingWithOptions
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        print("NSHomeDir: \(NSHomeDirectory())")
+        let navigationBarAppearance = UINavigationBar.appearance()
+        
+        // Change tint and and bar tint
+        navigationBarAppearance.tintColor = UIColor.black
+        navigationBarAppearance.barTintColor = UIColor.white
+        
+        // Change navigation item title color
+        let navbarfont = UIFont(name:"San Franciso", size: 21) ?? UIFont.systemFont(ofSize: 21)
+        navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.black, NSFontAttributeName: navbarfont]
+        
+        let tabBarAppearance = UITabBar.appearance()
+        // Change tint and bar tint
+        tabBarAppearance.tintColor = UIColor.black.withAlphaComponent(1.0)
+        tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.8)
+        
+        let searchBarAppearance = UISearchBar.appearance()
+        searchBarAppearance.tintColor = UIColor.white
+        //searchBarAppearance.barTintColor = UIColor.red
         
         // MARK: Check current version
         let defaults = UserDefaults.standard
@@ -30,8 +49,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Writing version to UserDefaults for the first time
             defaults.set(cAV, forKey: "appVersion")
             
+            // MARK: preloaDBData of three database files included in the app
+            // For distribution purposes!
+            // Unmark simultaneously with marking the seedPersistentDatabase function to import csv!
             preloadDBData()
-            print("NSHomeDir: \(NSHomeDirectory())")
+            
+            
+            
             // Print local file directory
             let fm = FileManager.default
             let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -40,24 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Save Managed Object Context
             self.saveContext()
             
-            let navigationBarAppearance = UINavigationBar.appearance()
             
-            // Change tint and and bar tint
-            navigationBarAppearance.tintColor = UIColor.black
-            navigationBarAppearance.barTintColor = UIColor.white
-            
-            // Change navigation item title color
-            let navbarfont = UIFont(name:"San Franciso", size: 21) ?? UIFont.systemFont(ofSize: 21)
-            navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.black, NSFontAttributeName: navbarfont]
-            
-            let tabBarAppearance = UITabBar.appearance()
-            // Change tint and bar tint
-            tabBarAppearance.tintColor = UIColor.black.withAlphaComponent(1.0)
-            tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.8)
-            
-            let searchBarAppearance = UISearchBar.appearance()
-            searchBarAppearance.tintColor = UIColor.white
-            //searchBarAppearance.barTintColor = UIColor.red
             
             return false
         }
@@ -80,35 +87,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: Load from CSV, for update of bcfi database!
         // Developer use only! Load persistent store with data from csv files.
         // Step 0: Delete the database files (3) in the "Medicijnkast" folder
+        // Step 0b: Mark the preloadDBData() function above
         // Step 1a: Unmark the two following lines of code
         // Step 1b: Run the app (10 minutes or more to read and load all the files)
         // Step 2: Locate the database files (3)
-        // Step 3: Copy the database files (3) to the "Medicijnkast" folder
+        // Step 3a: Copy the database files (3) from the "NSHomeDir" folder
+        // Step 3b: Delete the database files from the MedCabinetFree folder?
         // Step 4: Mark the two following lines of code
-        let moc = persistentContainer.viewContext
-        seedPersistentStoreWithManagedObjectContext(moc)
+        // Step 5: Unmark the preloaDBData function above!
+        //let moc = persistentContainer.viewContext
+        //seedPersistentStoreWithManagedObjectContext(moc)
         
         // Save Managed Object Context
         self.saveContext()
-        
-        let navigationBarAppearance = UINavigationBar.appearance()
-        
-        // Change tint and and bar tint
-        navigationBarAppearance.tintColor = UIColor.black
-        navigationBarAppearance.barTintColor = UIColor.white
-        
-        // Change navigation item title color
-        let navbarfont = UIFont(name:"San Franciso", size: 21) ?? UIFont.systemFont(ofSize: 21)
-        navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.black, NSFontAttributeName: navbarfont]
-        
-        let tabBarAppearance = UITabBar.appearance()
-        // Change tint and bar tint
-        tabBarAppearance.tintColor = UIColor.black.withAlphaComponent(1.0)
-        tabBarAppearance.barTintColor = UIColor.white.withAlphaComponent(0.8)
-
-        let searchBarAppearance = UISearchBar.appearance()
-        searchBarAppearance.tintColor = UIColor.white
-        //searchBarAppearance.barTintColor = UIColor.red
         
         return true
     }
@@ -165,8 +156,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if seedCoreDataContainerIfFirstLaunch() {
             //destroyPersistentStore()
             print("First Launch!!!")
-            //let Entities = ["MPP", "Gal", "Ggr_Link", "MP", "Sam", "Stof", "Hyr", "Ir"]
-            let Entities = ["MPP"]
+            let Entities = ["MPP", "Gal", "Ggr_Link", "MP", "Sam", "Stof", "Hyr", "Ir"]
+            //let Entities = ["MPP", "MP"]
             for entitynaam in Entities {
                 //cleanCoreData(entitynaam: entitynaam)
                 print(entitynaam)
@@ -188,6 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let fileManager = FileManager.default
 
         if !fileManager.fileExists(atPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite") {
+            print("Files do not exist!")
             let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
             let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
             
@@ -310,7 +302,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     val = 0
                 } else if value == "" {
                     val = "empty"
-                }else {
+                } else if key == "index" {
+                    
+                    if (value.floatValue != nil) {
+                    val = Float(value)
+                    }
+                } else {
                     val = value
                 }
                 newdict[key] = val
@@ -363,6 +360,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if entitynaam == "MPP" {
             if let newMPP = createRecordForEntity("MPP", inManagedObjectContext: managedObjectContext) {
                 for (key, value) in dict {
+                    
                     newMPP.setValue(value, forKey: key)
                 }
                 newMPP.setValue(Date(), forKey: "createdAt")
