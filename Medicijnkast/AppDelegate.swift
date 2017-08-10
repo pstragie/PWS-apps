@@ -77,9 +77,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Override point for customization after application launch.
         
-        
+        // MARK: Load from CSV, for update of bcfi database!
         // Developer use only! Load persistent store with data from csv files.
-        //seedPersistentStoreWithManagedObjectContext(managedObjectContext)
+        // Step 0: Delete the database files (3) in the "Medicijnkast" folder
+        // Step 1a: Unmark the two following lines of code
+        // Step 1b: Run the app (10 minutes or more to read and load all the files)
+        // Step 2: Locate the database files (3)
+        // Step 3: Copy the database files (3) to the "Medicijnkast" folder
+        // Step 4: Mark the two following lines of code
+        let moc = persistentContainer.viewContext
+        seedPersistentStoreWithManagedObjectContext(moc)
         
         // Save Managed Object Context
         self.saveContext()
@@ -105,8 +112,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
-    // MARK: - didUpdate userActivity
+    // MARK: - Application behaviour
+    // MARK: didUpdate userActivity
     func application(_ application: UIApplication, didUpdate userActivity: NSUserActivity) {
         print("App did update!")
         // Copy Userdefaults to Userdata entity
@@ -120,13 +127,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     
-    // MARK: - applicationWillResignActive
+    // MARK: applicationWillResignActive
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
-    // MARK: - applicationDidEnterBackground
+    // MARK: applicationDidEnterBackground
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
@@ -135,17 +142,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //checkForUpdates()
     }
 
-    // MARK: - applicationWillEnterForeground
+    // MARK: applicationWillEnterForeground
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
-    // MARK: - applicationDidBecomeActive
+    // MARK: applicationDidBecomeActive
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
-    // MARK: - applicationWillTerminate
+    // MARK: applicationWillTerminate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
@@ -158,8 +165,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if seedCoreDataContainerIfFirstLaunch() {
             //destroyPersistentStore()
             print("First Launch!!!")
-            //let Entities = ["MP", "MPP", "Sam", "Gal", "Stof", "Hyr", "Ggr_Link", "Ir"]
-            let Entities = ["MPP", "Gal", "Ggr_Link", "MP", "Sam", "Stof", "Hyr", "Ir"]
+            //let Entities = ["MPP", "Gal", "Ggr_Link", "MP", "Sam", "Stof", "Hyr", "Ir"]
+            let Entities = ["MPP"]
             for entitynaam in Entities {
                 //cleanCoreData(entitynaam: entitynaam)
                 print(entitynaam)
@@ -207,7 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    // MARK: persistentContainer
+    // MARK: - persistentContainer
     lazy var persistentContainer: NSPersistentContainer = {
         print("Loading persistentContainer")
         /*
@@ -237,7 +244,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
     
-    // MARK: Optional
+    // MARK: - Optional
     lazy var backgroundContext: NSManagedObjectContext = {
         return self.persistentContainer.newBackgroundContext()
     }()
@@ -252,7 +259,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.persistentContainer.performBackgroundTask(block)
     }
     
-    // MARK: seedCoreDataContainerIfFirstLaunch
+    // MARK: - Check for first launc
     func seedCoreDataContainerIfFirstLaunch() -> Bool {
         //1
         let previouslyLaunched = UserDefaults.standard.bool(forKey: "previouslyLaunched")
@@ -312,22 +319,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.saveAttributes(entitynaam: entitynaam, dict: newdict)
         }
     }
-    /*
-    func updateAllAttributes(entitynaam: String) {
-        print("loading attributes...")
-        let items = preloadData(entitynaam: entitynaam)
-        var readLines: Float = 0.0
-        var progressie: Float = 0.0
-        let totalLines = Float(items.count)
-        for item in items {
-            readLines += 1
-            progressie = readLines/totalLines
-            print("progressie: \(progressie)")
-            //print("saveAttributes: \(entitynaam), /(dict)")
-            self.updateAttributes(entitynaam: entitynaam, dict: item)
-        }
-    }
-    */
+    
     
     // MARK: - createRecordForEntity
     private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
@@ -654,140 +646,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return items
     }
     
-    /*
-    func destroyPersistentStore() {
-        let fileManager = FileManager.default
-        let storeName = "Medicijnkast.sqlite"
-        print("Destroying persistent store!")
-        let documentsDirectoryURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let persistentStoreURL = documentsDirectoryURL.appendingPathComponent(storeName)
-        do {
-            try coreDataManager.persistentStoreCoordinator.destroyPersistentStore(at: persistentStoreURL, ofType: NSSQLiteStoreType, options: nil)
-        
-        } catch {
-            let updateError = error as NSError
-            print("\(updateError), \(updateError.userInfo)")
-        }
-    }
-    */
-    func cleanCoreData(entitynaam: String) {
-        // Remove the existing items
-        print("Cleaning core data... \(entitynaam)")
-        let context = persistentContainer.viewContext
-        /*
-        var list: NSManagedObject? = nil
-        let lists = fetchRecordsForEntity(entitynaam, inManagedObjectContext: context)
-        if let listRecord = lists.first {
-            list = listRecord
-        }
-        
-        let items = list?.mutableSetValue(forKey: "sam")
-        if let anyItem = items?.anyObject() as? NSManagedObject {
-            context.delete(anyItem)
-            print("AnyItem deleted")
-        } else {
-            context.delete(list!)
-            print("List deleted")
-        }
-        saveContext()
-        */
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: entitynaam)
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetch)
-        do {
-            print("deleting all contents...")
-            try context.execute(deleteRequest)
-            //try persistentContainer.persistentStoreCoordinator.execute(deleteRequest, with: context)
-        } catch {
-            print(error.localizedDescription)
-            print("Deleting Core Data failed!")
-            fatalError("Failed to execute request: \(error)")
-        }
-        
-        /*
-        if let result = try? context.fetch(fetch) {
-            for object in result {
-                context.delete(object as! NSManagedObject)
-            }
-        }
-        */
-        
-    }
-    
-    // MARK: Remove all Data from Medicijn before adding the parsed data.
-    func cleanCoreDataMedicijn() {
-        print("Cleaning core data...")
-        let context = self.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<MPP> = MPP.fetchRequest()
-        
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>)
-        
-        do {
-            print("deleting all contents...")
-            try context.execute(deleteRequest)
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    /*
-    // Check for updates
-    private func checkForUpdates() {
-        var fileModificationDate:Date?
-        var attributes:Dictionary<FileAttributeKey,Any> = [:]
-        let path = Bundle.main.path(forResource: "combinednoempties", ofType: "csv")
-        let fileManager = FileManager.default
-        do {
-            attributes = try fileManager.attributesOfItem(atPath: path!)
-        } catch {
-            print("Could not get file.")
-        }
-        fileModificationDate = attributes[FileAttributeKey.modificationDate]! as? Date
-        if fileModificationDate! > UserDefaults.standard.value(forKey: "last_update") as! Date {
-            print("jonger.")
-            // Update needed
-            updateCoreData()
-        } else {
-            // Temporarily, delete once it works
-            updateCoreData()
-            print("ouder of even oud.")
-        }
 
-    }
-    // Update core data
-    
-    // Existing installation with existing data - check for updates
-    private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
-        // Helpers
-        var result: NSManagedObject?
-        
-        // Create Entity Description
-        let entityDescription = NSEntityDescription.entity(forEntityName: entity, in: managedObjectContext)
-        if let entityDescription = entityDescription {
-            // Create Managed Object
-            result = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
-        }
-        return result
-    }
-    
-    private func fetchRecordsForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
-        // Create Fetch Request
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-        
-        // Helpers
-        var result = [NSManagedObject]()
-        
-        do {
-            // Execute Fetch Request
-            let records = try managedObjectContext.fetch(fetchRequest)
-            if let records = records as? [NSManagedObject] {
-                result = records
-            }
-        } catch {
-            print("Unable to fetch managed objects for entity \(entity).")
-        }
-        
-        return result
-    }
-     */
 }
 
 extension String {
