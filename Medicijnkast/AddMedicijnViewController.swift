@@ -112,13 +112,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             receivedArray = sourceViewController.arrayPassed
             //print("received string: \(receivedArray)")
         }
-        
+        self.asc = true
         switch segue.identifier {
         case "vosnmToSearch"?:
             filterKeyword = "vosnm_"
             sortKeyword = "index"
             zoekwoord = (receivedData?.vosnm_)!
             self.selectedScope = 2
+            self.asc = false
             hyrView = false
             //print("vosnm_: \(zoekwoord!)")
         case "stofnaam1"?:
@@ -126,6 +127,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             sortKeyword = "index"
             zoekwoord = receivedArray[0]
             self.selectedScope = 2
+            self.asc = false
             hyrView = false
             //print("stofnm1")
         case "stofnaam2"?:
@@ -133,6 +135,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             sortKeyword = "index"
             zoekwoord = receivedArray[1]
             self.selectedScope = 2
+            self.asc = false
             //print("stofnm2")
         case "stofnaam3"?:
             filterKeyword = "ANY sam.stof.ninnm"
@@ -153,6 +156,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             sortKeyword = "index"
             zoekwoord = receivedArray[4]
             self.selectedScope = 2
+            self.asc = false
             hyrView = false
             //print("stofnm5")
         case "irnmToSearch"?:
@@ -881,16 +885,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
                 predicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
-                if sortKeyword == "index" {
-                    self.asc = false
-                } else {
-                    self.asc = true
-                }
-                print("ascending = \(self.asc)")
+                //print("ascending = \(self.asc)")
+                //print("sort keyword = \(sortKeyword)")
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: self.asc)]
             }
         }
-        print("still ascending = \(self.asc)")
+        //print("still ascending = \(self.asc)")
+        self.asc = true
         self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
         self.fetchedResultsController.fetchRequest.predicate = predicate
         do {

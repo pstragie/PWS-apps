@@ -22,7 +22,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     // MARK: - Button actions
     var kastRichting: Bool = false
     var lijstRichting: Bool = false
-
+    
     @IBAction func kastWijzigen(_ sender: UIButton) {
         medicijn?.userdata?.setValue(true, forKey: "medicijnkast")
         let context = self.appDelegate.persistentContainer.viewContext
@@ -60,26 +60,58 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func setupNoteView() {
+        
         self.noteView=UIView(frame:CGRect(x: (self.view.bounds.width)/8, y: (self.view.bounds.height)/8, width: self.view.bounds.width-((self.view.bounds.width)/4), height: self.view.bounds.height-((self.view.bounds.height)/4)))
-        noteView.backgroundColor = UIColor.white.withAlphaComponent(1)
+        noteView.backgroundColor = UIColor.black.withAlphaComponent(0.99)
         noteView.layer.cornerRadius = 8
-        noteView.layer.borderWidth = 1
+        noteView.layer.borderWidth = 2
         noteView.layer.borderColor = UIColor.black.cgColor
+        noteView.isHidden = true
         self.view.addSubview(noteView)
-        self.popButton.isHidden = true
-        self.popButton.isEnabled = false
-        self.noteView.isHidden = false
         
         let closenote = UIButton()
         closenote.setTitle("Sluiten", for: .normal)
-        closenote.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        closenote.titleLabel?.textColor = UIColor.blue
+        closenote.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        closenote.setTitleColor(.white, for: .normal)
+        closenote.setTitleColor(.red, for: .highlighted)
+        closenote.layer.cornerRadius = 8
+        closenote.layer.borderWidth = 2
+        closenote.layer.borderColor = UIColor.gray.cgColor
+        closenote.showsTouchWhenHighlighted = true
+        closenote.translatesAutoresizingMaskIntoConstraints = false
+        closenote.addTarget(self, action: #selector(closeNoteAction), for: .touchUpInside)
+        closenote.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
         let labelnote = UILabel()
         labelnote.text = medicijn?.note
-        labelnote.font = UIFont.boldSystemFont(ofSize: 14)
-        labelnote.textColor = UIColor.black
+        labelnote.font = UIFont.boldSystemFont(ofSize: 17)
+        labelnote.textColor = UIColor.white
+        labelnote.translatesAutoresizingMaskIntoConstraints = false
+        let vertStack = UIStackView(arrangedSubviews: [closenote, labelnote])
+        vertStack.axis = .vertical
+        vertStack.distribution = .fill
+        vertStack.alignment = .fill
+        vertStack.spacing = 10
+        vertStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.noteView.addSubview(vertStack)
+        
+        //Stackview Layout (constraints)
+        vertStack.leftAnchor.constraint(equalTo: noteView.leftAnchor, constant: 20).isActive = true
+        vertStack.topAnchor.constraint(equalTo: noteView.topAnchor, constant: 20).isActive = true
+        vertStack.rightAnchor.constraint(equalTo: noteView.rightAnchor, constant: -20).isActive = true
+        vertStack.heightAnchor.constraint(equalTo: noteView.heightAnchor, constant: -20).isActive = true
+        
+        
+        
     }
-    
+    func closeNoteAction(sender: UIButton!) {
+        if self.noteView.isHidden == true {
+            self.noteView.isHidden = false
+        } else {
+            self.noteView.isHidden = true
+        }
+    }
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +119,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         navigationItem.title = "Info: \((medicijn?.mp?.mpnm)!)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         dataPassed = medicijn
+        setupNoteView()
     }
 
     override func viewDidAppear(_ animated: Bool) {
