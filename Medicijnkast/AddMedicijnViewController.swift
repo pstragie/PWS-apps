@@ -21,8 +21,17 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
     var asc = true
+    @IBOutlet weak var Hospitaal: UILabel!
+    
     @IBOutlet weak var zoekenImage: UIImageView!
+    @IBOutlet weak var hospSwitch: UISwitch!
 
+    @IBAction func hospSwitch(_ sender: UISwitch) {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     // MARK: - Properties Variables
     var hyrView: Bool = false
     var selectedHyr0: String = "D"
@@ -34,6 +43,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var hyrPickerView = UIView()
     var pickerChanged: Bool = false
     var upArrow = UIView()
+    var sortIndexUp = UIView()
+    var sortButton = UIButton()
+    var sortAZ = UIView()
+    var azButton = UIButton()
     var sortDescriptorIndex: Int? = nil
     var selectedScope: Int = -1
     var selectedSegmentIndex: Int = 0
@@ -45,7 +58,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var zoekoperator:String = "BEGINSWITH"
     var format:String = "mppnm BEGINSWITH[c] %@"
     var sortKeyword:String = "mppnm"
-    
+    var noHosp: Bool = true
     // MARK: - Referencing Outlets
     
     @IBOutlet weak var gevondenItemsLabel: UILabel!
@@ -63,8 +76,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
         }, completion: nil
         )
-        btnCloseMenuView.isHidden = false
-        btnCloseMenuView.isEnabled = true
+        if btnCloseMenuView.isHidden == true {
+            btnCloseMenuView.isHidden = false
+            btnCloseMenuView.isEnabled = true
+        } else {
+            btnCloseMenuView.isHidden = true
+            btnCloseMenuView.isEnabled = false
+        }
     }
     
     // MARK: - Referencing Actions
@@ -228,6 +246,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
         //print("Addmedicijn View did load!")
         setupLayout()
+        setupIndexSort()
+        setupIndexSortAZ()
         setUpSearchBar(selectedScope: -1)
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
@@ -612,8 +632,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.tableView.tableHeaderView = searchBar
     }
     
+    // MARK: - setupUpArrow
     func setupUpArrow() {
-        self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-200, width: 50, height: 50))
+        self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-240, width: 50, height: 50))
         upArrow.isHidden = true
         upArrow.backgroundColor = UIColor.black.withAlphaComponent(0.60)
         upArrow.layer.cornerRadius = 25
@@ -639,7 +660,85 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             tableView.setContentOffset(topOffset, animated: false)
         }
     }
-    // MARK: Layout
+    
+    // MARK: - setupIndexSort
+    func setupIndexSort() {
+        self.sortIndexUp=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-180, width: 50, height: 50))
+        
+        sortIndexUp.isHidden = true
+        sortIndexUp.backgroundColor = UIColor.black.withAlphaComponent(0.60)
+        sortIndexUp.layer.cornerRadius = 25
+        
+        self.view.addSubview(sortIndexUp)
+        
+        sortButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        sortButton.setTitle("Sort\nindex", for: .normal)
+        sortButton.layer.cornerRadius = 20
+        sortButton.setTitleColor(UIColor.white, for: .normal)
+        sortButton.setTitleColor(UIColor.gray, for: .highlighted)
+        sortButton.titleLabel?.lineBreakMode = .byWordWrapping
+        sortButton.titleLabel?.textAlignment = .center
+        sortButton.titleLabel?.font.withSize(8)
+        sortButton.addTarget(self, action: #selector(sortIndex), for: UIControlEvents.touchUpInside)
+        self.sortIndexUp.addSubview(sortButton)
+    }
+    
+    func sortIndex() {
+        self.sortKeyword = "index"
+        //print("self asc = \(self.asc)")
+        //print("Sort Index up or down")
+        if self.asc == true {
+            self.asc = false
+        } else {
+            self.asc = true
+        }
+        self.sortAZ.isHidden = false
+        searchActive = true
+        self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
+        searchBar.becomeFirstResponder()
+        
+    }
+    
+    // MARK: - setupIndexSort
+    func setupIndexSortAZ() {
+        self.sortAZ=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-120, width: 50, height: 50))
+        
+        sortAZ.isHidden = true
+        sortAZ.backgroundColor = UIColor.black.withAlphaComponent(0.60)
+        sortAZ.layer.cornerRadius = 25
+        
+        self.view.addSubview(sortAZ)
+        
+        azButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        azButton.setTitle("A-Z", for: .normal)
+        azButton.layer.cornerRadius = 20
+        azButton.setTitleColor(UIColor.white, for: .normal)
+        azButton.setTitleColor(UIColor.gray, for: .highlighted)
+        azButton.titleLabel?.lineBreakMode = .byWordWrapping
+        azButton.titleLabel?.textAlignment = .center
+        azButton.titleLabel?.font.withSize(8)
+        azButton.addTarget(self, action: #selector(sortIndexAZ), for: UIControlEvents.touchUpInside)
+        self.sortAZ.addSubview(azButton)
+    }
+    
+    func sortIndexAZ() {
+        if self.selectedScope == 1 {
+            self.sortKeyword = "mppnm"
+        } else if self.selectedScope == 2 {
+            self.sortKeyword = "vosnm_"
+        }
+        //print("self asc = \(self.asc)")
+        //print("Sort Index A-Z")
+        self.asc = true
+        self.sortAZ.isHidden = true
+        searchActive = true
+        self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
+        searchBar.becomeFirstResponder()
+        
+    }
+
+    
+    // MARK: - Layout
     func setupLayout() {
         segmentedButton.setTitle("B....", forSegmentAt: 0)
         segmentedButton.setTitle("..c..", forSegmentAt: 1)
@@ -659,6 +758,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = searchBar.text!
             self.selectedScope = 0
             hyrView = false
+            self.sortIndexUp.isHidden = true
+            self.sortAZ.isHidden = true
         case 1:
             //print("scope: verpakking")
             filterKeyword = "mppnm"
@@ -666,6 +767,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = searchBar.text!
             self.selectedScope = 1
             hyrView = false
+            self.sortIndexUp.isHidden = false
         case 2:
             //print("scope: vosnaam")
             filterKeyword = "vosnm_"
@@ -673,6 +775,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = searchBar.text!
             self.selectedScope = 2
             hyrView = false
+            self.sortIndexUp.isHidden = false
         case 3:
             //print("scope: firmanaam")
             filterKeyword = "mp.ir.nirnm"
@@ -680,6 +783,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = searchBar.text!
             self.selectedScope = 3
             hyrView = false
+            self.sortIndexUp.isHidden = true
+            self.sortAZ.isHidden = true
         case 4:
             //print("scope: hierarchie")
             self.view.endEditing(true)
@@ -711,18 +816,24 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
 
             hyrView = true
+            self.sortIndexUp.isHidden = true
+            self.sortAZ.isHidden = true
         case 5:
             //print("scope: alles")
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             self.selectedScope = 5
             hyrView = false
+            self.sortIndexUp.isHidden = true
+            self.sortAZ.isHidden = true
             zoekwoord = searchBar.text!
         default:
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
             self.selectedScope = -1
+            self.sortIndexUp.isHidden = true
+            self.sortAZ.isHidden = true
         }
         
         //print("scope changed: \(selectedScope)")
@@ -776,7 +887,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
             
         }
-        // Tell the searchBar that the searchBarSearchButton was clicked
         self.tableView.reloadData()
         updateView()
     }
@@ -802,6 +912,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             self.filterContentForSearchText(searchText: searchText, scopeIndex: 4)
         }
+        searchBar.becomeFirstResponder()
     }
     
     func searchBarSearchButtonClicked(_: UISearchBar) {
@@ -844,7 +955,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 format = ("mppnm \(zoekoperator)[c] %@ || mp.mpnm \(zoekoperator)[c] %@")
                 let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText])
                 let sub2 = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", searchText)
-                predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2])
+                let sub3 = NSPredicate(format: "use != %@", "H")
+                let subpredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2])
+                
+                if !hospSwitch.isOn {
+                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
+                } else {
+                    predicate = subpredicate
+                }
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
             }
 
@@ -856,9 +974,15 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText])
                 let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText)
                 let sub3 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText)
+                let sub4 = NSPredicate(format: "use != %@", "H")
                 let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2, sub3])
                 let predicate2 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText)
-                predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [predicate1, predicate2])
+                let subpredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [predicate1, predicate2])
+                if !hospSwitch.isOn {
+                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub4])
+                } else {
+                    predicate = subpredicate
+                }
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
             }
         } else if scopeIndex == 4 {
@@ -870,13 +994,31 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 if searchText.isEmpty == false {
                     let sub1 = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord)
                     let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText)
-                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sub1, sub2])
+                    let sub3 = NSPredicate(format: "use != %@", "H")
+                    let subpredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sub1, sub2])
+                    if !hospSwitch.isOn {
+                        predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
+                    } else {
+                        predicate = subpredicate
+                    }
                 } else {
-                    predicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord)
+                    let sub3 = NSPredicate(format: "use != %@", "H")
+                    let subpredicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord)
+                    if !hospSwitch.isOn {
+                        predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
+                    } else {
+                        predicate = subpredicate
+                    }
                 }
                 sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
             } else {
-                predicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", searchText)
+                let sub3 = NSPredicate(format: "use != %@", "H")
+                let subpredicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", searchText)
+                if !hospSwitch.isOn {
+                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
+                } else {
+                    predicate = subpredicate
+                }
                 sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
                 pickerChanged = false
             }
@@ -884,14 +1026,20 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             if searchText.isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
-                predicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
+                let sub3 = NSPredicate(format: "use != %@", "H")
+                let subpredicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
+                if !hospSwitch.isOn {
+                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
+                } else {
+                    predicate = subpredicate
+                }
                 //print("ascending = \(self.asc)")
                 //print("sort keyword = \(sortKeyword)")
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: self.asc)]
             }
         }
         //print("still ascending = \(self.asc)")
-        self.asc = true
+        
         self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
         self.fetchedResultsController.fetchRequest.predicate = predicate
         do {

@@ -165,7 +165,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         
         // Configure Cell
         cell.layer.cornerRadius = 3
-        cell.layer.masksToBounds = true
+        cell.layer.masksToBounds = false
         cell.layer.borderWidth = 1
         
         // Stack top
@@ -303,40 +303,42 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             cell.kastimage.image = #imageLiteral(resourceName: "kruisje")
             cell.kastWijzigen.setTitle("+", for: .normal)
             cell.kastWijzigen.setTitleColor(UIColor.green, for: .normal)
-            cell.kastWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            cell.kastWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
             kastRichting = true
         } else {
             cell.kastimage.image = #imageLiteral(resourceName: "vinkje")
             cell.kastWijzigen.setTitle("-", for: .normal)
             cell.kastWijzigen.setTitleColor(UIColor.red, for: .normal)
-            cell.kastWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            cell.kastWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
             kastRichting = false
         }
         if medicijn?.userdata == nil || medicijn?.userdata?.aankooplijst == false {
             cell.aankoopimage.image = #imageLiteral(resourceName: "kruisje")
             cell.lijstWijzigen.setTitle("+", for: .normal)
             cell.lijstWijzigen.setTitleColor(UIColor.green, for: .normal)
-            cell.lijstWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            cell.lijstWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
             lijstRichting = true
         } else {
             cell.aankoopimage.image = #imageLiteral(resourceName: "vinkje")
             cell.lijstWijzigen.setTitle("-", for: .normal)
             cell.lijstWijzigen.setTitleColor(UIColor.red, for: .normal)
-            cell.lijstWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            cell.lijstWijzigen.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
             lijstRichting = false
         }
         
+        cell.moreButton.layer.cornerRadius = 3
+        cell.moreButton.layer.borderWidth = 3
+        cell.moreButton.layer.borderColor = UIColor.white.cgColor
+        
         cell.noteButton.layer.cornerRadius = 3
-        cell.noteButton.layer.masksToBounds = true
-        cell.noteButton.layer.borderWidth = 1
+        cell.noteButton.layer.masksToBounds = false
+        cell.noteButton.layer.borderWidth = 3
+        cell.noteButton.layer.borderColor = UIColor.white.cgColor
         if medicijn?.note != "_" {
             cell.noteButton.isHidden = false
-            cell.noteButton.layer.borderColor = UIColor.black.cgColor
             cell.noteButton.layer.backgroundColor = UIColor.green.cgColor
 
         } else {
-            cell.noteButton.layer.borderColor = UIColor.gray.cgColor
-            cell.noteButton.layer.backgroundColor = UIColor.gray.cgColor
             cell.noteButton.isHidden = true
         }
         

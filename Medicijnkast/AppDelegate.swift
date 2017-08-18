@@ -52,9 +52,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // MARK: preloaDBData of three database files included in the app
             // For distribution purposes!
             // Unmark simultaneously with marking the seedPersistentDatabase function to import csv!
+            
             preloadDBData()
             
+            // Override point for customization after application launch.
             
+            // MARK: Load from CSV, for update of bcfi database!
+            // Developer use only! Load persistent store with data from csv files.
+            // Step 0: Delete the database files (3) in the "Medicijnkast" folder
+            // Step 0b: Mark the preloadDBData() function above
+            // Step 1a: Unmark the two following lines of code below the steps
+            // Step 1b: Run the app (10 minutes or more to read and load all the files)
+            // Step 2: Locate the database files (3)
+            // Step 3a: Copy the database files (3) from the "NSHomeDir" folder
+            // Step 3b: Delete the database files from the MedCabinetFree folder?
+            // Step 4: Mark the two following lines of code
+            // Step 5: Unmark the preloaDBData function above!
+            
+            //let moc = persistentContainer.viewContext
+            //seedPersistentStoreWithManagedObjectContext(moc)
+
             
             // Print local file directory
             let fm = FileManager.default
@@ -81,22 +98,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Updating new version to UserDefaults
         defaults.set(currentAppVersion, forKey: "appVersion")
-        
-        // Override point for customization after application launch.
-        
-        // MARK: Load from CSV, for update of bcfi database!
-        // Developer use only! Load persistent store with data from csv files.
-        // Step 0: Delete the database files (3) in the "Medicijnkast" folder
-        // Step 0b: Mark the preloadDBData() function above
-        // Step 1a: Unmark the two following lines of code
-        // Step 1b: Run the app (10 minutes or more to read and load all the files)
-        // Step 2: Locate the database files (3)
-        // Step 3a: Copy the database files (3) from the "NSHomeDir" folder
-        // Step 3b: Delete the database files from the MedCabinetFree folder?
-        // Step 4: Mark the two following lines of code
-        // Step 5: Unmark the preloaDBData function above!
-        //let moc = persistentContainer.viewContext
-        //seedPersistentStoreWithManagedObjectContext(moc)
         
         // Save Managed Object Context
         self.saveContext()

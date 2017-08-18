@@ -13,7 +13,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
     weak var medicijn: MPP?
     var link: String?
     var webView: WKWebView!
-    
+
     @IBOutlet weak var barView: UIView!
     required init(coder aDecoder: NSCoder) {
         self.webView = WKWebView(frame: CGRect.zero)
@@ -23,6 +23,12 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
     @IBOutlet weak var progressView: UIProgressView!
     
     var webstring:String?="https://www.apple.com"
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.barView.bringSubview(toFront: progressView)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //barView = UIView(frame:CGRect(x:0, y:0, width: view.frame.width, height: 5))
