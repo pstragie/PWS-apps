@@ -37,6 +37,10 @@
 		B67F7BA81E84285200D98F82 /* KlachtenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67F7BA71E84285200D98F82 /* KlachtenViewController.swift */; };
 		B69D8A881E5E887000693F12 /* Rekenen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D8A871E5E887000693F12 /* Rekenen.swift */; };
 		B69D8A8A1E5F354700693F12 /* CompareAankoopLijstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */; };
+		F57437961F4799EE00619A1B /* ConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57437951F4799EE00619A1B /* ConnectionCheck.swift */; };
+		F57437A01F48FA7A00619A1B /* Medicijnkast.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = F574379D1F48FA7A00619A1B /* Medicijnkast.sqlite */; };
+		F57437A11F48FA7A00619A1B /* Medicijnkast.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = F574379E1F48FA7A00619A1B /* Medicijnkast.sqlite-shm */; };
+		F57437A21F48FA7A00619A1B /* Medicijnkast.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = F574379F1F48FA7A00619A1B /* Medicijnkast.sqlite-wal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,9 +88,10 @@
 		B69D8A871E5E887000693F12 /* Rekenen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rekenen.swift; sourceTree = "<group>"; };
 		B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareAankoopLijstViewController.swift; sourceTree = "<group>"; };
 		B6F94BC21ED09D340076A85F /* MedCabinetFreeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MedCabinetFreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F57437921F44CF1500619A1B /* Medicijnkast.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Medicijnkast.sqlite; path = "../../../../Library/Developer/CoreSimulator/Devices/140086A0-FE05-41E8-B17E-6007289E3059/data/Containers/Data/Application/C2FD8EC1-C8D3-4EDB-A465-3E5C562CB214/Library/Application Support/Medicijnkast.sqlite"; sourceTree = "<group>"; };
-		F57437931F44CF1500619A1B /* Medicijnkast.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Medicijnkast.sqlite-shm"; path = "../../../../Library/Developer/CoreSimulator/Devices/140086A0-FE05-41E8-B17E-6007289E3059/data/Containers/Data/Application/C2FD8EC1-C8D3-4EDB-A465-3E5C562CB214/Library/Application Support/Medicijnkast.sqlite-shm"; sourceTree = "<group>"; };
-		F57437941F44CF1500619A1B /* Medicijnkast.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Medicijnkast.sqlite-wal"; path = "../../../../Library/Developer/CoreSimulator/Devices/140086A0-FE05-41E8-B17E-6007289E3059/data/Containers/Data/Application/C2FD8EC1-C8D3-4EDB-A465-3E5C562CB214/Library/Application Support/Medicijnkast.sqlite-wal"; sourceTree = "<group>"; };
+		F57437951F4799EE00619A1B /* ConnectionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
+		F574379D1F48FA7A00619A1B /* Medicijnkast.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Medicijnkast.sqlite; path = "../../../../Library/Developer/CoreSimulator/Devices/140086A0-FE05-41E8-B17E-6007289E3059/data/Containers/Data/Application/522858F2-EE09-4743-878C-436438BF21CE/Library/Application Support/Medicijnkast.sqlite"; sourceTree = "<group>"; };
+		F574379E1F48FA7A00619A1B /* Medicijnkast.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Medicijnkast.sqlite-shm"; path = "../../../../Library/Developer/CoreSimulator/Devices/140086A0-FE05-41E8-B17E-6007289E3059/data/Containers/Data/Application/522858F2-EE09-4743-878C-436438BF21CE/Library/Application Support/Medicijnkast.sqlite-shm"; sourceTree = "<group>"; };
+		F574379F1F48FA7A00619A1B /* Medicijnkast.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Medicijnkast.sqlite-wal"; path = "../../../../Library/Developer/CoreSimulator/Devices/140086A0-FE05-41E8-B17E-6007289E3059/data/Containers/Data/Application/522858F2-EE09-4743-878C-436438BF21CE/Library/Application Support/Medicijnkast.sqlite-wal"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,9 +149,9 @@
 		B66B41331E4B4B9300DA2793 /* Medicijnkast */ = {
 			isa = PBXGroup;
 			children = (
-				F57437921F44CF1500619A1B /* Medicijnkast.sqlite */,
-				F57437931F44CF1500619A1B /* Medicijnkast.sqlite-shm */,
-				F57437941F44CF1500619A1B /* Medicijnkast.sqlite-wal */,
+				F574379D1F48FA7A00619A1B /* Medicijnkast.sqlite */,
+				F574379E1F48FA7A00619A1B /* Medicijnkast.sqlite-shm */,
+				F574379F1F48FA7A00619A1B /* Medicijnkast.sqlite-wal */,
 				B66B41341E4B4B9300DA2793 /* AppDelegate.swift */,
 				B66045FC1E78032E0056A617 /* CoreDataManager.swift */,
 				B66B414D1E4B63AE00DA2793 /* AddMedicijnViewController.swift */,
@@ -156,6 +161,7 @@
 				B61319BA1E57CF06004AD4D7 /* MedicijnDetailViewController.swift */,
 				B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */,
 				B63D17141E58F0F3008289BB /* BCFIWebViewController.swift */,
+				F57437951F4799EE00619A1B /* ConnectionCheck.swift */,
 				B66B41381E4B4B9400DA2793 /* Main.storyboard */,
 				B66B413E1E4B4B9400DA2793 /* Assets.xcassets */,
 				B66B41431E4B4B9400DA2793 /* Info.plist */,
@@ -260,11 +266,14 @@
 				B67BB6061E6FF517002DEEF6 /* Ggr_Link_swift.csv in Resources */,
 				B67BB60A1E6FF517002DEEF6 /* MPP_swift.csv in Resources */,
 				B66B413F1E4B4B9400DA2793 /* Assets.xcassets in Resources */,
+				F57437A21F48FA7A00619A1B /* Medicijnkast.sqlite-wal in Resources */,
 				B67BB6071E6FF517002DEEF6 /* Hyr_swift.csv in Resources */,
 				B67BB60B1E6FF517002DEEF6 /* Sam_swift.csv in Resources */,
 				B67BB6051E6FF516002DEEF6 /* Gal_swift.csv in Resources */,
 				B66B413A1E4B4B9400DA2793 /* Main.storyboard in Resources */,
+				F57437A11F48FA7A00619A1B /* Medicijnkast.sqlite-shm in Resources */,
 				B67BB6081E6FF517002DEEF6 /* Ir_swift.csv in Resources */,
+				F57437A01F48FA7A00619A1B /* Medicijnkast.sqlite in Resources */,
 				B67BB6091E6FF517002DEEF6 /* MP_swift.csv in Resources */,
 				B67BB60C1E6FF517002DEEF6 /* Stof_swift.csv in Resources */,
 			);
@@ -298,6 +307,7 @@
 				B61319BD1E57E5D5004AD4D7 /* CoreDataStack.swift in Sources */,
 				B67F7BA61E824B8E00D98F82 /* Dictionaries.swift in Sources */,
 				B66B41581E4D1F0100DA2793 /* ShoppingListViewController.swift in Sources */,
+				F57437961F4799EE00619A1B /* ConnectionCheck.swift in Sources */,
 				B66B414F1E4B63AE00DA2793 /* AddMedicijnViewController.swift in Sources */,
 				B66B413D1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld in Sources */,
 				B651518D1E6402B00038BDF1 /* BestellingPlaatsenViewController.swift in Sources */,

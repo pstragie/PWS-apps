@@ -378,7 +378,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index) c€\n"
+            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(String(describing: med.index)) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
             
@@ -671,7 +671,11 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             //print("medicijnen aantal: \(medicijnen.count)")
             
             x = medicijnen.count
-            
+            if x == 0 {
+                showGraphButton.isHidden = true
+            } else {
+                showGraphButton.isHidden = false
+            }
             let totaalAankoop = countAankoop(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
             if searchActive || hasMedicijnen {
                 totaalAantal.text = "\(x)/\(totaalAankoop)"
@@ -679,6 +683,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
                 messageLabel.isHidden = true
                 navigationItem.rightBarButtonItem?.isEnabled = true
                 self.tableView.reloadData()
+            } else if !hasMedicijnen {
+                showGraphButton.isHidden = true
+                totaalAantal.text = "0"
+                tableView.isHidden = true
+                messageLabel.isHidden = false
+                navigationItem.rightBarButtonItem?.isEnabled = false
             } else {
                 totaalAantal.text = "\(totaalAankoop)"
                 navigationItem.rightBarButtonItem?.isEnabled = false
@@ -738,6 +748,18 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         
+    }
+    
+    // MARK: - Scrolling behaviour
+    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        self.upArrow.isHidden = true
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y == 0.0) {  // TOP
+            upArrow.isHidden = true
+        } else {
+            upArrow.isHidden = false
+        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -811,7 +833,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             cell.cheapest.text = "gdkp: Ja"
         }
         */
-        cell.cheapest.text = "index: \((medicijn.index)) c€"
+        cell.cheapest.text = "index: \(String(describing: (medicijn.index))) c€"
 
         return cell
     }

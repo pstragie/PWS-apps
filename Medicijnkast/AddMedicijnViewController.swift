@@ -21,16 +21,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
     var asc = true
-    @IBOutlet weak var Hospitaal: UILabel!
-    
-    @IBOutlet weak var zoekenImage: UIImageView!
-    @IBOutlet weak var hospSwitch: UISwitch!
-
-    @IBAction func hospSwitch(_ sender: UISwitch) {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
     
     // MARK: - Properties Variables
     var hyrView: Bool = false
@@ -59,7 +49,23 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var format:String = "mppnm BEGINSWITH[c] %@"
     var sortKeyword:String = "mppnm"
     var noHosp: Bool = true
+    
     // MARK: - Referencing Outlets
+
+    @IBOutlet weak var Hospitaal: UILabel!
+    @IBOutlet weak var zoekenImage: UIImageView!
+    @IBOutlet weak var hospSwitch: UISwitch!
+
+    @IBAction func hospSwitch(_ sender: UISwitch) {
+        searchActive = true
+        if hyrView == false {
+            self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: self.selectedScope)
+        } else {
+            self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: 4)
+        }
+        searchBar.becomeFirstResponder()
+        self.tableView.reloadData()
+    }
     
     @IBOutlet weak var gevondenItemsLabel: UILabel!
     @IBOutlet var tableView: UITableView!
@@ -331,7 +337,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index) c€\n"
+            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(String(describing: med.index)) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
             
@@ -891,6 +897,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         updateView()
     }
     
+    // MARK: - Searchbar
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         //print("Search should begin editing")
         searchBar.showsScopeBar = true
@@ -1089,6 +1096,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             
             x = medicijnen.count
             if x == 0 {
+                sortIndexUp.isHidden = true
+                sortAZ.isHidden = true
                 gevondenItemsLabel.isHidden = false
                 tableView.isHidden = false
                 tableView.tableFooterView = UIView()
@@ -1154,6 +1163,25 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         
     }
     
+    // MARK: - Scrolling behaviour
+    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        self.upArrow.isHidden = true
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y == 0.0) {  // TOP
+            upArrow.isHidden = true
+            let topOffset = CGPoint(x: 0, y: 0)
+            let offset = CGPoint(x: 0, y: -188)
+            if hyrView == true {
+                tableView.setContentOffset(offset, animated: false)
+            } else {
+                tableView.setContentOffset(topOffset, animated: false)
+            }
+        } else {
+            upArrow.isHidden = false
+        }
+
+    }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         //print("view did end decelerating")
         //print("offset: \(scrollView.contentOffset)")
@@ -1171,7 +1199,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         }
     }
     
-    // MARK: table data
+    // MARK: - Table data
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
         tableView.layer.cornerRadius = 3
@@ -1295,10 +1323,11 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             cell.cheapest.text = "gdkp: Ja"
         }
         */
-        cell.cheapest.text = "index: \(medicijn.index) c€"
+        cell.cheapest.text = "index: \(String(describing: medicijn.index)) c€"
         return cell
     }
     
+    // MARK: - private create record
     private func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
         // Helpers
         var result: NSManagedObject?
@@ -1311,6 +1340,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         return result
     }
     
+    // MARK: - private fetch records
     private func fetchRecordsForEntity(_ entity: String, key: String, arg: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
         // Create Fetch Request
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
@@ -1349,6 +1379,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         }
         return result
     }
+    
     // MARK: - add userdata
     func addUserData(mppcvValue: String, userkey: String, uservalue: Bool, managedObjectContext: NSManagedObjectContext) {
         // one-to-one relationship

@@ -311,7 +311,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index) c€\n"
+            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(String(describing: med.index)) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
             
@@ -417,10 +417,9 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         // Focus searchBar (om onmiddellijk typen mogelijk te maken)
         searchBar.updateFocusIfNeeded()
         searchBar.becomeFirstResponder()
-        searchActive = true
         self.filterContentForSearchText(searchText: self.zoekwoord, scopeIndex: self.selectedScope)
         self.tableView.reloadData()
-        updateView()
+        self.updateView()
     }
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         //print("Search should begin editing")
@@ -533,7 +532,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: - View Methods
     fileprivate func updateView() {
-        //print("Updating view...")
+        print("Updating view...")
         var hasMedicijnen = false
         
         var x:Int
@@ -543,7 +542,8 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
             //print("medicijnen aantal: \(medicijnen.count)")
             
             x = medicijnen.count
-            
+            print("count: \(x)")
+            print("search active? \(searchActive)")
             let totaalAankoop = countAankoop(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
             if searchActive || hasMedicijnen {
                 totaalAantal.text = "\(x)/\(totaalAankoop)"
@@ -553,6 +553,8 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
                 navigationItem.rightBarButtonItem?.isEnabled = true
             } else {
                 totaalAantal.text = "\(totaalAankoop)"
+                messageLabel.isHidden = false
+                tableView.isHidden = true
                 navigationItem.rightBarButtonItem?.isEnabled = false
             }
             
@@ -560,7 +562,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
             tableView.isHidden = !hasMedicijnen
             messageLabel.isHidden = hasMedicijnen
             navigationItem.rightBarButtonItem?.isEnabled = false
-            tableView.reloadData()
+            self.tableView.reloadData()
         }
     }
     
@@ -629,6 +631,18 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         
+    }
+    
+    // MARK: - Scrolling behaviour
+    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        self.upArrow.isHidden = true
+    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y == 0.0) {  // TOP
+            upArrow.isHidden = true
+        } else {
+            upArrow.isHidden = false
+        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

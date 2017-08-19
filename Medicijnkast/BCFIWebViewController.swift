@@ -10,10 +10,14 @@ import UIKit
 import WebKit
 
 class BCFIWebViewController: UIViewController, WKUIDelegate {
+    
+    // MARK: - Variables
     weak var medicijn: MPP?
     var link: String?
     var webView: WKWebView!
-
+    var webstring:String?="https://www.apple.com"
+    
+    // MARK: - Outlets
     @IBOutlet weak var barView: UIView!
     required init(coder aDecoder: NSCoder) {
         self.webView = WKWebView(frame: CGRect.zero)
@@ -22,8 +26,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
     
     @IBOutlet weak var progressView: UIProgressView!
     
-    var webstring:String?="https://www.apple.com"
-    
+    // MARK: - Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.barView.bringSubview(toFront: progressView)
@@ -71,6 +74,23 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         self.view.addSubview(webView)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        if ConnectionCheck.isConnectedToNetwork() {
+            print("Connected to internet")
+        } else {
+            print("Not Connected to internet")
+            let controller = UIAlertController(title: "Geen Internetverbinding!", message: "Deze pagina vereist een werkende internetverbinding.", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+            //let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            controller.addAction(ok)
+            
+            present(controller, animated: true, completion: nil)
+        }
+    }
+    
+        
+    // MARK: - webViewTapped
     func webViewTapped(recognizer: UITapGestureRecognizer) {
         print("Tapped")
     }

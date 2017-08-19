@@ -303,12 +303,35 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.upArrow.addSubview(button)
     }
 
+	// MARK: - Scrolling behaviour
+	func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+		self.upArrow.isHidden = true
+	}
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		if (scrollView.contentOffset.y == 0.0) {  // TOP
+			upArrow.isHidden = true
+		} else {
+			upArrow.isHidden = false
+		}
+		
+	}
+	func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+		//print("view did end decelerating")
+		//print("offset: \(scrollView.contentOffset)")
+		if (scrollView.contentOffset.y == 0.0) {  // TOP
+			upArrow.isHidden = true
+		} else {
+			upArrow.isHidden = false
+		}
+	}
+
+	
     func scrollToTop() {
         //print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)
         tableView.setContentOffset(topOffset, animated: true)
     }
-    
+	
     // MARK: - fetchedResultsController
     fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
         
@@ -336,7 +359,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(med.index) c€\n"
+            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(String(describing: med.index)) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
             
@@ -744,7 +767,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
             cell.cheapest.text = "gdkp: Ja"
         }
         */
-        cell.cheapest.text = "index: \((medicijn.index)) c€"
+        cell.cheapest.text = "index: \(String(describing: (medicijn.index))) c€"
 
         return cell
     }
