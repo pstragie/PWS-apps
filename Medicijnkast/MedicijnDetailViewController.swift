@@ -61,7 +61,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func setupNoteView() {
-        print("setup note view")
+//        print("setup note view")
         self.noteView.isHidden = true
         self.noteView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -138,7 +138,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("View did layout subviews")
+//        print("View did layout subviews")
         scrollToTop()
         setupNoteView()
     }

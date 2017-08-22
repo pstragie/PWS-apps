@@ -20,9 +20,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let level1Picker = UIPickerView()
     let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
-    var asc = true
+    
     
     // MARK: - Properties Variables
+    var asc = true
     var hyrView: Bool = false
     var selectedHyr0: String = "D"
     var selectedHyr1: String = "DA"
@@ -248,23 +249,25 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: - View Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        setUpSearchBar(selectedScope: selectedScope)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         //print("View did disappear!")
         self.appDelegate.saveContext()
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Addmedicijn View did load!")
+//        print("Addmedicijn View did load!")
         setupLayout()
+        setUpSearchBar(selectedScope: -1)
         setupIndexSort()
         setupIndexSortAZ()
         setupUpArrow()
-//        setupAppVersionView()
-
-        setUpSearchBar(selectedScope: -1)
+        
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
@@ -290,22 +293,23 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 //        copyUserDefaultsToUserData(managedObjectContext: context)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        print("View Will appear")
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("view did layout subviews")
-        //print("SelectedScope: \(selectedScope)")
-        setUpSearchBar(selectedScope: selectedScope)
-        //print("Layout selectedHyr0 \(selectedHyr0)")
-        updatePicker1()
-
+        setupView()
+        setupInfoView()
+        setupAppVersionView()
         zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")
-        level1Picker.reloadAllComponents()
-        print("hyrView: \(hyrView)")
+
+//        print("view did layout subviews")
+//        print("SelectedScope: \(selectedScope)")
+//        setUpSearchBar(selectedScope: selectedScope)
+//        print("Layout selectedHyr0 \(selectedHyr0)")
+        
+        
+//        print("hyrView: \(hyrView)")
         if hyrView == true {
+            updatePicker1()
+            level1Picker.reloadAllComponents()
             self.hyrPickerView.isHidden = false
             self.view.bringSubview(toFront: hyrPickerView)
             let topOffset = CGPoint(x: 0, y: -188)
@@ -322,14 +326,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.tableView.setContentOffset(topOffset, animated: true)
             })
         }
-        setupView()
-        setupInfoView()
-        setupAppVersionView()
-        //print("view Did Layout subviews")
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        print("view will transition")
+//        print("view will transition")
         if self.appVersionView.isHidden == false {
             self.H = false
         } else {
@@ -337,6 +337,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         }
 //        setupAppVersionView()
     }
+    
 
     // MARK: - fetchedResultsController
     fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
@@ -491,22 +492,17 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
 //     MARK: - Setup appVersionView
     func setupAppVersionView() {
-        print("setup AppVersionView")
+//        print("setup AppVersionView")
         self.appVersionView.isHidden = true
         self.appVersionView.translatesAutoresizingMaskIntoConstraints = false
         let width: CGFloat = 320.0
         let height: CGFloat = 180.0
-        print("center x: \(self.view.center.x)")
-        print("center y: \(self.view.center.y)")
-        print("screen width: \(self.view.bounds.width)")
-        print("screen height: \(self.view.bounds.height)")
         self.appVersionView=UIView(frame:CGRect(x: (self.view.center.x)-(width/2), y: (self.view.center.y)-(height/2), width: width, height: height))
-//        self.appVersionView=UIView(frame:CGRect(x: self.view.center.x, y: self.view.center.y, width: 240, height: 160))
+
         appVersionView.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         appVersionView.layer.cornerRadius = 8
         appVersionView.layer.borderWidth = 1
         appVersionView.layer.borderColor = UIColor.black.cgColor
-        print("add subview app Versionview")
         self.view.addSubview(appVersionView)
         self.appVersionView.isHidden = self.H
         
@@ -549,17 +545,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         vertStack.alignment = .fill
         vertStack.spacing = 8
         vertStack.translatesAutoresizingMaskIntoConstraints = false
-        print("add subview vertstack")
         self.appVersionView.addSubview(vertStack)
         
-        // Layout the stack view
         //Stackview Layout (constraints)
         vertStack.leftAnchor.constraint(equalTo: appVersionView.leftAnchor, constant: 20).isActive = true
         vertStack.topAnchor.constraint(equalTo: appVersionView.topAnchor, constant: 20).isActive = true
         vertStack.rightAnchor.constraint(equalTo: appVersionView.rightAnchor, constant: -20).isActive = true
         vertStack.heightAnchor.constraint(equalTo: appVersionView.heightAnchor, constant: -20).isActive = true
-        print("bring subview appversionview to front")
-//        self.view.bringSubview(toFront: appVersionView)
     }
 
     // MARK: - Rate app in the App Store
@@ -673,6 +665,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         //print("Current zoekwoord: \(String(describing: zoekwoord))")
         searchBar.text = zoekwoord
         searchBar.delegate = self
+
         self.tableView.tableHeaderView = searchBar
     }
     
@@ -937,7 +930,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - Searchbar
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        //print("Search should begin editing")
+        print("Search should begin editing")
         searchBar.showsScopeBar = true
         searchBar.sizeToFit()
         searchBar.setShowsCancelButton(true, animated: true)
@@ -947,9 +940,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        //print("text did change")
         zoekwoord = searchText
         searchActive = true
+        
         //print("Zoekterm: \(searchBar.text!)")
         //print("Scope: \(self.selectedScope)")
         if hyrView == false {
@@ -957,7 +950,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             self.filterContentForSearchText(searchText: searchText, scopeIndex: 4)
         }
-        searchBar.becomeFirstResponder()
     }
     
     func searchBarSearchButtonClicked(_: UISearchBar) {
@@ -970,7 +962,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         filterKeyword = "mppnm"
         sortKeyword = "mppnm"
         hyrView = false
-        //print("Cancel clicked")
+        print("Cancel clicked")
         searchBar.showsScopeBar = false
         searchBar.sizeToFit()
         searchActive = false
@@ -983,7 +975,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        //print("should end editing")
         self.tableView.reloadData()
         return true
     }
@@ -1095,11 +1086,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             print("\(fetchError), \(fetchError.userInfo)")
         }
         if self.tableView.contentOffset == offset {
-            self.tableView.reloadData()
             self.tableView.setContentOffset(offset, animated: false)
-        } else {
-            self.tableView.reloadData()
         }
+        self.tableView.reloadData()
         //print("filterKeyword: \(filterKeyword)")
         //print("sortkeyword \(sortKeyword)")
         //print("searchText: \(searchText)")
@@ -1114,9 +1103,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             let indexPath = tableView.indexPathForSelectedRow!
             let selectedObject = fetchedResultsController.object(at: indexPath)
             destination.medicijn = selectedObject
-            print("Segue: \(segue.identifier!)!")
+//            print("Segue: \(segue.identifier!)!")
         default:
-            print("Segue: \(segue.identifier!)!")
+//            print("Segue: \(segue.identifier!)!")
             break
         }
     }
@@ -1197,7 +1186,8 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             }
             break;
         default:
-            print("...")
+            break
+//            print("...")
         }
     }
     
@@ -1342,11 +1332,11 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             cell.Cheap_label.text = ""
         }        
         cell.mpnm.text = medicijn.mp?.mpnm
-        if medicijn.userdata != nil || medicijn.userdata?.medicijnkast == true {
+        if medicijn.userdata != nil && medicijn.userdata?.medicijnkast == true {
             cell.iconKast.image = #imageLiteral(resourceName: "medicijnkast_icon75x75")
             cell.iconKast.tintColor = UIColor.black
         }
-        if medicijn.userdata != nil || medicijn.userdata?.aankooplijst == true {
+        if medicijn.userdata != nil && medicijn.userdata?.aankooplijst == true {
             cell.iconLijst.image = #imageLiteral(resourceName: "aankooplijst_icon75x75")
             cell.iconLijst.tintColor = UIColor.black
         }
@@ -1366,6 +1356,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         }
         */
         cell.cheapest.text = "index: \(String(describing: medicijn.index)) c€"
+        
         return cell
     }
     

@@ -35,9 +35,14 @@ class Dictionaries {
     }
     
     func ssecr(ssecr:String) -> String {
+        let ssecrLijst = ssecr.components(separatedBy: " ")
+        var ssecrstringLijst: Array<String> = []
         var ssecrstring:String = ""
-        let ssecrdict: Dictionary<String,String> = ["a":"categorie a", "b":"categorie b", "c":"categorie c", "cx":"categorie cx", "cs":"categorie cs", "b2":"b2: a priori controle", "c2":"c2: a priori controle", "a4":"a4: a posteriori controle", "b4":"b4: a posteriori controle", "c4":"c4: a posteriori controle", "s4":"s4: a posteriori controle", "h": "h: enkel terugbetaling in hospitaalgebruik", "J":"J: speciale toelage door RIZIV voor vrouwen < 21j.", "aJ":"aJ: gratis voor vrouwen < 21j.", "Chr":"Chr: speciale toelage door RIZIV voor chronische pijn.", "_":"geen"]
-        ssecrstring = ssecrdict[ssecr]!
+        let ssecrdict: Dictionary<String,String> = ["a":"categorie a", "b":"categorie b", "c":"categorie c", "cx":"categorie cx", "cs":"categorie cs", "b2":"b2: a priori controle", "c2":"c2: a priori controle", "a4":"a4: a posteriori controle", "b4":"b4: a posteriori controle", "c4":"c4: a posteriori controle", "s4":"s4: a posteriori controle", "h": "h: enkel terugbetaling in hospitaalgebruik", "J":"J: speciale toelage door RIZIV voor vrouwen < 21j.", "aJ":"aJ: gratis voor vrouwen < 21j.", "Chr":"Chr: speciale toelage door RIZIV voor chronische pijn.", "_":"geen", "":"geen"]
+        for part in ssecrLijst {
+            ssecrstringLijst.append(ssecrdict[part]!)
+        }
+        ssecrstring = ssecrstringLijst.joined(separator: ", ")
         
         return ssecrstring
     }

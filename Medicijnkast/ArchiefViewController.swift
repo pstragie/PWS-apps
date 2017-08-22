@@ -329,6 +329,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         
         searchBar.showsScopeBar = false
+        searchBar.tintColor = UIColor.gray
         searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "alles"]
         searchBar.selectedScopeButtonIndex = -1
         //print("Scope: \(searchBar.selectedScopeButtonIndex)")

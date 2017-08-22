@@ -14,7 +14,7 @@ class MedicijnTableViewCell: UITableViewCell {
 
     static let reuseIdentifier = "MedicijnCell"
 
-    // MARK: -
+    // MARK: - Outlets
     @IBOutlet weak var H_label: UILabel!
     @IBOutlet weak var Rx_label: UILabel!
     @IBOutlet weak var Wada_label: UILabel!

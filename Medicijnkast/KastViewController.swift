@@ -15,7 +15,8 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     let segueShowDetail = "SegueFromKastToDetail"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let localdata = UserDefaults.standard
-    // MARK: - Properties Variables
+	
+	// MARK: - Properties Variables
     var infoView = UIView()
     var menuView = UIView()
     var upArrow = UIView()
@@ -79,41 +80,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
 		
     }
 
-    @IBAction func showMenuView(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            if self.menuView.center.x >= 0 {
-                self.menuView.center.x -= self.view.bounds.width
-            } else {
-                self.menuView.center.x += self.view.bounds.width
-            }
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        menuView.tintColor = UIColor.white
-        btnCloseMenuView.isHidden = false
-        btnCloseMenuView.isEnabled = true
-    }
-    
-    @IBAction func swipeToCloseMenuView(recognizer: UISwipeGestureRecognizer) {
-        //print("swipe action")
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.menuView.center.x -= self.view.bounds.width
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        btnCloseMenuView.isHidden = true
-        btnCloseMenuView.isEnabled = false
-    }
-
-    @IBAction func swipeToCloseInfoView(recognizer: UISwipeGestureRecognizer) {
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            self.infoView.center.y += self.view.bounds.height
-        }, completion: nil)
-        btnCloseMenuView.isHidden = true
-        btnCloseMenuView.isEnabled = false
-    }
-
-    // MARK: - View Life Cycle
+	// MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.appDelegate.saveContext()
@@ -164,7 +131,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        setupMenuView()
         setupInfoView()
         setupUpArrow()
         btnCloseMenuView.isHidden = true
@@ -185,18 +151,6 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     // MARK: - Setup views
-    func setupMenuView() {
-        self.menuView=UIView(frame:CGRect(x:0, y:0, width: 300, height: self.view.bounds.height))
-        menuView.center.x -= self.view.bounds.width
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        menuView.layer.cornerRadius = 8
-        menuView.layer.borderWidth = 1
-        menuView.layer.borderColor = UIColor.black.cgColor
-        self.view.addSubview(menuView)
-        self.btnCloseMenuView.isHidden = true
-        self.btnCloseMenuView.isEnabled = false
-    }
-    
     func setupInfoView() {
         self.infoView.isHidden = true
         self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 178))
@@ -378,6 +332,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         searchBar.isHidden = false
         searchBar.showsScopeBar = false
+		searchBar.tintColor = UIColor.gray
         searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "alles"]
         searchBar.selectedScopeButtonIndex = -1
         searchBar.delegate = self
@@ -674,7 +629,6 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-        
         updateView()
     }
     
@@ -716,7 +670,12 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 135.0
     }
-    
+	
+	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		let _:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddMedicijn") as! AddMedicijnViewController
+		return true
+	}
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
@@ -771,12 +730,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
 
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let _:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddMedicijn") as! AddMedicijnViewController
-        return true
-    }
-
+	
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         // MARK: delete from medicijnkast
         let deleteFromMedicijnkast = UITableViewRowAction(style: .normal, title: "Verwijder uit\nmedicijnkast") { (action, indexPath) in
