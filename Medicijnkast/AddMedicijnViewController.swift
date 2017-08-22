@@ -49,7 +49,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var format:String = "mppnm BEGINSWITH[c] %@"
     var sortKeyword:String = "mppnm"
     var noHosp: Bool = true
+    var H: Bool = true
     
+    // MARK: Version and build
+    var appVersion: String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)!
+    var appBuild: String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String)!
+
     // MARK: - Referencing Outlets
 
     @IBOutlet weak var Hospitaal: UILabel!
@@ -75,20 +80,22 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     //@IBOutlet weak var buttonRate: UIButton!
     @IBAction func appVersion(_ sender: UIBarButtonItem) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            if self.appVersionView.center.x >= 0 {
-                self.appVersionView.center.x -= self.view.bounds.width
+            if self.appVersionView.isHidden == false {
+                self.appVersionView.isHidden = true
+                if self.infoView.center.y >= 0 {
+                    self.btnCloseMenuView.isHidden = false
+                    self.btnCloseMenuView.isEnabled = true
+                } else {
+                    self.btnCloseMenuView.isHidden = true
+                    self.btnCloseMenuView.isEnabled = false
+                }
             } else {
-                self.appVersionView.center.x += self.view.bounds.width
+                self.appVersionView.isHidden = false
+                self.btnCloseMenuView.isHidden = false
+                self.btnCloseMenuView.isEnabled = true
             }
         }, completion: nil
         )
-        if btnCloseMenuView.isHidden == true {
-            btnCloseMenuView.isHidden = false
-            btnCloseMenuView.isEnabled = true
-        } else {
-            btnCloseMenuView.isHidden = true
-            btnCloseMenuView.isEnabled = false
-        }
     }
     
     // MARK: - Referencing Actions
@@ -99,8 +106,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
             }
-            if self.appVersionView.center.x >= 0 {
-                self.appVersionView.center.x -= self.view.bounds.width
+            if self.appVersionView.isHidden == false {
+                self.appVersionView.isHidden = true
             }
         }, completion: nil
         )
@@ -250,10 +257,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //print("Addmedicijn View did load!")
+        print("Addmedicijn View did load!")
         setupLayout()
         setupIndexSort()
         setupIndexSortAZ()
+        setupUpArrow()
+//        setupAppVersionView()
+
         setUpSearchBar(selectedScope: -1)
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
@@ -273,23 +283,28 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         setupHyrPickerView()
 
         self.updateView()
-        setupAppVersionView()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         
-        /*// MARK: - Temp copy defaults to userdata
-        let context = self.appDelegate.persistentContainer.viewContext
-        copyUserDefaultsToUserData(managedObjectContext: context)*/
+//         MARK: Temp copy defaults to userdata
+//        let context = self.appDelegate.persistentContainer.viewContext
+//        copyUserDefaultsToUserData(managedObjectContext: context)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("View Will appear")
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        print("view did layout subviews")
         //print("SelectedScope: \(selectedScope)")
         setUpSearchBar(selectedScope: selectedScope)
         //print("Layout selectedHyr0 \(selectedHyr0)")
         updatePicker1()
+
         zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")
         level1Picker.reloadAllComponents()
-        //print("hyrView: \(hyrView)")
+        print("hyrView: \(hyrView)")
         if hyrView == true {
             self.hyrPickerView.isHidden = false
             self.view.bringSubview(toFront: hyrPickerView)
@@ -307,9 +322,20 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.tableView.setContentOffset(topOffset, animated: true)
             })
         }
+        setupView()
         setupInfoView()
-        setupUpArrow()
+        setupAppVersionView()
         //print("view Did Layout subviews")
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        print("view will transition")
+        if self.appVersionView.isHidden == false {
+            self.H = false
+        } else {
+            self.H = true
+        }
+//        setupAppVersionView()
     }
 
     // MARK: - fetchedResultsController
@@ -463,65 +489,77 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         infoView.addConstraints(stackView_V)
     }
     
-    // MARK: - Setup appVersionView
+//     MARK: - Setup appVersionView
     func setupAppVersionView() {
+        print("setup AppVersionView")
         self.appVersionView.isHidden = true
-        self.appVersionView=UIView(frame:CGRect(x: ((self.view.bounds.width)/2)-(self.view.bounds.width)/4, y: ((self.view.bounds.height)/2)-80, width: (self.view.bounds.width)/2, height: 160))
-        self.appVersionView.center.x -= view.bounds.width
+        self.appVersionView.translatesAutoresizingMaskIntoConstraints = false
+        let width: CGFloat = 320.0
+        let height: CGFloat = 180.0
+        print("center x: \(self.view.center.x)")
+        print("center y: \(self.view.center.y)")
+        print("screen width: \(self.view.bounds.width)")
+        print("screen height: \(self.view.bounds.height)")
+        self.appVersionView=UIView(frame:CGRect(x: (self.view.center.x)-(width/2), y: (self.view.center.y)-(height/2), width: width, height: height))
+//        self.appVersionView=UIView(frame:CGRect(x: self.view.center.x, y: self.view.center.y, width: 240, height: 160))
         appVersionView.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         appVersionView.layer.cornerRadius = 8
         appVersionView.layer.borderWidth = 1
         appVersionView.layer.borderColor = UIColor.black.cgColor
+        print("add subview app Versionview")
         self.view.addSubview(appVersionView)
-        self.appVersionView.isHidden = false
+        self.appVersionView.isHidden = self.H
         
         let labelApp = UILabel()
         labelApp.text = "MedCabinet Free"
         labelApp.font = UIFont.boldSystemFont(ofSize: 26)
         labelApp.textColor = UIColor.white
-        let labelVersion = UILabel()
+        labelApp.translatesAutoresizingMaskIntoConstraints = false
         
-        // MARK: Version and build
-        var appVersion = ""
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            appVersion = version
-        }
-        var appBuild = ""
-        if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            appBuild = build
-        }
+        let labelVersion = UILabel()
         labelVersion.text = "Version: \(appVersion)"
         labelVersion.font = UIFont.boldSystemFont(ofSize: 22)
         labelVersion.textColor = UIColor.white
+        labelVersion.translatesAutoresizingMaskIntoConstraints = false
         
         let labelBuild = UILabel()
         labelBuild.text = "Build: \(appBuild)"
         labelBuild.font = UIFont.systemFont(ofSize: 17)
         labelBuild.textColor = UIColor.white
+        labelBuild.translatesAutoresizingMaskIntoConstraints = false
         
         // MARK: Rate this app!
-        
-        let buttonRate = UIButton(frame: CGRect(x: 0, y: 0, width: (self.view.bounds.width)/2, height: 30))
-        buttonRate.backgroundColor = .white
-        buttonRate.layer.cornerRadius = 8        
+        let buttonRate = UIButton()
         buttonRate.setTitle("Rate this app", for: .normal)
-        buttonRate.setTitleColor(UIColor.blue, for: .normal)
+        buttonRate.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        buttonRate.setTitleColor(.blue, for: .normal)
+        buttonRate.setTitleColor(.red, for: .highlighted)
+        buttonRate.backgroundColor = .white
+        buttonRate.layer.cornerRadius = 8
+        buttonRate.layer.borderWidth = 1
+        buttonRate.layer.borderColor = UIColor.gray.cgColor
+        buttonRate.showsTouchWhenHighlighted = true
+        buttonRate.translatesAutoresizingMaskIntoConstraints = false
         buttonRate.addTarget(self, action: #selector(rateApp), for: .touchUpInside)
  
-        let vertstack = UIStackView(arrangedSubviews: [labelApp, labelVersion, labelBuild, buttonRate])
-        vertstack.axis = .vertical
-        vertstack.distribution = .fillProportionally
-        vertstack.alignment = .fill
-        vertstack.spacing = 8
-        vertstack.translatesAutoresizingMaskIntoConstraints = false
-        self.appVersionView.addSubview(vertstack)
+        // MARK: Vertical stack
+        let vertStack = UIStackView(arrangedSubviews: [labelApp, labelVersion, labelBuild, buttonRate])
+        vertStack.axis = .vertical
+        vertStack.distribution = .fillProportionally
+        vertStack.alignment = .fill
+        vertStack.spacing = 8
+        vertStack.translatesAutoresizingMaskIntoConstraints = false
+        print("add subview vertstack")
+        self.appVersionView.addSubview(vertStack)
         
         // Layout the stack view
-        let viewsDictionary = ["stackView": vertstack]
-        let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        appVersionView.addConstraints(stackView_H)
-        appVersionView.addConstraints(stackView_V)
+        //Stackview Layout (constraints)
+        vertStack.leftAnchor.constraint(equalTo: appVersionView.leftAnchor, constant: 20).isActive = true
+        vertStack.topAnchor.constraint(equalTo: appVersionView.topAnchor, constant: 20).isActive = true
+        vertStack.rightAnchor.constraint(equalTo: appVersionView.rightAnchor, constant: -20).isActive = true
+        vertStack.heightAnchor.constraint(equalTo: appVersionView.heightAnchor, constant: -20).isActive = true
+        print("bring subview appversionview to front")
+//        self.view.bringSubview(toFront: appVersionView)
     }
 
     // MARK: - Rate app in the App Store
@@ -1106,7 +1144,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 } else {
                     zoekenImage.isHidden = true
                 }
-                self.view.bringSubview(toFront: self.zoekenImage)
+                if appVersionView.isHidden == false {
+                    self.view.sendSubview(toBack: self.zoekenImage)
+                } else {
+                    self.view.bringSubview(toFront: self.zoekenImage)
+                }
                 navigationItem.rightBarButtonItem?.isEnabled = false
             } else {
                 gevondenItemsLabel.isHidden = false

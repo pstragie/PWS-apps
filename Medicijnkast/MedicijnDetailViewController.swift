@@ -15,6 +15,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     weak var medicijn: MPP?
     weak var dataPassed: MPP?
     weak var stofdb: Stof?
+    var H: Bool = true
     var noteView = UIView()
     var arrayPassed: Array<String> = []
     var stofnaamArr: Array<String> = []
@@ -60,14 +61,20 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func setupNoteView() {
+        print("setup note view")
+        self.noteView.isHidden = true
+        self.noteView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.noteView=UIView(frame:CGRect(x: (self.view.bounds.width)/8, y: (self.view.bounds.height)/8, width: self.view.bounds.width-((self.view.bounds.width)/4), height: self.view.bounds.height-((self.view.bounds.height)/4)))
-        noteView.backgroundColor = UIColor.black.withAlphaComponent(0.99)
-        noteView.layer.cornerRadius = 8
-        noteView.layer.borderWidth = 2
-        noteView.layer.borderColor = UIColor.black.cgColor
-        noteView.isHidden = true
+        let width = (self.view.bounds.width)/2
+        let height = (self.view.bounds.height)/2
+        self.noteView=UIView(frame:CGRect(x: self.view.center.x-(width/2), y: self.view.center.y-(height/2), width: width, height: height))
+        
+        self.noteView.backgroundColor = UIColor.black.withAlphaComponent(0.99)
+        self.noteView.layer.cornerRadius = 8
+        self.noteView.layer.borderWidth = 2
+        self.noteView.layer.borderColor = UIColor.black.cgColor
         self.view.addSubview(noteView)
+        self.noteView.isHidden = self.H		
         
         let closenote = UIButton()
         closenote.setTitle("Sluiten", for: .normal)
@@ -87,6 +94,9 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         labelnote.font = UIFont.boldSystemFont(ofSize: 17)
         labelnote.textColor = UIColor.white
         labelnote.translatesAutoresizingMaskIntoConstraints = false
+        labelnote.lineBreakMode = .byWordWrapping
+        labelnote.numberOfLines = 10
+        
         let vertStack = UIStackView(arrangedSubviews: [closenote, labelnote])
         vertStack.axis = .vertical
         vertStack.distribution = .fill
@@ -101,10 +111,8 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         vertStack.topAnchor.constraint(equalTo: noteView.topAnchor, constant: 20).isActive = true
         vertStack.rightAnchor.constraint(equalTo: noteView.rightAnchor, constant: -20).isActive = true
         vertStack.heightAnchor.constraint(equalTo: noteView.heightAnchor, constant: -20).isActive = true
-        
-        
-        
     }
+    
     func closeNoteAction(sender: UIButton!) {
         if self.noteView.isHidden == true {
             self.noteView.isHidden = false
@@ -119,7 +127,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         navigationItem.title = "Info: \((medicijn?.mp?.mpnm)!)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         dataPassed = medicijn
-        setupNoteView()
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -130,9 +138,23 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        print("View did layout subviews")
         scrollToTop()
+        setupNoteView()
     }
     
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if self.noteView.isHidden == false {
+            self.H = false
+        } else {
+            self.H = true
+        }
+        setupNoteView()
+    }
+    
+    
+    // MARK: - Scrolling behaviour
     func scrollToTop() {
         //print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)

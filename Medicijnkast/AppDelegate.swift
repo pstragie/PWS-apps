@@ -43,17 +43,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: Check current version
         let defaults = UserDefaults.standard
         let cAV = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        
+        // MARK: preloaDBData of three database files included in the app
+        // For distribution purposes!
+        // Unmark simultaneously with marking the seedPersistentDatabase function to import csv!
+        
+        preloadDBData()
+        
         guard let currentAppVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let previousVersion = defaults.string(forKey: "appVersion") else {
             // Key does not exist in UserDefaults, must be a fresh install
             print("Fresh install")
             // Writing version to UserDefaults for the first time
             defaults.set(cAV, forKey: "appVersion")
             
-            // MARK: preloaDBData of three database files included in the app
-            // For distribution purposes!
-            // Unmark simultaneously with marking the seedPersistentDatabase function to import csv!
             
-            preloadDBData()
             
             // Override point for customization after application launch.
             
@@ -177,6 +180,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - preloadDBData Core Data stack
     func preloadDBData() {
+        print("Preloading DB...")
         let fileManager = FileManager.default
 
         if !fileManager.fileExists(atPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite") {
