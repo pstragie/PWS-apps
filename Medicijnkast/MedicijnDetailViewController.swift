@@ -389,6 +389,10 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         return 1
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return self.view.bounds.height - 80
+    }
+    
     @IBOutlet var tableView: UITableView!
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
