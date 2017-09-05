@@ -175,6 +175,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         let vc = UIActivityViewController(activityItems: imagesToShare, applicationActivities: nil)
         
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        vc.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook, UIActivityType.postToVimeo, UIActivityType.postToWeibo, UIActivityType.postToFlickr, UIActivityType.postToTencentWeibo ]
         present(vc, animated: false, completion: nil)
     }
 

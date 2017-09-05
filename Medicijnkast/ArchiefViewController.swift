@@ -191,7 +191,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         labelmpp.font = UIFont.systemFont(ofSize: 17)
         labelmpp.textColor = UIColor.white
         let labelvos = UILabel()
-        labelvos.text = "Voorschriftnaam (VOS)"
+        labelvos.text = "Voorschrift op stofnaam (VOS)"
         labelvos.font = UIFont.systemFont(ofSize: 13)
         labelvos.textColor = UIColor.white
         let labelfirma = UILabel()
@@ -251,9 +251,9 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func setupLayout() {
-        segmentedButton.setTitle("B....", forSegmentAt: 0)
-        segmentedButton.setTitle("..c..", forSegmentAt: 1)
-        segmentedButton.setTitle("....e", forSegmentAt: 2)
+        segmentedButton.setTitle("•....", forSegmentAt: 0)
+        segmentedButton.setTitle("..•..", forSegmentAt: 1)
+        segmentedButton.setTitle("....•", forSegmentAt: 2)
         segmentedButton2.setTitle("Medicijnkast", forSegmentAt: 0)
         segmentedButton2.setTitle("Aankooplijst", forSegmentAt: 1)
     }
@@ -321,6 +321,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         let textToShare = [ text ]
         let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        vc.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook, UIActivityType.postToVimeo, UIActivityType.postToWeibo, UIActivityType.postToFlickr, UIActivityType.postToTencentWeibo ]
         present(vc, animated: false, completion: nil)
     }
     

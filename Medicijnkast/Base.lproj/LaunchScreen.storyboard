@@ -28,9 +28,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="dCZ-f3-j0Z" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Fac-c6-1hs"/>
-                            <constraint firstItem="dCZ-f3-j0Z" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" id="Lwb-Vd-OcU"/>
                             <constraint firstItem="dCZ-f3-j0Z" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="dhN-ds-Zwe"/>
-                            <constraint firstItem="dCZ-f3-j0Z" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="wPF-dk-DXo"/>
                         </constraints>
                     </view>
                 </viewController>

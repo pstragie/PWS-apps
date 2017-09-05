@@ -244,7 +244,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         labelmpp.font = UIFont.systemFont(ofSize: 17)
         labelmpp.textColor = UIColor.white
         let labelvos = UILabel()
-        labelvos.text = "Voorschriftnaam (VOS)"
+        labelvos.text = "Voorschrift op stofnaam (VOS)"
         labelvos.font = UIFont.systemFont(ofSize: 13)
         labelvos.textColor = UIColor.white
         let labelfirma = UILabel()
@@ -301,9 +301,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     func setupLayout() {
-        segmentedButton.setTitle("B....", forSegmentAt: 0)
-        segmentedButton.setTitle("..c..", forSegmentAt: 1)
-        segmentedButton.setTitle("....e", forSegmentAt: 2)
+        segmentedButton.setTitle("•....", forSegmentAt: 0)
+        segmentedButton.setTitle("..•..", forSegmentAt: 1)
+        segmentedButton.setTitle("....•", forSegmentAt: 2)
     }
     
     // MARK: - Setup graph view
@@ -389,6 +389,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         let textToShare = [ text ]
         let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        vc.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook, UIActivityType.postToVimeo, UIActivityType.postToWeibo, UIActivityType.postToFlickr, UIActivityType.postToTencentWeibo ]
         present(vc, animated: false, completion: nil)
     }
     
@@ -643,9 +644,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         altRema.text = "\(gdkpaltrema) €"
         altRemw.text = "\(gdkpaltremw) €"
         
-        verschilPupr.text = "\(berekenVerschil(categorie: "pupr", huidig: totalePrijs, altern: gdkpaltpupr)) €"
-        verschilRema.text = "\(berekenVerschil(categorie: "rema", huidig: totalePrijs, altern: gdkpaltrema)) €"
-        verschilRemw.text = "\(berekenVerschil(categorie: "remw", huidig: totalePrijs, altern: gdkpaltremw)) € "
+        verschilPupr.text = "\(roundf(berekenVerschil(categorie: "pupr", huidig: totalePrijs, altern: gdkpaltpupr))) €"
+        verschilRema.text = "\(roundf(berekenVerschil(categorie: "rema", huidig: totalePrijs, altern: gdkpaltrema))) €"
+        verschilRemw.text = "\(roundf(berekenVerschil(categorie: "remw", huidig: totalePrijs, altern: gdkpaltremw))) € "
     }
     // MARK: Tel aantal med in aankooplijst
     private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {

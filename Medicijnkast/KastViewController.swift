@@ -170,7 +170,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         labelmpp.font = UIFont.systemFont(ofSize: 17)
         labelmpp.textColor = UIColor.white
         let labelvos = UILabel()
-        labelvos.text = "Voorschriftnaam (VOS)"
+        labelvos.text = "Voorschrift op stofnaam (VOS)"
         labelvos.font = UIFont.systemFont(ofSize: 13)
         labelvos.textColor = UIColor.white
         let labelfirma = UILabel()
@@ -230,9 +230,9 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func setupLayout() {
-        segmentedButton.setTitle("B....", forSegmentAt: 0)
-        segmentedButton.setTitle("..c..", forSegmentAt: 1)
-        segmentedButton.setTitle("....e", forSegmentAt: 2)
+        segmentedButton.setTitle("•....", forSegmentAt: 0)
+        segmentedButton.setTitle("..•..", forSegmentAt: 1)
+        segmentedButton.setTitle("....•", forSegmentAt: 2)
     }
 
     private func setupView() {
@@ -323,7 +323,8 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let textToShare = [ text ]
         let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: false, completion: nil)
+		vc.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook, UIActivityType.postToVimeo, UIActivityType.postToWeibo, UIActivityType.postToFlickr, UIActivityType.postToTencentWeibo ]
+		present(vc, animated: false, completion: nil)
     }
     
     // MARK: - search bar related

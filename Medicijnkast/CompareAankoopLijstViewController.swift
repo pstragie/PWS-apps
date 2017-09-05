@@ -122,6 +122,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         
         let vc = UIActivityViewController(activityItems: [ text ], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        vc.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook, UIActivityType.postToVimeo, UIActivityType.postToWeibo, UIActivityType.postToFlickr, UIActivityType.postToTencentWeibo ]
         present(vc, animated: false)
     }
     

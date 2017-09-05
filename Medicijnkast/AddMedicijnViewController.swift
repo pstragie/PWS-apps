@@ -63,14 +63,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var hospSwitch: UISwitch!
 
     @IBAction func hospSwitch(_ sender: UISwitch) {
+        
         searchActive = true
+        
         if hyrView == false {
-            self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: self.selectedScope)
+            if zoekwoord != nil {
+                self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: self.selectedScope)
+            }
         } else {
             self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: 4)
         }
         searchBar.becomeFirstResponder()
         self.tableView.reloadData()
+        
     }
     
     @IBOutlet weak var gevondenItemsLabel: UILabel!
@@ -101,7 +106,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - Referencing Actions
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
-        print("btnCloseMenuView pressed!")
+        //print("btnCloseMenuView pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
@@ -374,6 +379,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         let textToShare = [ text ]
         let vc = UIActivityViewController(activityItems: textToShare, applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        vc.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook, UIActivityType.postToVimeo, UIActivityType.postToWeibo, UIActivityType.postToFlickr, UIActivityType.postToTencentWeibo ]
         present(vc, animated: false, completion: nil)
     }
     
@@ -431,7 +437,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         labelmpp.font = UIFont.systemFont(ofSize: 17)
         labelmpp.textColor = UIColor.white
         let labelvos = UILabel()
-        labelvos.text = "Voorschriftnaam (VOS)"
+        labelvos.text = "Voorschrift op stofnaam (VOS)"
         labelvos.font = UIFont.systemFont(ofSize: 13)
         labelvos.textColor = UIColor.white
         let labelfirma = UILabel()
@@ -777,9 +783,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - Layout
     func setupLayout() {
-        segmentedButton.setTitle("B....", forSegmentAt: 0)
-        segmentedButton.setTitle("..c..", forSegmentAt: 1)
-        segmentedButton.setTitle("....e", forSegmentAt: 2)
+        segmentedButton.setTitle("•....", forSegmentAt: 0)
+        segmentedButton.setTitle("..•..", forSegmentAt: 1)
+        segmentedButton.setTitle("....•", forSegmentAt: 2)
     }
     
     // MARK: Set Scope
@@ -1200,7 +1206,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         self.upArrow.isHidden = true
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (scrollView.contentOffset.y == 0.0) {  // TOP
+        if (scrollView.contentOffset.y == 0.0) || (hyrView && scrollView.contentOffset.y == -188.0) {  // TOP
             upArrow.isHidden = true
             let topOffset = CGPoint(x: 0, y: 0)
             let offset = CGPoint(x: 0, y: -188)
@@ -1417,10 +1423,10 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     func addUserData(mppcvValue: String, userkey: String, uservalue: Bool, managedObjectContext: NSManagedObjectContext) {
         // one-to-one relationship
         // Check if record exists
-        print("addUserData: \(mppcvValue), \(userkey), \(uservalue)")
+        //print("addUserData: \(mppcvValue), \(userkey), \(uservalue)")
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
-            print("data line does not exist")
+            //print("data line does not exist")
             if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
                 newUserData.setValue(uservalue, forKey: userkey)
                 newUserData.setValue(mppcvValue, forKey: "mppcv")

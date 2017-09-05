@@ -43,16 +43,6 @@
 		F57437A81F49A07A00619A1B /* Medicijnkast.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = F57437A51F49A07A00619A1B /* Medicijnkast.sqlite-wal */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		B6F94BC71ED09D340076A85F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B66B41291E4B4B9300DA2793 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B66B41301E4B4B9300DA2793;
-			remoteInfo = MedCabinetFree;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		B60467CF1E6C2B9C006187BC /* KastMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KastMenuCell.swift; sourceTree = "<group>"; };
 		B61319B81E57CCB2004AD4D7 /* MedicijnDetailViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicijnDetailViewCell.swift; sourceTree = "<group>"; };
@@ -87,7 +77,6 @@
 		B67F7BA71E84285200D98F82 /* KlachtenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KlachtenViewController.swift; sourceTree = "<group>"; };
 		B69D8A871E5E887000693F12 /* Rekenen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rekenen.swift; sourceTree = "<group>"; };
 		B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareAankoopLijstViewController.swift; sourceTree = "<group>"; };
-		B6F94BC21ED09D340076A85F /* MedCabinetFreeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MedCabinetFreeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F57437951F4799EE00619A1B /* ConnectionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
 		F57437A31F49A07A00619A1B /* Medicijnkast.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Medicijnkast.sqlite; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/../../../../../../../../../Users/pieter/Documents/PWS/MedCabinetFree/Medicijnkast.sqlite; sourceTree = "<absolute>"; };
 		F57437A41F49A07A00619A1B /* Medicijnkast.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Medicijnkast.sqlite-shm"; path = "/Users/pieter/Documents/PWS/MedCabinetFree/Medicijnkast.sqlite-shm"; sourceTree = "<absolute>"; };
@@ -96,13 +85,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		B66B412E1E4B4B9300DA2793 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B6F94BBF1ED09D340076A85F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -141,7 +123,6 @@
 			isa = PBXGroup;
 			children = (
 				B66B41311E4B4B9300DA2793 /* MedCabinetFree.app */,
-				B6F94BC21ED09D340076A85F /* MedCabinetFreeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -199,24 +180,6 @@
 			productReference = B66B41311E4B4B9300DA2793 /* MedCabinetFree.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B6F94BC11ED09D340076A85F /* MedCabinetFreeTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B6F94BC91ED09D340076A85F /* Build configuration list for PBXNativeTarget "MedCabinetFreeTests" */;
-			buildPhases = (
-				B6F94BBE1ED09D340076A85F /* Sources */,
-				B6F94BBF1ED09D340076A85F /* Frameworks */,
-				B6F94BC01ED09D340076A85F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B6F94BC81ED09D340076A85F /* PBXTargetDependency */,
-			);
-			name = MedCabinetFreeTests;
-			productName = MedCabinetFreeTests;
-			productReference = B6F94BC21ED09D340076A85F /* MedCabinetFreeTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -230,10 +193,6 @@
 					B66B41301E4B4B9300DA2793 = {
 						CreatedOnToolsVersion = 8.2.1;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Automatic;
-					};
-					B6F94BC11ED09D340076A85F = {
-						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -252,7 +211,6 @@
 			projectRoot = "";
 			targets = (
 				B66B41301E4B4B9300DA2793 /* MedCabinetFree */,
-				B6F94BC11ED09D340076A85F /* MedCabinetFreeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -276,13 +234,6 @@
 				F57437A61F49A07A00619A1B /* Medicijnkast.sqlite in Resources */,
 				B67BB6091E6FF517002DEEF6 /* MP_swift.csv in Resources */,
 				B67BB60C1E6FF517002DEEF6 /* Stof_swift.csv in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B6F94BC01ED09D340076A85F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,22 +267,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B6F94BBE1ED09D340076A85F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B6F94BC81ED09D340076A85F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B66B41301E4B4B9300DA2793 /* MedCabinetFree */;
-			targetProxy = B6F94BC71ED09D340076A85F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B66B41381E4B4B9400DA2793 /* Main.storyboard */ = {
@@ -425,20 +361,6 @@
 			};
 			name = Release;
 		};
-		B6F94BCB1ED09D340076A85F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = QUXKFNLMD9;
-				INFOPLIST_FILE = MedCabinetFreeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.PWS.MedCabinetFreeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -454,14 +376,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B66B41481E4B4B9400DA2793 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B6F94BC91ED09D340076A85F /* Build configuration list for PBXNativeTarget "MedCabinetFreeTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B6F94BCB1ED09D340076A85F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

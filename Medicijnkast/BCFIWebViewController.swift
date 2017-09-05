@@ -25,11 +25,13 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
     }
     
     @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.barView.bringSubview(toFront: progressView)
+        self.barView.bringSubview(toFront: activityIndicator)
     }
     
     override func viewDidLoad() {
@@ -100,6 +102,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         }
         if (keyPath == "estimatedProgress") {
             progressView.isHidden = webView.estimatedProgress == 1
+            activityIndicator.isHidden = webView.estimatedProgress == 1
             progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
     }
@@ -109,11 +112,13 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         // set up activity view controller
         let vc = UIActivityViewController(activityItems: [ self.link as Any ], applicationActivities: [])
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        vc.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook, UIActivityType.postToVimeo, UIActivityType.postToWeibo, UIActivityType.postToFlickr, UIActivityType.postToTencentWeibo ]
         present(vc, animated: false, completion: nil)
     }
 
     func refreshTapped() {
         webstring = link
+        progressView.setProgress(0.0, animated: false)
         let myURL = URL(string: webstring!)
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
