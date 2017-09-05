@@ -14,6 +14,15 @@
       "idiom" : "universal",
       "filename" : "IntroAfbeelding2-2.png",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "IntroAfbeelding2-3.png",
+      "scale" : "2x"
     }
   ],
   "info" : {

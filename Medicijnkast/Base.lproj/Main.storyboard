@@ -153,8 +153,8 @@
                                                             <rect key="frame" x="105" y="0.0" width="764" height="120"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iPD-GC-cR4">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="104" height="22.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="22.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -184,7 +184,7 @@
                                                                 </label>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" priority="999" constant="120" id="ZJu-Hn-pdQ"/>
+                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="120" id="ZJu-Hn-pdQ"/>
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Bkw-7t-t9N">
@@ -479,8 +479,8 @@
                                                             <rect key="frame" x="105" y="0.0" width="764" height="120"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fnL-Rb-QOh">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="104" height="22.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="22.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -510,7 +510,7 @@
                                                                 </label>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" priority="999" constant="120" id="CNd-dS-ayH"/>
+                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="120" id="CNd-dS-ayH"/>
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="NC2-ex-nY3">
@@ -757,7 +757,7 @@
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdQ-Hv-SZf">
                                                                             <rect key="frame" x="0.0" y="0.0" width="729" height="20"/>
-                                                                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
@@ -810,7 +810,7 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="trailing" secondItem="jMK-ij-ukL" secondAttribute="trailing" id="GRe-2U-6hS"/>
                                                                 <constraint firstItem="jMK-ij-ukL" firstAttribute="leading" secondItem="jtQ-RF-eej" secondAttribute="leading" id="RfL-sM-lJ6"/>
-                                                                <constraint firstAttribute="height" priority="999" constant="120" id="ZVy-dm-mBd"/>
+                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="120" id="ZVy-dm-mBd"/>
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="23h-9c-dvq">
@@ -1768,8 +1768,8 @@
                                                             <rect key="frame" x="105" y="0.0" width="764" height="120"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byT-3c-nFl">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="104" height="22.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="22.5"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -1799,7 +1799,7 @@
                                                                 </label>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" priority="999" constant="120" id="o9J-nj-TBZ"/>
+                                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="999" constant="120" id="o9J-nj-TBZ"/>
                                                             </constraints>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="QFH-Qn-Rch">
@@ -2234,19 +2234,19 @@
                                                                             <rect key="frame" x="0.0" y="0.0" width="361" height="100"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwn-8M-Fjq">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="104" height="25"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="24"/>
+                                                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mppnm" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CRJ-0g-tYN">
-                                                                                    <rect key="frame" x="0.0" y="31" width="58.5" height="20.5"/>
+                                                                                    <rect key="frame" x="0.0" y="30.5" width="58.5" height="20.5"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="vosnm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn3-3L-NyJ">
-                                                                                    <rect key="frame" x="0.0" y="57.5" width="40" height="16"/>
+                                                                                    <rect key="frame" x="0.0" y="57" width="40" height="16"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
@@ -2363,19 +2363,19 @@
                                                                             <rect key="frame" x="0.0" y="0.0" width="369" height="100"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhY-Uu-FNb">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="104" height="25"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="24"/>
+                                                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mppnm" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbp-4E-q4V">
-                                                                                    <rect key="frame" x="0.0" y="31" width="58.5" height="20.5"/>
+                                                                                    <rect key="frame" x="0.0" y="30.5" width="58.5" height="20.5"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="vosnm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aMn-es-Ucl">
-                                                                                    <rect key="frame" x="0.0" y="57.5" width="40" height="16"/>
+                                                                                    <rect key="frame" x="0.0" y="57" width="40" height="16"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>

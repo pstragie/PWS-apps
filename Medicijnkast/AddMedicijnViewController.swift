@@ -88,6 +88,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             if self.appVersionView.isHidden == false {
                 self.appVersionView.isHidden = true
+                self.view.sendSubview(toBack: self.appVersionView)
                 if self.infoView.center.y >= 0 {
                     self.btnCloseMenuView.isHidden = false
                     self.btnCloseMenuView.isEnabled = true
@@ -96,6 +97,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                     self.btnCloseMenuView.isEnabled = false
                 }
             } else {
+                self.view.bringSubview(toFront: self.appVersionView)
                 self.appVersionView.isHidden = false
                 self.btnCloseMenuView.isHidden = false
                 self.btnCloseMenuView.isEnabled = true
@@ -112,9 +114,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
             }
-            if self.appVersionView.isHidden == false {
-                self.appVersionView.isHidden = true
-            }
+            self.appVersionView.isHidden = true
         }, completion: nil
         )
         btnCloseMenuView.isHidden = true
@@ -369,6 +369,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
+            if hyrView == true {
+                text += "\(toepassing)\n___________________________________________\n"
+            }
             text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(String(describing: med.index)) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
@@ -558,6 +561,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         vertStack.topAnchor.constraint(equalTo: appVersionView.topAnchor, constant: 20).isActive = true
         vertStack.rightAnchor.constraint(equalTo: appVersionView.rightAnchor, constant: -20).isActive = true
         vertStack.heightAnchor.constraint(equalTo: appVersionView.heightAnchor, constant: -20).isActive = true
+        vertStack.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
+        vertStack.isLayoutMarginsRelativeArrangement = true
     }
 
     // MARK: - Rate app in the App Store
@@ -1122,7 +1127,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     fileprivate func updateView() {
-        //print("Updating view...")
         tableView.isHidden = false
         var x:Int
         if let medicijnen = fetchedResultsController.fetchedObjects {
@@ -1136,13 +1140,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 tableView.tableFooterView = UIView()
                 if hyrView == false {
                     zoekenImage.isHidden = false
+                    self.view.bringSubview(toFront: self.zoekenImage)
                 } else {
                     zoekenImage.isHidden = true
-                }
-                if appVersionView.isHidden == false {
-                    self.view.sendSubview(toBack: self.zoekenImage)
-                } else {
-                    self.view.bringSubview(toFront: self.zoekenImage)
                 }
                 navigationItem.rightBarButtonItem?.isEnabled = false
             } else {
@@ -1151,7 +1151,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 navigationItem.rightBarButtonItem?.isEnabled = true
             }
         } else {
-            //print("ELSE")
             x = 0
             gevondenItemsLabel.isHidden = false
             zoekenImage.isHidden = false

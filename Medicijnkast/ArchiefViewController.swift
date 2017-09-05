@@ -17,7 +17,6 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: - Properties Variables
     var infoView = UIView()
-    var menuView = UIView()
     var upArrow = UIView()
     
     var sortDescriptorIndex: Int?=nil
@@ -44,16 +43,12 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
         //print("btnCloseMenuView pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
-            if self.menuView.center.x >= 0 {
-                self.menuView.center.x -= self.view.bounds.width
-            }
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
             }
         }, completion: nil
         )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         btnCloseMenuView.isHidden = true
         btnCloseMenuView.isEnabled = false
     }
@@ -75,21 +70,6 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         }, completion: nil
         )
         
-    }
-    
-    @IBAction func showMenuView(_ sender: UIButton) {
-        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            if self.menuView.center.x >= 0 {
-                self.menuView.center.x -= self.view.bounds.width
-            } else {
-                self.menuView.center.x += self.view.bounds.width
-            }
-        }, completion: nil
-        )
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        menuView.tintColor = UIColor.white
-        btnCloseMenuView.isHidden = false
-        btnCloseMenuView.isEnabled = true
     }
     
     // MARK: - View Life Cycle
@@ -116,7 +96,6 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         //print("Archief view did load!")
         setupLayout()
         setUpSearchBar()
-        setupView()
         
         navigationItem.title = "Archief"
         
@@ -136,13 +115,12 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     override func viewDidLayoutSubviews() {
-        setupMenuView()
         tableView.reloadData()
         setupUpArrow()
         setupInfoView()
-        btnCloseMenuView.setTitle("", for: .normal)
+        setupView()
         //self.updateView()
-        //print("view Did Layout subviews")
+        print("view Did Layout subviews")
     }
     
     // MARK: Detect device rotation
@@ -160,18 +138,6 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     // MARK: Setup views
-    func setupMenuView() {
-        self.menuView=UIView(frame:CGRect(x:0, y:0, width: 300, height: self.view.bounds.height))
-        self.menuView.center.x -= view.bounds.width
-        menuView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
-        menuView.layer.cornerRadius = 8
-        menuView.layer.borderWidth = 1
-        menuView.layer.borderColor = UIColor.black.cgColor
-        self.view.addSubview(menuView)
-        self.btnCloseMenuView.isHidden = true
-        self.btnCloseMenuView.isEnabled = false
-    }
-    
     func setupInfoView() {
         self.infoView.isHidden = true
         self.infoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 178))
@@ -534,7 +500,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: - View Methods
     fileprivate func updateView() {
-        print("Updating view...")
+//        print("Updating view...")
         var hasMedicijnen = false
         
         var x:Int
@@ -544,8 +510,8 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
             //print("medicijnen aantal: \(medicijnen.count)")
             
             x = medicijnen.count
-            print("count: \(x)")
-            print("search active? \(searchActive)")
+//            print("count: \(x)")
+//            print("search active? \(searchActive)")
             let totaalAankoop = countAankoop(managedObjectContext: self.appDelegate.persistentContainer.viewContext)
             if searchActive || hasMedicijnen {
                 totaalAantal.text = "\(x)/\(totaalAankoop)"
@@ -555,6 +521,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
                 navigationItem.rightBarButtonItem?.isEnabled = true
             } else {
                 totaalAantal.text = "\(totaalAankoop)"
+                setupMessageLabel()
                 messageLabel.isHidden = false
                 tableView.isHidden = true
                 navigationItem.rightBarButtonItem?.isEnabled = false
