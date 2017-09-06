@@ -83,11 +83,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var segmentedButton: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
-    //@IBOutlet weak var buttonRate: UIButton!
     @IBAction func appVersion(_ sender: UIBarButtonItem) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
-            if self.appVersionView.isHidden == false {
-                self.appVersionView.isHidden = true
+            if self.appVersionView.isHidden == false { // View zichtbaar
+                self.appVersionView.isHidden = true     // verberg view
                 self.view.sendSubview(toBack: self.appVersionView)
                 if self.infoView.center.y >= 0 {
                     self.btnCloseMenuView.isHidden = false
@@ -96,9 +95,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                     self.btnCloseMenuView.isHidden = true
                     self.btnCloseMenuView.isEnabled = false
                 }
-            } else {
+            } else {                                    // View verborgen
                 self.view.bringSubview(toFront: self.appVersionView)
-                self.appVersionView.isHidden = false
+                self.appVersionView.isHidden = false    // toon view
                 self.btnCloseMenuView.isHidden = false
                 self.btnCloseMenuView.isEnabled = true
             }
@@ -114,7 +113,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
             }
-            self.appVersionView.isHidden = true
         }, completion: nil
         )
         btnCloseMenuView.isHidden = true
@@ -517,19 +515,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         
         let labelApp = UILabel()
         labelApp.text = "MedCabinet Free"
-        labelApp.font = UIFont.boldSystemFont(ofSize: 26)
+        labelApp.font = UIFont.boldSystemFont(ofSize: 22)
         labelApp.textColor = UIColor.white
         labelApp.translatesAutoresizingMaskIntoConstraints = false
         
         let labelVersion = UILabel()
         labelVersion.text = "Version: \(appVersion)"
-        labelVersion.font = UIFont.boldSystemFont(ofSize: 22)
+        labelVersion.font = UIFont.boldSystemFont(ofSize: 18)
         labelVersion.textColor = UIColor.white
         labelVersion.translatesAutoresizingMaskIntoConstraints = false
         
         let labelBuild = UILabel()
         labelBuild.text = "Build: \(appBuild)"
-        labelBuild.font = UIFont.systemFont(ofSize: 17)
+        labelBuild.font = UIFont.systemFont(ofSize: 15)
         labelBuild.textColor = UIColor.white
         labelBuild.translatesAutoresizingMaskIntoConstraints = false
         
@@ -561,7 +559,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         vertStack.topAnchor.constraint(equalTo: appVersionView.topAnchor, constant: 20).isActive = true
         vertStack.rightAnchor.constraint(equalTo: appVersionView.rightAnchor, constant: -20).isActive = true
         vertStack.heightAnchor.constraint(equalTo: appVersionView.heightAnchor, constant: -20).isActive = true
-        vertStack.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
+        vertStack.layoutMargins = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
         vertStack.isLayoutMarginsRelativeArrangement = true
     }
 
