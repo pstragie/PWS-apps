@@ -120,7 +120,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         setupInfoView()
         setupView()
         //self.updateView()
-        print("view Did Layout subviews")
+//        print("view Did Layout subviews")
     }
     
     // MARK: Detect device rotation

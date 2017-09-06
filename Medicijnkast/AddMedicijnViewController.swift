@@ -51,13 +51,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var sortKeyword:String = "mppnm"
     var noHosp: Bool = true
     var H: Bool = true
+
     
     // MARK: Version and build
     var appVersion: String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)!
     var appBuild: String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String)!
 
     // MARK: - Referencing Outlets
-
+    @IBOutlet weak var noodnummers: UILabel!
     @IBOutlet weak var Hospitaal: UILabel!
     @IBOutlet weak var zoekenImage: UIImageView!
     @IBOutlet weak var hospSwitch: UISwitch!
@@ -270,7 +271,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         setupIndexSort()
         setupIndexSortAZ()
         setupUpArrow()
-        
+        zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")
+        noodnummers.numberOfLines = 2
+        noodnummers.text = "Anti-gifcentrum: 070 245 245\nDruglijn: 078 15 10 20"
+        noodnummers.font = UIFont.boldSystemFont(ofSize: 14)
+        noodnummers.textColor = UIColor.black
+        noodnummers.translatesAutoresizingMaskIntoConstraints = false
+
         navigationItem.title = "Zoeken"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
@@ -301,7 +308,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         setupView()
         setupInfoView()
         setupAppVersionView()
-        zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")
 
 //        print("view did layout subviews")
 //        print("SelectedScope: \(selectedScope)")
@@ -730,14 +736,16 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func sortIndex() {
-        self.sortKeyword = "index"
-        //print("self asc = \(self.asc)")
-        //print("Sort Index up or down")
-        if self.asc == true {
-            self.asc = false
-        } else {
+        if self.sortKeyword != "index" {
             self.asc = true
+        } else {
+            if self.asc == false {
+                self.asc = true
+            } else {
+                self.asc = false
+            }
         }
+        self.sortKeyword = "index"
         self.sortAZ.isHidden = false
         searchActive = true
         self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
@@ -925,7 +933,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
             }
         } else {
-            print("zoekwoord nil!")
+//            print("zoekwoord nil!")
             if hyrView == true {
                 self.filterContentForSearchText(searchText: self.toepzoekwoord, scopeIndex: 4)
             } else {
@@ -939,7 +947,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - Searchbar
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        print("Search should begin editing")
         searchBar.showsScopeBar = true
         searchBar.sizeToFit()
         searchBar.setShowsCancelButton(true, animated: true)
@@ -959,20 +966,24 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             self.filterContentForSearchText(searchText: searchText, scopeIndex: 4)
         }
+        if self.selectedScope == 1 || self.selectedScope == 2 {
+            self.sortIndexUp.isHidden = false
+        }
     }
     
     func searchBarSearchButtonClicked(_: UISearchBar) {
         searchActive = true
         self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
-        searchBar.becomeFirstResponder()
+        searchBar.resignFirstResponder()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         filterKeyword = "mppnm"
         sortKeyword = "mppnm"
         hyrView = false
-        print("Cancel clicked")
-        searchBar.showsScopeBar = false
+        self.setUpSearchBar(selectedScope: -1)
+        self.selectedScope = -1
+        self.searchBar.showsScopeBar = false
         searchBar.sizeToFit()
         searchActive = false
         searchBar.setShowsCancelButton(false, animated: true)
@@ -1138,20 +1149,24 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 tableView.tableFooterView = UIView()
                 if hyrView == false {
                     zoekenImage.isHidden = false
+                    noodnummers.isHidden = false
                     self.view.bringSubview(toFront: self.zoekenImage)
                 } else {
                     zoekenImage.isHidden = true
+                    noodnummers.isHidden = true
                 }
                 navigationItem.rightBarButtonItem?.isEnabled = false
             } else {
                 gevondenItemsLabel.isHidden = false
                 zoekenImage.isHidden = true
+                noodnummers.isHidden = true
                 navigationItem.rightBarButtonItem?.isEnabled = true
             }
         } else {
             x = 0
             gevondenItemsLabel.isHidden = false
             zoekenImage.isHidden = false
+            noodnummers.isHidden = false
             tableView.isHidden = true
             navigationItem.rightBarButtonItem?.isEnabled = false
         }

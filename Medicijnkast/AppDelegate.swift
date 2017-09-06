@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - DidFinishLaunchingWithOptions
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        print("NSHomeDir: \(NSHomeDirectory())")
+//        print("NSHomeDir: \(NSHomeDirectory())")
         let navigationBarAppearance = UINavigationBar.appearance()
         
         // Change tint and and bar tint
@@ -180,7 +180,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - preloadDBData Core Data stack
     func preloadDBData() {
-        print("Preloading DB...")
+//        print("Preloading DB...")
         let fileManager = FileManager.default
 
         if !fileManager.fileExists(atPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite") {
@@ -213,7 +213,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - persistentContainer
     lazy var persistentContainer: NSPersistentContainer = {
-        print("Loading persistentContainer")
+//        print("Loading persistentContainer")
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
