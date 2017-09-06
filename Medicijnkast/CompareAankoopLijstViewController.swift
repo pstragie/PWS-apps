@@ -154,7 +154,8 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     }
     // MARK: - Setup slide info view
     func setupSlideUpInfoView() {
-        self.slideUpInfoView=UIView(frame:CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 160))
+        self.slideUpInfoView.isHidden = true
+        self.slideUpInfoView=UIView(frame:CGRect(x: 30, y: 0, width: (self.view.bounds.width)-60, height: 160))
         //self.slideUpInfoView.addGestureRecognizer(.init(target: slideUpInfoView, action: #selector(slideUpAlert())))
         self.slideUpInfoView.center.y += view.bounds.height
         //print("setup: \(self.slideUpInfoView.center.y)")
@@ -164,14 +165,15 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         slideUpInfoView.layer.borderColor = UIColor.black.cgColor
         self.view.addSubview(slideUpInfoView)
         let label = UILabel()
-        label.frame = CGRect(x: 10, y: 0, width: self.view.bounds.width-60, height: 160)
+        label.frame = CGRect(x: 20, y: 0, width: self.view.bounds.width-100, height: 160)
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.numberOfLines = 2
         label.textAlignment = .center
-        label.text = "U heeft meerdere medicijnen in uw aankooplijst met dezelde voorschriftnaam. Enkel unieke medicijnen worden hier getoond."
+        label.text = "U heeft meerdere medicijnen in uw aankooplijst met dezelde voorschriftnaam.\nEnkel unieke medicijnen worden hier getoond."
         label.layer.cornerRadius = 20
         label.textColor = UIColor.white
         self.slideUpInfoView.addSubview(label)
+        self.slideUpInfoView.isHidden = false
     }
     
     // MARK: - Show Alert
@@ -184,7 +186,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 self.slideUpInfoView.center.y += 200
             }
             //print(self.slideUpInfoView.center.y)
-        }, completion: {_ in UIView.animate(withDuration: 0.1, delay: 1.0, animations: {
+        }, completion: {_ in UIView.animate(withDuration: 0.1, delay: 3.0, animations: {
             //print(self.slideUpInfoView.center.y)
             if self.slideUpInfoView.center.y >= self.view.bounds.height {
                 self.slideUpInfoView.center.y -= 200
