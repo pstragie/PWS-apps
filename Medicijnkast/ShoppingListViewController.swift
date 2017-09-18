@@ -76,7 +76,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             }
         }, completion: nil
         )
-        graphView.backgroundColor = UIColor.black.withAlphaComponent(0.99)
+        graphView.backgroundColor = UIColor.black.withAlphaComponent(1.00)
         popButton.isHidden = true
         popButton.isEnabled = false
     }
@@ -644,9 +644,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         altRema.text = "\(gdkpaltrema) €"
         altRemw.text = "\(gdkpaltremw) €"
         
-        verschilPupr.text = "\(roundf(berekenVerschil(categorie: "pupr", huidig: totalePrijs, altern: gdkpaltpupr))) €"
-        verschilRema.text = "\(roundf(berekenVerschil(categorie: "rema", huidig: totalePrijs, altern: gdkpaltrema))) €"
-        verschilRemw.text = "\(roundf(berekenVerschil(categorie: "remw", huidig: totalePrijs, altern: gdkpaltremw))) € "
+        verschilPupr.text = "\(roundf(100*berekenVerschil(categorie: "pupr", huidig: totalePrijs, altern: gdkpaltpupr))/100) €"
+        verschilRema.text = "\(roundf(100*berekenVerschil(categorie: "rema", huidig: totalePrijs, altern: gdkpaltrema))/100) €"
+        verschilRemw.text = "\(roundf(100*berekenVerschil(categorie: "remw", huidig: totalePrijs, altern: gdkpaltremw))/100) € "
     }
     // MARK: Tel aantal med in aankooplijst
     private func countAankoop(managedObjectContext: NSManagedObjectContext) -> Int {

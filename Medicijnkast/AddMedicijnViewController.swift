@@ -51,7 +51,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var sortKeyword:String = "mppnm"
     var noHosp: Bool = true
     var H: Bool = true
-
+    var unwindToep: Bool = false
+    var unwindRow: Int = 0
     
     // MARK: Version and build
     var appVersion: String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)!
@@ -219,32 +220,34 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 secondCharacter = hyr[hyr.index(hyr.startIndex, offsetBy: 1)]
                 hyrstring = String(firstTwoCharacters)
             } else {
-                print("More than two characters")
+//                print("More than two characters")
                 secondCharacter = hyr[hyr.index(hyr.startIndex, offsetBy: 1)]
                 hyrstring = String(firstTwoCharacters)
             }
+            unwindToep = true
             filterKeyword = "mp.hyr.hyr"
             sortKeyword = "mp.mpnm"
             toepzoekwoord = hyrstring!
             zoekwoord = ""
             searchBar.text = ""
             self.selectedScope = 4
-            //print("hyr")
+            print("unwind from detail (toepassing)")
             var x: Int = 0
             let v = level0dict[String(firstCharacter)]
             x = sortData(level0dict).index(of: v!)!
             level0Picker.selectRow(x, inComponent: 0, animated: true)
             selectedHyr0 = String(firstCharacter)
-            //print("selectedHyr0: \(selectedHyr0)")
-            updatePicker1()
-            
-            var y: Int = 0
+            print("selectedHyr0: \(selectedHyr0)")
+            hyrView = true
+            updatePicker1() // Fill second picker with options matching selected row in first picker
+            print("select row in second picker")
             let w = Dictionaries().level1Picker()[String(firstCharacter)+String(secondCharacter!)]
             //print("w: \(w!)")
-            y = sortData(level1dict).index(of: w!)!
-            //print("y: \(y)")
-            level1Picker.selectRow(y, inComponent: 0, animated: true)
-            hyrView = true
+            unwindRow = sortData(level1dict).index(of: w!)!
+            print("from unwind, unwindRow = \(unwindRow)")
+            level1Picker.reloadAllComponents()
+//            updatePicker1() // Select correct row in picker
+//            level1Picker.selectRow(unwindRow, inComponent: 0, animated: true)
         default:
             filterKeyword = "mppnm"
         }
@@ -271,16 +274,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         setupIndexSort()
         setupIndexSortAZ()
         setupUpArrow()
-        zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")
-        noodnummers.numberOfLines = 2
-        noodnummers.text = "Anti-gifcentrum: 070 245 245\nDruglijn: 078 15 10 20"
-        noodnummers.font = UIFont.boldSystemFont(ofSize: 14)
-        noodnummers.textColor = UIColor.black
-        noodnummers.translatesAutoresizingMaskIntoConstraints = false
-
-        navigationItem.title = "Zoeken"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
-        
+        updatePicker1()
         do {
             try self.fetchedResultsController.performFetch()
         } catch {
@@ -292,49 +286,29 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         level0Picker.dataSource = self
         level1Picker.delegate = self
         level1Picker.dataSource = self
-        updatePicker1() // Fill second picker with options matching row 0 in first picker
+        
         setupHyrPickerView()
 
         self.updateView()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         
-//         MARK: Temp copy defaults to userdata
+//        MARK: Temp copy defaults to userdata
 //        let context = self.appDelegate.persistentContainer.viewContext
 //        copyUserDefaultsToUserData(managedObjectContext: context)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        print("viewDidLayoutSubviews")
         setupView()
         setupInfoView()
         setupAppVersionView()
-
-//        print("view did layout subviews")
+        setupPickerView()
+        
 //        print("SelectedScope: \(selectedScope)")
 //        setUpSearchBar(selectedScope: selectedScope)
 //        print("Layout selectedHyr0 \(selectedHyr0)")
-        
-        
 //        print("hyrView: \(hyrView)")
-        if hyrView == true {
-            updatePicker1()
-            level1Picker.reloadAllComponents()
-            self.hyrPickerView.isHidden = false
-            self.view.bringSubview(toFront: hyrPickerView)
-            let topOffset = CGPoint(x: 0, y: -188)
-            if self.tableView.contentOffset != topOffset {
-                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.beginFromCurrentState], animations: {
-                self.tableView.setContentOffset(topOffset, animated: false)
-                })
-            }
-        } else {
-            self.hyrPickerView.isHidden = true
-            self.view.sendSubview(toBack: hyrPickerView)
-            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseOut], animations: {
-                let topOffset = CGPoint(x: 0, y: 0)
-                self.tableView.setContentOffset(topOffset, animated: true)
-            })
-        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -391,6 +365,27 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: - Setup HyrPickerView
+    func setupPickerView() { // Layout subviews
+        if hyrView == true {
+            updatePicker1() // Fill second picker with options matching row 0 in first picker
+            level1Picker.reloadAllComponents()
+            self.hyrPickerView.isHidden = false
+            self.view.bringSubview(toFront: hyrPickerView)
+            let topOffset = CGPoint(x: 0, y: -188)
+            if self.tableView.contentOffset != topOffset {
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [.beginFromCurrentState], animations: {
+                    self.tableView.setContentOffset(topOffset, animated: false)
+                })
+            }
+        } else {
+            self.hyrPickerView.isHidden = true
+            self.view.sendSubview(toBack: hyrPickerView)
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseOut], animations: {
+                let topOffset = CGPoint(x: 0, y: 0)
+                self.tableView.setContentOffset(topOffset, animated: true)
+            })
+        }
+    }
     func setupHyrPickerView() {
         self.hyrPickerView.isHidden = false
         self.hyrPickerView=UIView(frame:CGRect(x:10, y:104, width: self.view.bounds.width-20, height: 188))
@@ -606,6 +601,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        unwindToep = false
+        print("pickerView row selected")
         if pickerView == level0Picker {
             let hyrvalue = sortData(level0dict)[row]
             for (key, value) in level0dict {
@@ -616,8 +613,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
             pickerChanged = true
             filterContentForSearchText(searchText: selectedHyr0, scopeIndex: 4)
-            
-            updatePicker1()
+            print("didSelectRow --> update picker 1")
+            updatePicker1() // Fill second picker with options matching selected row in first picker
+
             //self.tableView.reloadData()
         }
         if pickerView == level1Picker {
@@ -648,6 +646,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func updatePicker1() {
+//        print("updatePicker1")
+//        print("unwindToep = \(unwindToep)")
         // Get first character hyr
         let firstCharacter = selectedHyr0
         // Filter level1 dictionary
@@ -659,11 +659,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
         }
         level1dict = tempArray
-        let row1 = level1Picker.selectedRow(inComponent: 0)
-        if row1 != 0 {
-            level1Picker.selectRow(row1, inComponent: 0, animated: true)
+        
+        if unwindToep == false {
+            let row1 = level1Picker.selectedRow(inComponent: 0)
+//            print("unwindToep = false, row1 = \(row1)")
+            
+            if row1 != 0 {
+                level1Picker.selectRow(row1, inComponent: 0, animated: true)
+            } else {
+                level1Picker.selectRow(0, inComponent: 0, animated: true)
+            }
         } else {
-            level1Picker.selectRow(0, inComponent: 0, animated: true)
+            print("unwindToep = true, unwindRow = \(unwindRow)")
+            level1Picker.selectRow(unwindRow, inComponent: 0, animated: true)
         }
     }
     
@@ -797,6 +805,18 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         segmentedButton.setTitle("•....", forSegmentAt: 0)
         segmentedButton.setTitle("..•..", forSegmentAt: 1)
         segmentedButton.setTitle("....•", forSegmentAt: 2)
+        noodnummers.numberOfLines = 2
+        noodnummers.text = "Anti-gifcentrum: 070 245 245\nDruglijn: 078 15 10 20"
+        noodnummers.font = UIFont.boldSystemFont(ofSize: 14)
+        noodnummers.textColor = UIColor.black
+        noodnummers.translatesAutoresizingMaskIntoConstraints = false
+        
+        zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")
+        
+        navigationItem.title = "Zoeken"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
+        
+
     }
     
     // MARK: Set Scope
@@ -950,6 +970,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         searchBar.showsScopeBar = true
         searchBar.sizeToFit()
         searchBar.setShowsCancelButton(true, animated: true)
+        if hyrView == false {
+            let topOffset = CGPoint(x: 0, y: 0)
+            self.tableView.setContentOffset(topOffset, animated: true)
+        }
         searchActive = true
         searchBar.text = zoekwoord
         return true
@@ -1142,6 +1166,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             
             x = medicijnen.count
             if x == 0 {
+                self.tableView.alwaysBounceVertical = false
                 sortIndexUp.isHidden = true
                 sortAZ.isHidden = true
                 gevondenItemsLabel.isHidden = false
@@ -1157,9 +1182,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 }
                 navigationItem.rightBarButtonItem?.isEnabled = false
             } else {
+                self.tableView.alwaysBounceVertical = true
                 gevondenItemsLabel.isHidden = false
                 zoekenImage.isHidden = true
                 noodnummers.isHidden = true
+                if self.selectedScope == 1 || self.selectedScope == 2 {
+                    self.sortIndexUp.isHidden = false
+                }
                 navigationItem.rightBarButtonItem?.isEnabled = true
             }
         } else {
