@@ -299,7 +299,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
+//        print("viewDidLayoutSubviews")
         setupView()
         setupInfoView()
         setupAppVersionView()
@@ -1380,11 +1380,11 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         }        
         cell.mpnm.text = medicijn.mp?.mpnm
         if medicijn.userdata != nil && medicijn.userdata?.medicijnkast == true {
-            cell.iconKast.image = #imageLiteral(resourceName: "medicijnkast_icon75x75")
+            cell.iconKast.image = #imageLiteral(resourceName: "medicijnkast_icon_black")
             cell.iconKast.tintColor = UIColor.black
         }
         if medicijn.userdata != nil && medicijn.userdata?.aankooplijst == true {
-            cell.iconLijst.image = #imageLiteral(resourceName: "aankooplijst_icon75x75")
+            cell.iconLijst.image = #imageLiteral(resourceName: "aankooplijst_icon_black")
             cell.iconLijst.tintColor = UIColor.black
         }
         cell.mppnm.text = medicijn.mppnm
