@@ -89,7 +89,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             if self.appVersionView.isHidden == false { // View zichtbaar
                 self.appVersionView.isHidden = true     // verberg view
-                self.view.sendSubview(toBack: self.appVersionView)
+                self.H = true
+//                self.view.sendSubview(toBack: self.appVersionView)
                 if self.infoView.center.y >= 0 {
                     self.btnCloseMenuView.isHidden = false
                     self.btnCloseMenuView.isEnabled = true
@@ -98,7 +99,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                     self.btnCloseMenuView.isEnabled = false
                 }
             } else {                                    // View verborgen
-                self.view.bringSubview(toFront: self.appVersionView)
+//                self.view.bringSubview(toFront: self.appVersionView)
                 self.appVersionView.isHidden = false    // toon view
                 self.btnCloseMenuView.isHidden = false
                 self.btnCloseMenuView.isEnabled = true
@@ -115,6 +116,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.infoView.center.y -= self.view.bounds.height
                 self.view.bringSubview(toFront: self.infoView)
             }
+            if self.appVersionView.isHidden == false {
+                self.appVersionView.isHidden = true
+                self.H = true
+            }
         }, completion: nil
         )
         btnCloseMenuView.isHidden = true
@@ -125,13 +130,17 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             //print("infoview: \(self.infoView.center.y)")
             if self.infoView.center.y >= 0 {
-                self.infoView.center.y -= self.view.bounds.height
-                self.btnCloseMenuView.isHidden = true
-                self.btnCloseMenuView.isEnabled = false
-                //self.view.bringSubview(toFront: self.infoView)
-                
+                self.infoView.center.y -= self.view.bounds.height // Hide infoview
+                if self.appVersionView.isHidden == false {
+                    self.btnCloseMenuView.isHidden = false
+                    self.btnCloseMenuView.isEnabled = true
+                } else {
+                    self.btnCloseMenuView.isHidden = true
+                    self.btnCloseMenuView.isEnabled = false
+                    //self.view.bringSubview(toFront: self.infoView)
+                }
             } else {
-                self.infoView.center.y += self.view.bounds.height
+                self.infoView.center.y += self.view.bounds.height // Show infoview
                 self.btnCloseMenuView.isHidden = false
                 self.btnCloseMenuView.isEnabled = true
                 //self.view.bringSubview(toFront: self.view)
@@ -557,7 +566,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         
         //Stackview Layout (constraints)
         vertStack.leftAnchor.constraint(equalTo: appVersionView.leftAnchor, constant: 20).isActive = true
-        vertStack.topAnchor.constraint(equalTo: appVersionView.topAnchor, constant: 20).isActive = true
+        vertStack.topAnchor.constraint(equalTo: appVersionView.topAnchor, constant: 15).isActive = true
         vertStack.rightAnchor.constraint(equalTo: appVersionView.rightAnchor, constant: -20).isActive = true
         vertStack.heightAnchor.constraint(equalTo: appVersionView.heightAnchor, constant: -20).isActive = true
         vertStack.layoutMargins = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
