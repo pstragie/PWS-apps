@@ -501,15 +501,13 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     // MARK: - Synchronous scrolling behaviour
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.isEqual(tableViewLeft), scrollView.isDragging {
-            var offset = tableViewRight.contentOffset
-            offset.y = tableViewLeft.contentOffset.y
-            //print("offset left: \(offset.y)")
-            tableViewRight.setContentOffset(offset, animated: true)
+            let topVisibleIndexPathLeft:IndexPath = self.tableViewLeft.indexPathsForVisibleRows![0]
+            tableViewLeft.scrollToRow(at: topVisibleIndexPathLeft, at: .top, animated: true)
+            tableViewRight.scrollToRow(at: topVisibleIndexPathLeft, at: .top, animated: true)
         } else if scrollView.isEqual(tableViewRight), scrollView.isDragging {
-            var offset = tableViewLeft.contentOffset
-            offset.y = tableViewRight.contentOffset.y
-            //print("offset right: \(offset.y)")
-            tableViewLeft.setContentOffset(offset, animated: true)
+            let topVisibleIndexPathRight:IndexPath = self.tableViewRight.indexPathsForVisibleRows![0]
+            tableViewRight.scrollToRow(at: topVisibleIndexPathRight, at: .top, animated: true)
+            tableViewLeft.scrollToRow(at: topVisibleIndexPathRight, at: .top, animated: true)
         }
     }
 }
