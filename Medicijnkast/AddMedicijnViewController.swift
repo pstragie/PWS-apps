@@ -1390,11 +1390,13 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         cell.mpnm.text = medicijn.mp?.mpnm
         if medicijn.userdata != nil && medicijn.userdata?.medicijnkast == true {
             cell.iconKast.image = #imageLiteral(resourceName: "medicijnkast_icon_black")
-            cell.iconKast.tintColor = UIColor.black
+        } else {
+            cell.iconKast.image = nil
         }
         if medicijn.userdata != nil && medicijn.userdata?.aankooplijst == true {
             cell.iconLijst.image = #imageLiteral(resourceName: "aankooplijst_icon_black")
-            cell.iconLijst.tintColor = UIColor.black
+        } else {
+            cell.iconLijst.image = nil
         }
         cell.mppnm.text = medicijn.mppnm
         cell.vosnm.text = medicijn.vosnm_
