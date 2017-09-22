@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // For distribution purposes!
         // Unmark simultaneously with marking the seedPersistentDatabase function to import csv!
         
-        preloadDBData()
+//        preloadDBData()
         
         guard let currentAppVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let previousVersion = defaults.string(forKey: "appVersion") else {
             // Key does not exist in UserDefaults, must be a fresh install
@@ -64,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Developer use only! Load persistent store with data from csv files.
             // Step 0: Delete the database files (3) in the "Medicijnkast" folder
             // Step 0b: Mark the preloadDBData() function above
+            // Step 0c: Delete the app from the simulator
             // Step 1a: Unmark the two following lines of code below the steps
             // Step 1b: Run the app (10 minutes or more to read and load all the files)
             // Step 2: Locate the database files (3)
@@ -72,8 +73,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Step 4: Mark the two following lines of code
             // Step 5: Unmark the preloaDBData function above!
             
-            //let moc = persistentContainer.viewContext
-            //seedPersistentStoreWithManagedObjectContext(moc)
+            let moc = persistentContainer.viewContext
+            seedPersistentStoreWithManagedObjectContext(moc)
 
             
             // Print local file directory
@@ -180,7 +181,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - preloadDBData Core Data stack
     func preloadDBData() {
-//        print("Preloading DB...")
+        print("Preloading DB...")
         let fileManager = FileManager.default
 
         if !fileManager.fileExists(atPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite") {
@@ -628,8 +629,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Retrieve data from the source file
         if let path = Bundle.main.path(forResource: filename, ofType: "csv") {
             let contentsOfURL = NSURL(fileURLWithPath: path)
-            //print(remoteURL)
-            
             var error:NSError?
             if let values = parseCSV(contentsOf: contentsOfURL, encoding: String.Encoding.utf8, error: &error) {
                 print("parsing data successful...")

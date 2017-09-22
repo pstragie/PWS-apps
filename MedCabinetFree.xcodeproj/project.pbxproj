@@ -30,9 +30,14 @@
 		B69D8A8A1E5F354700693F12 /* CompareAankoopLijstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */; };
 		F56301571F716F0900C26760 /* Medicijnkast.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B66B413B1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld */; };
 		F57437961F4799EE00619A1B /* ConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57437951F4799EE00619A1B /* ConnectionCheck.swift */; };
-		F57437A61F49A07A00619A1B /* Medicijnkast.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = F57437A31F49A07A00619A1B /* Medicijnkast.sqlite */; };
-		F57437A71F49A07A00619A1B /* Medicijnkast.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = F57437A41F49A07A00619A1B /* Medicijnkast.sqlite-shm */; };
-		F57437A81F49A07A00619A1B /* Medicijnkast.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = F57437A51F49A07A00619A1B /* Medicijnkast.sqlite-wal */; };
+		F5A075981F752B9700A579F6 /* Gal_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075901F752B9700A579F6 /* Gal_swift.csv */; };
+		F5A075991F752B9700A579F6 /* Ggr_Link_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075911F752B9700A579F6 /* Ggr_Link_swift.csv */; };
+		F5A0759A1F752B9700A579F6 /* Hyr_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075921F752B9700A579F6 /* Hyr_swift.csv */; };
+		F5A0759B1F752B9700A579F6 /* Ir_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075931F752B9700A579F6 /* Ir_swift.csv */; };
+		F5A0759C1F752B9700A579F6 /* MP_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075941F752B9700A579F6 /* MP_swift.csv */; };
+		F5A0759D1F752B9700A579F6 /* MPP_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075951F752B9700A579F6 /* MPP_swift.csv */; };
+		F5A0759E1F752B9700A579F6 /* Sam_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075961F752B9700A579F6 /* Sam_swift.csv */; };
+		F5A0759F1F752B9700A579F6 /* Stof_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075971F752B9700A579F6 /* Stof_swift.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,22 +62,19 @@
 		B66B414E1E4B63AE00DA2793 /* MedicijnTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MedicijnTableViewCell.swift; sourceTree = "<group>"; };
 		B66B41511E4BCE1800DA2793 /* SearchMedicijnTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMedicijnTableViewCell.swift; sourceTree = "<group>"; };
 		B66B41571E4D1F0100DA2793 /* ShoppingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
-		B67BB5FD1E6FF516002DEEF6 /* Gal_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gal_swift.csv; path = Medicijnkast/csv4Emd_Nl_1701A/Gal_swift.csv; sourceTree = "<group>"; };
-		B67BB5FE1E6FF516002DEEF6 /* Ggr_Link_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Ggr_Link_swift.csv; path = Medicijnkast/csv4Emd_Nl_1701A/Ggr_Link_swift.csv; sourceTree = "<group>"; };
-		B67BB5FF1E6FF516002DEEF6 /* Hyr_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Hyr_swift.csv; path = Medicijnkast/csv4Emd_Nl_1701A/Hyr_swift.csv; sourceTree = "<group>"; };
-		B67BB6001E6FF516002DEEF6 /* Ir_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Ir_swift.csv; path = Medicijnkast/csv4Emd_Nl_1701A/Ir_swift.csv; sourceTree = "<group>"; };
-		B67BB6011E6FF516002DEEF6 /* MP_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MP_swift.csv; path = Medicijnkast/csv4Emd_Nl_1701A/MP_swift.csv; sourceTree = "<group>"; };
-		B67BB6021E6FF516002DEEF6 /* MPP_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MPP_swift.csv; path = Medicijnkast/csv4Emd_Nl_1701A/MPP_swift.csv; sourceTree = "<group>"; };
-		B67BB6031E6FF516002DEEF6 /* Sam_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Sam_swift.csv; path = Medicijnkast/csv4Emd_Nl_1701A/Sam_swift.csv; sourceTree = "<group>"; };
-		B67BB6041E6FF516002DEEF6 /* Stof_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Stof_swift.csv; path = Medicijnkast/csv4Emd_Nl_1701A/Stof_swift.csv; sourceTree = "<group>"; };
 		B67F7BA51E824B8E00D98F82 /* Dictionaries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionaries.swift; sourceTree = "<group>"; };
 		B67F7BA71E84285200D98F82 /* KlachtenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KlachtenViewController.swift; sourceTree = "<group>"; };
 		B69D8A871E5E887000693F12 /* Rekenen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rekenen.swift; sourceTree = "<group>"; };
 		B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareAankoopLijstViewController.swift; sourceTree = "<group>"; };
 		F57437951F4799EE00619A1B /* ConnectionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
-		F57437A31F49A07A00619A1B /* Medicijnkast.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = Medicijnkast.sqlite; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/../../../../../../../../../Users/pieter/Documents/PWS/MedCabinetFree/Medicijnkast.sqlite; sourceTree = "<absolute>"; };
-		F57437A41F49A07A00619A1B /* Medicijnkast.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Medicijnkast.sqlite-shm"; path = "/Users/pieter/Documents/PWS/MedCabinetFree/Medicijnkast.sqlite-shm"; sourceTree = "<absolute>"; };
-		F57437A51F49A07A00619A1B /* Medicijnkast.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Medicijnkast.sqlite-wal"; path = "/Users/pieter/Documents/PWS/MedCabinetFree/Medicijnkast.sqlite-wal"; sourceTree = "<absolute>"; };
+		F5A075901F752B9700A579F6 /* Gal_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gal_swift.csv; path = ../BCFI/092017/Gal_swift.csv; sourceTree = "<group>"; };
+		F5A075911F752B9700A579F6 /* Ggr_Link_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Ggr_Link_swift.csv; path = ../BCFI/092017/Ggr_Link_swift.csv; sourceTree = "<group>"; };
+		F5A075921F752B9700A579F6 /* Hyr_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Hyr_swift.csv; path = ../BCFI/092017/Hyr_swift.csv; sourceTree = "<group>"; };
+		F5A075931F752B9700A579F6 /* Ir_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Ir_swift.csv; path = ../BCFI/092017/Ir_swift.csv; sourceTree = "<group>"; };
+		F5A075941F752B9700A579F6 /* MP_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MP_swift.csv; path = ../BCFI/092017/MP_swift.csv; sourceTree = "<group>"; };
+		F5A075951F752B9700A579F6 /* MPP_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MPP_swift.csv; path = ../BCFI/092017/MPP_swift.csv; sourceTree = "<group>"; };
+		F5A075961F752B9700A579F6 /* Sam_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Sam_swift.csv; path = ../BCFI/092017/Sam_swift.csv; sourceTree = "<group>"; };
+		F5A075971F752B9700A579F6 /* Stof_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Stof_swift.csv; path = ../BCFI/092017/Stof_swift.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,14 +91,14 @@
 		B63D17201E5A7EAE008289BB /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				B67BB5FD1E6FF516002DEEF6 /* Gal_swift.csv */,
-				B67BB5FE1E6FF516002DEEF6 /* Ggr_Link_swift.csv */,
-				B67BB5FF1E6FF516002DEEF6 /* Hyr_swift.csv */,
-				B67BB6001E6FF516002DEEF6 /* Ir_swift.csv */,
-				B67BB6011E6FF516002DEEF6 /* MP_swift.csv */,
-				B67BB6021E6FF516002DEEF6 /* MPP_swift.csv */,
-				B67BB6031E6FF516002DEEF6 /* Sam_swift.csv */,
-				B67BB6041E6FF516002DEEF6 /* Stof_swift.csv */,
+				F5A075901F752B9700A579F6 /* Gal_swift.csv */,
+				F5A075911F752B9700A579F6 /* Ggr_Link_swift.csv */,
+				F5A075921F752B9700A579F6 /* Hyr_swift.csv */,
+				F5A075931F752B9700A579F6 /* Ir_swift.csv */,
+				F5A075941F752B9700A579F6 /* MP_swift.csv */,
+				F5A075951F752B9700A579F6 /* MPP_swift.csv */,
+				F5A075961F752B9700A579F6 /* Sam_swift.csv */,
+				F5A075971F752B9700A579F6 /* Stof_swift.csv */,
 				B66B413B1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld */,
 			);
 			name = "Core Data";
@@ -122,9 +124,6 @@
 		B66B41331E4B4B9300DA2793 /* Medicijnkast */ = {
 			isa = PBXGroup;
 			children = (
-				F57437A31F49A07A00619A1B /* Medicijnkast.sqlite */,
-				F57437A41F49A07A00619A1B /* Medicijnkast.sqlite-shm */,
-				F57437A51F49A07A00619A1B /* Medicijnkast.sqlite-wal */,
 				B66B41341E4B4B9300DA2793 /* AppDelegate.swift */,
 				B66045FC1E78032E0056A617 /* CoreDataManager.swift */,
 				B66B414D1E4B63AE00DA2793 /* AddMedicijnViewController.swift */,
@@ -213,11 +212,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				B66B41421E4B4B9400DA2793 /* LaunchScreen.storyboard in Resources */,
+				F5A075991F752B9700A579F6 /* Ggr_Link_swift.csv in Resources */,
+				F5A0759A1F752B9700A579F6 /* Hyr_swift.csv in Resources */,
 				B66B413F1E4B4B9400DA2793 /* Assets.xcassets in Resources */,
-				F57437A81F49A07A00619A1B /* Medicijnkast.sqlite-wal in Resources */,
+				F5A0759F1F752B9700A579F6 /* Stof_swift.csv in Resources */,
+				F5A0759D1F752B9700A579F6 /* MPP_swift.csv in Resources */,
 				B66B413A1E4B4B9400DA2793 /* Main.storyboard in Resources */,
-				F57437A71F49A07A00619A1B /* Medicijnkast.sqlite-shm in Resources */,
-				F57437A61F49A07A00619A1B /* Medicijnkast.sqlite in Resources */,
+				F5A0759B1F752B9700A579F6 /* Ir_swift.csv in Resources */,
+				F5A075981F752B9700A579F6 /* Gal_swift.csv in Resources */,
+				F5A0759E1F752B9700A579F6 /* Sam_swift.csv in Resources */,
+				F5A0759C1F752B9700A579F6 /* MP_swift.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
