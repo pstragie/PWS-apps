@@ -611,7 +611,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         unwindToep = false
-        print("pickerView row selected")
+//        print("pickerView row selected")
         if pickerView == level0Picker {
             let hyrvalue = sortData(level0dict)[row]
             for (key, value) in level0dict {
@@ -1221,15 +1221,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        print("controller will change content: beginUpdates()")
+        self.tableView.beginUpdates()
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        print("controller did change content: endUpdates()")
+        self.tableView.endUpdates()
         updateView()
     }
     
+    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        print("Controller did change an object")
         switch (type) {
         case .insert:
             if let indexPath = newIndexPath {
@@ -1242,7 +1246,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             }
             break;
         default:
-            break
+            break;
 //            print("...")
         }
     }
@@ -1315,15 +1319,16 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             do {
                 try context.save()
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
-                //print("med saved in medicijnkast")
+                print("med saved in medicijnkast")
             } catch {
                 print(error.localizedDescription)
             }
             let cell = tableView.cellForRow(at: indexPath)
-            UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
+            UIView.animate(withDuration: 1, delay: 0.0, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor; self.tableView.reloadRows(at: [indexPath], with: .none)}) }
             )
             // Copy entity data to userdefaults
             self.copyUserdataToUserdefaults(managedObjectContext: context)
+
         }
         addToMedicijnkast.backgroundColor = UIColor(red: 125/255, green: 0/255, blue:0/255, alpha:1)
         
@@ -1338,16 +1343,20 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             do {
                 try context.save()
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedAankoop"), object: nil)
-                //print("med saved in aankooplijst")
+                print("med saved in aankooplijst")
             } catch {
                 print("med not saved in aankooplijst!")
             }
             let cell = tableView.cellForRow(at: indexPath)
-            UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor}) }
+            UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor; self.tableView.reloadRows(at: [indexPath], with: .none)}) }
             )
+            // Copy entity data to userdefaults
+            self.copyUserdataToUserdefaults(managedObjectContext: context)
+
         }
         addToShoppingList.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:1)
-        self.tableView.setEditing(false, animated: true)
+        
+//        self.tableView.setEditing(false, animated: false)
         return [addToMedicijnkast, addToShoppingList]
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -1478,7 +1487,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         //print("addUserData: \(mppcvValue), \(userkey), \(uservalue)")
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
-            //print("data line does not exist")
+            print("data line does not exist")
             if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
                 newUserData.setValue(uservalue, forKey: userkey)
                 newUserData.setValue(mppcvValue, forKey: "mppcv")
@@ -1487,6 +1496,8 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
                 for mpp in mpps {
                     mpp.setValue(newUserData, forKeyPath: "userdata")
                 }
+            } else {
+                print("not newUserData")
             }
         } else {
             print("data line exists")
@@ -1495,6 +1506,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
                 userData.setValue(mppcvValue, forKey: "mppcv")
                 userData.setValue(Date(), forKey: "lastupdate")
             }
+            
         }
     }
     
