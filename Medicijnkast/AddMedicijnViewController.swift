@@ -266,18 +266,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
+        print("view will appear")
         setUpSearchBar(selectedScope: selectedScope)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-        //print("View did disappear!")
+        print("View did disappear!")
         self.appDelegate.saveContext()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print("Addmedicijn View did load!")
+        print("Addmedicijn View did load!")
         setupLayout()
         setUpSearchBar(selectedScope: -1)
         setupIndexSort()
@@ -308,7 +309,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        print("viewDidLayoutSubviews")
+        print("viewDidLayoutSubviews")
         setupView()
         setupInfoView()
         setupAppVersionView()
@@ -1239,14 +1240,12 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             if let indexPath = newIndexPath {
                 tableView.insertRows(at: [indexPath], with: .fade)
             }
-            break;
         case .delete:
             if let indexPath = indexPath {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
-            break;
         default:
-            break;
+            break
 //            print("...")
         }
     }
