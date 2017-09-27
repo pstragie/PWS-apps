@@ -30,14 +30,14 @@
 		B69D8A8A1E5F354700693F12 /* CompareAankoopLijstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */; };
 		F56301571F716F0900C26760 /* Medicijnkast.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B66B413B1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld */; };
 		F57437961F4799EE00619A1B /* ConnectionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57437951F4799EE00619A1B /* ConnectionCheck.swift */; };
-		F5A075981F752B9700A579F6 /* Gal_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075901F752B9700A579F6 /* Gal_swift.csv */; };
-		F5A075991F752B9700A579F6 /* Ggr_Link_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075911F752B9700A579F6 /* Ggr_Link_swift.csv */; };
-		F5A0759A1F752B9700A579F6 /* Hyr_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075921F752B9700A579F6 /* Hyr_swift.csv */; };
-		F5A0759B1F752B9700A579F6 /* Ir_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075931F752B9700A579F6 /* Ir_swift.csv */; };
-		F5A0759C1F752B9700A579F6 /* MP_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075941F752B9700A579F6 /* MP_swift.csv */; };
-		F5A0759D1F752B9700A579F6 /* MPP_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075951F752B9700A579F6 /* MPP_swift.csv */; };
-		F5A0759E1F752B9700A579F6 /* Sam_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075961F752B9700A579F6 /* Sam_swift.csv */; };
-		F5A0759F1F752B9700A579F6 /* Stof_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075971F752B9700A579F6 /* Stof_swift.csv */; };
+		F5A075DA1F7C0A3F00A579F6 /* Gal_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075D21F7C0A3F00A579F6 /* Gal_swift.csv */; };
+		F5A075DB1F7C0A3F00A579F6 /* Ggr_Link_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075D31F7C0A3F00A579F6 /* Ggr_Link_swift.csv */; };
+		F5A075DD1F7C0A3F00A579F6 /* Ir_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075D51F7C0A3F00A579F6 /* Ir_swift.csv */; };
+		F5A075DE1F7C0A3F00A579F6 /* MP_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075D61F7C0A3F00A579F6 /* MP_swift.csv */; };
+		F5A075DF1F7C0A3F00A579F6 /* MPP_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075D71F7C0A3F00A579F6 /* MPP_swift.csv */; };
+		F5A075E01F7C0A3F00A579F6 /* Sam_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075D81F7C0A3F00A579F6 /* Sam_swift.csv */; };
+		F5A075E11F7C0A3F00A579F6 /* Stof_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075D91F7C0A3F00A579F6 /* Stof_swift.csv */; };
+		F5A075E31F7C0F3E00A579F6 /* Hyr_swift.csv in Resources */ = {isa = PBXBuildFile; fileRef = F5A075E21F7C0F3E00A579F6 /* Hyr_swift.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,14 +67,14 @@
 		B69D8A871E5E887000693F12 /* Rekenen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rekenen.swift; sourceTree = "<group>"; };
 		B69D8A891E5F354700693F12 /* CompareAankoopLijstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompareAankoopLijstViewController.swift; sourceTree = "<group>"; };
 		F57437951F4799EE00619A1B /* ConnectionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionCheck.swift; sourceTree = "<group>"; };
-		F5A075901F752B9700A579F6 /* Gal_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Gal_swift.csv; path = ../BCFI/092017/Gal_swift.csv; sourceTree = "<group>"; };
-		F5A075911F752B9700A579F6 /* Ggr_Link_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Ggr_Link_swift.csv; path = ../BCFI/092017/Ggr_Link_swift.csv; sourceTree = "<group>"; };
-		F5A075921F752B9700A579F6 /* Hyr_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Hyr_swift.csv; path = ../BCFI/092017/Hyr_swift.csv; sourceTree = "<group>"; };
-		F5A075931F752B9700A579F6 /* Ir_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Ir_swift.csv; path = ../BCFI/092017/Ir_swift.csv; sourceTree = "<group>"; };
-		F5A075941F752B9700A579F6 /* MP_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MP_swift.csv; path = ../BCFI/092017/MP_swift.csv; sourceTree = "<group>"; };
-		F5A075951F752B9700A579F6 /* MPP_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MPP_swift.csv; path = ../BCFI/092017/MPP_swift.csv; sourceTree = "<group>"; };
-		F5A075961F752B9700A579F6 /* Sam_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Sam_swift.csv; path = ../BCFI/092017/Sam_swift.csv; sourceTree = "<group>"; };
-		F5A075971F752B9700A579F6 /* Stof_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Stof_swift.csv; path = ../BCFI/092017/Stof_swift.csv; sourceTree = "<group>"; };
+		F5A075D21F7C0A3F00A579F6 /* Gal_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gal_swift.csv; sourceTree = "<group>"; };
+		F5A075D31F7C0A3F00A579F6 /* Ggr_Link_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ggr_Link_swift.csv; sourceTree = "<group>"; };
+		F5A075D51F7C0A3F00A579F6 /* Ir_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ir_swift.csv; sourceTree = "<group>"; };
+		F5A075D61F7C0A3F00A579F6 /* MP_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MP_swift.csv; sourceTree = "<group>"; };
+		F5A075D71F7C0A3F00A579F6 /* MPP_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MPP_swift.csv; sourceTree = "<group>"; };
+		F5A075D81F7C0A3F00A579F6 /* Sam_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Sam_swift.csv; sourceTree = "<group>"; };
+		F5A075D91F7C0A3F00A579F6 /* Stof_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Stof_swift.csv; sourceTree = "<group>"; };
+		F5A075E21F7C0F3E00A579F6 /* Hyr_swift.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hyr_swift.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,14 +91,14 @@
 		B63D17201E5A7EAE008289BB /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				F5A075901F752B9700A579F6 /* Gal_swift.csv */,
-				F5A075911F752B9700A579F6 /* Ggr_Link_swift.csv */,
-				F5A075921F752B9700A579F6 /* Hyr_swift.csv */,
-				F5A075931F752B9700A579F6 /* Ir_swift.csv */,
-				F5A075941F752B9700A579F6 /* MP_swift.csv */,
-				F5A075951F752B9700A579F6 /* MPP_swift.csv */,
-				F5A075961F752B9700A579F6 /* Sam_swift.csv */,
-				F5A075971F752B9700A579F6 /* Stof_swift.csv */,
+				F5A075E21F7C0F3E00A579F6 /* Hyr_swift.csv */,
+				F5A075D21F7C0A3F00A579F6 /* Gal_swift.csv */,
+				F5A075D31F7C0A3F00A579F6 /* Ggr_Link_swift.csv */,
+				F5A075D51F7C0A3F00A579F6 /* Ir_swift.csv */,
+				F5A075D61F7C0A3F00A579F6 /* MP_swift.csv */,
+				F5A075D71F7C0A3F00A579F6 /* MPP_swift.csv */,
+				F5A075D81F7C0A3F00A579F6 /* Sam_swift.csv */,
+				F5A075D91F7C0A3F00A579F6 /* Stof_swift.csv */,
 				B66B413B1E4B4B9400DA2793 /* Medicijnkast.xcdatamodeld */,
 			);
 			name = "Core Data";
@@ -212,16 +212,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				B66B41421E4B4B9400DA2793 /* LaunchScreen.storyboard in Resources */,
-				F5A075991F752B9700A579F6 /* Ggr_Link_swift.csv in Resources */,
-				F5A0759A1F752B9700A579F6 /* Hyr_swift.csv in Resources */,
+				F5A075DB1F7C0A3F00A579F6 /* Ggr_Link_swift.csv in Resources */,
 				B66B413F1E4B4B9400DA2793 /* Assets.xcassets in Resources */,
-				F5A0759F1F752B9700A579F6 /* Stof_swift.csv in Resources */,
-				F5A0759D1F752B9700A579F6 /* MPP_swift.csv in Resources */,
+				F5A075E11F7C0A3F00A579F6 /* Stof_swift.csv in Resources */,
+				F5A075E31F7C0F3E00A579F6 /* Hyr_swift.csv in Resources */,
+				F5A075DF1F7C0A3F00A579F6 /* MPP_swift.csv in Resources */,
 				B66B413A1E4B4B9400DA2793 /* Main.storyboard in Resources */,
-				F5A0759B1F752B9700A579F6 /* Ir_swift.csv in Resources */,
-				F5A075981F752B9700A579F6 /* Gal_swift.csv in Resources */,
-				F5A0759E1F752B9700A579F6 /* Sam_swift.csv in Resources */,
-				F5A0759C1F752B9700A579F6 /* MP_swift.csv in Resources */,
+				F5A075DD1F7C0A3F00A579F6 /* Ir_swift.csv in Resources */,
+				F5A075DA1F7C0A3F00A579F6 /* Gal_swift.csv in Resources */,
+				F5A075E01F7C0A3F00A579F6 /* Sam_swift.csv in Resources */,
+				F5A075DE1F7C0A3F00A579F6 /* MP_swift.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

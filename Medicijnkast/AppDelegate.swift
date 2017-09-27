@@ -161,7 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if seedCoreDataContainerIfFirstLaunch() {
             //destroyPersistentStore()
             print("First Launch!!!")
-            let Entities = ["MPP", "Gal", "Ggr_Link", "MP", "Sam", "Stof", "Hyr", "Ir"]
+            let Entities = ["MPP", "MP", "Hyr", "Gal", "Ggr_Link", "Sam", "Stof", "Ir"]
             //let Entities = ["MPP", "MP"]
             for entitynaam in Entities {
                 //cleanCoreData(entitynaam: entitynaam)
@@ -366,7 +366,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if entitynaam == "MPP" {
             if let newMPP = createRecordForEntity("MPP", inManagedObjectContext: managedObjectContext) {
                 for (key, value) in dict {
-                    
                     newMPP.setValue(value, forKey: key)
                 }
                 newMPP.setValue(Date(), forKey: "createdAt")
@@ -382,13 +381,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                     newSam.setValue(value, forKey: key)
                 }
-                
                 let mpps = fetchRecordsForEntity("MPP", key: "mppcv", arg: recordKey, inManagedObjectContext: managedObjectContext)
-                
-                
                 //let newMPP = mpp?.mutableSetValue(forKey: "sam")
-                
-                
                 newSam.setValue(Date(), forKey: "createdAt")
                 // Set Relationship
                 for mpp in mpps {
@@ -573,12 +567,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // For a line with double quotes
                 // we use NSScanner to perform the parsing
                 if line.range(of: "\"") != nil {
-                    //print(line)
+                    print(line)
                     var textToScan:String = line
                     var value:NSString?
                     var textScanner:Scanner = Scanner(string: textToScan)
                     while textScanner.string != "" {
-                        
+                        print("\(textScanner.string)")
                         if (textScanner.string as NSString).substring(to: 1) == "\"" {
                             textScanner.scanLocation += 1
                             textScanner.scanUpTo("\"", into: &value)
@@ -586,12 +580,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         } else {
                             textScanner.scanUpTo(delimiter, into: &value)
                         }
-                        
                         // Store the value into the values array
-                        
                         values.append(value! as String)
-                        
-                        
                         // Retrieve the unscanned remainder of the string
                         if textScanner.scanLocation < textScanner.string.characters.count {
                             textToScan = (textScanner.string as NSString).substring(from: textScanner.scanLocation + 1)
