@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // For distribution purposes!
         // Unmark simultaneously with marking the seedPersistentDatabase function to import csv!
         
-//        preloadDBData()
+        preloadDBData()
         
         guard let currentAppVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let previousVersion = defaults.string(forKey: "appVersion") else {
             // Key does not exist in UserDefaults, must be a fresh install
@@ -62,19 +62,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // MARK: Load from CSV, for update of bcfi database!
             // Developer use only! Load persistent store with data from csv files.
-            // Step 0: Delete the database files (3) in the "Medicijnkast" folder
+            // Step 0: Delete the database files (3) in the "Medicijnkast" folder (on the left and in Finder
             // Step 0b: Mark the preloadDBData() function above
             // Step 0c: Delete the app from the simulator
             // Step 1a: Unmark the two following lines of code below the steps
             // Step 1b: Run the app (10 minutes or more to read and load all the files)
             // Step 2: Locate the database files (3)
             // Step 3a: Copy the database files (3) from the "NSHomeDir" folder
-            // Step 3b: Delete the database files from the MedCabinetFree folder?
             // Step 4: Mark the two following lines of code
             // Step 5: Unmark the preloaDBData function above!
             
-            let moc = persistentContainer.viewContext
-            seedPersistentStoreWithManagedObjectContext(moc)
+//            let moc = persistentContainer.viewContext
+//            seedPersistentStoreWithManagedObjectContext(moc)
 
             
             // Print local file directory
@@ -297,7 +296,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             readLines += 1
             progressie = readLines/totalLines
             print("progressie: \(progressie)")
-            //print("saveAttributes: \(entitynaam), /(dict)")
+//            print("saveAttributes: \(entitynaam), \(dict)")
             var newdict: Dictionary<String,Any> = [:]
             for (key, value) in item {
                 var val: Any?
@@ -567,12 +566,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // For a line with double quotes
                 // we use NSScanner to perform the parsing
                 if line.range(of: "\"") != nil {
-                    print(line)
+//                    print(line)
                     var textToScan:String = line
                     var value:NSString?
                     var textScanner:Scanner = Scanner(string: textToScan)
                     while textScanner.string != "" {
-                        print("\(textScanner.string)")
                         if (textScanner.string as NSString).substring(to: 1) == "\"" {
                             textScanner.scanLocation += 1
                             textScanner.scanUpTo("\"", into: &value)

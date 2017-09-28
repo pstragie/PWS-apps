@@ -20,7 +20,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let level1Picker = UIPickerView()
     let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
-    
+    let databaseV: String = "September 2017"
     
     // MARK: - Properties Variables
     var asc = true
@@ -542,6 +542,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         labelBuild.textColor = UIColor.white
         labelBuild.translatesAutoresizingMaskIntoConstraints = false
         
+        let databaseVersion = UILabel()
+        databaseVersion.text = self.databaseV
+        databaseVersion.font = UIFont.systemFont(ofSize: 15)
+        databaseVersion.textColor = UIColor.white
+        databaseVersion.translatesAutoresizingMaskIntoConstraints = false
+        
         // MARK: Rate this app!
         let buttonRate = UIButton()
         buttonRate.setTitle("Rate this app", for: .normal)
@@ -557,7 +563,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         buttonRate.addTarget(self, action: #selector(rateApp), for: .touchUpInside)
  
         // MARK: Vertical stack
-        let vertStack = UIStackView(arrangedSubviews: [labelApp, labelVersion, labelBuild, buttonRate])
+        let vertStack = UIStackView(arrangedSubviews: [labelApp, labelVersion, labelBuild, databaseVersion, buttonRate])
         vertStack.axis = .vertical
         vertStack.distribution = .fillProportionally
         vertStack.alignment = .fill
