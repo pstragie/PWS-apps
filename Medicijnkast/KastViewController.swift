@@ -505,7 +505,7 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
             //print("fetching...")
         } catch {
             let fetchError = error as NSError
-            print("\(fetchError), \(fetchError.userInfo)")
+            fatalError("\(fetchError), \(fetchError.userInfo)")
         }
         self.tableView.reloadData()
         //print("filterKeyword: \(filterKeyword)")
@@ -527,7 +527,8 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
             
             //navigationController?.pushViewController(destination, animated: true)
         default:
-            print("Unknown segue: \(String(describing: segue.identifier))")
+//            print("Unknown segue: \(String(describing: segue.identifier))")
+			break
         }
         
     }
@@ -821,7 +822,7 @@ extension KastViewController: NSFetchedResultsControllerDelegate {
         // Check if record exists
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
-            print("data line does not exist")
+//            print("data line does not exist")
             if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
                 newUserData.setValue(uservalue, forKey: userkey)
                 newUserData.setValue(mppcvValue, forKey: "mppcv")

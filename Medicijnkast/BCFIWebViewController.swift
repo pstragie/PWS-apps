@@ -78,9 +78,9 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         if ConnectionCheck.isConnectedToNetwork() {
-            print("Connected to internet")
+//            print("Connected to internet")
         } else {
-            print("Not Connected to internet")
+//            print("Not Connected to internet")
             let controller = UIAlertController(title: "Geen Internetverbinding!", message: "Deze pagina vereist een werkende internetverbinding.", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
             //let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -94,7 +94,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
         
     // MARK: - webViewTapped
     func webViewTapped(recognizer: UITapGestureRecognizer) {
-        print("Tapped")
+//        print("Tapped")
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {

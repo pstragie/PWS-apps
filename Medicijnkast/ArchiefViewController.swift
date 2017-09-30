@@ -41,7 +41,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var totaalAantal: UILabel!
     // MARK: - Referencing Actions
     @IBAction func btnCloseMenuView(_ sender: UIButton) {
-        //print("btnCloseMenuView pressed!")
+//        print("btnCloseMenuView pressed!")
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [], animations: {
             if self.infoView.center.y >= 0 {
                 self.infoView.center.y -= self.view.bounds.height
@@ -76,7 +76,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.appDelegate.saveContext()
-        //print("Archief view will appear, fetching...")
+//        print("Archief view will appear, fetching...")
         
         do {
             try self.fetchedResultsController.performFetch()
@@ -321,17 +321,17 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
             sortKeyword = "mppnm"
             zoekwoord = searchBar.text!
         case 2:
-            //print("scope: vosnaam")
+//            print("scope: vosnaam")
             filterKeyword = "vosnm_"
             sortKeyword = "vosnm_"
             zoekwoord = searchBar.text!
         case 3:
-            //print("scope: firmanaam")
+//            print("scope: firmanaam")
             filterKeyword = "mp.ir.nirnm"
             sortKeyword = "mp.ir.nirnm"
             zoekwoord = searchBar.text!
         case 4:
-            //print("scope: alles")
+//            print("scope: alles")
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
@@ -340,9 +340,9 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
         }
-        //print("scope changed: \(selectedScope)")
-        //print("filterKeyword: \(filterKeyword)")
-        //print("searchbar text: \(searchBar.text!)")
+//        print("scope changed: \(selectedScope)")
+//        print("filterKeyword: \(filterKeyword)")
+//        print("searchbar text: \(searchBar.text!)")
         zoekwoord = searchBar.text!
         self.filterContentForSearchText(searchText: searchBar.text!, scopeIndex: selectedScope)
     }
@@ -373,10 +373,10 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBAction func archiefChanged(_sender: UISegmentedControl) {
         switch segmentedButton2.selectedSegmentIndex {
         case 0:
-            //print("0")
+//            print("0")
             archiefOperator = "medicijnkastarchief"
         case 1:
-            //print("1")
+//            print("1")
             archiefOperator = "aankooparchief"
         default:
             archiefOperator = "medicijnkastarchief"
@@ -390,7 +390,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         self.updateView()
     }
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        //print("Search should begin editing")
+//        print("Search should begin editing")
         searchBar.showsScopeBar = true
         searchBar.sizeToFit()
         searchBar.setShowsCancelButton(true, animated: true)
@@ -400,10 +400,10 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        //print("text did change")
+//        print("text did change")
         zoekwoord = searchText
         searchActive = true
-        //print("Zoekterm: \(String(describing: searchBar.text))")
+//        print("Zoekterm: \(String(describing: searchBar.text))")
         
         self.filterContentForSearchText(searchText: searchText, scopeIndex: self.selectedScope)
     }
@@ -417,7 +417,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         filterKeyword = "mp.mpnm"
         sortKeyword = "mp.mpnm"
-        //print("Cancel clicked")
+//        print("Cancel clicked")
         searchBar.showsScopeBar = false
         searchBar.sizeToFit()
         searchActive = false
@@ -432,7 +432,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        //print("should end editing")
+//        print("should end editing")
         self.tableView.reloadData()
         return true
     }
@@ -471,15 +471,15 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         
         do {
             try self.fetchedResultsController.performFetch()
-            //print("fetching...")
+//            print("fetching...")
         } catch {
             let fetchError = error as NSError
             print("\(fetchError), \(fetchError.userInfo)")
         }
         self.tableView.reloadData()
-        //print("filterKeyword: \(filterKeyword)")
-        //print("sortkeyword \(sortKeyword)")
-        //print("searchText: \(searchText)")
+//        print("filterKeyword: \(filterKeyword)")
+//        print("sortkeyword \(sortKeyword)")
+//        print("searchText: \(searchText)")
         self.updateView()
     }
     
@@ -494,7 +494,8 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
             destination.medicijn = selectedObject
             
         default:
-            print("Unknown segue: \(String(describing: segue.identifier))")
+//            print("Unknown segue: \(String(describing: segue.identifier))")
+            break
         }
     }
     
@@ -507,7 +508,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         
         if let medicijnen = fetchedResultsController.fetchedObjects {
             hasMedicijnen = medicijnen.count > 0
-            //print("medicijnen aantal: \(medicijnen.count)")
+//            print("medicijnen aantal: \(medicijnen.count)")
             
             x = medicijnen.count
 //            print("count: \(x)")
@@ -594,7 +595,7 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
             break;
         default:
             break
-            //print("...ShoppingList didChange anObject")
+//            print("...ShoppingList didChange anObject")
         }
     }
     
@@ -615,8 +616,8 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        //print("view did end decelerating")
-        //print("offset: \(scrollView.contentOffset)")
+//        print("view did end decelerating")
+//        print("offset: \(scrollView.contentOffset)")
         if (scrollView.contentOffset.y == 0.0) {  // TOP
             upArrow.isHidden = true
         } else {
@@ -694,16 +695,16 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let deleteFromArchiefLijst = UITableViewRowAction(style: .normal, title: "Verwijderen\n uit archief") { (action, indexPath) in
-            //print("naar medicijnkast")
+//            print("naar medicijnkast")
             // Fetch Medicijn
-            //print(self.archiefOperator)
+//            print(self.archiefOperator)
             let medicijn = self.fetchedResultsController.object(at: indexPath)
             medicijn.userdata?.setValue(false, forKey: "\(self.archiefOperator)")
             let context = self.appDelegate.persistentContainer.viewContext
             self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "\(self.archiefOperator)", uservalue: false, managedObjectContext: context)
             do {
                 try context.save()
-                //print("medicijn verwijderd uit de lijst!")
+//                print("medicijn verwijderd uit de lijst!")
             } catch {
                 print(error.localizedDescription)
             }
@@ -723,14 +724,14 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
         deleteFromArchiefLijst.backgroundColor = UIColor.red
         
         let addToMedicijnkast = UITableViewRowAction(style: .normal, title: "Naar\nmedicijnkast") { (action, indexPath) in
-            //print("Uit lijst verwijderd")
+//            print("Uit lijst verwijderd")
             // Fetch Medicijn
             let medicijn = self.fetchedResultsController.object(at: indexPath)
             let context = self.appDelegate.persistentContainer.viewContext
             self.addUserData(mppcvValue: medicijn.mppcv!, userkey: "medicijnkast", uservalue: true, managedObjectContext: context)
             do {
                 try context.save()
-                //print("med saved in medicijnkast")
+//                print("med saved in medicijnkast")
             } catch {
                 print(error.localizedDescription)
             }
@@ -801,7 +802,7 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
         // Check if record exists
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
-            print("data line does not exist")
+//            print("data line does not exist")
             if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
                 newUserData.setValue(uservalue, forKey: userkey)
                 newUserData.setValue(mppcvValue, forKey: "mppcv")
@@ -812,7 +813,7 @@ extension ArchiefViewController: NSFetchedResultsControllerDelegate {
                 }
             }
         } else {
-            print("data line exists")
+//            print("data line exists")
             for userData in userdata {
                 userData.setValue(uservalue, forKey: userkey)
                 userData.setValue(mppcvValue, forKey: "mppcv")

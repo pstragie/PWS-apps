@@ -30,7 +30,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
-        //print("Compare view did load!")
+//        print("Compare view did load!")
         // Do any additional setup after loading the view.
         navigationItem.title = "Vergelijk"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
@@ -161,7 +161,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         self.slideUpInfoView=UIView(frame:CGRect(x: 30, y: 0, width: (self.view.bounds.width)-60, height: 160))
         //self.slideUpInfoView.addGestureRecognizer(.init(target: slideUpInfoView, action: #selector(slideUpAlert())))
         self.slideUpInfoView.center.y += view.bounds.height
-        //print("setup: \(self.slideUpInfoView.center.y)")
+//        print("setup: \(self.slideUpInfoView.center.y)")
         slideUpInfoView.backgroundColor = UIColor.black.withAlphaComponent(0.95)
         slideUpInfoView.layer.cornerRadius = 8
         slideUpInfoView.layer.borderWidth = 1
@@ -182,21 +182,21 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     // MARK: - Show Alert
     func slideUpAlert() {
         UIView.animate(withDuration: 0.1, delay: 0.5, options: [.curveEaseIn], animations: {
-            //print(self.slideUpInfoView.center.y)
+//            print(self.slideUpInfoView.center.y)
             if self.slideUpInfoView.center.y >= self.view.bounds.height {
                 self.slideUpInfoView.center.y -= 200
             } else {
                 self.slideUpInfoView.center.y += 200
             }
-            //print(self.slideUpInfoView.center.y)
+//            print(self.slideUpInfoView.center.y)
         }, completion: {_ in UIView.animate(withDuration: 0.1, delay: 3.0, animations: {
-            //print(self.slideUpInfoView.center.y)
+//            print(self.slideUpInfoView.center.y)
             if self.slideUpInfoView.center.y >= self.view.bounds.height {
                 self.slideUpInfoView.center.y -= 200
             } else {
                 self.slideUpInfoView.center.y += 200
             }
-            //print(self.slideUpInfoView.center.y)
+//            print(self.slideUpInfoView.center.y)
         })}
         )
     }
@@ -227,7 +227,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             break
         }
         
-        //print("Altscope changed: \(vosIndexSwitch.selectedSegmentIndex)")
+//        print("Altscope changed: \(vosIndexSwitch.selectedSegmentIndex)")
         
         self.tableViewRight.reloadData()
         
@@ -440,7 +440,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print("did select \(indexPath.row)")
+//        print("did select \(indexPath.row)")
     }
     
     // MARK: - Navigation
@@ -457,7 +457,8 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             let selectedObject = fetchedResultsControllerRight.object(at: indexPath)
             destination.medicijn = selectedObject
         default:
-            print("Unknown segue: \(String(describing: segue.identifier))")
+//            print("Unknown segue: \(String(describing: segue.identifier))")
+            break
         }
     }
     
@@ -539,7 +540,7 @@ extension CompareAankoopLijstViewController: NSFetchedResultsControllerDelegate 
             break;
         default:
             break
-            //print("...")
+//            print("...")
         }
     }
     
@@ -584,7 +585,7 @@ extension CompareAankoopLijstViewController: NSFetchedResultsControllerDelegate 
         // Check if record exists
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
-            print("data line does not exist")
+//            print("data line does not exist")
             if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
                 newUserData.setValue(uservalue, forKey: userkey)
                 newUserData.setValue(mppcvValue, forKey: "mppcv")
@@ -595,7 +596,7 @@ extension CompareAankoopLijstViewController: NSFetchedResultsControllerDelegate 
                 }
             }
         } else {
-            print("data line exists")
+//            print("data line exists")
             for userData in userdata {
                 userData.setValue(uservalue, forKey: userkey)
                 userData.setValue(mppcvValue, forKey: "mppcv")

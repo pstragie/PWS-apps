@@ -31,7 +31,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         do {
             try context.save()
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
-            //print("med saved in aankooplijst")
+//            print("med saved in aankooplijst")
         } catch {
             print("med not saved in aankooplijst!")
         }
@@ -45,7 +45,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         do {
             try context.save()
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedAankoop"), object: nil)
-            //print("med saved in aankooplijst")
+//            print("med saved in aankooplijst")
         } catch {
             print("med not saved in aankooplijst!")
         }
@@ -123,7 +123,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //print("View did load!")
+//        print("View did load!")
         navigationItem.title = "Info: \((medicijn?.mp?.mpnm)!)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         dataPassed = medicijn
@@ -132,7 +132,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        //print("View did appear, arrayPassed: \(stofnaamArr)")
+//        print("View did appear, arrayPassed: \(stofnaamArr)")
         arrayPassed = stofnaamArr
     }
     
@@ -156,7 +156,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
     
     // MARK: - Scrolling behaviour
     func scrollToTop() {
-        //print("Scroll to top button clicked")
+//        print("Scroll to top button clicked")
         let topOffset = CGPoint(x: 0, y: 0)
         tableView.setContentOffset(topOffset, animated: true)
     }
@@ -263,7 +263,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             cell.law.text = "Nee"
         }
         cell.ssecr.text = Dictionaries().ssecr(ssecr: (medicijn?.ssecr)!)
-        //print((medicijn?.mp?.wadan)!)
+//        print((medicijn?.mp?.wadan)!)
         cell.wadan.text = Dictionaries().wada(wada: (medicijn?.mp?.wadan)!)
         if medicijn?.use == "H" {
             cell.use.text = "Hospitaal"
@@ -420,7 +420,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             let selectedObject = medicijn
             destination.medicijn = selectedObject
         default:
-            //print("Segue: \(String(describing: segue.identifier!))")
+//            print("Segue: \(String(describing: segue.identifier!))")
             break
         }
     }

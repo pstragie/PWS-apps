@@ -52,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         guard let currentAppVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let previousVersion = defaults.string(forKey: "appVersion") else {
             // Key does not exist in UserDefaults, must be a fresh install
-            print("Fresh install")
+//            print("Fresh install")
             // Writing version to UserDefaults for the first time
             defaults.set(cAV, forKey: "appVersion")
             
@@ -77,9 +77,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             
             // Print local file directory
-            let fm = FileManager.default
-            let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            print(appdir)
+//            let fm = FileManager.default
+//            let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+//            print(appdir)
             
             // Save Managed Object Context
             self.saveContext()
@@ -92,11 +92,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let comparisonResult = currentAppVersion.compare(previousVersion, options: .numeric, range: nil, locale: nil)
         switch comparisonResult {
         case .orderedSame:
-            print("Same version is running like before")
+//            print("Same version is running like before")
+            break
         case .orderedAscending:
-            print("Earlier version is running")
+//            print("Earlier version is running")
+            break
         case .orderedDescending:
-            print("older version is running")
+//            print("older version is running")
+            break
         }
         
         // Updating new version to UserDefaults
@@ -131,6 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: applicationDidEnterBackground
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+        self.saveContext()
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         //print(UserDefaults.standard.value(forKey: "last_update")!)
         // Get file last save date of creation date
@@ -180,18 +184,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - preloadDBData Core Data stack
     func preloadDBData() {
-        print("Preloading DB...")
+//        print("Preloading DB...")
         let fileManager = FileManager.default
 
         if !fileManager.fileExists(atPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite") {
-            print("Files do not exist!")
+//            print("Files do not exist!")
             let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
             let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
             
             for index in 0 ..< sourceSqliteURLs.count {
                 do {
                     try fileManager.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
-                    print("Files Copied!")
+//                    print("Files Copied!")
                 } catch {
                     fatalError("Could not copy sqlite to destination.")
                 }
@@ -202,7 +206,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("\(key) = \(value) \n")
             }*/
         } else {
-            print("Files Exist!")
+//            print("Files Exist!")
+            
             //print("Stored Userdefaults: \(localdata)")
             /*for (key, value) in localdata.dictionaryRepresentation() {
                 print("\(key) = \(value) \n")

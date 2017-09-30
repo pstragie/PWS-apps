@@ -745,7 +745,8 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
             }
             break;
         default:
-            print("...ShoppingList didChange anObject")
+//            print("...ShoppingList didChange anObject")
+            break
         }
     }
     
@@ -1099,7 +1100,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
         // Check if record exists
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
-            print("data line does not exist")
+//            print("data line does not exist")
             if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
                 newUserData.setValue(uservalue, forKey: userkey)
                 newUserData.setValue(mppcvValue, forKey: "mppcv")
@@ -1110,7 +1111,7 @@ extension ShoppingListViewController: NSFetchedResultsControllerDelegate {
                 }
             }
         } else {
-            print("data line exists")
+//            print("data line exists")
             for userData in userdata {
                 userData.setValue(uservalue, forKey: userkey)
                 userData.setValue(mppcvValue, forKey: "mppcv")

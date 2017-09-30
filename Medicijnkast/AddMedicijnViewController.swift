@@ -20,7 +20,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let level1Picker = UIPickerView()
     let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
-    let databaseV: String = "September 2017"
+    let databaseV: String = "Database versie: 09/2017"
     
     // MARK: - Properties Variables
     var asc = true
@@ -240,20 +240,20 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = ""
             searchBar.text = ""
             self.selectedScope = 4
-            print("unwind from detail (toepassing)")
+//            print("unwind from detail (toepassing)")
             var x: Int = 0
             let v = level0dict[String(firstCharacter)]
             x = sortData(level0dict).index(of: v!)!
             level0Picker.selectRow(x, inComponent: 0, animated: true)
             selectedHyr0 = String(firstCharacter)
-            print("selectedHyr0: \(selectedHyr0)")
+//            print("selectedHyr0: \(selectedHyr0)")
             hyrView = true
             updatePicker1() // Fill second picker with options matching selected row in first picker
-            print("select row in second picker")
+//            print("select row in second picker")
             let w = Dictionaries().level1Picker()[String(firstCharacter)+String(secondCharacter!)]
             //print("w: \(w!)")
             unwindRow = sortData(level1dict).index(of: w!)!
-            print("from unwind, unwindRow = \(unwindRow)")
+//            print("from unwind, unwindRow = \(unwindRow)")
             level1Picker.reloadAllComponents()
 //            updatePicker1() // Select correct row in picker
 //            level1Picker.selectRow(unwindRow, inComponent: 0, animated: true)
@@ -266,19 +266,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
-        print("view will appear")
+//        print("view will appear")
         setUpSearchBar(selectedScope: selectedScope)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-        print("View did disappear!")
+//        print("View did disappear!")
         self.appDelegate.saveContext()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Addmedicijn View did load!")
+//        print("Addmedicijn View did load!")
         setupLayout()
         setUpSearchBar(selectedScope: -1)
         setupIndexSort()
@@ -289,8 +289,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             try self.fetchedResultsController.performFetch()
         } catch {
             let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
+            fatalError("Could not fetch records: \(fetchError)")
+//            print("Unable to Perform Fetch Request")
+//            print("\(fetchError), \(fetchError.localizedDescription)")
         }
         level0Picker.delegate = self
         level0Picker.dataSource = self
@@ -309,7 +310,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
+//        print("viewDidLayoutSubviews")
         setupView()
         setupInfoView()
         setupAppVersionView()
@@ -582,7 +583,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 
     // MARK: - Rate app in the App Store
     func rateApp() {
-        print("buttonRate pressed!")
+//        print("buttonRate pressed!")
         let appId = "1257430169"
         let url_string = "itms-apps://itunes.apple.com/gb/app/id\(appId)"
         /* ?action=write-review&mt=8 */
@@ -629,7 +630,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
             pickerChanged = true
             filterContentForSearchText(searchText: selectedHyr0, scopeIndex: 4)
-            print("didSelectRow --> update picker 1")
+//            print("didSelectRow --> update picker 1")
             updatePicker1() // Fill second picker with options matching selected row in first picker
 
             //self.tableView.reloadData()
@@ -686,7 +687,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 level1Picker.selectRow(0, inComponent: 0, animated: true)
             }
         } else {
-            print("unwindToep = true, unwindRow = \(unwindRow)")
+//            print("unwindToep = true, unwindRow = \(unwindRow)")
             level1Picker.selectRow(unwindRow, inComponent: 0, animated: true)
         }
     }
@@ -1143,7 +1144,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             //print("fetching from mpp...")
         } catch {
             let fetchError = error as NSError
-            print("\(fetchError), \(fetchError.userInfo)")
+            fatalError("\(fetchError), \(fetchError.userInfo)")
         }
         if self.tableView.contentOffset == offset {
             self.tableView.setContentOffset(offset, animated: false)
@@ -1228,19 +1229,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("controller will change content: beginUpdates()")
+//        print("controller will change content: beginUpdates()")
         self.tableView.beginUpdates()
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("controller did change content: endUpdates()")
+//        print("controller did change content: endUpdates()")
         self.tableView.endUpdates()
         updateView()
     }
     
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        print("Controller did change an object")
+//        print("Controller did change an object")
         switch (type) {
         case .insert:
             if let indexPath = newIndexPath {
@@ -1324,7 +1325,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             do {
                 try context.save()
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedKast"), object: nil)
-                print("med saved in medicijnkast")
+//                print("med saved in medicijnkast")
             } catch {
                 print(error.localizedDescription)
             }
@@ -1348,9 +1349,9 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             do {
                 try context.save()
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updatedAankoop"), object: nil)
-                print("med saved in aankooplijst")
+//                print("med saved in aankooplijst")
             } catch {
-                print("med not saved in aankooplijst!")
+//                print("med not saved in aankooplijst!")
             }
             let cell = tableView.cellForRow(at: indexPath)
             UIView.animate(withDuration: 1, delay: 0.1, options: [.curveEaseIn], animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.6).cgColor}, completion: {_ in UIView.animate(withDuration: 0.1, animations: {cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.0).cgColor; self.tableView.reloadRows(at: [indexPath], with: .none)}) }
@@ -1492,7 +1493,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         //print("addUserData: \(mppcvValue), \(userkey), \(uservalue)")
         let userdata = fetchRecordsForEntity("Userdata", key: "mppcv", arg: mppcvValue, inManagedObjectContext: managedObjectContext)
         if userdata.count == 0 {
-            print("data line does not exist")
+//            print("data line does not exist")
             if let newUserData = createRecordForEntity("Userdata", inManagedObjectContext: managedObjectContext) {
                 newUserData.setValue(uservalue, forKey: userkey)
                 newUserData.setValue(mppcvValue, forKey: "mppcv")
@@ -1502,10 +1503,10 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
                     mpp.setValue(newUserData, forKeyPath: "userdata")
                 }
             } else {
-                print("not newUserData")
+//                print("not newUserData")
             }
         } else {
-            print("data line exists")
+//            print("data line exists")
             for userData in userdata {
                 userData.setValue(uservalue, forKey: userkey)
                 userData.setValue(mppcvValue, forKey: "mppcv")
@@ -1549,14 +1550,14 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
     // MARK: - Copy Userdefaults to UserData (DB) --> after update!
     func copyUserDefaultsToUserData(managedObjectContext: NSManagedObjectContext) {
         let context = self.appDelegate.persistentContainer.viewContext
-        print("Copying localdata to Userdata")
+//        print("Copying localdata to Userdata")
         // Read UserDefaults array: from localdata, key: userdata
-        print("Localdata: \(String(describing: localdata.array(forKey: "userdata")))")
+//        print("Localdata: \(String(describing: localdata.array(forKey: "userdata")))")
         // Use UserDefaults array values to obtain dictionary data
         for userData in localdata.array(forKey: "userdata")! {
-            print("userdata: \(userData)")
+//            print("userdata: \(userData)")
             let dict = localdata.dictionary(forKey: (userData as! String))
-            print("Dict: \(dict!)")
+//            print("Dict: \(dict!)")
             for (key, value) in dict! {
                 if key == "medicijnkast" || key == "medicijnkastarchief" || key == "aankooplijst" || key == "aankooparchief" {
                     addUserData(mppcvValue: (userData as! String), userkey: key, uservalue: (value as! Bool), managedObjectContext: context)
