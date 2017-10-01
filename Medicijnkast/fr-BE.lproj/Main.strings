@@ -1,0 +1,573 @@
+
+/* Class = "UIBarButtonItem"; title = "MedCabinet"; ObjectID = "03G-iU-PPG"; */
+"03G-iU-PPG.title" = "MedCabinet";
+
+/* Class = "UILabel"; text = "VOS"; ObjectID = "0Pa-qE-3KV"; */
+"0Pa-qE-3KV.text" = "VOS";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "0oq-uW-F6b"; */
+"0oq-uW-F6b.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "0r7-lw-O74"; */
+"0r7-lw-O74.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "1B6-WB-xVq"; */
+"1B6-WB-xVq.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "1zB-MY-auF"; */
+"1zB-MY-auF.text" = "Label";
+
+/* Class = "UILabel"; text = "Goedkoopst"; ObjectID = "2bw-sT-coV"; */
+"2bw-sT-coV.text" = "Goedkoopst";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "39W-oI-T0H"; */
+"39W-oI-T0H.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "3FA-Vb-ca8"; */
+"3FA-Vb-ca8.text" = "Label";
+
+/* Class = "UILabel"; text = "OGC"; ObjectID = "3a7-rO-WdP"; */
+"3a7-rO-WdP.text" = "OGC";
+
+/* Class = "UILabel"; text = "Remgeld W"; ObjectID = "45y-YW-Wge"; */
+"45y-YW-Wge.text" = "Remgeld W";
+
+/* Class = "UILabel"; text = "mppnm"; ObjectID = "47P-Zc-iMv"; */
+"47P-Zc-iMv.text" = "mppnm";
+
+/* Class = "UILabel"; text = "Totale prijs"; ObjectID = "4KV-91-wtr"; */
+"4KV-91-wtr.text" = "Totale prijs";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "5ZA-T6-yJa"; */
+"5ZA-T6-yJa.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "6Uf-4Q-h41"; */
+"6Uf-4Q-h41.text" = "Label";
+
+/* Class = "UILabel"; text = "orphan"; ObjectID = "79o-M8-3Wl"; */
+"79o-M8-3Wl.text" = "orphan";
+
+/* Class = "UILabel"; text = "Prijs publiek"; ObjectID = "7II-oi-MO4"; */
+"7II-oi-MO4.text" = "Prijs publiek";
+
+/* Class = "UISegmentedControl"; 7dh-d4-OLP.segmentTitles[0] = "B...."; ObjectID = "7dh-d4-OLP"; */
+"7dh-d4-OLP.segmentTitles[0]" = "B....";
+
+/* Class = "UISegmentedControl"; 7dh-d4-OLP.segmentTitles[1] = "Second"; ObjectID = "7dh-d4-OLP"; */
+"7dh-d4-OLP.segmentTitles[1]" = "Second";
+
+/* Class = "UILabel"; text = "narcotic"; ObjectID = "7xn-ek-GGP"; */
+"7xn-ek-GGP.text" = "narcotic";
+
+/* Class = "UIButton"; normalTitle = "info"; ObjectID = "7yK-u5-rv0"; */
+"7yK-u5-rv0.normalTitle" = "info";
+
+/* Class = "UITabBarItem"; title = "Archief"; ObjectID = "8q6-7K-NI9"; */
+"8q6-7K-NI9.title" = "Archief";
+
+/* Class = "UITabBarItem"; title = "Medicijnkast"; ObjectID = "8uS-IE-w7H"; */
+"8uS-IE-w7H.title" = "Medicijnkast";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "98E-EO-jRW"; */
+"98E-EO-jRW.text" = "Label";
+
+/* Class = "UISearchBar"; placeholder = "Zoek in je archief"; ObjectID = "A4J-rj-g4b"; */
+"A4J-rj-g4b.placeholder" = "Zoek in je archief";
+
+/* Class = "UISearchBar"; text = "Zoek in je archief"; ObjectID = "A4J-rj-g4b"; */
+"A4J-rj-g4b.text" = "Zoek in je archief";
+
+/* Class = "UILabel"; text = "pupr"; ObjectID = "A4h-Ok-yay"; */
+"A4h-Ok-yay.text" = "pupr";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "A8O-3x-7Nn"; */
+"A8O-3x-7Nn.text" = "Label";
+
+/* Class = "UILabel"; text = "Firmanaam"; ObjectID = "ABV-Db-UFR"; */
+"ABV-Db-UFR.text" = "Firmanaam";
+
+/* Class = "UILabel"; text = "Firmanaam"; ObjectID = "BDo-Nz-Ufv"; */
+"BDo-Nz-Ufv.text" = "Firmanaam";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "BHT-aE-DZh"; */
+"BHT-aE-DZh.normalTitle" = "Button";
+
+/* Class = "UIViewController"; title = "KastViewController"; ObjectID = "BYZ-38-t0r"; */
+"BYZ-38-t0r.title" = "KastViewController";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "C2m-bx-4A0"; */
+"C2m-bx-4A0.normalTitle" = "Button";
+
+/* Class = "UIViewController"; title = "BCFI Info"; ObjectID = "C4i-9K-tWg"; */
+"C4i-9K-tWg.title" = "BCFI Info";
+
+/* Class = "UILabel"; text = "Totaal remgeld A"; ObjectID = "C89-xw-Z4d"; */
+"C89-xw-Z4d.text" = "Totaal remgeld A";
+
+/* Class = "UILabel"; text = "Alternatief"; ObjectID = "CFG-46-0Td"; */
+"CFG-46-0Td.text" = "Alternatief";
+
+/* Class = "UISegmentedControl"; CNk-Rd-6GH.segmentTitles[0] = "B...."; ObjectID = "CNk-Rd-6GH"; */
+"CNk-Rd-6GH.segmentTitles[0]" = "B....";
+
+/* Class = "UISegmentedControl"; CNk-Rd-6GH.segmentTitles[1] = "Second"; ObjectID = "CNk-Rd-6GH"; */
+"CNk-Rd-6GH.segmentTitles[1]" = "Second";
+
+/* Class = "UILabel"; text = "mppnm"; ObjectID = "CRJ-0g-tYN"; */
+"CRJ-0g-tYN.text" = "mppnm";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "CSn-24-ByW"; */
+"CSn-24-ByW.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Kast"; ObjectID = "CUt-9f-vVq"; */
+"CUt-9f-vVq.normalTitle" = "Kast";
+
+/* Class = "UILabel"; text = "Aantal medicijnen"; ObjectID = "D4S-KS-SwM"; */
+"D4S-KS-SwM.text" = "Aantal medicijnen";
+
+/* Class = "UIButton"; normalTitle = "info"; ObjectID = "DeK-kj-0bp"; */
+"DeK-kj-0bp.normalTitle" = "info";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Drn-Bu-yEG"; */
+"Drn-Bu-yEG.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "E8a-pI-dyX"; */
+"E8a-pI-dyX.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "Archief"; ObjectID = "EXe-P4-PL6"; */
+"EXe-P4-PL6.title" = "Archief";
+
+/* Class = "UILabel"; text = "Hôpital"; ObjectID = "FiE-6p-aXC"; */
+"FiE-6p-aXC.text" = "Hôpital";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "G6j-hn-X7Y"; */
+"G6j-hn-X7Y.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "G90-Fl-udm"; */
+"G90-Fl-udm.text" = "Label";
+
+/* Class = "UILabel"; text = "Alternatief RemA"; ObjectID = "GLw-pq-gJz"; */
+"GLw-pq-gJz.text" = "Alternatief RemA";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "GVa-WS-ffE"; */
+"GVa-WS-ffE.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "GX6-eL-OUJ"; */
+"GX6-eL-OUJ.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "GbR-LZ-Z4T"; */
+"GbR-LZ-Z4T.text" = "Label";
+
+/* Class = "UILabel"; text = "Firmanaam"; ObjectID = "HR3-4e-7sR"; */
+"HR3-4e-7sR.text" = "Firmanaam";
+
+/* Class = "UILabel"; text = "vosnm"; ObjectID = "Hbm-F5-Azc"; */
+"Hbm-F5-Azc.text" = "vosnm";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Hkb-QJ-tB7"; */
+"Hkb-QJ-tB7.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "HyO-ca-lZn"; */
+"HyO-ca-lZn.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Hide"; ObjectID = "I6q-ER-mvO"; */
+"I6q-ER-mvO.normalTitle" = "Hide";
+
+/* Class = "UITabBarItem"; title = "Aankooplijst"; ObjectID = "JWo-X4-iKC"; */
+"JWo-X4-iKC.title" = "Aankooplijst";
+
+/* Class = "UILabel"; text = "Speciale regels"; ObjectID = "Jn4-cI-dHI"; */
+"Jn4-cI-dHI.text" = "Speciale regels";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "K7q-ZQ-Ix7"; */
+"K7q-ZQ-Ix7.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "LSX-PE-U3d"; */
+"LSX-PE-U3d.text" = "Label";
+
+/* Class = "UILabel"; text = "Gdkp (riziv)"; ObjectID = "Liv-lw-ohK"; */
+"Liv-lw-ohK.text" = "Gdkp (riziv)";
+
+/* Class = "UILabel"; text = "Verschil RemW"; ObjectID = "Loi-5s-mYh"; */
+"Loi-5s-mYh.text" = "Verschil RemW";
+
+/* Class = "UILabel"; text = "Stofnaam"; ObjectID = "M16-5O-1IY"; */
+"M16-5O-1IY.text" = "Stofnaam";
+
+/* Class = "UILabel"; text = "mppnm"; ObjectID = "MTC-9c-HHr"; */
+"MTC-9c-HHr.text" = "mppnm";
+
+/* Class = "UILabel"; text = "Weesgeneesmiddel"; ObjectID = "MqW-cK-ry3"; */
+"MqW-cK-ry3.text" = "Weesgeneesmiddel";
+
+/* Class = "UILabel"; text = "vosnm"; ObjectID = "Nn3-3L-NyJ"; */
+"Nn3-3L-NyJ.text" = "vosnm";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "NuE-fF-tPt"; */
+"NuE-fF-tPt.text" = "Label";
+
+/* Class = "UILabel"; text = "mppnm"; ObjectID = "NyR-Fh-qpw"; */
+"NyR-Fh-qpw.text" = "mppnm";
+
+/* Class = "UILabel"; text = "mppnm"; ObjectID = "OD3-ad-qmF"; */
+"OD3-ad-qmF.text" = "mppnm";
+
+/* Class = "UISegmentedControl"; OJc-4I-Jpp.segmentTitles[0] = "First"; ObjectID = "OJc-4I-Jpp"; */
+"OJc-4I-Jpp.segmentTitles[0]" = "First";
+
+/* Class = "UISegmentedControl"; OJc-4I-Jpp.segmentTitles[1] = "Second"; ObjectID = "OJc-4I-Jpp"; */
+"OJc-4I-Jpp.segmentTitles[1]" = "Second";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "SXm-uX-vyY"; */
+"SXm-uX-vyY.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "St5-4N-51u"; */
+"St5-4N-51u.text" = "Label";
+
+/* Class = "UISearchBar"; placeholder = "Zoek in de database"; ObjectID = "TBf-Wb-Biv"; */
+"TBf-Wb-Biv.placeholder" = "Zoek in de database";
+
+/* Class = "UISearchBar"; text = "Zoek in de database"; ObjectID = "TBf-Wb-Biv"; */
+"TBf-Wb-Biv.text" = "Zoek in de database";
+
+/* Class = "UIButton"; normalTitle = " "; ObjectID = "TMT-WK-XiK"; */
+"TMT-WK-XiK.normalTitle" = " ";
+
+/* Class = "UILabel"; text = "Totaal remgeld W"; ObjectID = "Tk2-w0-Mnv"; */
+"Tk2-w0-Mnv.text" = "Totaal remgeld W";
+
+/* Class = "UISegmentedControl"; UQr-n9-oxn.segmentTitles[0] = "Verpakking"; ObjectID = "UQr-n9-oxn"; */
+"UQr-n9-oxn.segmentTitles[0]" = "Verpakking";
+
+/* Class = "UISegmentedControl"; UQr-n9-oxn.segmentTitles[1] = "Unit"; ObjectID = "UQr-n9-oxn"; */
+"UQr-n9-oxn.segmentTitles[1]" = "Unit";
+
+/* Class = "UILabel"; text = "In medicijnkast"; ObjectID = "Uzf-bm-xyj"; */
+"Uzf-bm-xyj.text" = "In medicijnkast";
+
+/* Class = "UILabel"; text = "Aankooplijst"; ObjectID = "Vd7-KI-7Q6"; */
+"Vd7-KI-7Q6.text" = "Aankooplijst";
+
+/* Class = "UIButton"; normalTitle = "info"; ObjectID = "Vgc-gq-m5U"; */
+"Vgc-gq-m5U.normalTitle" = "info";
+
+/* Class = "UIButton"; normalTitle = "Hide"; ObjectID = "X2q-W9-6hE"; */
+"X2q-W9-6hE.normalTitle" = "Hide";
+
+/* Class = "UILabel"; text = "Aantal medicijnen"; ObjectID = "Xii-LZ-vwf"; */
+"Xii-LZ-vwf.text" = "Aantal medicijnen";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Xys-rZ-EOf"; */
+"Xys-rZ-EOf.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Y0D-hY-9Wp"; */
+"Y0D-hY-9Wp.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Eenheidsprijs"; ObjectID = "YKE-dE-HsH"; */
+"YKE-dE-HsH.text" = "Eenheidsprijs";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "YU5-ej-x8e"; */
+"YU5-ej-x8e.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "YhD-cG-ZaN"; */
+"YhD-cG-ZaN.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Yhg-SY-qGy"; */
+"Yhg-SY-qGy.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "YyU-v2-mid"; */
+"YyU-v2-mid.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Zcv-tK-8hI"; */
+"Zcv-tK-8hI.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Zxc-fN-cMS"; */
+"Zxc-fN-cMS.text" = "Label";
+
+/* Class = "UILabel"; text = "vosnm"; ObjectID = "a3E-0s-UMK"; */
+"a3E-0s-UMK.text" = "vosnm";
+
+/* Class = "UILabel"; text = "Doping"; ObjectID = "aHQ-U1-Ykl"; */
+"aHQ-U1-Ykl.text" = "Doping";
+
+/* Class = "UILabel"; text = "vosnm"; ObjectID = "aMn-es-Ucl"; */
+"aMn-es-Ucl.text" = "vosnm";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "bIw-ms-FIm"; */
+"bIw-ms-FIm.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Hide"; ObjectID = "bep-jv-3e3"; */
+"bep-jv-3e3.normalTitle" = "Hide";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "bkj-aN-6us"; */
+"bkj-aN-6us.text" = "Label";
+
+/* Class = "UILabel"; text = "Firmanaam"; ObjectID = "bml-2I-2mO"; */
+"bml-2I-2mO.text" = "Firmanaam";
+
+/* Class = "UILabel"; text = "Voorschrift"; ObjectID = "bxi-Ob-uwe"; */
+"bxi-Ob-uwe.text" = "Voorschrift";
+
+/* Class = "UILabel"; text = "Merknaam"; ObjectID = "byT-3c-nFl"; */
+"byT-3c-nFl.text" = "Merknaam";
+
+/* Class = "UILabel"; text = "Verschil Pupr"; ObjectID = "c1n-p6-rFD"; */
+"c1n-p6-rFD.text" = "Verschil Pupr";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ccN-Kf-8qY"; */
+"ccN-Kf-8qY.text" = "Label";
+
+/* Class = "UILabel"; text = "rema"; ObjectID = "dCe-k3-M8U"; */
+"dCe-k3-M8U.text" = "rema";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "dGu-Ty-yeP"; */
+"dGu-Ty-yeP.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "dNe-x4-e2N"; */
+"dNe-x4-e2N.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "dPL-TP-L8j"; */
+"dPL-TP-L8j.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "info"; ObjectID = "dXh-CO-XD9"; */
+"dXh-CO-XD9.normalTitle" = "info";
+
+/* Class = "UILabel"; text = "messageLabel"; ObjectID = "dnW-Ox-cZT"; */
+"dnW-Ox-cZT.text" = "messageLabel";
+
+/* Class = "UILabel"; text = "Totaal remgeld W"; ObjectID = "e3k-kX-Uad"; */
+"e3k-kX-Uad.text" = "Totaal remgeld W";
+
+/* Class = "UILabel"; text = "OUC"; ObjectID = "e4L-II-AVU"; */
+"e4L-II-AVU.text" = "OUC";
+
+/* Class = "UIButton"; normalTitle = "Toon alternatieven"; ObjectID = "eGl-WM-Jsv"; */
+"eGl-WM-Jsv.normalTitle" = "Toon alternatieven";
+
+/* Class = "UILabel"; text = "Gebruik"; ObjectID = "eMP-Ru-0Yy"; */
+"eMP-Ru-0Yy.text" = "Gebruik";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "eTh-hP-3mL"; */
+"eTh-hP-3mL.text" = "Label";
+
+/* Class = "UILabel"; text = "Onder toezicht"; ObjectID = "eXb-Co-myI"; */
+"eXb-Co-myI.text" = "Onder toezicht";
+
+/* Class = "UILabel"; text = "law"; ObjectID = "egt-5f-NN5"; */
+"egt-5f-NN5.text" = "law";
+
+/* Class = "UIButton"; normalTitle = " Meer info op BCFI "; ObjectID = "f39-1J-a5b"; */
+"f39-1J-a5b.normalTitle" = " Meer info op BCFI ";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "fVy-K5-kvh"; */
+"fVy-K5-kvh.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "fbR-C9-SPZ"; */
+"fbR-C9-SPZ.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "pip"; ObjectID = "fef-ue-iw3"; */
+"fef-ue-iw3.text" = "pip";
+
+/* Class = "UILabel"; text = "Merknaam"; ObjectID = "fnL-Rb-QOh"; */
+"fnL-Rb-QOh.text" = "Merknaam";
+
+/* Class = "UIButton"; normalTitle = "€"; ObjectID = "fzA-TF-SSa"; */
+"fzA-TF-SSa.normalTitle" = "€";
+
+/* Class = "UILabel"; text = "Prijscategorie"; ObjectID = "g4k-3P-NT7"; */
+"g4k-3P-NT7.text" = "Prijscategorie";
+
+/* Class = "UILabel"; text = "Alternatief"; ObjectID = "gEr-tU-Sm1"; */
+"gEr-tU-Sm1.text" = "Alternatief";
+
+/* Class = "UISegmentedControl"; gMv-cK-14k.segmentTitles[0] = "B...."; ObjectID = "gMv-cK-14k"; */
+"gMv-cK-14k.segmentTitles[0]" = "B....";
+
+/* Class = "UISegmentedControl"; gMv-cK-14k.segmentTitles[1] = "Second"; ObjectID = "gMv-cK-14k"; */
+"gMv-cK-14k.segmentTitles[1]" = "Second";
+
+/* Class = "UISearchBar"; text = "Zoek in je aankooplijst"; ObjectID = "hWu-Nh-HvA"; */
+"hWu-Nh-HvA.text" = "Zoek in je aankooplijst";
+
+/* Class = "UILabel"; text = "Verschil RemA"; ObjectID = "iBz-I5-NFW"; */
+"iBz-I5-NFW.text" = "Verschil RemA";
+
+/* Class = "UILabel"; text = "Merknaam"; ObjectID = "iPD-GC-cR4"; */
+"iPD-GC-cR4.text" = "Merknaam";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "iUj-ze-icL"; */
+"iUj-ze-icL.text" = "Label";
+
+/* Class = "UILabel"; text = "specrules"; ObjectID = "iVW-cu-tdM"; */
+"iVW-cu-tdM.text" = "specrules";
+
+/* Class = "UILabel"; text = "messageLabel"; ObjectID = "jnE-wA-wVl"; */
+"jnE-wA-wVl.text" = "messageLabel";
+
+/* Class = "UILabel"; text = "bt"; ObjectID = "k6n-Xl-bpx"; */
+"k6n-Xl-bpx.text" = "bt";
+
+/* Class = "UILabel"; text = "Firmanaam"; ObjectID = "kWg-zA-4Lk"; */
+"kWg-zA-4Lk.text" = "Firmanaam";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "kkl-b0-1nc"; */
+"kkl-b0-1nc.text" = "Label";
+
+/* Class = "UILabel"; text = "mppnm"; ObjectID = "lbp-4E-q4V"; */
+"lbp-4E-q4V.text" = "mppnm";
+
+/* Class = "UINavigationItem"; title = "Medicijnkast"; ObjectID = "lc1-rJ-b3s"; */
+"lc1-rJ-b3s.title" = "Medicijnkast";
+
+/* Class = "UILabel"; text = "messageLabel"; ObjectID = "ll8-gN-kpW"; */
+"ll8-gN-kpW.text" = "messageLabel";
+
+/* Class = "UILabel"; text = "mppnm"; ObjectID = "lld-0F-7l2"; */
+"lld-0F-7l2.text" = "mppnm";
+
+/* Class = "UILabel"; text = "In Aankooplijst"; ObjectID = "lnc-Gf-Ti7"; */
+"lnc-Gf-Ti7.text" = "In Aankooplijst";
+
+/* Class = "UILabel"; text = "Alternatief RemW"; ObjectID = "loZ-zD-gpj"; */
+"loZ-zD-gpj.text" = "Alternatief RemW";
+
+/* Class = "UILabel"; text = "vosnm"; ObjectID = "m2T-gK-nTB"; */
+"m2T-gK-nTB.text" = "vosnm";
+
+/* Class = "UILabel"; text = "Verdovend middel"; ObjectID = "mHZ-5F-g15"; */
+"mHZ-5F-g15.text" = "Verdovend middel";
+
+/* Class = "UILabel"; text = "Merknaam"; ObjectID = "mhY-Uu-FNb"; */
+"mhY-Uu-FNb.text" = "Merknaam";
+
+/* Class = "UILabel"; text = "Merknaam"; ObjectID = "mwn-8M-Fjq"; */
+"mwn-8M-Fjq.text" = "Merknaam";
+
+/* Class = "UILabel"; text = "use"; ObjectID = "ncp-8b-jzi"; */
+"ncp-8b-jzi.text" = "use";
+
+/* Class = "UILabel"; text = "ouc"; ObjectID = "pBw-id-J8C"; */
+"pBw-id-J8C.text" = "ouc";
+
+/* Class = "UILabel"; text = "Aantal medicijnen"; ObjectID = "pKU-5D-8sb"; */
+"pKU-5D-8sb.text" = "Aantal medicijnen";
+
+/* Class = "UILabel"; text = "Totale prijs"; ObjectID = "pOh-Oh-HoU"; */
+"pOh-Oh-HoU.text" = "Totale prijs";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "pWo-8X-iyJ"; */
+"pWo-8X-iyJ.text" = "Label";
+
+/* Class = "UILabel"; text = "Verschil"; ObjectID = "pb3-CR-AkT"; */
+"pb3-CR-AkT.text" = "Verschil";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "pcq-K9-nfk"; */
+"pcq-K9-nfk.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "cheapest"; ObjectID = "q52-5y-Mv4"; */
+"q52-5y-Mv4.text" = "cheapest";
+
+/* Class = "UILabel"; text = "Merknaam"; ObjectID = "qdQ-Hv-SZf"; */
+"qdQ-Hv-SZf.text" = "Merknaam";
+
+/* Class = "UIButton"; normalTitle = "Sluit venster"; ObjectID = "qie-Oc-b2j"; */
+"qie-Oc-b2j.normalTitle" = "Sluit venster";
+
+/* Class = "UILabel"; text = "vosnm"; ObjectID = "qkF-sp-1I2"; */
+"qkF-sp-1I2.text" = "vosnm";
+
+/* Class = "UILabel"; text = "Remgeld A"; ObjectID = "r6d-16-mGT"; */
+"r6d-16-mGT.text" = "Remgeld A";
+
+/* Class = "UILabel"; text = "remw"; ObjectID = "rI4-gJ-3NU"; */
+"rI4-gJ-3NU.text" = "remw";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "rN6-co-9OB"; */
+"rN6-co-9OB.text" = "Label";
+
+/* Class = "UILabel"; text = "Alternatief Pupr"; ObjectID = "rP4-ry-brA"; */
+"rP4-ry-brA.text" = "Alternatief Pupr";
+
+/* Class = "UIViewController"; title = "Zoeken"; ObjectID = "ruK-Vs-qsG"; */
+"ruK-Vs-qsG.title" = "Zoeken";
+
+/* Class = "UILabel"; text = "Galenische vorm"; ObjectID = "sCB-cq-dGN"; */
+"sCB-cq-dGN.text" = "Galenische vorm";
+
+/* Class = "UILabel"; text = "Merknaam"; ObjectID = "skN-kb-Iku"; */
+"skN-kb-Iku.text" = "Merknaam";
+
+/* Class = "UILabel"; text = "Terugbet. cat."; ObjectID = "sqB-BA-gFx"; */
+"sqB-BA-gFx.text" = "Terugbet. cat.";
+
+/* Class = "UILabel"; text = "Totaal remgeld A"; ObjectID = "t4B-wc-Cq0"; */
+"t4B-wc-Cq0.text" = "Totaal remgeld A";
+
+/* Class = "UILabel"; text = "Firmanaam"; ObjectID = "tcS-75-y0l"; */
+"tcS-75-y0l.text" = "Firmanaam";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "thg-0C-2EI"; */
+"thg-0C-2EI.text" = "Label";
+
+/* Class = "UILabel"; text = "Toepassing"; ObjectID = "tim-WW-tQi"; */
+"tim-WW-tQi.text" = "Toepassing";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "tnz-NJ-2ci"; */
+"tnz-NJ-2ci.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Laatst gewijzigd: "; ObjectID = "uWf-G0-q8Y"; */
+"uWf-G0-q8Y.text" = "Laatst gewijzigd: ";
+
+/* Class = "UIButton"; normalTitle = "Note"; ObjectID = "uc2-Pn-wT6"; */
+"uc2-Pn-wT6.normalTitle" = "Note";
+
+/* Class = "UILabel"; text = "wadan"; ObjectID = "vYg-Pu-8Ar"; */
+"vYg-Pu-8Ar.text" = "wadan";
+
+/* Class = "UILabel"; text = "Totaal"; ObjectID = "vb7-0F-heX"; */
+"vb7-0F-heX.text" = "Totaal";
+
+/* Class = "UISearchBar"; placeholder = "Recherchez dans votre armoire à médicaments"; ObjectID = "vtg-ey-pb2"; */
+"vtg-ey-pb2.placeholder" = "Recherchez dans votre armoire à médicaments";
+
+/* Class = "UISearchBar"; text = "Recherchez dans votre armoire à médicaments"; ObjectID = "vtg-ey-pb2"; */
+"vtg-ey-pb2.text" = "Recherchez dans votre armoire à médicaments";
+
+/* Class = "UIViewController"; title = "Detail View"; ObjectID = "wA8-4L-7lI"; */
+"wA8-4L-7lI.title" = "Detail View";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "wgC-6Q-yib"; */
+"wgC-6Q-yib.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "xeV-2L-0Be"; */
+"xeV-2L-0Be.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "xej-id-SKa"; */
+"xej-id-SKa.text" = "Label";
+
+/* Class = "UILabel"; text = "ogc"; ObjectID = "xpt-Wi-Smx"; */
+"xpt-Wi-Smx.text" = "ogc";
+
+/* Class = "UILabel"; text = "ssecr"; ObjectID = "xvY-5h-5J9"; */
+"xvY-5h-5J9.text" = "ssecr";
+
+/* Class = "UILabel"; text = "Firmanaam"; ObjectID = "y3A-yU-BbV"; */
+"y3A-yU-BbV.text" = "Firmanaam";
+
+/* Class = "UISegmentedControl"; yWn-d8-i3W.segmentTitles[0] = "B...."; ObjectID = "yWn-d8-i3W"; */
+"yWn-d8-i3W.segmentTitles[0]" = "B....";
+
+/* Class = "UISegmentedControl"; yWn-d8-i3W.segmentTitles[1] = "Second"; ObjectID = "yWn-d8-i3W"; */
+"yWn-d8-i3W.segmentTitles[1]" = "Second";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ylo-Qo-v0j"; */
+"ylo-Qo-v0j.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "yph-bS-U0c"; */
+"yph-bS-U0c.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Lijst"; ObjectID = "zRl-iB-vNv"; */
+"zRl-iB-vNv.normalTitle" = "Lijst";
+
+/* Class = "UILabel"; text = "Aantal medicijnen"; ObjectID = "zkD-RJ-UQz"; */
+"zkD-RJ-UQz.text" = "Aantal medicijnen";

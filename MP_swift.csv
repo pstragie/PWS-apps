@@ -40,7 +40,7 @@
 "31773-828";"0007054";"IABAA";"Voltapatch";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "6973-406";"0006437";"HBAA";"Dafalgan";"00406";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "25494-1636";"0009225";"JIAAF";"Sumatriptan Sandoz";"01636";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"13987-1784";"0014407";"ODA";"Kamferzalf";"01784";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"13987-1784";"0014407";"ODA";"Onguent Camphré";"01784";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "15321-1347";"0009092";"JHA";"Lioresal";"01347";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "3277-612";"0004820";"MICB";"Bicalutamide EG";"00612";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "13706-1115";"0000612";"AEC";"Isoten";"01115";false;"_";"_";"B";"B";0;0;false;false;false;true;false
@@ -238,7 +238,7 @@
 "7229-2097";"0008730";"JGAAA";"Depakine";"02097";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "15974-1347";"0016782";"PJA";"Lucentis";"01347";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "8219-1818";"0005363";"FBAAD";"DorinTEVA";"01818";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"11890-1016";"0003251";"CEGA";"Glycerine Zetkaarsjes Lambo";"01016";false;"_";"_";"M";"M";0;0;false;false;false;true;false
+"11890-1016";"0003251";"CEGA";"Suppositoires à la Glycerine Lambo";"01016";false;"_";"_";"M";"M";0;0;false;false;false;true;false
 "12302-943";"0016030";"QDBA";"Hextril";"00943";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "5272-1909";"0025825";"LCBQB";"Cimzia";"01909";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "37572-2303";"0006999";"IAAEB";"Etoricoxib Krka";"02303";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -384,7 +384,7 @@
 "18556-1446";"0011684";"LABEAA";"Neisvac-C";"01446";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "430-596";"0017483";"BACC";"Actosolv";"00596";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "9076-1446";"0025833";"LCBQC";"Enbrel";"01446";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"32714-489";"0025346";"OAAG";"Ethanol Gedenatureerd Conforma";"00489";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"32714-489";"0025346";"OAAG";"Ethanol Dénaturé Conforma";"00489";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "10363-323";"0014027";"OABBB";"Flammazine";"00323";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "25445-1594";"0014027";"OABBB";"Sulfasil";"01594";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "18283-265";"0019349";"TAAGA";"Naloxon B. Braun";"00265";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -412,10 +412,10 @@
 "11163-1446";"0002022";"BABBABA";"Fragmin";"01446";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "11437-299";"0016303";"SBAA";"Gadovist";"00299";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "14258-299";"0002246";"BBAA";"Kogenate";"00299";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"11122-1321";"0003251";"CEGA";"Fosfaatlavement";"01321";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"11122-1321";"0003251";"CEGA";"Lavement au Phosphate";"01321";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "11049-570";"0007401";"IEEA";"Forsteo";"00570";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "24331-828";"0003780";"DAEA";"Seretide";"00828";false;"_";"_";"c";"c";0;0;false;false;false;true;false
-"15644-968";"0004093";"DBCA";"Longbalsem";"00968";false;"_";"_";"d";"d";0;0;false;false;false;true;false
+"15644-968";"0004093";"DBCA";"Baume Pulmonaire";"00968";false;"_";"_";"d";"d";0;0;false;false;false;true;false
 "11288-182";"0015040";"PABA";"Fucithalmic";"00182";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "23762-828";"0011445";"LAAJA";"Rotarix";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "3384-372";"0003913";"DBAB";"Bisoltussin";"00372";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -578,7 +578,7 @@
 "3921-257";"0017574";"EAFC";"Bydureon";"00257";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "3830-539";"0003392";"CGAB";"Budenofalk";"00539";false;"_";"_";"C";"C";0;0;false;false;false;true;false
 "17442-745";"0020347";"OFA";"Mirvaso";"00745";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"1842-2204";"0002196";"BABBFA";"Antitrombine III-Concentraat Baxalta";"02204";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"1842-2204";"0002196";"BABBFA";"Concentre d’Antithrombine III Baxalta";"02204";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "18622-1628";"0002436";"BCAA";"Neorecormon";"01628";false;"_";"_";"H";"H";0;0;false;false;false;true;false
 "3624-257";"0020362";"DABBA";"Bretaris";"00257";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "6841-1487";"0002766";"CCBA";"Cynarol";"01487";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -613,7 +613,7 @@
 "17467-2097";"0014704";"OJA";"Mitosyl";"02097";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "5397-1818";"0012062";"LCADA";"Ciqorin";"01818";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "8409-372";"0003210";"CEDBA";"Dulcolax Bisacodyl";"00372";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"3533-1784";"0014704";"OJA";"Boorzuur Vaseline";"01784";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"3533-1784";"0014704";"OJA";"Vaseline Boriquée";"01784";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "15305-1446";"0010132";"KADB";"Lincocin";"01446";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "30825-2147";"0026096";"FEBE";"Bemfola";"02147";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "18036-398";"0016303";"SBAA";"Multihance";"00398";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -638,7 +638,7 @@
 "18432-1263";"0025775";"QCBCBD";"Nasonex";"01263";false;"_";"_";"c";"c";0;0;false;false;false;true;false
 "18325-1347";"0015248";"PCA";"Naphcon-A";"01347";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "31294-2345";"0021014";"RBE";"Mepivastesin";"02345";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"6460-489";"0013870";"OAAN";"Confosept Zuurstofwater";"00489";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"6460-489";"0013870";"OAAN";"Confosept Eau Oxygénée";"00489";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "4994-273";"0015651";"QABA";"Cerulyx";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "18424-943";"0015891";"QCBBD";"Nasasinutab";"00943";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "31328-2337";"0021014";"RBE";"Septanest";"02337";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -649,7 +649,7 @@
 "19489-1800";"0015891";"QCBBD";"Nuso-San";"01800";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "24653-828";"0003970";"DBAF";"Sinecod";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "12039-2014";"0017921";"FAAA";"Gynomyk";"02014";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"10769-273";"0015537";"PHA";"Natriumfluoresceine Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"10769-273";"0015537";"PHA";"Fluoresceine sodique Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "33357-273";"0015149";"PBAA";"Dexamgel";"00273";false;"_";"_";"c";"c";0;0;false;false;false;true;false
 "4028-1396";"0014381";"OCB";"Caladryl";"01396";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "7161-1735";"0013680";"NBKB";"Dedrogyl";"01735";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -830,14 +830,14 @@
 "13375-1347";"0015412";"PECA";"Iopidine";"01347";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "4192-299";"0014076";"OACC";"Canestene Derm Bifonazole";"00299";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "17525-1305";"0014407";"ODA";"Mobilat";"01305";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"6809-273";"0015271";"PDB";"Cyclopentolaat hydrochloride Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"6809-273";"0015271";"PDB";"Cyclopentolate  chlorhydrate Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "20222-232";"0002071";"BABBACA";"Orgaran";"00232";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "20354-828";"0015966";"QCBDA";"Otrivine Duo";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "20347-828";"0015891";"QCBBD";"Otrivine";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "20313-1933";"0015677";"QACA";"Otalgan";"01933";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "17954-2097";"0017541";"BCCE";"Mozobil";"02097";false;"_";"_";"_";"_";0;0;true;false;false;true;false
 "7724-1446";"0010462";"KBCA";"Diflucan";"01446";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"16279-257";"0016147";"RBC";"Marcaine met Adrenaline";"00257";false;"_";"_";"d";"d";0;0;false;false;false;true;false
+"16279-257";"0016147";"RBC";"Marcaine avec Adrenaline";"00257";false;"_";"_";"d";"d";0;0;false;false;false;true;false
 "31427-2345";"0021006";"RBD";"Oraqix";"02345";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "31641-2360";"0018671";"TDA";"Oteel";"02360";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "20362-1693";"0026070";"FEBC";"Ovitrelle";"01693";false;"_";"_";"Hman";"Hman";0;0;false;false;false;true;false
@@ -845,7 +845,7 @@
 "21089-1263";"0012252";"LCBLA";"PegIntron";"01263";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "26195-612";"0001057";"AGBF";"Telmisartan EG";"00612";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "19935-752";"0016246";"SAACA";"Omnipaque 350";"00752";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"20446-273";"0015495";"PFA";"Oxybuprocaine hydrochloride Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"20446-273";"0015495";"PFA";"Oxybuprocaine chlorhydrate Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "21626-1263";"0021337";"LABFC";"Pneumovax 23";"01263";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "20438-257";"0003590";"DAABA";"Oxis";"00257";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "1198-166";"0015412";"PECA";"Alphagan";"00166";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -903,14 +903,14 @@
 "4457-1446";"0012625";"MACA";"Carboplatinum";"01446";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "4465-1818";"0012625";"MACA";"Carbosin";"01818";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "10454-1180";"0007070";"IABBA";"Flexagile";"01180";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"28142-2097";"0017186";"LAAHA";"Vaccin Tegen Rabiës Merieux HDCV";"02097";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"28142-2097";"0017186";"LAAHA";"Vaccin Rabique Merieux HDCV";"02097";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "8466-828";"0014662";"OHA";"Duofilm";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "4424-1636";"0012625";"MACA";"Carboplatin Sandoz";"01636";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "26013-1347";"0026021";"PGB";"Tears Naturale";"01347";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "26344-1289";"0025999";"PEFC";"TensocMylan";"01289";false;"_";"_";"B";"B";0;0;false;false;false;true;false
 "5009-1529";"0011460";"LAAKA";"Cervarix";"01529";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "25858-927";"0009415";"JKCA";"Tanakan";"00927";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"26518-273";"0015495";"PFA";"Tetracainehydrochloride Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"26518-273";"0015495";"PFA";"Chlorhydrate de Tetracaine Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "5439-711";"0019141";"RACB";"Cisatracurium Fresenius Kabi";"00711";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "34124-570";"0026294";"LCBUA";"Taltz";"00570";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "25619-257";"0003780";"DAEA";"Symbicort";"00257";false;"_";"_";"c";"c";0;0;false;false;false;true;false
@@ -1067,7 +1067,7 @@
 "30940-828";"0021170";"LACJA";"Hepatyrix";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "18614-1529";"0012062";"LCADA";"Neoral-Sandimmun";"01529";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "24182-1867";"0018101";"JADC";"Sedistress";"01867";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"32102-141";"0021196";"LDCA";"Soluprick Negatieve Controle";"00141";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"32102-141";"0021196";"LDCA";"Soluprick Controle Negatif";"00141";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "32979-67";"0017178";"MADA";"Bendamustine Accord";"00067";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "2600-1628";"0013201";"MFA";"Avastin";"01628";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "9696-75";"0003970";"DBAF";"Euphon";"00075";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -1311,7 +1311,7 @@
 "30858-844";"0025858";"LCBQE";"Inflectra";"00844";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "21360-1826";"0015289";"PDC";"Phenylephrine";"01826";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "18143-1826";"0015305";"PDE";"Mydriasert";"01826";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"21378-273";"0015289";"PDC";"Phenylephrine hydrochloride Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"21378-273";"0015289";"PDC";"Phenylephrine chlorhydrate Minims";"00273";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "7799-968";"0008946";"JGBEA";"Diphantoine";"00968";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "18705-190";"0017517";"BCCA";"Neupogen";"00190";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "25148-1891";"0009498";"KAAABA";"Staphycid";"01891";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -1406,7 +1406,7 @@
 "17590-1115";"0003111";"CECBC";"Molaxole";"01115";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "16170-1636";"0003111";"CECBC";"Macrogol + Electrolytes Sandoz";"01636";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "6726-1818";"0003111";"CECBC";"Curapeg";"01818";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"13979-1784";"0014407";"ODA";"Kamfer Vaseline";"01784";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"13979-1784";"0014407";"ODA";"Vaseline Camphrée";"01784";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "1164-968";"0014704";"OJA";"Alopate";"00968";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "455-166";"0015164";"PBBA";"Aculare";"00166";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "29801-1248";"0012468";"LDABF";"Zaditen";"01248";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -1638,7 +1638,7 @@
 "22103-240";"0012146";"LCAFC";"Prograft";"00240";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "22020-828";"0018358";"LACAA";"Priorix";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "21337-141";"0025874";"LDBB";"Pharmalgen Wasp";"00141";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"29611-257";"0016147";"RBC";"Xylocaine met Adrenaline";"00257";false;"_";"_";"d";"d";0;0;false;false;false;true;false
+"29611-257";"0016147";"RBC";"Xylocaine avec Adrenaline";"00257";false;"_";"_";"d";"d";0;0;false;false;false;true;false
 "24539-1636";"0019430";"GCAB";"Sildenafil Sandoz";"01636";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "32060-2303";"0007963";"JBDF";"Quetiapine Krka";"02303";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "21907-1263";"0026062";"FEBB";"Pregnyl";"01263";false;"_";"_";"Hman";"Hman";0;0;false;false;false;true;false
@@ -1671,7 +1671,7 @@
 "23622-1628";"0009720";"KAABCC";"Rocephine";"01628";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "20768-216";"0002584";"CAABD";"Pantoprazol Apotex";"00216";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "20776-1636";"0002584";"CAABD";"Pantoprazol Sandoz";"01636";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"29363-1743";"0019943";"HBEA";"Witte Kruis";"01743";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"29363-1743";"0019943";"HBEA";"Croix Blanche";"01743";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "24406-1289";"0008219";"JCAAF";"Sertraline Mylan";"01289";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "24620-1289";"0001594";"ALAE";"Simvastatine Mylan";"01289";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "28704-240";"0006122";"GAAG";"Vesicare";"00240";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -1895,7 +1895,7 @@
 "29827-2097";"0013201";"MFA";"Zaltrap";"02097";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "29744-406";"0013201";"MFA";"Yervoy";"00406";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "16162-612";"0003111";"CECBC";"Macrogol + Electrolytes EG";"00612";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"30668-67";"0007336";"IEBF";"Zoledroninezuur Accord";"00067";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"30668-67";"0007336";"IEBF";"Acide Zoledronique Accord";"00067";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "33035-117";"0025478";"NAFA";"Zinc Aguettant";"00117";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "30023-828";"0009688";"KAABBA";"Zinacef";"00828";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "29637-257";"0001131";"AHBAA";"Xylocard";"00257";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -1903,7 +1903,7 @@
 "30056-257";"0019802";"KAABEA";"Zinforo";"00257";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "32854-810";"0017756";"RABD";"Zalviso";"00810";false;"_";"_";"N";"N";0;0;false;false;true;true;false
 "29785-1461";"0013243";"MHA";"Yondelis";"01461";false;"_";"_";"_";"_";0;0;true;false;false;true;false
-"30213-711";"0007336";"IEBF";"Zoledroninezuur Fresenius Kabi";"00711";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"30213-711";"0007336";"IEBF";"Acide Zoledronique Fresenius Kabi";"00711";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "32672-1727";"0025361";"JAAP";"Buccolam";"01727";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "28340-1818";"0018036";"KAJB";"Vamysin";"01818";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "8136-216";"0009373";"JKAA";"Donepezil Apotex";"00216";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -2096,7 +2096,7 @@
 "2634-885";"0006247";"GBBA";"Avodart";"00885";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "2923-299";"0000828";"AFAL";"Baypress";"00299";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "3004-1172";"0018879";"LDAAA";"Bellozal";"01172";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"32110-141";"0021196";"LDCA";"Soluprick Positieve Controle";"00141";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"32110-141";"0021196";"LDCA";"Soluprick Controle Positif";"00141";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "2840-1628";"0010231";"KAFA";"Bactrim";"01628";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "32300-1289";"0010058";"KAKAA";"Gramposimide";"01289";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "3194-1529";"0015727";"QBA";"Betaserc";"01529";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -2340,7 +2340,7 @@
 "8102-1818";"0002857";"CDAB";"Domperidone Teva";"01818";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "33571-2303";"0009373";"JKAA";"Donepezil Krka";"02303";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "8144-612";"0009373";"JKAA";"Donepezil EG";"00612";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"30189-1289";"0007336";"IEBF";"Zoledroninezuur Mylan";"01289";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"30189-1289";"0007336";"IEBF";"Acide Zoledronique Mylan";"01289";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "10215-1784";"0013342";"NAABA";"Fercayl";"01784";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "30197-1636";"0007336";"IEBF";"Zoledronic Acid Sandoz";"01636";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "9910-299";"0016782";"PJA";"Eylea";"00299";true;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -2369,7 +2369,7 @@
 "8771-570";"0001883";"BAABB";"Efient";"00570";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "31195-745";"0009910";"KACA";"Efracea";"00745";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "8961-1180";"0000125";"AADA";"Emcoretic";"01180";false;"_";"_";"B,D";"B,D";0;0;false;false;false;true;false
-"8870-869";"0005553";"FBDB";"Ellaone";"00869";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"8870-869";"0005553";"FBDB";"EllaOne";"00869";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "8953-1180";"0000612";"AEC";"Emconcor";"01180";false;"_";"_";"B";"B";0;0;false;false;false;true;false
 "9027-794";"0010918";"KDCAAC";"Emtriva";"00794";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "8979-1263";"0002972";"CDCA";"Emend";"01263";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -2425,7 +2425,7 @@
 "11460-1289";"0018697";"JKAB";"Galantamine Mylan";"01289";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "11916-1743";"0016014";"QDAA";"Golaseptine-Lidocaine";"01743";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "11767-1636";"0004358";"EACB";"Gliclazide Sandoz";"01636";false;"_";"_";"_";"_";0;0;false;false;false;true;false
-"12120-307";"0019828";"OLB";"Hansamedic Warmtepleister";"00307";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"12120-307";"0019828";"OLB";"Hansamedic Emplatre Chauffant";"00307";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "32011-794";"0025221";"KDEI";"Harvoni";"00794";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "33019-794";"0020339";"KDCFA";"Genvoya";"00794";true;"_";"_";"_";"_";0;0;false;false;false;true;false
 "12161-2014";"0002766";"CCBA";"Hebucol";"02014";false;"_";"_";"_";"_";0;0;false;false;false;true;false
@@ -3161,7 +3161,7 @@
 "33027-1347";"0013243";"MHA";"Votubia";"01347";false;"_";"_";"_";"_";0;0;true;false;false;true;false
 "33886-67";"0010512";"KBCE";"Voriconazole Accord";"00067";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "29397-1727";"0013243";"MHA";"Xagrid";"01727";true;"_";"_";"_";"_";0;0;true;false;false;true;false
-"29371-1743";"0006437";"HBAA";"Witte Kruis Mono";"01743";false;"_";"_";"_";"_";0;0;false;false;false;true;false
+"29371-1743";"0006437";"HBAA";"Croix Blanche Mono";"01743";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "29314-1529";"0008078";"JCBCA";"Wellbutrin";"01529";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "29686-1818";"0005363";"FBAAD";"Yadere";"01818";false;"_";"_";"_";"_";0;0;false;false;false;true;false
 "29728-299";"0005363";"FBAAD";"Yaz";"00299";false;"_";"_";"_";"_";0;0;false;false;false;true;false

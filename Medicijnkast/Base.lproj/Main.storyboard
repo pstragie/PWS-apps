@@ -15,7 +15,7 @@
         <!--KastViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="KastViewController" id="BYZ-38-t0r" customClass="KastViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="KastViewController" id="BYZ-38-t0r" customClass="KastViewController" customModule="MedCabinetFree_Fr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -76,7 +76,7 @@
                                     </connections>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="135" id="H4u-Eh-ZLx" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="135" id="H4u-Eh-ZLx" customClass="MedicijnTableViewCell" customModule="MedCabinetFree_Fr" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="1004" height="135"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H4u-Eh-ZLx" id="L22-oZ-BJw">
@@ -318,7 +318,7 @@
         <!--Archief-->
         <scene sceneID="5fi-GI-s03">
             <objects>
-                <viewController id="7NF-ZY-APK" customClass="ArchiefViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="7NF-ZY-APK" customClass="ArchiefViewController" customModule="MedCabinetFree_Fr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="x8c-Fz-M46"/>
                         <viewControllerLayoutGuide type="bottom" id="8Or-aL-0BZ"/>
@@ -402,7 +402,7 @@
                                     </connections>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="135" id="LG1-G7-2dP" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="135" id="LG1-G7-2dP" customClass="MedicijnTableViewCell" customModule="MedCabinetFree_Fr" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="1004" height="135"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LG1-G7-2dP" id="BFH-bL-d79">
@@ -648,7 +648,7 @@
         <!--Add Medicijn View Controller Scene-->
         <scene sceneID="Axt-KB-BfJ">
             <objects>
-                <viewController storyboardIdentifier="AddMedicijn" title="Zoeken" id="ruK-Vs-qsG" userLabel="Add Medicijn View Controller Scene" customClass="AddMedicijnViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddMedicijn" title="Zoeken" id="ruK-Vs-qsG" userLabel="Add Medicijn View Controller Scene" customClass="AddMedicijnViewController" customModule="MedCabinetFree_Fr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="S4F-Nc-Ffg"/>
                         <viewControllerLayoutGuide type="bottom" id="CSG-21-VtL"/>
@@ -676,7 +676,7 @@
                                     </connections>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="135" id="1eU-0B-5Dv" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="135" id="1eU-0B-5Dv" customClass="MedicijnTableViewCell" customModule="MedCabinetFree_Fr" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="1004" height="135"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1eU-0B-5Dv" id="dui-Zs-gBA">
@@ -931,8 +931,8 @@
                                     <action selector="hospSwitch:" destination="ruK-Vs-qsG" eventType="valueChanged" id="88c-Gz-JuQ"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hospitaal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FiE-6p-aXC" userLabel="Hospitaal">
-                                <rect key="frame" x="220" y="74" width="72" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hôpital" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FiE-6p-aXC" userLabel="Hôpital">
+                                <rect key="frame" x="220" y="74" width="54.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -1011,7 +1011,7 @@
         <!--Detail View-->
         <scene sceneID="KHB-AI-rYY">
             <objects>
-                <viewController title="Detail View" id="wA8-4L-7lI" customClass="MedicijnDetailViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Detail View" id="wA8-4L-7lI" customClass="MedicijnDetailViewController" customModule="MedCabinetFree_Fr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lwR-Nk-kPS"/>
                         <viewControllerLayoutGuide type="bottom" id="04f-nD-Nyq"/>
@@ -1024,7 +1024,7 @@
                                 <rect key="frame" x="10" y="69" width="1004" height="640"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnDetailViewCell" id="GYX-Gy-9qN" customClass="MedicijnDetailViewCell" customModule="MedCabinetFree" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnDetailViewCell" id="GYX-Gy-9qN" customClass="MedicijnDetailViewCell" customModule="MedCabinetFree_Fr" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="1004" height="817"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="top" tableViewCell="GYX-Gy-9qN" id="AHn-Ni-ngH">
@@ -1625,7 +1625,7 @@
         <!--BCFI Info-->
         <scene sceneID="P0g-vR-lea">
             <objects>
-                <viewController title="BCFI Info" id="C4i-9K-tWg" customClass="BCFIWebViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="BCFI Info" id="C4i-9K-tWg" customClass="BCFIWebViewController" customModule="MedCabinetFree_Fr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0XQ-YI-lkL"/>
                         <viewControllerLayoutGuide type="bottom" id="KnT-uG-IxF"/>
@@ -1672,7 +1672,7 @@
         <!--Shopping List View Controller-->
         <scene sceneID="ixf-cX-7Al">
             <objects>
-                <viewController id="DcK-cA-pBQ" customClass="ShoppingListViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="DcK-cA-pBQ" customClass="ShoppingListViewController" customModule="MedCabinetFree_Fr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="B84-SV-F2D"/>
                         <viewControllerLayoutGuide type="bottom" id="Hqt-e9-mdB"/>
@@ -1702,7 +1702,7 @@
                                     </connections>
                                 </searchBar>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="135" id="we2-hF-y0b" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="135" id="we2-hF-y0b" customClass="MedicijnTableViewCell" customModule="MedCabinetFree_Fr" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="1004" height="135"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="we2-hF-y0b" id="WF9-yh-rmP" userLabel="MedicijnCell Content View">
@@ -2188,7 +2188,7 @@
         <!--Compare Aankoop Lijst View Controller-->
         <scene sceneID="s05-nR-ivx">
             <objects>
-                <viewController id="Bcy-zU-24D" customClass="CompareAankoopLijstViewController" customModule="MedCabinetFree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Bcy-zU-24D" customClass="CompareAankoopLijstViewController" customModule="MedCabinetFree_Fr" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Dtn-rP-Jn8"/>
                         <viewControllerLayoutGuide type="bottom" id="ZCj-ke-YZa"/>
@@ -2231,11 +2231,11 @@
                                                 <rect key="frame" x="0.0" y="40" width="494" height="582"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="cLT-Um-6lP" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="cLT-Um-6lP" customClass="MedicijnTableViewCell" customModule="MedCabinetFree_Fr" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="494" height="110"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cLT-Um-6lP" id="WSm-UE-KQw">
-                                                            <rect key="frame" x="0.0" y="0.0" width="494" height="109"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="494" height="110"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="RW4-rD-sOM">
@@ -2360,11 +2360,11 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="sectionIndexBackgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="4Ll-Gn-Mly" customClass="MedicijnTableViewCell" customModule="MedCabinetFree" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="MedicijnCell" rowHeight="110" id="4Ll-Gn-Mly" customClass="MedicijnTableViewCell" customModule="MedCabinetFree_Fr" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="502" height="110"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Ll-Gn-Mly" id="7BZ-NJ-c2k">
-                                                            <rect key="frame" x="0.0" y="0.0" width="502" height="109"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="502" height="110"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="00b-CF-5W3">
@@ -2605,7 +2605,7 @@
         <image name="zoeken_icon" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Rdq-mC-hCz"/>
+        <segue reference="oM1-mF-OuT"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.081334853040000002" blue="0.093341789780000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

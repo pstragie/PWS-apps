@@ -165,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //destroyPersistentStore()
             print("First Launch!!!")
             let Entities = ["MPP", "MP", "Hyr", "Gal", "Ggr_Link", "Sam", "Stof", "Ir"]
-            //let Entities = ["MPP", "MP"]
+//            let Entities = ["Hyr"]
             for entitynaam in Entities {
                 //cleanCoreData(entitynaam: entitynaam)
                 print(entitynaam)
@@ -299,8 +299,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let totalLines = Float(items.count)
         for item in items {
             readLines += 1
+            let proglist:Array<Float> = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
             progressie = readLines/totalLines
-            print("progressie: \(progressie)")
+            if proglist.contains(progressie*10/10) {
+                print("progressie: \(progressie)")
+            }
+            
 //            print("saveAttributes: \(entitynaam), \(dict)")
             var newdict: Dictionary<String,Any> = [:]
             for (key, value) in item {
@@ -365,7 +369,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - saveAttributes
     func saveAttributes(entitynaam: String, dict: [String:Any]) {
         let managedObjectContext = persistentContainer.viewContext
-        print("saving attributes...")
+//        print("saving attributes...")
         
         if entitynaam == "MPP" {
             if let newMPP = createRecordForEntity("MPP", inManagedObjectContext: managedObjectContext) {
@@ -517,7 +521,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         do {
             try managedObjectContext.save()
-            print("context saved")
+//            print("context saved")
         } catch let error as NSError {
             print("Could not save \(error), \(error.userInfo)")
         }
@@ -534,7 +538,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         for v in values {
             var subd = [String:String]()
             for val in 0..<v.endIndex {
-                //print("\(keys[val]) : \(v[val])")
+//                print("\(keys[val]) : \(v[val])")
                 subd[keys[val].lowercased()] = v[val]
             }
             items.append(subd)

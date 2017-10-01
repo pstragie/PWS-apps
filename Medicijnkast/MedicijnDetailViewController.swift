@@ -77,7 +77,7 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         self.noteView.isHidden = self.H		
         
         let closenote = UIButton()
-        closenote.setTitle("Sluiten", for: .normal)
+        closenote.setTitle("Fermer", for: .normal)
         closenote.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         closenote.setTitleColor(.white, for: .normal)
         closenote.setTitleColor(.red, for: .highlighted)
@@ -258,70 +258,70 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
         cell.remw.text = "\((medicijn?.remw)!) €"
         cell.index.text = "\((medicijn?.index)!) cent"
         if (medicijn?.law) == "R" {
-            cell.law.text = "Ja"
+            cell.law.text = "Oui"
         } else {
-            cell.law.text = "Nee"
+            cell.law.text = "Non"
         }
         cell.ssecr.text = Dictionaries().ssecr(ssecr: (medicijn?.ssecr)!)
 //        print((medicijn?.mp?.wadan)!)
         cell.wadan.text = Dictionaries().wada(wada: (medicijn?.mp?.wadan)!)
         if medicijn?.use == "H" {
-            cell.use.text = "Hospitaal"
+            cell.use.text = "Hôpital"
         } else {
-            cell.use.text = "Algemeen"
+            cell.use.text = "Général"
         }
         if (medicijn?.ouc == "O") {
-            cell.ouc.text = "Mono-ingrediënt"
+            cell.ouc.text = "Mono-ingrédient"
         } else if (medicijn?.ouc == "U") {
-            cell.ouc.text = "Multi-ingrediënt"
+            cell.ouc.text = "Multi-ingrédient"
         } else if (medicijn?.ouc == "C") {
-            cell.ouc.text = "Gecombineerd multi-ingrediënt"
+            cell.ouc.text = "Multi-ingrédient combinés"
         }
         if (medicijn?.ogc == "G") {
-            cell.ogc.text = "Verpakking zonder supplement voor de patiënt en in categorie goedkoop."
+            cell.ogc.text = "Emballage sans supplément pour le patient et dans la catégorie bon marché."
         } else if (medicijn?.ogc == "B") {
-            cell.ogc.text = "Verpakking zonder supplement voor de patiënt maar niet in categorie goedkoop."
+            cell.ogc.text = "Emballage sans supplément pour le patient mais pas dans la catégorie bon marché."
         } else if (medicijn?.ogc == "R") {
-            cell.ogc.text = "Verpakking met supplement voor de patiënt en niet in categorie goedkoop."
+            cell.ogc.text = "Emballage avec supplément pour le patient et pas dans la catégorie bon marché."
         } else {
-            cell.ogc.text = "Geen terugbetaling door RIZIV."
+            cell.ogc.text = "Pas de remboursement par l'INAMI."
         }
 
         // Stack Bottom right
         if (medicijn?.cheapest)! {
-            cell.cheapest.text = "Ja"
+            cell.cheapest.text = "Oui"
         } else {
-            cell.cheapest.text = "Nee"
+            cell.cheapest.text = "Non"
         }
         if (medicijn?.gdkp)! {
-            cell.gdkp.text = "Ja"
+            cell.gdkp.text = "Oui"
         } else {
-            cell.gdkp.text = "Nee"
+            cell.gdkp.text = "Non"
         }
         if (medicijn?.bt)! {
-            cell.bt.text = "Ja"
+            cell.bt.text = "Oui"
         } else {
-            cell.bt.text = "Nee"
+            cell.bt.text = "Non"
         }
         if (medicijn?.mp?.orphan)! {
-            cell.orphan.text = "Ja"
+            cell.orphan.text = "Oui"
         } else {
-            cell.orphan.text = "Nee"
+            cell.orphan.text = "Non"
         }
         if (medicijn?.narcotic)! {
-            cell.narcotic.text = "Ja"
+            cell.narcotic.text = "Oui"
         } else {
-            cell.narcotic.text = "Nee"
+            cell.narcotic.text = "Non"
         }
         if (medicijn?.specrules)! {
-            cell.specrules.text = "Ja"
+            cell.specrules.text = "Oui"
         } else {
-            cell.specrules.text = "Nee"
+            cell.specrules.text = "Non"
         }
         
         // Stack End Left
-        cell.kast.text = "In medicijnkast"
-        cell.aankoop.text = "In aankooplijst"
+        cell.kast.text = "Cabinet médical"
+        cell.aankoop.text = "Liste d'achat"
         if medicijn?.userdata == nil || medicijn?.userdata?.medicijnkast == false {
             cell.kastimage.image = #imageLiteral(resourceName: "kruisje")
             cell.kastWijzigen.setTitle("+", for: .normal)
