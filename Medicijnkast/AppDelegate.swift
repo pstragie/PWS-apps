@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Medicijnkast: MedCabinetFree Nederlands
+//  Medicijnkast: MedCabinetFree Franstalig
 //
 //  Created by Pieter Stragier on 08/02/17.
 //  Copyright © 2017 PWS. All rights reserved.

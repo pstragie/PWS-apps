@@ -32,7 +32,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         setupLayout()
 //        print("Compare view did load!")
         // Do any additional setup after loading the view.
-        navigationItem.title = "Vergelijk"
+        navigationItem.title = "Comparer"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
 
         do {
@@ -115,10 +115,10 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         let linksAantal = medicijnenLeft?.count
         for x in 0 ..< linksAantal! {
             // Glue text from left and right together
-            text += "\(x+1). Product: \(productL![x])\nVerpakking: \(verpakkingL![x])\nVOS: \(vosL![x]) \nFirma: \(firmaL![x])\nToepassing: \(toepL![x])\nPrijs: \(prijsL![x]) €\nRemgeld A: \(remgeldAL![x]) €\nRemgeld W: \(remgeldWL![x]) €\nIndex \(indexL![x]) c€\n"
+            text += "\(x+1). Produit: \(productL![x])\nEmballage: \(verpakkingL![x])\nVOS: \(vosL![x]) \nEntreprise: \(firmaL![x])\nApplication: \(toepL![x])\nPrix: \(prijsL![x]) €\nTicket modérateur A: \(remgeldAL![x]) €\nTicket medérateur W: \(remgeldWL![x]) €\nIndex \(indexL![x]) c€\n"
             // draw dashed line
             text += "_  _  _  _  _  _  _  _  _  _  _  _  _  _  _\n"
-            text += "\(x+1). Product: \(productR![x]) \nVerpakking: \(verpakkingR![x])\nVOS: \(vosL![x]) \nFirma: \(firmaR![x]) \nToepassing: \(toepR![x]) \nPrijs: \(prijsR![x]) €\nRemgeld A: \(remgeldAR![x]) €\nRemgeld W: \(remgeldWR![x]) €\nIndex \(indexR![x]) c€\n"
+            text += "\(x+1). Produit: \(productR![x]) \nEmballage: \(verpakkingR![x])\nVOS: \(vosL![x]) \nEntreprise: \(firmaR![x]) \nApplication: \(toepR![x]) \nPrix: \(prijsR![x]) €\nTicket medérateur A: \(remgeldAR![x]) €\nTicket modérateur W: \(remgeldWR![x]) €\nIndex \(indexR![x]) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
         }

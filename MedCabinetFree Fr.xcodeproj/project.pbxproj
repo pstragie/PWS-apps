@@ -45,7 +45,7 @@
 		B651518C1E6402B00038BDF1 /* BestellingPlaatsenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestellingPlaatsenViewController.swift; sourceTree = "<group>"; };
 		B66045FC1E78032E0056A617 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		B66045FE1E7816970056A617 /* Medicijnkast 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Medicijnkast 2.xcdatamodel"; sourceTree = "<group>"; };
-		B66B41311E4B4B9300DA2793 /* MedCabinetFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedCabinetFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B66B41311E4B4B9300DA2793 /* MedCabinetFree Fr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MedCabinetFree Fr.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B66B41341E4B4B9300DA2793 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B66B41361E4B4B9300DA2793 /* KastViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KastViewController.swift; sourceTree = "<group>"; usesTabs = 1; };
 		B66B41391E4B4B9400DA2793 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -116,7 +116,7 @@
 		B66B41321E4B4B9300DA2793 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B66B41311E4B4B9300DA2793 /* MedCabinetFree.app */,
+				B66B41311E4B4B9300DA2793 /* MedCabinetFree Fr.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,9 +157,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B66B41301E4B4B9300DA2793 /* MedCabinetFree */ = {
+		B66B41301E4B4B9300DA2793 /* MedCabinetFree Fr */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B66B41461E4B4B9400DA2793 /* Build configuration list for PBXNativeTarget "MedCabinetFree" */;
+			buildConfigurationList = B66B41461E4B4B9400DA2793 /* Build configuration list for PBXNativeTarget "MedCabinetFree Fr" */;
 			buildPhases = (
 				B66B412D1E4B4B9300DA2793 /* Sources */,
 				B66B412E1E4B4B9300DA2793 /* Frameworks */,
@@ -169,9 +169,9 @@
 			);
 			dependencies = (
 			);
-			name = MedCabinetFree;
+			name = "MedCabinetFree Fr";
 			productName = Medicijnkast;
-			productReference = B66B41311E4B4B9300DA2793 /* MedCabinetFree.app */;
+			productReference = B66B41311E4B4B9300DA2793 /* MedCabinetFree Fr.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -191,7 +191,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B66B412C1E4B4B9300DA2793 /* Build configuration list for PBXProject "MedCabinetFree" */;
+			buildConfigurationList = B66B412C1E4B4B9300DA2793 /* Build configuration list for PBXProject "MedCabinetFree Fr" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -204,7 +204,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B66B41301E4B4B9300DA2793 /* MedCabinetFree */,
+				B66B41301E4B4B9300DA2793 /* MedCabinetFree Fr */,
 			);
 		};
 /* End PBXProject section */
@@ -341,7 +341,7 @@
 				INFOPLIST_FILE = Medicijnkast/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.PWS-apps.MedCabinetFree";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.PWS-apps.MedCabinetFree-Fr";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -354,7 +354,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B66B412C1E4B4B9300DA2793 /* Build configuration list for PBXProject "MedCabinetFree" */ = {
+		B66B412C1E4B4B9300DA2793 /* Build configuration list for PBXProject "MedCabinetFree Fr" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B66B41451E4B4B9400DA2793 /* Release */,
@@ -362,7 +362,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B66B41461E4B4B9400DA2793 /* Build configuration list for PBXNativeTarget "MedCabinetFree" */ = {
+		B66B41461E4B4B9400DA2793 /* Build configuration list for PBXNativeTarget "MedCabinetFree Fr" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B66B41481E4B4B9400DA2793 /* Release */,

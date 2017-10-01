@@ -38,7 +38,7 @@
                                     <action selector="info:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qWf-1L-mN9"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aantal medicijnen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D4S-KS-SwM" userLabel="Aantal medicijnen">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aantal medicijnen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D4S-KS-SwM" userLabel="Nombre de médicaments">
                                 <rect key="frame" x="412" y="65" width="200" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="7xT-yp-vtN"/>
@@ -67,7 +67,7 @@
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="100" rowHeight="135" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qih-bJ-IpS">
                                 <rect key="frame" x="10" y="104" width="1004" height="615"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="scaleToFill" text="Zoek in je medicijnkast" placeholder="Zoek in je medicijnkast" id="vtg-ey-pb2">
+                                <searchBar key="tableHeaderView" contentMode="scaleToFill" text="Recherchez dans votre armoire à médicaments" placeholder="Recherchez dans votre armoire à médicaments" id="vtg-ey-pb2">
                                     <rect key="frame" x="0.0" y="0.0" width="1004" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <textInputTraits key="textInputTraits"/>
@@ -2605,7 +2605,7 @@
         <image name="zoeken_icon" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oM1-mF-OuT"/>
+        <segue reference="Rdq-mC-hCz"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.081334853040000002" blue="0.093341789780000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

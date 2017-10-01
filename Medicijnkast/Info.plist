@@ -5,13 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>Belgium</string>
 	<key>CFBundleDisplayName</key>
-	<string>MedCabinet Free</string>
+	<string>MedCabinet Free Français</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.PWS-apps.MedCabinetFree</string>
+	<string>com.PWS-apps.MedCabinetFree-Fr</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

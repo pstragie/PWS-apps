@@ -97,7 +97,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         setupLayout()
         setUpSearchBar()
         
-        navigationItem.title = "Archief"
+        navigationItem.title = "Archives"
         
         //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bestellen, target: self, action: #selector(bestellingDoorsturen))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
@@ -149,44 +149,44 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         self.view.addSubview(infoView)
         self.infoView.isHidden = false
         let labelmp = UILabel()
-        labelmp.text = "Productnaam"
+        labelmp.text = "Nom du produit"
         labelmp.font = UIFont.boldSystemFont(ofSize: 22)
         labelmp.textColor = UIColor.white
         let labelmpp = UILabel()
-        labelmpp.text = "Verpakking"
+        labelmpp.text = "Emballage"
         labelmpp.font = UIFont.systemFont(ofSize: 17)
         labelmpp.textColor = UIColor.white
         let labelvos = UILabel()
-        labelvos.text = "Voorschrift op stofnaam (VOS)"
+        labelvos.text = "Prescription par nom de substance"
         labelvos.font = UIFont.systemFont(ofSize: 13)
         labelvos.textColor = UIColor.white
         let labelfirma = UILabel()
-        labelfirma.text = "Firmanaam (of distributeur)"
+        labelfirma.text = "Nom de l'entreprise"
         labelfirma.font = UIFont.systemFont(ofSize: 17)
         labelfirma.textColor = UIColor.white
         let toepassingsgebied = UILabel()
-        toepassingsgebied.text = "Toepassingsgebied"
+        toepassingsgebied.text = "Application"
         toepassingsgebied.font = UIFont.systemFont(ofSize: 17)
         toepassingsgebied.textColor = UIColor.white
         let labelpupr = UILabel()
-        labelpupr.text = "Prijs voor het publiek"
+        labelpupr.text = "Prix public"
         labelpupr.textColor = UIColor.white
         let labelrema = UILabel()
-        labelrema.text = "Remgeld A:"
+        labelrema.text = "Ticket modérateur:"
         labelrema.textColor = UIColor.white
         let labelremadescription = UILabel()
-        labelremadescription.text = "Bedrag voor patiënten zonder OMNIO statuut."
+        labelremadescription.text = "Montant pour les patients sans statut OMNIO."
         labelremadescription.textColor = UIColor.white
         labelremadescription.font = UIFont.systemFont(ofSize: 10)
         let labelremw = UILabel()
-        labelremw.text = "Remgeld W:"
+        labelremw.text = "Ticket modérateur:"
         labelremw.textColor = UIColor.white
         let labelremwdescription = UILabel()
-        labelremwdescription.text = "Bedrag voor patiënten met OMNIO/WIGW statuut."
+        labelremwdescription.text = "Montant pour les patients statut OMNIO."
         labelremwdescription.textColor = UIColor.white
         labelremwdescription.font = UIFont.systemFont(ofSize: 10)
         let labelIndex = UILabel()
-        labelIndex.text = "Prijs per unit in cent"
+        labelIndex.text = "Prix unitaire (c€)"
         labelIndex.textColor = UIColor.white
         labelIndex.font = UIFont.systemFont(ofSize: 13)
         let leftStack = UIStackView(arrangedSubviews: [labelmp, labelmpp, labelvos, labelfirma, toepassingsgebied])
@@ -277,7 +277,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         let medicijnen = fetchedResultsController.fetchedObjects
         for med in medicijnen! {
             let toepassing = Dictionaries().hierarchy(hyr: (med.mp?.hyr?.hyr)!)
-            text += "Product: \(med.mp!.mpnm!) \nVerpakking: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nFirma: \(med.mp!.ir!.nirnm!) \nToepassing: \(toepassing) \nPrijs: \(med.pupr!) €\nRemgeld A: \(med.rema!) €\nRemgeld W: \(med.remw!) €\nIndex \(String(describing: med.index)) c€\n"
+            text += "Produit: \(med.mp!.mpnm!) \nEmballage: \(med.mppnm!) \nVOS: \(med.vosnm_!) \nEntreprise: \(med.mp!.ir!.nirnm!) \nApplication: \(toepassing) \nPrix: \(med.pupr!) €\nTicket modérateur A: \(med.rema!) €\nTicket modérateur W: \(med.remw!) €\nIndex \(String(describing: med.index)) c€\n"
             // draw dashed line
             text += "___________________________________________\n"
             
@@ -297,7 +297,7 @@ class ArchiefViewController: UIViewController, UITableViewDataSource, UITableVie
         
         searchBar.showsScopeBar = false
         searchBar.tintColor = UIColor.gray
-        searchBar.scopeButtonTitles = ["merknaam", "verpakking", "stofnaam", "firmanaam", "alles"]
+        searchBar.scopeButtonTitles = ["marque", "emballage", "substance", "entreprise", "tout"]
         searchBar.selectedScopeButtonIndex = -1
         //print("Scope: \(searchBar.selectedScopeButtonIndex)")
         searchBar.delegate = self
