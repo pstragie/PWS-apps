@@ -81,7 +81,7 @@ class BCFIWebViewController: UIViewController, WKUIDelegate {
 //            print("Connected to internet")
         } else {
 //            print("Not Connected to internet")
-            let controller = UIAlertController(title: "Geen Internetverbinding!", message: "Deze pagina vereist een werkende internetverbinding.", preferredStyle: .alert)
+            let controller = UIAlertController(title: "Pas de connexion Internet!", message: "Cette page nécessite une connexion Internet fonctionelle.", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
             //let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             

@@ -503,19 +503,19 @@
 /* Class = "UILabel"; text = "Totaal remgeld A"; ObjectID = "t4B-wc-Cq0"; */
 "t4B-wc-Cq0.text" = "Totaal remgeld A";
 
-/* Class = "UILabel"; text = "Firmanaam"; ObjectID = "tcS-75-y0l"; */
+/* Class = "UILabel"; text = "Entreprise"; ObjectID = "tcS-75-y0l"; */
 "tcS-75-y0l.text" = "Firmanaam";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "thg-0C-2EI"; */
 "thg-0C-2EI.text" = "Label";
 
-/* Class = "UILabel"; text = "Toepassing"; ObjectID = "tim-WW-tQi"; */
+/* Class = "UILabel"; text = "Application"; ObjectID = "tim-WW-tQi"; */
 "tim-WW-tQi.text" = "Toepassing";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "tnz-NJ-2ci"; */
 "tnz-NJ-2ci.normalTitle" = "Button";
 
-/* Class = "UILabel"; text = "Laatst gewijzigd: "; ObjectID = "uWf-G0-q8Y"; */
+/* Class = "UILabel"; text = "Dernière modification: "; ObjectID = "uWf-G0-q8Y"; */
 "uWf-G0-q8Y.text" = "Laatst gewijzigd: ";
 
 /* Class = "UIButton"; normalTitle = "Note"; ObjectID = "uc2-Pn-wT6"; */
