@@ -1414,6 +1414,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
             cell.iconLijst.image = nil
         }
         cell.mppnm.text = medicijn.mppnm
+//        print(medicijn.mppnm!)
         cell.vosnm.text = medicijn.vosnm_
         cell.nirnm.text = medicijn.mp?.ir?.nirnm
         let toepassing = Dictionaries().hierarchy(hyr: (medicijn.mp?.hyr?.hyr)!)
