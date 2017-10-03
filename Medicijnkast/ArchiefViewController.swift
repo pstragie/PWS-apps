@@ -1,6 +1,6 @@
 //
 //  ArchiefViewController.swift
-//  MedCabinetFree
+//  MedCabinet.be Nederlands
 //
 //  Created by Pieter Stragier on 30/03/17.
 //  Copyright © 2017 PWS. All rights reserved.

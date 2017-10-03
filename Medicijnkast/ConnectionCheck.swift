@@ -1,6 +1,6 @@
 //
 //  ConnectionCheck.swift
-//  MedCabinetFree
+//  MedCabinet.be Nederlands
 //
 //  Created by Pieter Stragier on 18/08/2017.
 //  Copyright © 2017 PWS. All rights reserved.

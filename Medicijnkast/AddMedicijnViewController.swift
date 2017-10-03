@@ -526,19 +526,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.appVersionView.isHidden = self.H
         
         let labelApp = UILabel()
-        labelApp.text = "MedCabinet Free"
+        labelApp.text = "MedCabinet België Nederlands"
         labelApp.font = UIFont.boldSystemFont(ofSize: 22)
         labelApp.textColor = UIColor.white
         labelApp.translatesAutoresizingMaskIntoConstraints = false
         
         let labelVersion = UILabel()
-        labelVersion.text = "Version: \(appVersion)"
+        labelVersion.text = "Versie: \(appVersion)"
         labelVersion.font = UIFont.boldSystemFont(ofSize: 18)
         labelVersion.textColor = UIColor.white
         labelVersion.translatesAutoresizingMaskIntoConstraints = false
         
         let labelBuild = UILabel()
-        labelBuild.text = "Build: \(appBuild)"
+        labelBuild.text = "Model: \(appBuild)"
         labelBuild.font = UIFont.systemFont(ofSize: 15)
         labelBuild.textColor = UIColor.white
         labelBuild.translatesAutoresizingMaskIntoConstraints = false
