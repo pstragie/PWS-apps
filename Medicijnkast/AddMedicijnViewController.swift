@@ -584,7 +584,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - Rate app in the App Store
     func rateApp() {
 //        print("buttonRate pressed!")
-        let appId = "1257430169"
+        let appId = "1292288501"
         let url_string = "itms-apps://itunes.apple.com/gb/app/id\(appId)"
         /* ?action=write-review&mt=8 */
         if let url = URL(string: url_string) {
