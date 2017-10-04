@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - DidFinishLaunchingWithOptions
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        print("NSHomeDir: \(NSHomeDirectory())")
+//        print("NSHomeDir: \(NSHomeDirectory())")
         let navigationBarAppearance = UINavigationBar.appearance()
         
         // Change tint and and bar tint
