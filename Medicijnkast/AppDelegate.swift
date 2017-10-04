@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // MARK: Load from CSV, for update of bcfi database!
             // Developer use only! Load persistent store with data from csv files.
             // Step 0: Delete the database files (3) in the "Medicijnkast" folder (on the left and in Finder
-            // Step 0b: Mark the preloadDBData() function above
+            // Step 0b: Mark the preloadDBData() function below
             // Step 0c: Delete the app from the simulator
             // Step 1a: Unmark the two following lines of code below the steps
             // Step 1b: Run the app (10 minutes or more to read and load all the files)
@@ -63,15 +63,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Step 3a: Copy the database files (3) from the "NSHomeDir" folder
             // Step 4: Mark the two following lines of code
             // Step 5: Unmark the preloaDBData function above!
-            
+            preloadDBData()
 //            let moc = persistentContainer.viewContext
 //            seedPersistentStoreWithManagedObjectContext(moc)
 
             
 //             Print local file directory
-            let fm = FileManager.default
-            let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            print("appdir: \(appdir)")
+//            let fm = FileManager.default
+//            let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+//            print("appdir: \(appdir)")
             
             // Save Managed Object Context
             self.saveContext()
@@ -186,11 +186,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - preloadDBData Core Data stack
     func preloadDBData() {
-//        print("Preloading DB...")
+        print("Preloading DB...")
         let fileManager = FileManager.default
 
         if !fileManager.fileExists(atPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite") {
-//            print("Files do not exist!")
+            print("Files do not exist!")
             let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
             let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
 //            print("destination: \(destSqliteURLs)")
@@ -208,9 +208,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("\(key) = \(value) \n")
             }*/
         } else {
-//            print("Files Exist!")
+            print("Files Exist!")
             if newBuild == true {
-//                print("New build")
+                print("New build")
                 
                 let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
                 let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
@@ -234,13 +234,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
 //                print("Files Copied!")
             } else {
-//                print("Same build")
+                print("Same build") // No need to copy the files.
             }
-            //print("Stored Userdefaults: \(localdata)")
-            /*for (key, value) in localdata.dictionaryRepresentation() {
-                print("\(key) = \(value) \n")
-            }*/
-
         }
     }
     
