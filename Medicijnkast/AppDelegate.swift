@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - DidFinishLaunchingWithOptions
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        print("NSHomeDir: \(NSHomeDirectory())")
+        print("NSHomeDir: \(NSHomeDirectory())")
         let navigationBarAppearance = UINavigationBar.appearance()
         
         // Change tint and and bar tint
@@ -76,10 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            seedPersistentStoreWithManagedObjectContext(moc)
 
             
-            // Print local file directory
-//            let fm = FileManager.default
-//            let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-//            print(appdir)
+//             Print local file directory
+            let fm = FileManager.default
+            let appdir = try! fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            print("appdir: \(appdir)")
             
             // Save Managed Object Context
             self.saveContext()
@@ -191,7 +191,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print("Files do not exist!")
             let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
             let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
-            
+            print("destination: \(destSqliteURLs)")
             for index in 0 ..< sourceSqliteURLs.count {
                 do {
                     try fileManager.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
