@@ -13,6 +13,9 @@ import Foundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var appVersion: String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)!
+    var appBuild: String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String)!
+    var newBuild:Bool = false
     //let AddMed = AddMedicijnViewController()
     let localdata = UserDefaults.standard
     //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
@@ -42,23 +45,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: Check current version
         let defaults = UserDefaults.standard
-        let cAV = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
         
-        // MARK: preloaDBData of three database files included in the app
-        // For distribution purposes!
-        // Unmark simultaneously with marking the seedPersistentDatabase function to import csv!
-        
-        preloadDBData()
-        
-        guard let currentAppVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, let previousVersion = defaults.string(forKey: "appVersion") else {
+        guard let currentAppVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String, let previousVersion = defaults.string(forKey: "appVersion") else {
             // Key does not exist in UserDefaults, must be a fresh install
-//            print("Fresh install")
+            print("Fresh install")
             // Writing version to UserDefaults for the first time
-            defaults.set(cAV, forKey: "appVersion")
-            
-            
-            
-            // Override point for customization after application launch.
+            defaults.set(appBuild, forKey: "appVersion")
             
             // MARK: Load from CSV, for update of bcfi database!
             // Developer use only! Load persistent store with data from csv files.
@@ -83,33 +75,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // Save Managed Object Context
             self.saveContext()
-            
-            
-            
+
             return false
         }
         
+//        print("currentAppVersion: \(currentAppVersion)")
+//        print("previousAppVersion: \(previousVersion)")
         let comparisonResult = currentAppVersion.compare(previousVersion, options: .numeric, range: nil, locale: nil)
         switch comparisonResult {
         case .orderedSame:
-//            print("Same version is running like before")
+//            print("Same build is running like before")
+            newBuild = false
             break
         case .orderedAscending:
-//            print("Earlier version is running")
+//            print("older build installed")
+            newBuild = true
             break
         case .orderedDescending:
-//            print("older version is running")
+//            print("new build installed")
+            newBuild = true
             break
         }
         
         // Updating new version to UserDefaults
         defaults.set(currentAppVersion, forKey: "appVersion")
         
+        // MARK: preloaDBData of three database files included in the app
+        // For distribution purposes!
+        // Unmark simultaneously with marking the seedPersistentDatabase function to import csv!
+        
+        preloadDBData()
+        
         // Save Managed Object Context
         self.saveContext()
         
         return true
     }
+    
     // MARK: - Application behaviour
     // MARK: didUpdate userActivity
     func application(_ application: UIApplication, didUpdate userActivity: NSUserActivity) {
@@ -191,7 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print("Files do not exist!")
             let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
             let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
-            print("destination: \(destSqliteURLs)")
+//            print("destination: \(destSqliteURLs)")
             for index in 0 ..< sourceSqliteURLs.count {
                 do {
                     try fileManager.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
@@ -207,7 +209,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }*/
         } else {
 //            print("Files Exist!")
-            
+            if newBuild == true {
+//                print("New build")
+                
+                let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
+                let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
+//                print("destination: \(destSqliteURLs)")
+                // Delete old db files
+//                print("...deleting old sqlite files")
+                for index in 0 ..< sourceSqliteURLs.count {
+                    do {
+                        try fileManager.removeItem(at: destSqliteURLs[index])
+                    } catch {
+                        fatalError("Could not delete old sqlite files at destination")
+                    }
+                }
+                // Copy new db files to destination
+                for index in 0 ..< sourceSqliteURLs.count {
+                    do {
+                        try fileManager.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
+                    } catch {
+                        fatalError("Could not copy sqlite to destination.")
+                    }
+                }
+//                print("Files Copied!")
+            } else {
+//                print("Same build")
+            }
             //print("Stored Userdefaults: \(localdata)")
             /*for (key, value) in localdata.dictionaryRepresentation() {
                 print("\(key) = \(value) \n")
