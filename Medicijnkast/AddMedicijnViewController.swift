@@ -53,7 +53,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var H: Bool = true
     var unwindToep: Bool = false
     var unwindRow: Int = 0
-    
+
     // MARK: Version and build
     var appVersion: String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)!
     var appBuild: String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String)!
@@ -278,12 +278,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print("Addmedicijn View did load!")
+        print("Addmedicijn View did load!")
         setupLayout()
         setUpSearchBar(selectedScope: -1)
         setupIndexSort()
         setupIndexSortAZ()
-        setupUpArrow()
         updatePicker1()
         do {
             try self.fetchedResultsController.performFetch()
@@ -308,12 +307,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 //        copyUserDefaultsToUserData(managedObjectContext: context)
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        print("viewWillLayoutSubviews")
+        setupUpArrow()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        print("viewDidLayoutSubviews")
+        print("viewDidLayoutSubviews")
         setupView()
         setupInfoView()
         setupAppVersionView()
+        
         setupPickerView()
         
 //        print("SelectedScope: \(selectedScope)")
@@ -323,15 +329,16 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        print("view will transition")
+        print("view will transition")
         if self.appVersionView.isHidden == false {
             self.H = false
         } else {
             self.H = true
         }
+        scrollToTop()
+        self.sortIndexUp.isHidden = true
 //        setupAppVersionView()
     }
-    
 
     // MARK: - fetchedResultsController
     fileprivate lazy var fetchedResultsController: NSFetchedResultsController<MPP> = {
@@ -711,12 +718,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - setupUpArrow
     func setupUpArrow() {
+        print("setup UpArrow")
         self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-240, width: 50, height: 50))
-        upArrow.isHidden = true
+        self.upArrow.isHidden = true
         upArrow.backgroundColor = UIColor.black.withAlphaComponent(0.60)
         upArrow.layer.cornerRadius = 25
-        //upArrow.layer.borderWidth = 1
-        //upArrow.layer.borderColor = UIColor.black.cgColor
         self.view.addSubview(upArrow)
         let button = UIButton()
         button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
@@ -728,7 +734,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func scrollToTop() {
-        //print("Scroll to top button clicked")
+        print("Scroll to top button clicked")
+        self.upArrow.isHidden = true
         let topOffset = CGPoint(x: 0, y: 0)
         let offset = CGPoint(x: 0, y: -188)
         if hyrView == true {
@@ -740,6 +747,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - setupIndexSort
     func setupIndexSort() {
+        print("setup IndexSort")
         self.sortIndexUp=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-180, width: 50, height: 50))
         
         sortIndexUp.isHidden = true
@@ -747,7 +755,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         sortIndexUp.layer.cornerRadius = 25
         
         self.view.addSubview(sortIndexUp)
-        
         sortButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         sortButton.setTitle("Sort\nindex", for: .normal)
         sortButton.layer.cornerRadius = 20
@@ -755,9 +762,17 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         sortButton.setTitleColor(UIColor.gray, for: .highlighted)
         sortButton.titleLabel?.lineBreakMode = .byWordWrapping
         sortButton.titleLabel?.textAlignment = .center
-        sortButton.titleLabel?.font.withSize(8)
+        sortButton.titleLabel?.font.withSize(7)
         sortButton.addTarget(self, action: #selector(sortIndex), for: UIControlEvents.touchUpInside)
         self.sortIndexUp.addSubview(sortButton)
+        print("selectedScope = \(self.selectedScope)")
+        /*
+        if (self.selectedScope == 1 || self.selectedScope == 2) && self.sortIndexUp.isHidden == true {
+            sortIndexUp.isHidden = false
+        } else {
+            sortIndexUp.isHidden = true
+        }*/
+        self.sortIndexUp.isHidden = true
     }
     
     func sortIndex() {
@@ -787,7 +802,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         sortAZ.layer.cornerRadius = 25
         
         self.view.addSubview(sortAZ)
-        
+        sortAZ.isHidden = self.H
         azButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         azButton.setTitle("A-Z", for: .normal)
         azButton.layer.cornerRadius = 20
@@ -1007,7 +1022,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             self.filterContentForSearchText(searchText: searchText, scopeIndex: 4)
         }
-        if self.selectedScope == 1 || self.selectedScope == 2 {
+        if (self.selectedScope == 1 || self.selectedScope == 2) && self.sortIndexUp.isHidden == true {
             self.sortIndexUp.isHidden = false
         }
     }
@@ -1192,6 +1207,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 if hyrView == false {
                     zoekenImage.isHidden = false
                     noodnummers.isHidden = false
+                    tableView.isScrollEnabled = false
                     self.view.bringSubview(toFront: self.zoekenImage)
                 } else {
                     zoekenImage.isHidden = true
@@ -1203,7 +1219,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 gevondenItemsLabel.isHidden = false
                 zoekenImage.isHidden = true
                 noodnummers.isHidden = true
-                if self.selectedScope == 1 || self.selectedScope == 2 {
+                tableView.isScrollEnabled = true
+                if (self.selectedScope == 1 || self.selectedScope == 2) && self.sortIndexUp.isHidden == true {
                     self.sortIndexUp.isHidden = false
                 }
                 navigationItem.rightBarButtonItem?.isEnabled = true
@@ -1214,6 +1231,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekenImage.isHidden = false
             noodnummers.isHidden = false
             tableView.isHidden = true
+            tableView.isScrollEnabled = true
+            tableView.bounces = true
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
         self.tableView.reloadData()
@@ -1266,8 +1285,10 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         self.upArrow.isHidden = true
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print("Scroll detected")
         if (scrollView.contentOffset.y == 0.0) || (hyrView && scrollView.contentOffset.y == -188.0) {  // TOP
-            upArrow.isHidden = true
+//            print("Hide arrow")
+            self.upArrow.isHidden = true
             let topOffset = CGPoint(x: 0, y: 0)
             let offset = CGPoint(x: 0, y: -188)
             if hyrView == true {
@@ -1276,10 +1297,13 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
                 tableView.setContentOffset(topOffset, animated: false)
             }
         } else {
-            upArrow.isHidden = false
+//            print("Show arrow")
+            self.upArrow.isHidden = false
         }
 
     }
+    
+    /*
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         //print("view did end decelerating")
         //print("offset: \(scrollView.contentOffset)")
@@ -1295,7 +1319,7 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         } else {
             upArrow.isHidden = false
         }
-    }
+    } */
     
     // MARK: - Table data
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
