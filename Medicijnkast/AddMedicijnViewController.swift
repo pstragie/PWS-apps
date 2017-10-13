@@ -34,10 +34,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var hyrPickerView = UIView()
     var pickerChanged: Bool = false
     var upArrow = UIView()
-    var sortIndexUp = UIView()
-    var sortButton = UIButton()
-    var sortAZ = UIView()
-    var azButton = UIButton()
     var sortDescriptorIndex: Int? = nil
     var selectedScope: Int = -1
     var selectedSegmentIndex: Int = 0
@@ -51,6 +47,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var sortKeyword:String = "mppnm"
     var noHosp: Bool = true
     var H: Bool = true
+    var S: Bool = true
     var unwindToep: Bool = false
     var unwindRow: Int = 0
 
@@ -63,6 +60,14 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     @IBOutlet weak var Hospitaal: UILabel!
     @IBOutlet weak var zoekenImage: UIImageView!
     @IBOutlet weak var hospSwitch: UISwitch!
+    @IBOutlet weak var IndexSortButton: UIButton!
+    @IBOutlet weak var AZSortButton: UIButton!
+    @IBAction func IndexSortButton(_ sender: UIButton) {
+        sortIndex()
+    }
+    @IBAction func AZSortButton(_ sender: UIButton) {
+        sortIndexAZ()
+    }
 
     @IBAction func hospSwitch(_ sender: UISwitch) {
         
@@ -278,11 +283,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Addmedicijn View did load!")
+//        print("Addmedicijn View did load!")
         setupLayout()
         setUpSearchBar(selectedScope: -1)
-        setupIndexSort()
-        setupIndexSortAZ()
+//        setupIndexSort()
+        setupIndexSortButton()
+        setupAZSortButton()
         updatePicker1()
         do {
             try self.fetchedResultsController.performFetch()
@@ -309,17 +315,16 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        print("viewWillLayoutSubviews")
+//        print("viewWillLayoutSubviews")
         setupUpArrow()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
-        setupView()
+//        print("viewDidLayoutSubviews")
+        updateView()
         setupInfoView()
         setupAppVersionView()
-        
         setupPickerView()
         
 //        print("SelectedScope: \(selectedScope)")
@@ -329,14 +334,15 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        print("view will transition")
+//        print("view will transition")
         if self.appVersionView.isHidden == false {
             self.H = false
         } else {
             self.H = true
         }
-        scrollToTop()
-        self.sortIndexUp.isHidden = true
+                scrollToTop()
+        self.view.layoutSubviews()
+        self.view.setNeedsDisplay()
 //        setupAppVersionView()
     }
 
@@ -718,7 +724,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - setupUpArrow
     func setupUpArrow() {
-        print("setup UpArrow")
+//        print("setup UpArrow")
         self.upArrow=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-240, width: 50, height: 50))
         self.upArrow.isHidden = true
         upArrow.backgroundColor = UIColor.black.withAlphaComponent(0.60)
@@ -734,7 +740,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func scrollToTop() {
-        print("Scroll to top button clicked")
+//        print("Scroll to top button clicked")
         self.upArrow.isHidden = true
         let topOffset = CGPoint(x: 0, y: 0)
         let offset = CGPoint(x: 0, y: -188)
@@ -746,33 +752,15 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: - setupIndexSort
-    func setupIndexSort() {
-        print("setup IndexSort")
-        self.sortIndexUp=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-180, width: 50, height: 50))
-        
-        sortIndexUp.isHidden = true
-        sortIndexUp.backgroundColor = UIColor.black.withAlphaComponent(0.60)
-        sortIndexUp.layer.cornerRadius = 25
-        
-        self.view.addSubview(sortIndexUp)
-        sortButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        sortButton.setTitle("Sort\nindex", for: .normal)
-        sortButton.layer.cornerRadius = 20
-        sortButton.setTitleColor(UIColor.white, for: .normal)
-        sortButton.setTitleColor(UIColor.gray, for: .highlighted)
-        sortButton.titleLabel?.lineBreakMode = .byWordWrapping
-        sortButton.titleLabel?.textAlignment = .center
-        sortButton.titleLabel?.font.withSize(7)
-        sortButton.addTarget(self, action: #selector(sortIndex), for: UIControlEvents.touchUpInside)
-        self.sortIndexUp.addSubview(sortButton)
-        print("selectedScope = \(self.selectedScope)")
-        /*
-        if (self.selectedScope == 1 || self.selectedScope == 2) && self.sortIndexUp.isHidden == true {
-            sortIndexUp.isHidden = false
-        } else {
-            sortIndexUp.isHidden = true
-        }*/
-        self.sortIndexUp.isHidden = true
+    func setupIndexSortButton() {
+        IndexSortButton.isHidden = true
+        IndexSortButton.backgroundColor = UIColor.black.withAlphaComponent(0.60)
+        IndexSortButton.layer.cornerRadius = 25
+        IndexSortButton.setTitle("Sort index", for: .normal)
+        IndexSortButton.setTitleColor(UIColor.white, for: .normal)
+        IndexSortButton.titleLabel?.lineBreakMode = .byWordWrapping
+        IndexSortButton.titleLabel?.textAlignment = .center
+        IndexSortButton.titleLabel?.font.withSize(7)
     }
     
     func sortIndex() {
@@ -786,7 +774,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
         }
         self.sortKeyword = "index"
-        self.sortAZ.isHidden = false
+        self.AZSortButton.isHidden = false
         searchActive = true
         self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
         searchBar.becomeFirstResponder()
@@ -794,25 +782,15 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: - setupIndexSort
-    func setupIndexSortAZ() {
-        self.sortAZ=UIView(frame:CGRect(x: self.view.bounds.width-52, y: self.view.bounds.height-120, width: 50, height: 50))
-        
-        sortAZ.isHidden = true
-        sortAZ.backgroundColor = UIColor.black.withAlphaComponent(0.60)
-        sortAZ.layer.cornerRadius = 25
-        
-        self.view.addSubview(sortAZ)
-        sortAZ.isHidden = self.H
-        azButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        azButton.setTitle("A-Z", for: .normal)
-        azButton.layer.cornerRadius = 20
-        azButton.setTitleColor(UIColor.white, for: .normal)
-        azButton.setTitleColor(UIColor.gray, for: .highlighted)
-        azButton.titleLabel?.lineBreakMode = .byWordWrapping
-        azButton.titleLabel?.textAlignment = .center
-        azButton.titleLabel?.font.withSize(8)
-        azButton.addTarget(self, action: #selector(sortIndexAZ), for: UIControlEvents.touchUpInside)
-        self.sortAZ.addSubview(azButton)
+    func setupAZSortButton() {
+        AZSortButton.isHidden = true
+        AZSortButton.backgroundColor = UIColor.black.withAlphaComponent(0.60)
+        AZSortButton.layer.cornerRadius = 25
+        AZSortButton.setTitle("A-Z", for: .normal)
+        AZSortButton.setTitleColor(UIColor.white, for: .normal)
+        AZSortButton.titleLabel?.lineBreakMode = .byWordWrapping
+        AZSortButton.titleLabel?.textAlignment = .center
+        AZSortButton.titleLabel?.font.withSize(7)
     }
     
     func sortIndexAZ() {
@@ -824,7 +802,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         //print("self asc = \(self.asc)")
         //print("Sort Index A-Z")
         self.asc = true
-        self.sortAZ.isHidden = true
+        self.AZSortButton.isHidden = true
         searchActive = true
         self.filterContentForSearchText(searchText: self.zoekwoord!, scopeIndex: self.selectedScope)
         searchBar.becomeFirstResponder()
@@ -864,8 +842,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = searchBar.text!
             self.selectedScope = 0
             hyrView = false
-            self.sortIndexUp.isHidden = true
-            self.sortAZ.isHidden = true
+            IndexSortButton.isHidden = true
+            self.AZSortButton.isHidden = true
         case 1:
             //print("scope: verpakking")
             filterKeyword = "mppnm"
@@ -873,7 +851,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = searchBar.text!
             self.selectedScope = 1
             hyrView = false
-            self.sortIndexUp.isHidden = false
+            IndexSortButton.isHidden = false
         case 2:
             //print("scope: vosnaam")
             filterKeyword = "vosnm_"
@@ -881,7 +859,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = searchBar.text!
             self.selectedScope = 2
             hyrView = false
-            self.sortIndexUp.isHidden = false
+            IndexSortButton.isHidden = false
         case 3:
             //print("scope: firmanaam")
             filterKeyword = "mp.ir.nirnm"
@@ -889,8 +867,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = searchBar.text!
             self.selectedScope = 3
             hyrView = false
-            self.sortIndexUp.isHidden = true
-            self.sortAZ.isHidden = true
+            IndexSortButton.isHidden = true
+            self.AZSortButton.isHidden = true
         case 4:
             //print("scope: hierarchie")
             self.view.endEditing(true)
@@ -922,24 +900,24 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
 
             hyrView = true
-            self.sortIndexUp.isHidden = true
-            self.sortAZ.isHidden = true
+            IndexSortButton.isHidden = true
+            self.AZSortButton.isHidden = true
         case 5:
             //print("scope: alles")
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             self.selectedScope = 5
             hyrView = false
-            self.sortIndexUp.isHidden = true
-            self.sortAZ.isHidden = true
+            IndexSortButton.isHidden = true
+            self.AZSortButton.isHidden = true
             zoekwoord = searchBar.text!
         default:
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
             self.selectedScope = -1
-            self.sortIndexUp.isHidden = true
-            self.sortAZ.isHidden = true
+            IndexSortButton.isHidden = true
+            self.AZSortButton.isHidden = true
         }
         
         //print("scope changed: \(selectedScope)")
@@ -1022,8 +1000,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else {
             self.filterContentForSearchText(searchText: searchText, scopeIndex: 4)
         }
-        if (self.selectedScope == 1 || self.selectedScope == 2) && self.sortIndexUp.isHidden == true {
-            self.sortIndexUp.isHidden = false
+        if (self.selectedScope == 1 || self.selectedScope == 2) && self.IndexSortButton.isHidden == true  {
+            let m = fetchedResultsController.fetchedObjects?.count
+            if m != 0 {
+//                print("textDidChange: sortIndexUp is shown")
+                self.IndexSortButton.isHidden = false
+            }
         }
     }
     
@@ -1057,6 +1039,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 
     // MARK: - Zoekfilter
     func filterContentForSearchText(searchText: String, scopeIndex: Int) {
+//        print("filter content for searchtext")
         let offset = CGPoint(x: 0, y: -188)
         var sortDescriptors: Array<NSSortDescriptor>?
         var predicate: NSPredicate
@@ -1187,11 +1170,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     // MARK: - View Methods
-    private func setupView() {
-        updateView()
-    }
-
     fileprivate func updateView() {
+//        print("updateView")
         tableView.isHidden = false
         var x:Int
         if let medicijnen = fetchedResultsController.fetchedObjects {
@@ -1199,8 +1179,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             x = medicijnen.count
             if x == 0 {
                 self.tableView.alwaysBounceVertical = false
-                sortIndexUp.isHidden = true
-                sortAZ.isHidden = true
+                IndexSortButton.isHidden = true
+                AZSortButton.isHidden = true
                 gevondenItemsLabel.isHidden = false
                 tableView.isHidden = false
                 tableView.tableFooterView = UIView()
@@ -1220,9 +1200,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 zoekenImage.isHidden = true
                 noodnummers.isHidden = true
                 tableView.isScrollEnabled = true
-                if (self.selectedScope == 1 || self.selectedScope == 2) && self.sortIndexUp.isHidden == true {
-                    self.sortIndexUp.isHidden = false
-                }
+                
                 navigationItem.rightBarButtonItem?.isEnabled = true
             }
         } else {
@@ -1237,6 +1215,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         }
         self.tableView.reloadData()
         gevondenItemsLabel.text = "\(x)"
+        view.layoutSubviews()
+        view.setNeedsDisplay()
     }
     
     // MARK: - Notification Handling
