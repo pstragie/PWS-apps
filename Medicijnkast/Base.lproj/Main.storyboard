@@ -680,7 +680,7 @@
                                         <rect key="frame" x="0.0" y="72" width="1004" height="135"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1eU-0B-5Dv" id="dui-Zs-gBA">
-                                            <rect key="frame" x="0.0" y="0.0" width="1004" height="134.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1004" height="135"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xef-0y-5Qe">
@@ -938,7 +938,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HyO-ca-lZn">
-                                <rect key="frame" x="960.5" y="694" width="35.5" height="17"/>
+                                <rect key="frame" x="766" y="694" width="230" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="230" id="cwL-Jr-ak5"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -992,8 +995,7 @@
                             <constraint firstItem="CSG-21-VtL" firstAttribute="top" secondItem="pZC-tX-BQm" secondAttribute="bottom" id="LdV-zd-Cjs"/>
                             <constraint firstItem="gMv-cK-14k" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="5" id="MX7-2i-f20"/>
                             <constraint firstAttribute="trailing" secondItem="cuT-JF-4eq" secondAttribute="trailing" constant="2" id="Mfc-Ut-21v"/>
-                            <constraint firstItem="gMv-cK-14k" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="5" id="Nbi-U7-XCu"/>
-                            <constraint firstItem="HyO-ca-lZn" firstAttribute="top" secondItem="ODJ-9f-IWS" secondAttribute="bottom" constant="40" id="QK8-2g-HKF"/>
+                            <constraint firstItem="CSG-21-VtL" firstAttribute="top" secondItem="HyO-ca-lZn" secondAttribute="bottom" constant="8" id="R0D-g9-3KH"/>
                             <constraint firstItem="pZC-tX-BQm" firstAttribute="top" secondItem="FiE-6p-aXC" secondAttribute="bottom" constant="9" id="Sea-Uq-Wf1"/>
                             <constraint firstItem="FiE-6p-aXC" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="10" id="TKa-sn-GiG"/>
                             <constraint firstItem="gMv-cK-14k" firstAttribute="leading" secondItem="Z2W-am-1NK" secondAttribute="leadingMargin" id="TLo-f9-2hn"/>
@@ -1010,7 +1012,6 @@
                             <constraint firstAttribute="trailingMargin" secondItem="HyO-ca-lZn" secondAttribute="trailing" constant="8" id="o7g-ya-UyJ"/>
                             <constraint firstItem="FPk-li-q9I" firstAttribute="centerX" secondItem="Z2W-am-1NK" secondAttribute="centerX" id="qya-Jc-yZi"/>
                             <constraint firstItem="DeK-kj-0bp" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" id="sc9-q3-yc9"/>
-                            <constraint firstItem="CSG-21-VtL" firstAttribute="top" secondItem="HyO-ca-lZn" secondAttribute="bottom" constant="8" id="w8Y-Op-K7z"/>
                             <constraint firstItem="CSG-21-VtL" firstAttribute="top" secondItem="X2q-W9-6hE" secondAttribute="bottom" id="yWW-ff-CcA"/>
                         </constraints>
                     </view>

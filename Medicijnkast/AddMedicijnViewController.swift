@@ -165,7 +165,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             receivedArray = sourceViewController.arrayPassed
             //print("received string: \(receivedArray)")
         }
+        scrollToTop()
+        
         self.asc = true
+        self.IndexSortButton.isHidden = true
         switch segue.identifier {
         case "vosnmToSearch"?:
             filterKeyword = "vosnm_"
@@ -275,6 +278,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewWillAppear(_ animated: Bool) {
 //        print("view will appear")
         setUpSearchBar(selectedScope: selectedScope)
+        scrollToTop()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -287,6 +291,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         super.viewDidLoad()
 //        print("Addmedicijn View did load!")
         setupLayout()
+        self.automaticallyAdjustsScrollViewInsets = false
         setUpSearchBar(selectedScope: -1)
 //        setupIndexSort()
         setupTopButton()
@@ -310,7 +315,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 
         self.updateView()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
-        
 //        MARK: Temp copy defaults to userdata
 //        let context = self.appDelegate.persistentContainer.viewContext
 //        copyUserDefaultsToUserData(managedObjectContext: context)
@@ -318,12 +322,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
+//        print("viewDidLayoutSubviews")
         updateView()
         setupInfoView()
         setupAppVersionView()
         setupPickerView()
-        
 //        print("SelectedScope: \(selectedScope)")
 //        setUpSearchBar(selectedScope: selectedScope)
 //        print("Layout selectedHyr0 \(selectedHyr0)")
@@ -691,11 +694,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             let row1 = level1Picker.selectedRow(inComponent: 0)
 //            print("unwindToep = false, row1 = \(row1)")
             
-            if row1 != 0 {
-                level1Picker.selectRow(row1, inComponent: 0, animated: true)
-            } else {
-                level1Picker.selectRow(0, inComponent: 0, animated: true)
-            }
+            level1Picker.selectRow(row1, inComponent: 0, animated: true)
+            
         } else {
 //            print("unwindToep = true, unwindRow = \(unwindRow)")
             level1Picker.selectRow(unwindRow, inComponent: 0, animated: true)
@@ -720,7 +720,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func scrollToTop() {
-//        print("Scroll to top button clicked")
+//        print("Scroll to top")
         self.TopButton.isHidden = true
         let topOffset = CGPoint(x: 0, y: 0)
         let offset = CGPoint(x: 0, y: -188)
@@ -972,10 +972,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         searchBar.showsScopeBar = true
         searchBar.sizeToFit()
         searchBar.setShowsCancelButton(true, animated: true)
-        if hyrView == false {
-            let topOffset = CGPoint(x: 0, y: 0)
-            self.tableView.setContentOffset(topOffset, animated: true)
-        }
+        scrollToTop()
         searchActive = true
         searchBar.text = zoekwoord
         return true
@@ -984,7 +981,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         zoekwoord = searchText
         searchActive = true
-        
         //print("Zoekterm: \(searchBar.text!)")
         //print("Scope: \(self.selectedScope)")
         if hyrView == false {

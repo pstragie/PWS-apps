@@ -526,8 +526,10 @@ class KastViewController: UIViewController, UITableViewDataSource, UITableViewDe
             destination.medicijn = selectedObject
             
             //navigationController?.pushViewController(destination, animated: true)
+		
         default:
 //            print("Unknown segue: \(String(describing: segue.identifier))")
+			scrollToTop()
 			break
         }
         

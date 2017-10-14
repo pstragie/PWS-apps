@@ -186,7 +186,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - preloadDBData Core Data stack
     func preloadDBData() {
-        print("Preloading DB...")
+//        print("Preloading DB...")
         let fileManager = FileManager.default
 
         if !fileManager.fileExists(atPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite") {
@@ -208,7 +208,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("\(key) = \(value) \n")
             }*/
         } else {
-            print("Files Exist!")
+//            print("Files Exist!")
             if newBuild == true {
                 print("New build")
                 
@@ -234,7 +234,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
 //                print("Files Copied!")
             } else {
-                print("Same build") // No need to copy the files.
+//                print("Same build") // No need to copy the files.
             }
         }
     }
