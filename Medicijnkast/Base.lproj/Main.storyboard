@@ -680,7 +680,7 @@
                                         <rect key="frame" x="0.0" y="72" width="1004" height="135"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1eU-0B-5Dv" id="dui-Zs-gBA">
-                                            <rect key="frame" x="0.0" y="0.0" width="1004" height="135"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1004" height="134.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xef-0y-5Qe">
@@ -965,6 +965,17 @@
                                     <action selector="AZSortButton:" destination="ruK-Vs-qsG" eventType="touchUpInside" id="omy-PG-oPG"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cuT-JF-4eq">
+                                <rect key="frame" x="972" y="547" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="Dyh-KN-2xl"/>
+                                    <constraint firstAttribute="height" constant="50" id="unp-C0-iQ7"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="TopButton:" destination="ruK-Vs-qsG" eventType="touchUpInside" id="IJj-Fq-SN2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -975,19 +986,22 @@
                             <constraint firstAttribute="trailing" secondItem="oTt-3A-B4n" secondAttribute="trailing" constant="2" id="BFZ-ax-oV8"/>
                             <constraint firstItem="FPk-li-q9I" firstAttribute="centerY" secondItem="Z2W-am-1NK" secondAttribute="centerY" id="C9c-pS-Ghy"/>
                             <constraint firstItem="IPG-J8-66T" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="4" id="CTy-1V-Olx"/>
+                            <constraint firstItem="oTt-3A-B4n" firstAttribute="top" secondItem="ODJ-9f-IWS" secondAttribute="bottom" constant="7" id="Etc-9I-JXe"/>
                             <constraint firstAttribute="trailing" secondItem="pZC-tX-BQm" secondAttribute="trailing" constant="10" id="KOy-uY-XIb"/>
                             <constraint firstItem="pZC-tX-BQm" firstAttribute="leading" secondItem="Z2W-am-1NK" secondAttribute="leading" constant="10" id="Lct-pp-PZP"/>
                             <constraint firstItem="CSG-21-VtL" firstAttribute="top" secondItem="pZC-tX-BQm" secondAttribute="bottom" id="LdV-zd-Cjs"/>
                             <constraint firstItem="gMv-cK-14k" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="5" id="MX7-2i-f20"/>
+                            <constraint firstAttribute="trailing" secondItem="cuT-JF-4eq" secondAttribute="trailing" constant="2" id="Mfc-Ut-21v"/>
                             <constraint firstItem="gMv-cK-14k" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="5" id="Nbi-U7-XCu"/>
                             <constraint firstItem="HyO-ca-lZn" firstAttribute="top" secondItem="ODJ-9f-IWS" secondAttribute="bottom" constant="40" id="QK8-2g-HKF"/>
                             <constraint firstItem="pZC-tX-BQm" firstAttribute="top" secondItem="FiE-6p-aXC" secondAttribute="bottom" constant="9" id="Sea-Uq-Wf1"/>
                             <constraint firstItem="FiE-6p-aXC" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="10" id="TKa-sn-GiG"/>
                             <constraint firstItem="gMv-cK-14k" firstAttribute="leading" secondItem="Z2W-am-1NK" secondAttribute="leadingMargin" id="TLo-f9-2hn"/>
                             <constraint firstItem="pKU-5D-8sb" firstAttribute="centerX" secondItem="Z2W-am-1NK" secondAttribute="centerX" id="V6b-ty-jcO"/>
-                            <constraint firstItem="oTt-3A-B4n" firstAttribute="top" secondItem="ODJ-9f-IWS" secondAttribute="bottom" constant="7" id="Y4j-lP-lse"/>
                             <constraint firstItem="pKU-5D-8sb" firstAttribute="top" secondItem="Z2W-am-1NK" secondAttribute="topMargin" constant="65" id="Yrv-JG-1bf"/>
+                            <constraint firstItem="CSG-21-VtL" firstAttribute="top" secondItem="oTt-3A-B4n" secondAttribute="bottom" constant="8" id="c7i-cR-U52"/>
                             <constraint firstItem="IPG-J8-66T" firstAttribute="leading" secondItem="gMv-cK-14k" secondAttribute="trailing" constant="20" id="hI3-KY-spe"/>
+                            <constraint firstItem="ODJ-9f-IWS" firstAttribute="top" secondItem="cuT-JF-4eq" secondAttribute="bottom" constant="7" id="hTt-QL-tVv"/>
                             <constraint firstItem="X2q-W9-6hE" firstAttribute="top" secondItem="pKU-5D-8sb" secondAttribute="bottom" id="iQO-s5-sOg"/>
                             <constraint firstItem="pZC-tX-BQm" firstAttribute="top" secondItem="IPG-J8-66T" secondAttribute="bottom" constant="5" id="j8A-GR-ohC"/>
                             <constraint firstItem="DeK-kj-0bp" firstAttribute="trailing" secondItem="Z2W-am-1NK" secondAttribute="trailingMargin" id="lnv-Rl-rAR"/>
@@ -1012,6 +1026,7 @@
                         <outlet property="AZSortButton" destination="oTt-3A-B4n" id="VFt-GD-jND"/>
                         <outlet property="Hospitaal" destination="FiE-6p-aXC" id="zhb-DH-MaZ"/>
                         <outlet property="IndexSortButton" destination="ODJ-9f-IWS" id="OfP-hb-klc"/>
+                        <outlet property="TopButton" destination="cuT-JF-4eq" id="uOQ-a1-sW5"/>
                         <outlet property="btnCloseMenuView" destination="X2q-W9-6hE" id="Shb-Hj-ovg"/>
                         <outlet property="gevondenItemsLabel" destination="pKU-5D-8sb" id="Mxt-wf-1aK"/>
                         <outlet property="hospSwitch" destination="IPG-J8-66T" id="TDe-j0-wu7"/>
@@ -2263,7 +2278,7 @@
                                                         <rect key="frame" x="0.0" y="28" width="494" height="110"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cLT-Um-6lP" id="WSm-UE-KQw">
-                                                            <rect key="frame" x="0.0" y="0.0" width="494" height="109"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="494" height="110"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="RW4-rD-sOM">
@@ -2392,7 +2407,7 @@
                                                         <rect key="frame" x="0.0" y="28" width="502" height="110"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Ll-Gn-Mly" id="7BZ-NJ-c2k">
-                                                            <rect key="frame" x="0.0" y="0.0" width="502" height="109"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="502" height="110"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="00b-CF-5W3">
