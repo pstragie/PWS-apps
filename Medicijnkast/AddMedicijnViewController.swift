@@ -80,7 +80,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: self.selectedScope)
             }
         } else {
-            self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: 4)
+            self.filterContentForSearchText(searchText: "", scopeIndex: 4)
         }
         searchBar.becomeFirstResponder()
         self.tableView.reloadData()
@@ -278,7 +278,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewWillAppear(_ animated: Bool) {
 //        print("view will appear")
         setUpSearchBar(selectedScope: selectedScope)
-        scrollToTop()
+        if selectedScope == 1 || selectedScope == 2 {
+            self.IndexSortButton.isHidden = false
+        } else {
+            self.IndexSortButton.isHidden = true
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -1032,6 +1036,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         var sortDescriptors: Array<NSSortDescriptor>?
         var predicate: NSPredicate
         if scopeIndex == -1 {
+//            Zoeken in naam en verpakking (default)
             if searchText.isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
@@ -1050,6 +1055,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
 
         } else if scopeIndex == 5 {
+//            Zoeken in alles
             if searchText.isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
@@ -1069,10 +1075,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: true)]
             }
         } else if scopeIndex == 4 {
-            //print("zoekwoord: ", self.zoekwoord!) /* nil */
-            //print("toepassingszoekwoord: ", self.toepzoekwoord)
-            //print("searchbar text: ", searchBar.text!)
-            //print("searchText: ", searchText)
+//            Zoeken via Toepassing
             if pickerChanged == false {
                 if searchText.isEmpty == false {
                     let sub1 = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord)

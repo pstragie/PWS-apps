@@ -349,18 +349,19 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             lijstRichting = false
         }
         
-        cell.moreButton.layer.cornerRadius = 3
+        cell.moreButton.layer.cornerRadius = 5
         cell.moreButton.layer.borderWidth = 3
         cell.moreButton.layer.borderColor = UIColor.white.cgColor
         
-        cell.noteButton.layer.cornerRadius = 3
+        cell.noteButton.layer.cornerRadius = 5
         cell.noteButton.layer.masksToBounds = false
         cell.noteButton.layer.borderWidth = 3
         cell.noteButton.layer.borderColor = UIColor.white.cgColor
+        cell.noteButton.layer.backgroundColor = UIColor.lightGray.cgColor
+        cell.noteButton.setTitleColor(UIColor.black, for: .normal)
+        cell.noteButton.setTitleColor(UIColor.darkGray, for: .highlighted)
         if medicijn?.note != "_" {
             cell.noteButton.isHidden = false
-            cell.noteButton.layer.backgroundColor = UIColor.green.cgColor
-
         } else {
             cell.noteButton.isHidden = true
         }

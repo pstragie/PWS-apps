@@ -29,6 +29,8 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.automaticallyAdjustsScrollViewInsets = false
+
         setupLayout()
 //        print("Compare view did load!")
         // Do any additional setup after loading the view.
@@ -370,6 +372,13 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             if origineelMedicijn.userdata?.aankooplijst == true {
                 return .none
             }
+        }
+        if tableView == tableViewRight {
+            let altmed = self.fetchedResultsControllerRight.object(at: indexPath)
+            let orimed = self.fetchedResultsControllerLeft.object(at: indexPath)
+            if altmed == orimed {
+                return .none
+            } 
         }
         return .delete
     }
