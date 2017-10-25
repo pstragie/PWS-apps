@@ -18,6 +18,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     let level0Picker = UIPickerView()
     var level1dict = Dictionaries().level1Picker()
     let level1Picker = UIPickerView()
+    let lekenPicker = UIPickerView()
+    var lekendict = Dictionaries().lekenPicker()
     let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
     let databaseV: String = "Database versie: 09/2017"
@@ -27,7 +29,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var hyrView: Bool = false
     var selectedHyr0: String = "D"
     var selectedHyr1: String = "DA"
-    var toepzoekwoord: String = "D"
+    var toepzoekwoord: Any = "D"
     var infoView = UIView()
     var appVersionView = UIView()
     var versionView = UIView()
@@ -42,6 +44,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var zoekwoord: String? = nil
     var filterKeyword:String = "mppnm"
     var zoekoperator:String = "BEGINSWITH"
+    var filterOperator:String = "medisch"
     var format:String = "mppnm BEGINSWITH[c] %@"
     var sortKeyword:String = "mppnm"
     var noHosp: Bool = true
@@ -72,24 +75,23 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         scrollToTop()
     }
     @IBAction func hospSwitch(_ sender: UISwitch) {
-        
         searchActive = true
-        
+        pickerChanged = true
         if hyrView == false {
             if zoekwoord != nil {
                 self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: self.selectedScope)
             }
         } else {
-            self.filterContentForSearchText(searchText: "", scopeIndex: 4)
+            self.filterContentForSearchText(searchText: toepzoekwoord, scopeIndex: 4)
         }
         searchBar.becomeFirstResponder()
         self.tableView.reloadData()
-        
     }
     
     @IBOutlet weak var gevondenItemsLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var segmentedButton: UISegmentedControl!
+    @IBOutlet weak var segmentedToepSearch: UISegmentedControl!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var btnCloseMenuView: UIButton!
     @IBAction func appVersion(_ sender: UIBarButtonItem) {
@@ -137,20 +139,27 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.curveEaseIn], animations: {
             //print("infoview: \(self.infoView.center.y)")
             if self.infoView.center.y >= 0 {
+                if self.hyrView == true {
+                    self.infoView.center.y -= self.view.bounds.height + 188 // Hide infoview
+                } else {
                 self.infoView.center.y -= self.view.bounds.height // Hide infoview
+                }
                 if self.appVersionView.isHidden == false {
                     self.btnCloseMenuView.isHidden = false
                     self.btnCloseMenuView.isEnabled = true
                 } else {
                     self.btnCloseMenuView.isHidden = true
                     self.btnCloseMenuView.isEnabled = false
-                    //self.view.bringSubview(toFront: self.infoView)
                 }
             } else {
+                if self.hyrView == true {
+                    self.infoView.center.y += self.view.bounds.height + 188
+                } else {
                 self.infoView.center.y += self.view.bounds.height // Show infoview
+                }
                 self.btnCloseMenuView.isHidden = false
                 self.btnCloseMenuView.isEnabled = true
-                //self.view.bringSubview(toFront: self.view)
+
             }
         }, completion: nil
         )
@@ -225,6 +234,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         case "hyrToSearch"?:
             self.view.endEditing(true)
             hyrView = true
+
+            pickerChanged = true
+            filterOperator = "medisch"
+            setupHyrPickerView()
             let hyr:String = (receivedData?.mp?.hyr?.hyr)!
             let firstCharacter = hyr[hyr.index(hyr.startIndex, offsetBy: 0)]
             var secondCharacter: Character?
@@ -250,23 +263,24 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             zoekwoord = ""
             searchBar.text = ""
             self.selectedScope = 4
-//            print("unwind from detail (toepassing)")
+            self.segmentedToepSearch.selectedSegmentIndex = 0
+            self.AZSortButton.isHidden = true
+            IndexSortButton.isHidden = true
             var x: Int = 0
             let v = level0dict[String(firstCharacter)]
             x = sortData(level0dict).index(of: v!)!
             level0Picker.selectRow(x, inComponent: 0, animated: true)
             selectedHyr0 = String(firstCharacter)
-//            print("selectedHyr0: \(selectedHyr0)")
             hyrView = true
             updatePicker1() // Fill second picker with options matching selected row in first picker
-//            print("select row in second picker")
             let w = Dictionaries().level1Picker()[String(firstCharacter)+String(secondCharacter!)]
             //print("w: \(w!)")
             unwindRow = sortData(level1dict).index(of: w!)!
-//            print("from unwind, unwindRow = \(unwindRow)")
             level1Picker.reloadAllComponents()
 //            updatePicker1() // Select correct row in picker
 //            level1Picker.selectRow(unwindRow, inComponent: 0, animated: true)
+            tableView.reloadData()
+            print("unwind from hyr")
         default:
             filterKeyword = "mppnm"
         }
@@ -277,6 +291,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
 //        print("view will appear")
+        setupPickerView()
         setUpSearchBar(selectedScope: selectedScope)
         if selectedScope == 1 || selectedScope == 2 {
             self.IndexSortButton.isHidden = false
@@ -314,9 +329,11 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         level0Picker.dataSource = self
         level1Picker.delegate = self
         level1Picker.dataSource = self
+        lekenPicker.delegate = self
+        lekenPicker.dataSource = self
         
         setupHyrPickerView()
-
+        
         self.updateView()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
 //        MARK: Temp copy defaults to userdata
@@ -329,8 +346,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 //        print("viewDidLayoutSubviews")
         updateView()
         setupInfoView()
-        setupAppVersionView()
         setupPickerView()
+        setupAppVersionView()
 //        print("SelectedScope: \(selectedScope)")
 //        setUpSearchBar(selectedScope: selectedScope)
 //        print("Layout selectedHyr0 \(selectedHyr0)")
@@ -394,10 +411,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - Setup HyrPickerView
     func setupPickerView() { // Layout subviews
+//        print("setup Picker view")
         if hyrView == true {
             updatePicker1() // Fill second picker with options matching row 0 in first picker
             level1Picker.reloadAllComponents()
             self.hyrPickerView.isHidden = false
+            
             self.view.bringSubview(toFront: hyrPickerView)
             let topOffset = CGPoint(x: 0, y: -188)
             if self.tableView.contentOffset != topOffset {
@@ -414,7 +433,10 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             })
         }
     }
+    
     func setupHyrPickerView() {
+//        print("setup HyrPicker view")
+        self.hyrPickerView.removeFromSuperview()
         self.hyrPickerView.isHidden = false
         self.hyrPickerView=UIView(frame:CGRect(x:10, y:104, width: self.view.bounds.width-20, height: 188))
         //self.hyrPickerView.center.y -= view.bounds.height
@@ -427,8 +449,12 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.view.addSubview(hyrPickerView)
         self.btnCloseMenuView.isHidden = true
         self.btnCloseMenuView.isEnabled = false
-        
-        let horstack = UIStackView(arrangedSubviews: [level0Picker, level1Picker])
+        var horstack = UIStackView()
+        if filterOperator == "medisch" || segmentedToepSearch.selectedSegmentIndex == 0 {
+            horstack = UIStackView(arrangedSubviews: [level0Picker, level1Picker])
+        } else {
+            horstack = UIStackView(arrangedSubviews: [lekenPicker])
+        }
         horstack.axis = .horizontal
         horstack.distribution = .fillProportionally
         horstack.alignment = .fill
@@ -458,6 +484,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         infoView.layer.borderColor = UIColor.black.cgColor
         self.view.addSubview(infoView)
         self.infoView.isHidden = false
+        
+        // Not HyrView Info
         let labelmp = UILabel()
         labelmp.text = "Productnaam"
         labelmp.font = UIFont.boldSystemFont(ofSize: 22)
@@ -517,9 +545,53 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         horstack.alignment = .fill
         horstack.spacing = 5
         horstack.translatesAutoresizingMaskIntoConstraints = false
-        self.infoView.addSubview(horstack)
+        
+        // HyrView Info
+        let medisch = UILabel()
+        medisch.text = "Medisch: zoeken op medische termen."
+        medisch.font = UIFont.boldSystemFont(ofSize: 16)
+        medisch.textColor = UIColor.white
+        let medischnota = UILabel()
+        medischnota.text = "Indeling waarbij alle medicijnen te vinden zijn."
+        medischnota.font = UIFont.systemFont(ofSize: 14)
+        medischnota.textColor = UIColor.white
+        let basis = UILabel()
+        basis.text = "Basis: zoeken op eenvoudige termen."
+        basis.font = UIFont.boldSystemFont(ofSize: 16)
+        basis.textColor = UIColor.white
+        let basisnota = UILabel()
+        basisnota.text = "Indeling waarbij niet alle medicijnen te vinden zijn. Bekijk bovendien de details om de juiste toepassing van een medicijn te vinden."
+        basisnota.font = UIFont.systemFont(ofSize: 14)
+        basisnota.textColor = UIColor.white
+        basisnota.lineBreakMode = .byWordWrapping
+        basisnota.numberOfLines = 2
+        
+        let topStack = UIStackView(arrangedSubviews: [medisch, medischnota])
+        topStack.axis = .vertical
+        topStack.spacing = 0
+        topStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        let bottomStack = UIStackView(arrangedSubviews: [basis, basisnota])
+        bottomStack.axis = .vertical
+        bottomStack.distribution = .fillProportionally
+        bottomStack.spacing = 0
+        bottomStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        let hyrstack = UIStackView(arrangedSubviews: [topStack, bottomStack])
+        hyrstack.axis = .vertical
+        hyrstack.distribution = .fillProportionally
+        hyrstack.spacing = 8
+        hyrstack.translatesAutoresizingMaskIntoConstraints = false
+        
         // MARK: Stackview Layout
-        let viewsDictionary = ["stackView": horstack]
+        var viewsDictionary: Dictionary<String, UIStackView> = [:]
+        if hyrView == true {
+            self.infoView.addSubview(hyrstack)
+            viewsDictionary = ["stackView": hyrstack]
+        } else {
+            self.infoView.addSubview(horstack)
+            viewsDictionary = ["stackView": horstack]
+        }
         let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-115-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[stackView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         infoView.addConstraints(stackView_H)
@@ -620,6 +692,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             return Array(level0dict.values).count
         } else if pickerView == level1Picker {
             return Array(level1dict.values).count
+        } else if pickerView == lekenPicker {
+            return Array(hyrdictleek.keys).count
         }
         return 0
     }
@@ -630,10 +704,41 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             return sortedValues[row]
         } else if pickerView == level1Picker {
             return Array(level1dict.values).sorted()[row]
+        } else if pickerView == lekenPicker {
+            return Array(hyrdictleek.keys).sorted()[row]
         }
         return nil
     }
-    
+
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+//      goes in lieu of titleForRow if customization is desired
+        let label = UILabel()
+        if pickerView == level0Picker {
+            label.text = String(sortData(level0dict)[row])
+            label.textAlignment = .center
+        } else if pickerView == level1Picker {
+            label.text = String(sortData(level1dict)[row])
+            label.adjustsFontSizeToFitWidth = true
+            label.minimumScaleFactor = 0.5
+            label.textAlignment = .center
+        } else if pickerView == lekenPicker {
+            label.text = String(Array(lekendict.keys).sorted()[row])
+            label.textAlignment = .center
+        }
+        
+        return label
+    }
+/*    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        if pickerView == level1Picker {
+            let pickerLabel = UILabel()
+            let titleData = Array(level1dict.values).sorted()[row]
+            let myTitle = NSAttributedString(string: titleData, attributes: [NSFontAttributeName:UIFont(name: "System" ,size:10)!])
+            pickerLabel.attributedText = myTitle
+            return pickerLabel
+        }
+        return pickerLabel
+    }
+ */
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         unwindToep = false
 //        print("pickerView row selected")
@@ -662,6 +767,22 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             }
             pickerChanged = true
             filterContentForSearchText(searchText: selectedHyr1, scopeIndex: 4)
+        }
+        if pickerView == lekenPicker {
+            let hyrvalue = Array(hyrdictleek.keys).sorted() // Array sorted
+            print("hyrvalue: \(hyrvalue)")
+
+            for (key, value) in hyrdictleek {
+                if key == hyrvalue[row] {
+                    print("key: \(key)")
+                    print("value: \(value)")
+                    toepzoekwoord = value
+                }
+            }
+            print(toepzoekwoord)
+            print("toepzoekwoord: \(toepzoekwoord)")
+            pickerChanged = true
+            filterContentForSearchText(searchText: toepzoekwoord, scopeIndex: 4)
         }
     }
     
@@ -708,7 +829,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - search bar related
     fileprivate func setUpSearchBar(selectedScope: Int) {
-        //print("setting up searchbar")
+//        print("setting up searchbar")
         let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 80))
         searchBar.isHidden = false
         searchBar.showsScopeBar = true
@@ -810,6 +931,9 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         segmentedButton.setTitle("•....", forSegmentAt: 0)
         segmentedButton.setTitle("..•..", forSegmentAt: 1)
         segmentedButton.setTitle("....•", forSegmentAt: 2)
+        segmentedToepSearch.setTitle("medisch", forSegmentAt: 0)
+        segmentedToepSearch.setTitle("basis", forSegmentAt: 1)
+        segmentedToepSearch.isHidden = true
         noodnummers.numberOfLines = 2
         noodnummers.text = "Anti-gifcentrum: 070 245 245\nDruglijn: 078 15 10 20"
         noodnummers.font = UIFont.boldSystemFont(ofSize: 14)
@@ -832,6 +956,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         switch selectedScope {
         case 0:
             //print("scope: merknaam")
+            hyrPickerView.isHidden = true
+            segmentedToepSearch.isHidden = true
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
@@ -842,6 +968,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             self.tableView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
         case 1:
             //print("scope: verpakking")
+            hyrPickerView.isHidden = true
+            segmentedToepSearch.isHidden = true
             filterKeyword = "mppnm"
             sortKeyword = "mppnm"
             zoekwoord = searchBar.text!
@@ -850,6 +978,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             IndexSortButton.isHidden = false
         case 2:
             //print("scope: vosnaam")
+            hyrPickerView.isHidden = true
+            segmentedToepSearch.isHidden = true
             filterKeyword = "vosnm_"
             sortKeyword = "vosnm_"
             zoekwoord = searchBar.text!
@@ -858,6 +988,8 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             IndexSortButton.isHidden = false
         case 3:
             //print("scope: firmanaam")
+            hyrPickerView.isHidden = true
+            segmentedToepSearch.isHidden = true
             filterKeyword = "mp.ir.nirnm"
             sortKeyword = "mp.ir.nirnm"
             zoekwoord = searchBar.text!
@@ -868,38 +1000,53 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         case 4:
             //print("scope: hierarchie")
             self.view.endEditing(true)
+//            setupHyrPickerView()
+            pickerChanged = true
+            segmentedToepSearch.isHidden = false
             filterKeyword = "mp.hyr.hyr"
             sortKeyword = "mp.mpnm"
             self.selectedScope = 4
             if searchBar.text == nil {
                 searchBar.text = ""
             }
-            let z: Int = level0Picker.selectedRow(inComponent: 0)
-            let valz = sortData(level0dict)[z]
-            for (key, value) in level0dict {
-                if value == valz {
-                    //zoekwoord = searchBar.text!
-                    //print("value == valz")
-                    toepzoekwoord = key
-                    selectedHyr0 = key
-                }
-            }
-            let a: Int = level1Picker.selectedRow(inComponent: 0)
-            let vala = sortData(level1dict)[a]
-            for (key, value) in level1dict {
-                if value == vala {
-                    //print("value == vala")
-                    //zoekwoord = key
-                    toepzoekwoord = key
-                    selectedHyr1 = key
-                }
-            }
+            if segmentedToepSearch.selectedSegmentIndex == 1 {
+                let l: Int = lekenPicker.selectedRow(inComponent: 0)
+                let vall = Array(hyrdictleek.keys).sorted() // Array sorted
 
+                for (key, value) in hyrdictleek {
+                    if key == vall[l] {
+                        toepzoekwoord = value
+                    }
+                }
+            } else {
+                let z: Int = level0Picker.selectedRow(inComponent: 0)
+                let valz = sortData(level0dict)[z]
+                for (key, value) in level0dict {
+                    if value == valz {
+                        //zoekwoord = searchBar.text!
+                        //print("value == valz")
+                        toepzoekwoord = key
+                        selectedHyr0 = key
+                    }
+                }
+                let a: Int = level1Picker.selectedRow(inComponent: 0)
+                let vala = sortData(level1dict)[a]
+                for (key, value) in level1dict {
+                    if value == vala {
+                        //print("value == vala")
+                        //zoekwoord = key
+                        toepzoekwoord = key
+                        selectedHyr1 = key
+                    }
+                }
+            }
             hyrView = true
             IndexSortButton.isHidden = true
             self.AZSortButton.isHidden = true
         case 5:
             //print("scope: alles")
+            hyrPickerView.isHidden = true
+            segmentedToepSearch.isHidden = true
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             self.selectedScope = 5
@@ -908,6 +1055,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             self.AZSortButton.isHidden = true
             zoekwoord = searchBar.text!
         default:
+            segmentedToepSearch.isHidden = true
             filterKeyword = "mp.mpnm"
             sortKeyword = "mp.mpnm"
             zoekwoord = searchBar.text!
@@ -924,10 +1072,48 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             self.filterContentForSearchText(searchText: zoekwoord!, scopeIndex: selectedScope)
         } else {
             //print("toepzoekwoord: \(toepzoekwoord)")
-            self.filterContentForSearchText(searchText: "", scopeIndex: 4)
+            self.filterContentForSearchText(searchText: toepzoekwoord, scopeIndex: 4)
         }
     }
     
+    // MARK: Set Toepassing search filter
+    @IBAction func searchFilterChanged(_ sender: UISegmentedControl) {
+        switch segmentedToepSearch.selectedSegmentIndex {
+        case 0:
+            filterOperator = "medisch"
+            let hyr0value = sortData(level0dict)[level0Picker.selectedRow(inComponent: 0)]
+            for (key, value) in level0dict {
+                if value == hyr0value {
+                    selectedHyr0 = key
+                    toepzoekwoord = key
+                }
+            }
+            let hyr1value = sortData(level1dict)[level1Picker.selectedRow(inComponent: 0)]
+            for (key, value) in level1dict {
+                if value == hyr1value {
+                    selectedHyr1 = key
+                    toepzoekwoord = key
+                }
+            }
+        case 1:
+            filterOperator = "basis"
+            let hyrvalue = Array(hyrdictleek.keys).sorted() // Array sorted
+            for (key, value) in hyrdictleek {
+                if key == hyrvalue[lekenPicker.selectedRow(inComponent: 0)] {
+                    toepzoekwoord = value
+                }
+            }
+        default:
+            filterOperator = "medisch"
+            break
+        }
+        pickerChanged = true
+        setupHyrPickerView()
+        
+        self.filterContentForSearchText(searchText: toepzoekwoord, scopeIndex: 4)
+        self.tableView.reloadData()
+//        updateView()
+    }
     // MARK: Set search operator
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
         switch segmentedButton.selectedSegmentIndex {
@@ -1030,19 +1216,19 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     // MARK: - Zoekfilter
-    func filterContentForSearchText(searchText: String, scopeIndex: Int) {
+    func filterContentForSearchText(searchText: Any, scopeIndex: Int) {
 //        print("filter content for searchtext")
         let offset = CGPoint(x: 0, y: -188)
         var sortDescriptors: Array<NSSortDescriptor>?
         var predicate: NSPredicate
         if scopeIndex == -1 {
 //            Zoeken in naam en verpakking (default)
-            if searchText.isEmpty == true {
+            if (searchText as! String).isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
                 format = ("mppnm \(zoekoperator)[c] %@ || mp.mpnm \(zoekoperator)[c] %@")
                 let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText])
-                let sub2 = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", searchText)
+                let sub2 = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", searchText as! String)
                 let sub3 = NSPredicate(format: "use != %@", "H")
                 let subpredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2])
                 
@@ -1056,16 +1242,16 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
 
         } else if scopeIndex == 5 {
 //            Zoeken in alles
-            if searchText.isEmpty == true {
+            if (searchText as! String).isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
                 format = ("mppnm \(zoekoperator)[c] %@ || vosnm_ \(zoekoperator)[c] %@")
                 let sub1 = NSPredicate(format: format, argumentArray: [searchText, searchText])
-                let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText)
-                let sub3 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText)
+                let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText as! String)
+                let sub3 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText as! String)
                 let sub4 = NSPredicate(format: "use != %@", "H")
                 let predicate1 = NSCompoundPredicate(orPredicateWithSubpredicates: [sub1, sub2, sub3])
-                let predicate2 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText)
+                let predicate2 = NSPredicate(format: "mp.ir.nirnm \(zoekoperator)[c] %@", searchText as! String)
                 let subpredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [predicate1, predicate2])
                 if !hospSwitch.isOn {
                     predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub4])
@@ -1077,9 +1263,17 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else if scopeIndex == 4 {
 //            Zoeken via Toepassing
             if pickerChanged == false {
-                if searchText.isEmpty == false {
-                    let sub1 = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord)
-                    let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText)
+                var sT: String = ""
+                var sTA: Array<String> = []
+                if searchText is String {
+                    sT = searchText as! String
+                } else {
+                    sTA = searchText as! Array<String>
+                }
+                if sT.isEmpty == false || sTA.count != 0 {
+                    let sub1 = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord as! String)
+                    let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText as! String)
+                    
                     let sub3 = NSPredicate(format: "use != %@", "H")
                     let subpredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sub1, sub2])
                     if !hospSwitch.isOn {
@@ -1089,17 +1283,42 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                     }
                 } else {
                     let sub3 = NSPredicate(format: "use != %@", "H")
-                    let subpredicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord)
+                    var subpredicate: NSPredicate
+                    if searchText is Array<String> {
+                        var subpredicates: [NSPredicate] = []
+                        for i in stride(from: 0, to: (searchText as! Array<String>).count, by: 1) {
+                            let key = (searchText as! Array<String>)[i]
+                            let subpred = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", key)
+                            subpredicates.append(subpred)
+                        }
+                        subpredicate = NSCompoundPredicate(orPredicateWithSubpredicates: subpredicates)
+                    } else {
+                        subpredicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", searchText as! String)
+                    }
+
                     if !hospSwitch.isOn {
                         predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
                     } else {
                         predicate = subpredicate
                     }
                 }
+            
                 sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
-            } else {
+                
+            } else {  // Picker changed
                 let sub3 = NSPredicate(format: "use != %@", "H")
-                let subpredicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", searchText)
+                var subpredicate: NSPredicate
+                if searchText is Array<String> {
+                    var subpredicates: [NSPredicate] = []
+                    for i in stride(from: 0, to: (searchText as! Array<String>).count, by: 1) {
+                        let key = (searchText as! Array<String>)[i]
+                        let subpred = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", key)
+                        subpredicates.append(subpred)
+                    }
+                    subpredicate = NSCompoundPredicate(orPredicateWithSubpredicates: subpredicates)
+                } else {
+                    subpredicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord as! String)
+                }
                 if !hospSwitch.isOn {
                     predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
                 } else {
@@ -1108,26 +1327,26 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                 sortDescriptors = [NSSortDescriptor(key: "mp.mpnm", ascending: true)]
                 pickerChanged = false
             }
+            
         } else {
-            if searchText.isEmpty == true {
+            if (searchText as! String).isEmpty == true {
                 predicate = NSPredicate(format: "mppnm \(zoekoperator)[c] %@", "AlotofMumboJumboblablabla")
             } else {
                 let sub3 = NSPredicate(format: "use != %@", "H")
-                let subpredicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText)
+                let subpredicate = NSPredicate(format: "\(filterKeyword) \(zoekoperator)[c] %@", searchText as! String)
                 if !hospSwitch.isOn {
                     predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
                 } else {
                     predicate = subpredicate
                 }
-                //print("ascending = \(self.asc)")
                 //print("sort keyword = \(sortKeyword)")
                 sortDescriptors = [NSSortDescriptor(key: "\(sortKeyword)", ascending: self.asc)]
             }
         }
-        //print("still ascending = \(self.asc)")
         
         self.fetchedResultsController.fetchRequest.sortDescriptors = sortDescriptors
         self.fetchedResultsController.fetchRequest.predicate = predicate
+//        print(predicate)
         do {
             try self.fetchedResultsController.performFetch()
             //print("fetching from mpp...")
@@ -1166,7 +1385,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         tableView.isHidden = false
         var x:Int
         if let medicijnen = fetchedResultsController.fetchedObjects {
-            
             x = medicijnen.count
             if x == 0 {
                 self.tableView.alwaysBounceVertical = false
@@ -1274,24 +1492,6 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
 
     }
     
-    /*
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        //print("view did end decelerating")
-        //print("offset: \(scrollView.contentOffset)")
-        if (scrollView.contentOffset.y == 0.0) {  // TOP
-            TopButton.isHidden = true
-            let topOffset = CGPoint(x: 0, y: 0)
-            let offset = CGPoint(x: 0, y: -188)
-            if hyrView == true {
-                tableView.setContentOffset(offset, animated: false)
-            } else {
-                tableView.setContentOffset(topOffset, animated: false)
-            }
-        } else {
-            TopButton.isHidden = false
-        }
-    } */
-    
     // MARK: - Table data
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let medicijnen = fetchedResultsController.fetchedObjects else { return 0 }
@@ -1370,10 +1570,10 @@ extension AddMedicijnViewController: NSFetchedResultsControllerDelegate {
         
         cell.selectionStyle = .none
         
-        // Fetch Medicijn
+//         Fetch Medicijn
         let medicijn = fetchedResultsController.object(at: indexPath)
-        
-        // Configure Cell
+
+//         Configure Cell
         cell.layer.cornerRadius = 3
         cell.layer.masksToBounds = true
         cell.layer.borderWidth = 1
