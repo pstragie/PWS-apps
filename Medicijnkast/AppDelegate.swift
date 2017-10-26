@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let localdata = UserDefaults.standard
     //let coreDataManager = CoreDataManager(modelName: "Medicijnkast")
     var errorHandler: (Error) -> Void = {_ in }
-
+    var newDbFiles: Bool = false
     // MARK: - DidFinishLaunchingWithOptions
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 //        print("NSHomeDir: \(NSHomeDirectory())")
@@ -55,18 +55,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // MARK: Load from CSV, for update of bcfi database!
             // Developer use only! Load persistent store with data from csv files.
             // Step 0: Delete the database files (3) in the "Medicijnkast" folder (on the left and in Finder
-            // Step 0b: Mark the preloadDBData() function below
             // Step 0c: Delete the app from the simulator
-            // Step 1a: Unmark the two following lines of code below the steps
+            // Step 0d: Delete the csv files and add the new csv files
+            // Step 1b: Set the newDbFiles to "true"
             // Step 1b: Run the app (10 minutes or more to read and load all the files)
             // Step 2: Locate the database files (3)
             // Step 3a: Copy the database files (3) from the "NSHomeDir" folder
-            // Step 4: Mark the two following lines of code
-            // Step 5: Unmark the preloaDBData function above!
-            preloadDBData()
-//            let moc = persistentContainer.viewContext
-//            seedPersistentStoreWithManagedObjectContext(moc)
-
+            // Step 4: Set the newDbFiles to "false"
+            newDbFiles = false
+            
+            if newDbFiles == false {
+                preloadDBData()
+            } else {
+                let moc = persistentContainer.viewContext
+                seedPersistentStoreWithManagedObjectContext(moc)
+            }
             
 //             Print local file directory
 //            let fm = FileManager.default

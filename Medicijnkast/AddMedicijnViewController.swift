@@ -22,7 +22,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     var lekendict = Dictionaries().lekenPicker()
     let CellDetailIdentifier = "SegueFromAddToDetail"
     let localdata = UserDefaults.standard
-    let databaseV: String = "Database versie: 09/2017"
+    let databaseV: String = "Database versie: 10/2017"
     
     // MARK: - Properties Variables
     var asc = true
@@ -236,6 +236,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             hyrView = true
 
             pickerChanged = true
+            segmentedToepSearch.isHidden = false
             filterOperator = "medisch"
             setupHyrPickerView()
             let hyr:String = (receivedData?.mp?.hyr?.hyr)!
@@ -770,17 +771,13 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         }
         if pickerView == lekenPicker {
             let hyrvalue = Array(hyrdictleek.keys).sorted() // Array sorted
-            print("hyrvalue: \(hyrvalue)")
+//            print("hyrvalue: \(hyrvalue)")
 
             for (key, value) in hyrdictleek {
                 if key == hyrvalue[row] {
-                    print("key: \(key)")
-                    print("value: \(value)")
                     toepzoekwoord = value
                 }
             }
-            print(toepzoekwoord)
-            print("toepzoekwoord: \(toepzoekwoord)")
             pickerChanged = true
             filterContentForSearchText(searchText: toepzoekwoord, scopeIndex: 4)
         }
@@ -937,7 +934,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         noodnummers.numberOfLines = 2
         noodnummers.text = "Anti-gifcentrum: 070 245 245\nDruglijn: 078 15 10 20"
         noodnummers.font = UIFont.boldSystemFont(ofSize: 14)
-        noodnummers.textColor = UIColor.black
+        noodnummers.textColor = UIColor.darkGray
         noodnummers.translatesAutoresizingMaskIntoConstraints = false
         
         zoekenImage.image = #imageLiteral(resourceName: "ZoekenArrow")

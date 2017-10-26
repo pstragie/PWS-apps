@@ -1572,7 +1572,6 @@
 "02336";"tipiracil";"tipiracil";"tipiracil";"_";"_";"tipiracil";"_";"_";true;false
 "02324";"daclizumab";"daclizumab";"daclizumab";"[biosynthetisch]";"_";"daclizumab";"[biosynthétique]";"_";true;false
 "02323";"ixekizumab";"ixékizumab";"ixekizumab";"[biosynthetisch]";"_";"ixékizumab";"[biosynthétique]";"_";true;false
-"02331";"meningokokken type A, C, W, Y (niet-geconjugeerd)";"méningocoques type A, C, W, Y (non conjugué)";"meningokokken type A, C, W, Y";"niet-geconjugeerd [bacterieel, biologisch]";"_";"méningocoques type A, C, W, Y";"non conjugué [bactérien, biologique]";"_";true;false
 "02325";"migalastat";"migalastat";"migalastat";"_";"_";"migalastat";"_";"_";true;false
 "02167";"panobinostat";"panobinostat";"panobinostat";"_";"_";"panobinostat";"_";"_";true;false
 "02339";"thiotepa";"thiotépa";"thiotepa";"_";"_";"thiotépa";"_";"_";true;false
@@ -1589,7 +1588,6 @@
 "00591";"elvitegravir";"elvitégravir";"elvitegravir";"_";"_";"elvitégravir";"_";"_";true;false
 "01587";"Salmonella typhi (polyoside Vi)";"Salmonella typhi (polyoside Vi)";"Salmonella typhi";"polyoside Vi [bacterieel, biologisch]";"_";"Salmonella typhi";"polyoside Vi [bactérien, biologique]";"_";true;false
 "02333";"paclitaxel (nanopartikels gebonden aan albumine)";"paclitaxel (nanoparticules liées à l'albumine)";"paclitaxel";"nanopartikels gebonden aan albumine";"_";"paclitaxel";"nanoparticules liées à l'albumine";"_";true;false
-"01554";"rituximab";"rituximab";"rituximab";"[biologisch, biosynthetisch]";"_";"rituximab";"[biologique, biosynthétique]";"_";true;false
 "02347";"Neisseria catarrhalis (lysaat)";"Neisseria catarrhalis (lysat)";"Neisseria catarrhalis";"lysaat [biologisch]";"_";"Neisseria catarrhalis";"lysat [biologique]";"_";true;false
 "02343";"Klebsiella ozaenae (lysaat)";"Klebsiella ozaenae (lysat)";"Klebsiella ozaenae";"lysaat [bacterieel, biologisch]";"_";"Klebsiella ozaenae";"lysat [bactérien, biologique]";"_";true;false
 "02345";"Streptococcus pyogenes (lysaat)";"Streptococcus pyogenes (lysat)";"Streptococcus pyogenes";"lysaat [bacterieel, biologisch]";"_";"Streptococcus pyogenes";"lysat [bactérien, biologique]";"_";true;false
@@ -1606,6 +1604,13 @@
 "02357";"allergeenextract van Poa pratensis L.";"extrait allergénique de Poa pratensis L.";"allergeenextract van Poa pratensis L.";"[biologisch, plantaardig]";"_";"extrait allergénique de Poa pratensis L.";"[biologique, végétal]";"_";true;false
 "02358";"allergeenextract van Phleum pratense L.";"extrait allergénique de Phleum pratense L.";"allergeenextract van Phleum pratense L.";"[biologisch, plantaardig]";"_";"extrait allergénique de Phleum pratense L.";"[biologique, végétal]";"_";true;false
 "02359";"lactose";"lactose";"lactose";"_";"_";"lactose";"_";"_";true;false
+"02360";"ixazomib";"ixazomib";"ixazomib";"_";"_";"ixazomib";"_";"_";true;false
+"02361";"ixazomib citraat";"ixazomib citrate";"ixazomib";"_";"citraat";"ixazomib";"_";"citrate";true;false
+"02362";"tofacitinib";"tofacitinib";"tofacitinib";"_";"_";"tofacitinib";"_";"_";true;false
+"02363";"tofacitinib citraat";"tofacitinib citrate";"tofacitinib";"_";"citraat";"tofacitinib";"_";"citrate";true;false
+"02331";"meningokokken type A, C, W, Y (niet-geconjugeerd)";"méningocoques type A, C, W, Y (non conjugué)";"meningokokken type A, C, W, Y";"niet-geconjugeerd [bacterieel, biologisch]";"_";"méningocoques type A, C, W, Y";"non conjugué [bactérien, biologique]";"_";true;false
+"02364";"baricitinib";"baricitinib";"baricitinib";"_";"_";"baricitinib";"_";"_";true;false
+"02365";"venetoclax";"vénétoclax";"venetoclax";"_";"_";"vénétoclax";"_";"_";true;false
 "00259";"butamiraat citraat";"butamirate citrate";"butamiraat";"_";"citraat";"butamirate";"_";"citrate";true;false
 "02004";"kalium(I)";"potassium(I)";"kalium(I)";"_";"_";"potassium(I)";"_";"_";true;false
 "00671";"extract van Escherichia coli";"extrait d'Escherichia coli";"extract van Escherichia coli";"X Om-89 Lyofilisaat [bacterieel]";"_";"extrait d'Escherichia coli";"lyophilisat x-OM-89 [bactérien]";"_";true;false
@@ -1635,6 +1640,7 @@
 "01364";"paraffine";"paraffine";"paraffine";"_";"_";"paraffine";"_";"_";true;false
 "00005";"abatacept";"abatacept";"abatacept";"[biologisch, biosynthetisch]";"_";"abatacept";"[biologique, biosynthétique]";"_";true;false
 "01302";"ofloxacine";"ofloxacine";"ofloxacine";"_";"_";"ofloxacine";"_";"_";true;false
+"01554";"rituximab";"rituximab";"rituximab";"[biologisch, biosynthetisch]";"_";"rituximab";"[biologique, biosynthétique]";"_";true;false
 "00889";"ibuprofen arginine";"ibuprofène arginine";"ibuprofen";"_";"arginine";"ibuprofène";"_";"arginine";true;false
 "01537";"Rheum palmatum (antrachinonderivaten)";"Rheum palmatum (dérivés anthraquinoniques)";"Rheum palmatum";"antrachinonderivaten [plantaardig]";"_";"Rheum palmatum";"dérivés anthraquinoniques [végétal]";"_";true;false
 "01588";"Salmonella typhi stam Ty 21a Berna (levend verzwakt)";"Salmonella typhi souche Ty 21a Berna (vivant atténué)";"Salmonella typhi stam Ty 21a Berna";"levend verzwakt [bacterieel, biologisch]";"_";"Salmonella typhi souche Ty 21a Berna";"vivant atténué [bactérien, biologique]";"_";true;false
@@ -1684,6 +1690,7 @@
 "01112";"Melissa officinalis (samengestelde spiritus)";"Melissa officinalis (composé alcoolat)";"Melissa officinalis";"samengestelde spiritus [plantaardig]";"_";"Melissa officinalis";"composé alcoolat [végétal]";"_";true;false
 "01375";"Passiflora incarnata (vloeibaar extract)";"Passiflora incarnata (extrait fluide)";"Passiflora incarnata";"vloeibaar extract [plantaardig]";"_";"Passiflora incarnata";"extrait fluide [végétal]";"_";true;false
 "01926";"pneumokokken, 13 types (geconjugeerd)";"pneumocoques, 13 types (conjugué)";"pneumokokken, 13 types";"geconjugeerd [bacterieel, biologisch]";"_";"pneumocoques, 13 types";"conjugué [bactérien, biologique]";"_";true;false
+"02096";"lapatinib ditosylaat";"lapatinib ditosylate";"lapatinib";"watervrij";"ditosylaat";"lapatinib";"anhydre";"ditosylate";true;false
 "01122";"meningokokken type C (polysachariden, geconjugeerd)";"méningocoque type C (polysaccharides, conjugué)";"meningokokken type C";"polysachariden, geconjugeerd (O-gedeacetyleerd) van groep C (C11-stam) [bacterieel, biologisch]";"_";"méningocoque type C";"polysaccharides, conjugué souche C11 (de-O-acétylé) [bactérien, biologique]";"_";true;false
 "01922";"meningokokken type A, C, W, Y (geconjugeerd)";"méningocoques type A, C, W, Y (conjugué)";"meningokokken type A, C, W, Y";"geconjugeerd [bacterieel, biologisch]";"_";"méningocoques type A, C, W, Y";"conjugué [bactérien, biologique]";"_";true;false
 "00113";"Angelica (blad en wortel)";"Angelica (feuille et racine)";"Angelica";"blad en wortel [plantaardig]";"_";"Angelica";"feuille et racine [végétal]";"_";true;false
@@ -1743,7 +1750,6 @@
 "00645";"etamsylaat";"étamsylate";"etamsylaat";"_";"_";"étamsylate";"_";"_";true;false
 "02090";"ibandronaat natrium";"ibandronate sodium";"ibandronaat";"watervrij";"natrium";"ibandronate";"anhydre";"sodium";true;false
 "02095";"lanthaan carbonaat";"lanthane carbonate";"lanthaan";"watervrij";"carbonaat";"lanthane";"anhydre";"carbonate";true;false
-"02096";"lapatinib ditosylaat";"lapatinib ditosylate";"lapatinib";"watervrij";"ditosylaat";"lapatinib";"anhydre";"ditosylate";true;false
 "00073";"alverine";"alvérine";"alverine";"_";"_";"alvérine";"_";"_";true;false
 "00446";"cromoglicinezuur";"acide cromoglicique";"cromoglicinezuur";"_";"_";"acide cromoglicique";"_";"_";true;false
 "01306";"oliezuur";"acide oléique";"oliezuur";"_";"_";"acide oléique";"_";"_";true;false
@@ -1817,6 +1823,7 @@
 "00389";"cladribine";"cladribine";"cladribine";"_";"_";"cladribine";"_";"_";true;false
 "00117";"apraclonidine";"apraclonidine";"apraclonidine";"_";"_";"apraclonidine";"_";"_";true;false
 "00656";"salicylaat ethyl";"salicylate éthyle";"salicylaat";"_";"ethyl";"salicylate";"_";"éthyle";true;false
+"00410";"clonazepam";"clonazépam";"clonazepam";"_";"_";"clonazépam";"_";"_";true;false
 "02126";"dasabuvir natrium";"dasabuvir sodium";"dasabuvir";"watervrij";"natrium";"dasabuvir";"anhydre";"sodium";true;false
 "02110";"pramipexol dihydrochloride";"pramipexole dichlorhydrate";"pramipexol";"watervrij";"dihydrochloride";"pramipexole";"anhydre";"dichlorhydrate";true;false
 "02112";"sitagliptine fosfaat";"sitagliptine phosphate";"sitagliptine";"watervrij";"fosfaat";"sitagliptine";"anhydre";"phosphate";true;false
@@ -1889,7 +1896,6 @@
 "01134";"mercaptamine";"mercaptamine";"mercaptamine";"_";"_";"mercaptamine";"_";"_";true;false
 "01136";"mercaptopurine";"mercaptopurine";"mercaptopurine";"_";"_";"mercaptopurine";"_";"_";true;false
 "01139";"mesna";"mesna";"mesna";"_";"_";"mesna";"_";"_";true;false
-"00410";"clonazepam";"clonazépam";"clonazepam";"_";"_";"clonazépam";"_";"_";true;false
 "00316";"cefuroxim";"céfuroxime";"cefuroxim";"_";"_";"céfuroxime";"_";"_";true;false
 "01197";"mizolastine";"mizolastine";"mizolastine";"_";"_";"mizolastine";"_";"_";true;false
 "01199";"modafinil";"modafinil";"modafinil";"_";"_";"modafinil";"_";"_";true;false
@@ -2052,7 +2058,6 @@
 "00045";"alfacalcidol";"alfacalcidol";"alfacalcidol";"_";"_";"alfacalcidol";"_";"_";true;false
 "00062";"allopurinol";"allopurinol";"allopurinol";"_";"_";"allopurinol";"_";"_";true;false
 "01667";"tadalafil";"tadalafil";"tadalafil";"_";"_";"tadalafil";"_";"_";true;false
-"01293";"nortriptyline";"nortriptyline";"nortriptyline";"_";"_";"nortriptyline";"_";"_";true;false
 "01882";"catumaxomab";"catumaxomab";"catumaxomab";"[biologisch, biosynthetisch]";"_";"catumaxomab";"[biologique, biosynthétique]";"_";true;false
 "01669";"tafluprost";"tafluprost";"tafluprost";"_";"_";"tafluprost";"_";"_";true;false
 "01675";"tazobactam";"tazobactam";"tazobactam";"_";"_";"tazobactam";"_";"_";true;false
@@ -2133,6 +2138,7 @@
 "01189";"mirtazapine";"mirtazapine";"mirtazapine";"_";"_";"mirtazapine";"_";"_";true;false
 "01190";"misoprostol";"misoprostol";"misoprostol";"_";"_";"misoprostol";"_";"_";true;false
 "01292";"norgestrel";"norgestrel";"norgestrel";"_";"_";"norgestrel";"_";"_";true;false
+"01293";"nortriptyline";"nortriptyline";"nortriptyline";"_";"_";"nortriptyline";"_";"_";true;false
 "01295";"noscapine";"noscapine";"noscapine";"_";"_";"noscapine";"_";"_";true;false
 "01382";"pegvisomant";"pegvisomant";"pegvisomant";"[biologisch, biosynthetisch]";"_";"pegvisomant";"[biologique, biosynthétique]";"_";true;false
 "01406";"pindolol";"pindolol";"pindolol";"_";"_";"pindolol";"_";"_";true;false
