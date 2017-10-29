@@ -8,10 +8,13 @@
 
 import UIKit
 import os.log
+import CoreData
 
 class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     // Fetch Medicijn
+    let localdata = UserDefaults.standard
+
     weak var medicijn: MPP?
     weak var dataPassed: MPP?
     weak var stofdb: Stof?
@@ -36,6 +39,8 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             print("med not saved in aankooplijst!")
         }
         tableView.reloadData()
+        // Copy entity data to userdefaults
+        self.copyUserdataToUserdefaults(managedObjectContext: context)
     }
     
     @IBAction func lijstWijzigen(_ sender: UIButton) {
@@ -50,6 +55,8 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
             print("med not saved in aankooplijst!")
         }
         tableView.reloadData()
+        // Copy entity data to userdefaults
+        self.copyUserdataToUserdefaults(managedObjectContext: context)
     }
 
     @IBAction func noteView(_ sender: UIButton) {
@@ -424,5 +431,55 @@ class MedicijnDetailViewController: UIViewController, UITableViewDataSource, UIT
 //            print("Segue: \(String(describing: segue.identifier!))")
             break
         }
+    }
+    
+    // MARK: - Copy to Userdefaults
+    func copyUserdataToUserdefaults(managedObjectContext: NSManagedObjectContext) {
+        //print("Copying Userdata to localdata")
+        // Read entity Userdata values
+        let userdata = fetchAllRecordsForEntity("Userdata", inManagedObjectContext: managedObjectContext)
+        var medarray: Array<Any> = []
+        // Check if Userdefaults exist
+        // Store to Userdefaults - Create array and store in localdata under key: mppcv
+        // Read array of userdata in localdata
+        if localdata.object(forKey: "userdata") != nil {
+            //print("userdata exists in localdata")
+            medarray = localdata.array(forKey: "userdata")!
+        } else {
+            //print("userdata does not exist in localdata")
+            medarray = [] as [Any]
+        }
+        
+        for userData in userdata {
+            //print("userData: ", userData)
+            let dict = ["medicijnkast": (userData.value(forKey: "medicijnkast")) as! Bool, "medicijnkastarchief": (userData.value(forKey: "medicijnkastarchief")) as! Bool, "aankooplijst": (userData.value(forKey: "aankooplijst")) as! Bool, "aankooparchief": (userData.value(forKey: "aankooparchief")) as! Bool, "aantal": (userData.value(forKey: "aantal")) as! Int, "lastupdate": (userData.value(forKey: "lastupdate")) as! Date, "mppcv": (userData.value(forKey: "mppcv")) as! String, "restant": (userData.value(forKey: "restant")) as! Int] as [String : Any]
+            //print("dict: ", dict)
+            
+            
+            // Add mppcv to array of userdata in localdata
+            medarray.append(userData.value(forKey: "mppcv")!)
+            localdata.set(medarray, forKey: "userdata")
+            localdata.set(dict, forKey: (userData.value(forKey: "mppcv")) as! String)
+            //print("saved \(String(describing: userData.value(forKey: "mppcv"))) to localdata")
+        }
+    }
+
+    // MARK: - fetch all records from Userdata
+    private func fetchAllRecordsForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
+        // Create Fetch Request
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        // Helpers
+        var result = [NSManagedObject]()
+        
+        do {
+            // Execute Fetch Request
+            let records = try managedObjectContext.fetch(fetchRequest)
+            if let records = records as? [NSManagedObject] {
+                result = records
+            }
+        } catch {
+            print("Unable to fetch managed objects for entity \(entity).")
+        }
+        return result
     }
 }

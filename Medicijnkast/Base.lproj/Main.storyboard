@@ -756,28 +756,28 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="764" height="28"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdQ-Hv-SZf">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="699" height="28"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="709" height="28"/>
                                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="acQ-8D-VMJ">
-                                                                            <rect key="frame" x="699" y="0.0" width="65" height="28"/>
+                                                                            <rect key="frame" x="709" y="0.0" width="55" height="28"/>
                                                                             <subviews>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Zs-Ct-NOq">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="28"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="25" height="28"/>
                                                                                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="28.5" id="JSU-Ts-5A3"/>
-                                                                                        <constraint firstAttribute="width" constant="30" id="pno-GQ-fUv"/>
+                                                                                        <constraint firstAttribute="width" constant="25" id="pno-GQ-fUv"/>
                                                                                     </constraints>
                                                                                 </imageView>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qcR-OA-tdh">
-                                                                                    <rect key="frame" x="35" y="0.0" width="30" height="28"/>
+                                                                                    <rect key="frame" x="30" y="0.0" width="25" height="28"/>
                                                                                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="28.5" id="ddZ-Xb-vUD"/>
-                                                                                        <constraint firstAttribute="width" constant="30" id="dxn-Os-t8o"/>
+                                                                                        <constraint firstAttribute="width" constant="25" id="dxn-Os-t8o"/>
                                                                                     </constraints>
                                                                                 </imageView>
                                                                             </subviews>
@@ -2668,7 +2668,7 @@
         <image name="zoeken_icon" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FGf-rR-VNs"/>
+        <segue reference="oM1-mF-OuT"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.081334853040000002" blue="0.093341789780000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

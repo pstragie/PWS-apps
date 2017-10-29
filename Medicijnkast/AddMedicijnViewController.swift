@@ -1285,8 +1285,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else if scopeIndex == 4 {
 //            Zoeken via Toepassing
             if pickerChanged == false {
-                print(toepzoekwoord) // Array<String> ?
-                print(searchText)
                 var sTA: Array<String> = []
                 if toepzoekwoord is String {
                     sTA.append(toepzoekwoord as! String)
@@ -1309,7 +1307,6 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                     if !hospSwitch.isOn {
                         predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate1, sub3])
                     } else {
-                        
                         predicate = subpredicate1
                     }
                 } else {
@@ -1324,7 +1321,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
                         }
                         subpredicate = NSCompoundPredicate(orPredicateWithSubpredicates: subpredicates)
                     } else {
-                        subpredicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", searchText as! String)
+                        subpredicate = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", toepzoekwoord as! String)
                     }
 
                     if !hospSwitch.isOn {

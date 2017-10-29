@@ -22,6 +22,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     var prijzenRight:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
     var prijzenLeft:Dictionary<IndexPath, Dictionary<String,Float>> = [:]
     var altscope: String = "Unit"
+    var aankooplijstChanged: Bool = false
     let CellLeftDetailIdentifier = "SegueFromCompareLeftToDetail"
     let CellRightDetailIdentifier = "SegueFromCompareRightToDetail"
     @IBOutlet weak var tableViewLeft: UITableView!
@@ -32,12 +33,13 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
+        // Distinguish between swipe and touchupinside
         let recognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeLeft))
         recognizer.direction = .left
         self.view.addGestureRecognizer(recognizer)
+        
         setupLayout()
-//        print("Compare view did load!")
-        // Do any additional setup after loading the view.
+
         navigationItem.title = "Vergelijk"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
 
@@ -58,10 +60,31 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterBackground(_:)), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
     }
    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+//        print("view will appear")
+//         Check if aankooplijst has changed
+//         TODO
+        
+        self.tableViewLeft.reloadData()
+        self.tableViewRight.reloadData()
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+//        print("view did layout subviews")
         setupSlideUpInfoView()
         checkForDoubles()
+
+        do {
+            try self.fetchedResultsControllerLeft.performFetch()
+            try self.fetchedResultsControllerRight.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
+        }
+        self.tableViewRight.reloadData()
+        self.tableViewLeft.reloadData()
     }
     // MARK: - swipe Left
     func swipeLeft(recognizer: UISwipeGestureRecognizer) -> Bool {
@@ -183,6 +206,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         label.numberOfLines = 2
         label.textAlignment = .center
         label.text = "U heeft meerdere medicijnen in uw aankooplijst met dezelde voorschriftnaam.\nEnkel unieke medicijnen worden hier getoond."
+        
         label.layer.cornerRadius = 20
         label.textColor = UIColor.white
         self.slideUpInfoView.addSubview(label)
@@ -219,11 +243,16 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         //let cancelAlert = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         //alertCompare.addAction(cancel9)
         // Create OK Action
+        let aankooplijstChangedMessage = UIAlertController(title: "De aankooplijst werd gewijzigd.", message: "Herlaad deze pagina door terug te keren naar de aankooplijst en de vergelijking opnieuw te laden.", preferredStyle: UIAlertControllerStyle.alert)
         let okCompare = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action: UIAlertAction) in print("OK")
         }
         alertCompare.addAction(okCompare)
         // Present Alert Controller
-        self.present(alertCompare, animated:true, completion:nil)
+        if aankooplijstChanged == false {
+            self.present(alertCompare, animated:true, completion:nil)
+        } else {
+            self.present(aankooplijstChangedMessage, animated: true, completion: nil)
+        }
     }
 
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
@@ -282,7 +311,6 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         let objectsLeft = receivedData?[0]
         let objectsRight = receivedData?[1]
         let objectsRightIndex = receivedData?[2]
-
         if tableView == self.tableViewLeft {
             //tableViewRight.scrollToRow(at: indexPath, at: .top, animated: true)
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
@@ -302,7 +330,11 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             cell?.selectionStyle = .none
             // Fetch Medicijn
             let medicijn = fetchedResultsControllerLeft.object(at: indexPath)
-            
+            if medicijn.userdata?.aankooplijst == false {
+                cell?.layer.backgroundColor = UIColor.gray.cgColor
+            } else {
+                cell?.layer.backgroundColor = UIColor.white.cgColor
+            }
             
             // Layout cell
             cell?.layer.cornerRadius = 3
@@ -377,10 +409,11 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             }
         }
         if tableView == tableViewRight {
-            let altmed = self.fetchedResultsControllerRight.object(at: indexPath)
-            let orimed = self.fetchedResultsControllerLeft.object(at: indexPath)
-            if altmed == orimed {
+            let altMedicijn = self.fetchedResultsControllerRight.object(at: indexPath)
+            if altMedicijn.userdata?.aankooplijst == true {
                 return false
+            } else {
+                return true
             }
         }
         return true
@@ -395,7 +428,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         if tableView == tableViewRight {
             let altmed = self.fetchedResultsControllerRight.object(at: indexPath)
             let orimed = self.fetchedResultsControllerLeft.object(at: indexPath)
-            if altmed == orimed {
+            if altmed == orimed && orimed.userdata?.aankooplijst == true {
                 return .none
             }
         }
@@ -410,12 +443,19 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 if origineelMedicijn.userdata?.aankooplijst == false {
                     let context = self.appDelegate.persistentContainer.viewContext
                     self.addUserData(mppcvValue: origineelMedicijn.mppcv!, userkey: "aankooplijst", uservalue: true, managedObjectContext: context)
-                    
+//                    print("ori: \(String(describing: origineelMedicijn.mppnm))")
                     // Fetch alternative medicijn in aankooplijst
                     let altmedicijn = self.fetchedResultsControllerRight.object(at: indexPath)
-                    self.addUserData(mppcvValue: altmedicijn.mppcv!, userkey: "aankooplijst", uservalue: false, managedObjectContext: context)
+//                    print("alt: \(String(describing: altmedicijn.mppnm))")
+                    if origineelMedicijn != altmedicijn {
+                        self.addUserData(mppcvValue: altmedicijn.mppcv!, userkey: "aankooplijst", uservalue: false, managedObjectContext: context)
+                    } else {
+                        let cellRight = self.tableViewRight.cellForRow(at: indexPath)
+                        cellRight?.layer.backgroundColor = UIColor.white.cgColor
+                    }
                     let cell = self.tableViewLeft.cellForRow(at: indexPath)
                     cell?.layer.backgroundColor = UIColor.white.cgColor
+                    
                     
                     do {
                         try self.fetchedResultsControllerLeft.performFetch()
@@ -445,7 +485,12 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 
                 // Fetch the original medicine in aankooplijst
                 let aankoopmedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
-                self.addUserData(mppcvValue: aankoopmedicijn.mppcv!, userkey: "aankooplijst", uservalue: false, managedObjectContext: context)
+                if aankoopmedicijn != altmedicijn {
+                    self.addUserData(mppcvValue: aankoopmedicijn.mppcv!, userkey: "aankooplijst", uservalue: false, managedObjectContext: context)
+                } else {
+                    let cellRight = self.tableViewRight.cellForRow(at: indexPath)
+                    cellRight?.layer.backgroundColor = UIColor.white.cgColor
+                }
                 let cell = self.tableViewLeft.cellForRow(at: indexPath)
                 cell?.layer.backgroundColor = UIColor.gray.withAlphaComponent(0.5).cgColor
                 
