@@ -479,31 +479,31 @@
                                                             <rect key="frame" x="105" y="0.0" width="764" height="120"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fnL-Rb-QOh">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="28.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="97" height="27.5"/>
+                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mppnm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lld-0F-7l2">
-                                                                    <rect key="frame" x="0.0" y="28.5" width="58.5" height="24"/>
+                                                                    <rect key="frame" x="0.0" y="27.5" width="58.5" height="24.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="vosnm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m2T-gK-nTB">
-                                                                    <rect key="frame" x="0.0" y="52.5" width="40" height="19"/>
+                                                                    <rect key="frame" x="0.0" y="52" width="40" height="19"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Firmanaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWg-zA-4Lk">
-                                                                    <rect key="frame" x="0.0" y="71.5" width="85" height="24.5"/>
+                                                                    <rect key="frame" x="0.0" y="71" width="85" height="24.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rN6-co-9OB">
-                                                                    <rect key="frame" x="0.0" y="96" width="42" height="24"/>
+                                                                    <rect key="frame" x="0.0" y="95.5" width="42" height="24.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -756,28 +756,28 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="764" height="28"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdQ-Hv-SZf">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="719" height="28"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="699" height="28"/>
                                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="acQ-8D-VMJ">
-                                                                            <rect key="frame" x="719" y="0.0" width="45" height="28"/>
+                                                                            <rect key="frame" x="699" y="0.0" width="65" height="28"/>
                                                                             <subviews>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Zs-Ct-NOq">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="20" height="28"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="28"/>
                                                                                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="28.5" id="JSU-Ts-5A3"/>
-                                                                                        <constraint firstAttribute="width" constant="20" id="pno-GQ-fUv"/>
+                                                                                        <constraint firstAttribute="width" constant="30" id="pno-GQ-fUv"/>
                                                                                     </constraints>
                                                                                 </imageView>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qcR-OA-tdh">
-                                                                                    <rect key="frame" x="25" y="0.0" width="20" height="28"/>
+                                                                                    <rect key="frame" x="35" y="0.0" width="30" height="28"/>
                                                                                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="28.5" id="ddZ-Xb-vUD"/>
-                                                                                        <constraint firstAttribute="width" constant="20" id="dxn-Os-t8o"/>
+                                                                                        <constraint firstAttribute="width" constant="30" id="dxn-Os-t8o"/>
                                                                                     </constraints>
                                                                                 </imageView>
                                                                             </subviews>
@@ -980,7 +980,7 @@
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mi8-sS-Nc0">
-                                <rect key="frame" x="835" y="68" width="121" height="29"/>
+                                <rect key="frame" x="835" y="69" width="121" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="Q25-Pr-rWb"/>
                                 </constraints>
@@ -996,7 +996,7 @@
                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="mi8-sS-Nc0" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="4" id="1tO-Wx-YhX"/>
+                            <constraint firstItem="mi8-sS-Nc0" firstAttribute="top" secondItem="S4F-Nc-Ffg" secondAttribute="bottom" constant="5" id="1tO-Wx-YhX"/>
                             <constraint firstItem="X2q-W9-6hE" firstAttribute="leading" secondItem="Z2W-am-1NK" secondAttribute="leadingMargin" constant="-10" id="3jj-Ze-1MR"/>
                             <constraint firstAttribute="trailing" secondItem="ODJ-9f-IWS" secondAttribute="trailing" constant="2" id="9pv-hf-p9J"/>
                             <constraint firstItem="FiE-6p-aXC" firstAttribute="leading" secondItem="IPG-J8-66T" secondAttribute="trailing" constant="10" id="AMf-Mn-qpc"/>
@@ -2308,19 +2308,19 @@
                                                                             <rect key="frame" x="0.0" y="0.0" width="361" height="100"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwn-8M-Fjq">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="29.5"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="97" height="29"/>
+                                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mppnm" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CRJ-0g-tYN">
-                                                                                    <rect key="frame" x="0.0" y="29.5" width="58.5" height="25.5"/>
+                                                                                    <rect key="frame" x="0.0" y="29" width="58.5" height="25.5"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="vosnm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn3-3L-NyJ">
-                                                                                    <rect key="frame" x="0.0" y="55" width="40" height="19.5"/>
+                                                                                    <rect key="frame" x="0.0" y="54.5" width="40" height="20"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
@@ -2437,19 +2437,19 @@
                                                                             <rect key="frame" x="0.0" y="0.0" width="369" height="100"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Merknaam" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhY-Uu-FNb">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="95" height="29.5"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="97" height="29"/>
+                                                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="mppnm" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbp-4E-q4V">
-                                                                                    <rect key="frame" x="0.0" y="29.5" width="58.5" height="25.5"/>
+                                                                                    <rect key="frame" x="0.0" y="29" width="58.5" height="25.5"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="vosnm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aMn-es-Ucl">
-                                                                                    <rect key="frame" x="0.0" y="55" width="40" height="19.5"/>
+                                                                                    <rect key="frame" x="0.0" y="54.5" width="40" height="20"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
@@ -2668,7 +2668,7 @@
         <image name="zoeken_icon" width="15" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oM1-mF-OuT"/>
+        <segue reference="FGf-rR-VNs"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.081334853040000002" blue="0.093341789780000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

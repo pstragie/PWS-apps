@@ -13,6 +13,8 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
 
     // MARK: Variables
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let localdata = UserDefaults.standard
+
     var receivedData:Array<Array<String>>? = []
     var slideUpInfoView = UIView()
     var prijsremaRight:Float? = 0.00
@@ -30,7 +32,9 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
-
+        let recognizer: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeLeft))
+        recognizer.direction = .left
+        self.view.addGestureRecognizer(recognizer)
         setupLayout()
 //        print("Compare view did load!")
         // Do any additional setup after loading the view.
@@ -59,7 +63,11 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         setupSlideUpInfoView()
         checkForDoubles()
     }
-    
+    // MARK: - swipe Left
+    func swipeLeft(recognizer: UISwipeGestureRecognizer) -> Bool {
+//        print("swiped left")
+        return false
+    }
     // MARK: - share button
     func shareTapped() {
         // text to share
@@ -274,7 +282,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         let objectsLeft = receivedData?[0]
         let objectsRight = receivedData?[1]
         let objectsRightIndex = receivedData?[2]
-        
+
         if tableView == self.tableViewLeft {
             //tableViewRight.scrollToRow(at: indexPath, at: .top, animated: true)
             cell = tableView.dequeueReusableCell(withIdentifier: MedicijnTableViewCell.reuseIdentifier, for: indexPath) as? MedicijnTableViewCell
@@ -295,17 +303,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             // Fetch Medicijn
             let medicijn = fetchedResultsControllerLeft.object(at: indexPath)
             
-            // Color cells!!!
-            prijsremaLeft = medicijn.rema?.floatValue
-            for (ip, dict) in prijzenRight {
-                if ip == indexPath {
-                    for (_, r) in dict {
-                        if prijsremaLeft! > r {
-                            tableViewRight.cellForRow(at: indexPath)?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.2).cgColor
-                        }
-                    }
-                }
-            }
+            
             // Layout cell
             cell?.layer.cornerRadius = 3
             cell?.layer.masksToBounds = true
@@ -340,11 +338,16 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 print("Unable to Perform Fetch Request")
                 print("\(fetchError), \(fetchError.localizedDescription)")
             }
-
+            let altmed = self.fetchedResultsControllerRight.object(at: indexPath)
+            if altmed.userdata?.aankooplijst == false {
+                // Color cell when different
+                cell?.layer.backgroundColor = UIColor.green.withAlphaComponent(0.2).cgColor
+            }
+    
             cell?.selectionStyle = .none
             // Fetch Medicijn
             let medicijn = self.fetchedResultsControllerRight.object(at: indexPath)
-            
+
             var prijzendict:Dictionary<String,Float> = [:]
             prijsremaRight = medicijn.rema?.floatValue
             prijzendict[medicijn.mppcv!] = prijsremaRight
@@ -366,6 +369,22 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
         return cell!
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if tableView == tableViewLeft {
+            let origineelMedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
+            if origineelMedicijn.userdata?.aankooplijst == true {
+                return false
+            }
+        }
+        if tableView == tableViewRight {
+            let altmed = self.fetchedResultsControllerRight.object(at: indexPath)
+            let orimed = self.fetchedResultsControllerLeft.object(at: indexPath)
+            if altmed == orimed {
+                return false
+            }
+        }
+        return true
+    }
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if tableView == tableViewLeft {
             let origineelMedicijn = self.fetchedResultsControllerLeft.object(at: indexPath)
@@ -378,7 +397,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
             let orimed = self.fetchedResultsControllerLeft.object(at: indexPath)
             if altmed == orimed {
                 return .none
-            } 
+            }
         }
         return .delete
     }
@@ -408,12 +427,13 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                     }
                     self.tableViewLeft.reloadData()
                     self.tableViewRight.reloadData()
+                    // Copy entity data to userdefaults
+                    self.copyUserdataToUserdefaults(managedObjectContext: context)
                 }
             }
             undoReplace.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:0.5)
-            
-            self.tableViewLeft.setEditing(false, animated: true)
             btnArray.append(undoReplace)
+            
         }
         
         if tableView == self.tableViewRight {
@@ -439,11 +459,13 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
                 }
                 self.tableViewLeft.reloadData()
                 self.tableViewRight.reloadData()
+                // Copy entity data to userdefaults
+                self.copyUserdataToUserdefaults(managedObjectContext: context)
                 
             }
             replaceInShoppingList.backgroundColor = UIColor(red: 85/255, green: 0/255, blue:0/255, alpha:1)
-            self.tableViewRight.setEditing(false, animated: true)
             btnArray.append(replaceInShoppingList)
+            
         }
         return btnArray
     }
@@ -451,7 +473,7 @@ class CompareAankoopLijstViewController: UIViewController, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        print("did select \(indexPath.row)")
     }
-    
+
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
@@ -612,5 +634,55 @@ extension CompareAankoopLijstViewController: NSFetchedResultsControllerDelegate 
                 userData.setValue(Date(), forKey: "lastupdate")
             }
         }
+    }
+    
+    // MARK: - Copy to Userdefaults
+    func copyUserdataToUserdefaults(managedObjectContext: NSManagedObjectContext) {
+        //print("Copying Userdata to localdata")
+        // Read entity Userdata values
+        let userdata = fetchAllRecordsForEntity("Userdata", inManagedObjectContext: managedObjectContext)
+        var medarray: Array<Any> = []
+        // Check if Userdefaults exist
+        // Store to Userdefaults - Create array and store in localdata under key: mppcv
+        // Read array of userdata in localdata
+        if localdata.object(forKey: "userdata") != nil {
+            //print("userdata exists in localdata")
+            medarray = localdata.array(forKey: "userdata")!
+        } else {
+            //print("userdata does not exist in localdata")
+            medarray = [] as [Any]
+        }
+        
+        for userData in userdata {
+            //print("userData: ", userData)
+            let dict = ["medicijnkast": (userData.value(forKey: "medicijnkast")) as! Bool, "medicijnkastarchief": (userData.value(forKey: "medicijnkastarchief")) as! Bool, "aankooplijst": (userData.value(forKey: "aankooplijst")) as! Bool, "aankooparchief": (userData.value(forKey: "aankooparchief")) as! Bool, "aantal": (userData.value(forKey: "aantal")) as! Int, "lastupdate": (userData.value(forKey: "lastupdate")) as! Date, "mppcv": (userData.value(forKey: "mppcv")) as! String, "restant": (userData.value(forKey: "restant")) as! Int] as [String : Any]
+            //print("dict: ", dict)
+            
+            
+            // Add mppcv to array of userdata in localdata
+            medarray.append(userData.value(forKey: "mppcv")!)
+            localdata.set(medarray, forKey: "userdata")
+            localdata.set(dict, forKey: (userData.value(forKey: "mppcv")) as! String)
+            //print("saved \(String(describing: userData.value(forKey: "mppcv"))) to localdata")
+        }
+    }
+
+    // MARK: - fetch all records from Userdata
+    private func fetchAllRecordsForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> [NSManagedObject] {
+        // Create Fetch Request
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        // Helpers
+        var result = [NSManagedObject]()
+        
+        do {
+            // Execute Fetch Request
+            let records = try managedObjectContext.fetch(fetchRequest)
+            if let records = records as? [NSManagedObject] {
+                result = records
+            }
+        } catch {
+            print("Unable to fetch managed objects for entity \(entity).")
+        }
+        return result
     }
 }

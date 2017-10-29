@@ -65,8 +65,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             newDbFiles = false
             
             if newDbFiles == false {
+                print("No new csv files")
                 preloadDBData()
             } else {
+                print("New csv files")
                 let moc = persistentContainer.viewContext
                 seedPersistentStoreWithManagedObjectContext(moc)
             }
@@ -213,7 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
 //            print("Files Exist!")
             if newBuild == true {
-                print("New build")
+//                print("New build") // Copy the files
                 
                 let sourceSqliteURLs = [URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-wal")!), URL(fileURLWithPath: Bundle.main.path(forResource: "Medicijnkast", ofType: "sqlite-shm")!)]
                 let destSqliteURLs = [URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-wal"), URL(fileURLWithPath: NSPersistentContainer.defaultDirectoryURL().relativePath + "/Medicijnkast.sqlite-shm")]
@@ -236,6 +238,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
 //                print("Files Copied!")
+                AddMedicijnViewController().copyUserDefaultsToUserData(managedObjectContext: persistentContainer.viewContext)
             } else {
 //                print("Same build") // No need to copy the files.
             }

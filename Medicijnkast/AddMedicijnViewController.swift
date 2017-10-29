@@ -487,6 +487,29 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         self.infoView.isHidden = false
         
         // Not HyrView Info
+        let RxL = UILabel()
+        RxL.text = "Rx: Op voorschrift"
+        RxL.font = UIFont.systemFont(ofSize: 10)
+        RxL.textColor = UIColor.white
+        let wadaL = UILabel()
+        wadaL.text = "W: Doping"
+        wadaL.font = UIFont.systemFont(ofSize: 10)
+        wadaL.textColor = UIColor.white
+        let goedkoopL = UILabel()
+        goedkoopL.text = "€: Goedkoop"
+        goedkoopL.font = UIFont.systemFont(ofSize: 10)
+        goedkoopL.textColor = UIColor.white
+        let hospitaalL = UILabel()
+        hospitaalL.text = "H: Hospitaal"
+        hospitaalL.font = UIFont.systemFont(ofSize: 10)
+        hospitaalL.textColor = UIColor.white
+        let firstStack = UIStackView(arrangedSubviews: [RxL, wadaL, goedkoopL, hospitaalL])
+        firstStack.axis = .vertical
+        firstStack.distribution = .fillEqually
+        firstStack.alignment = .fill
+        firstStack.spacing = 5
+        firstStack.translatesAutoresizingMaskIntoConstraints = true
+        
         let labelmp = UILabel()
         labelmp.text = "Productnaam"
         labelmp.font = UIFont.boldSystemFont(ofSize: 22)
@@ -540,7 +563,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         rightStack.alignment = .fill
         rightStack.spacing = 5
         rightStack.translatesAutoresizingMaskIntoConstraints = true
-        let horstack = UIStackView(arrangedSubviews: [leftStack, rightStack])
+        let horstack = UIStackView(arrangedSubviews: [firstStack, leftStack, rightStack])
         horstack.axis = .horizontal
         horstack.distribution = .fillProportionally
         horstack.alignment = .fill
@@ -593,7 +616,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
             self.infoView.addSubview(horstack)
             viewsDictionary = ["stackView": horstack]
         }
-        let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-115-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+        let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[stackView]-10-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-8-[stackView]-8-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
         infoView.addConstraints(stackView_H)
         infoView.addConstraints(stackView_V)
@@ -1191,6 +1214,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+//        print("cancel clicked")
         filterKeyword = "mppnm"
         sortKeyword = "mppnm"
         hyrView = false
@@ -1208,6 +1232,7 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+//        print("should end editing")
         self.tableView.reloadData()
         return true
     }
@@ -1260,31 +1285,40 @@ class AddMedicijnViewController: UIViewController, UITableViewDataSource, UITabl
         } else if scopeIndex == 4 {
 //            Zoeken via Toepassing
             if pickerChanged == false {
-                var sT: String = ""
+                print(toepzoekwoord) // Array<String> ?
+                print(searchText)
                 var sTA: Array<String> = []
-                if searchText is String {
-                    sT = searchText as! String
+                if toepzoekwoord is String {
+                    sTA.append(toepzoekwoord as! String)
                 } else {
-                    sTA = searchText as! Array<String>
+                    sTA = toepzoekwoord as! Array<String>
                 }
-                if sT.isEmpty == false || sTA.count != 0 {
-                    let sub1 = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", self.toepzoekwoord as! String)
+                if (searchText as! String) != "" {
+                    var sub1: [NSPredicate] = []
+                    var subpredicate: NSPredicate
+                    for i in stride(from: 0, to: sTA.count, by: 1) {
+                        let key = sTA[i]
+                        let subpred = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", key)
+                        sub1.append(subpred)
+                    }
+                    subpredicate = NSCompoundPredicate(orPredicateWithSubpredicates: sub1)
                     let sub2 = NSPredicate(format: "mp.mpnm \(zoekoperator)[c] %@", searchText as! String)
                     
                     let sub3 = NSPredicate(format: "use != %@", "H")
-                    let subpredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [sub1, sub2])
+                    let subpredicate1 = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub2])
                     if !hospSwitch.isOn {
-                        predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate, sub3])
+                        predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [subpredicate1, sub3])
                     } else {
-                        predicate = subpredicate
+                        
+                        predicate = subpredicate1
                     }
                 } else {
                     let sub3 = NSPredicate(format: "use != %@", "H")
                     var subpredicate: NSPredicate
-                    if searchText is Array<String> {
+                    if toepzoekwoord is Array<String> {
                         var subpredicates: [NSPredicate] = []
-                        for i in stride(from: 0, to: (searchText as! Array<String>).count, by: 1) {
-                            let key = (searchText as! Array<String>)[i]
+                        for i in stride(from: 0, to: (toepzoekwoord as! Array<String>).count, by: 1) {
+                            let key = (toepzoekwoord as! Array<String>)[i]
                             let subpred = NSPredicate(format: "mp.hyr.hyr BEGINSWITH %@", key)
                             subpredicates.append(subpred)
                         }
